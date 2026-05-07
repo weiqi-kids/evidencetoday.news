@@ -1,0 +1,58 @@
+---
+import List from '@/layouts/List.astro';
+import ArticleCard from '@/components/blocks/ArticleCard.astro';
+import { getCollection } from 'astro:content';
+
+function fmtDate(d: Date): string {
+  return d.toISOString().slice(0, 10);
+}
+
+function stripExt(id: string): string {
+  return id.replace(/\.[^.]+$/, '');
+}
+
+const articles = (await getCollection('articles', (e) => !e.data.draft))
+  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
+---
+
+<List
+  title="文章"
+  description="深度解析健康議題，以系統性回顧與隨機對照試驗為根據。"
+  category="article"
+  breadcrumbItems={[{ label: '首頁', href: '/' }, { label: '文章' }]}
+  totalItems={articles.length}
+>
+  <div class="articles-grid">
+    {articles.map((a) => (
+      <ArticleCard
+        title={a.data.title}
+        description={a.data.description}
+        href={`/articles/${stripExt(a.id)}/`}
+        category="article"
+        author={a.data.author}
+        date={fmtDate(a.data.publishDate)}
+        editorReviewed={a.data.editorReviewed}
+      />
+    ))}
+  </div>
+</List>
+
+<style>
+  .articles-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-card-gap);
+  }
+
+  @media (max-width: 1024px) {
+    .articles-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .articles-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

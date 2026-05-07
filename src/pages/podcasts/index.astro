@@ -1,0 +1,52 @@
+---
+import List from '@/layouts/List.astro';
+import PodcastCard from '@/components/blocks/PodcastCard.astro';
+import { getCollection } from 'astro:content';
+
+function stripExt(id: string): string {
+  return id.replace(/\.[^.]+$/, '');
+}
+
+const podcasts = (await getCollection('podcasts', (e) => !e.data.draft))
+  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
+---
+
+<List
+  title="Podcast"
+  description="用耳朵吸收健康知識，每集帶你讀懂一個健康主題的科學證據。"
+  category="podcast"
+  breadcrumbItems={[{ label: '首頁', href: '/' }, { label: 'Podcast' }]}
+  totalItems={podcasts.length}
+>
+  <div class="podcasts-grid">
+    {podcasts.map((p) => (
+      <PodcastCard
+        title={p.data.title}
+        description={p.data.description}
+        href={`/podcasts/${stripExt(p.id)}/`}
+        episodeNumber={p.data.episodeNumber}
+        duration={p.data.duration}
+      />
+    ))}
+  </div>
+</List>
+
+<style>
+  .podcasts-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-card-gap);
+  }
+
+  @media (max-width: 1024px) {
+    .podcasts-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .podcasts-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

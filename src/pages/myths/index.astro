@@ -1,0 +1,50 @@
+---
+import List from '@/layouts/List.astro';
+import MythCard from '@/components/blocks/MythCard.astro';
+import { getCollection } from 'astro:content';
+
+function fmtDate(d: Date): string {
+  return d.toISOString().slice(0, 10);
+}
+
+function stripExt(id: string): string {
+  return id.replace(/\.[^.]+$/, '');
+}
+
+const myths = (await getCollection('myths', (e) => !e.data.draft))
+  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
+---
+
+<List
+  title="迷思破解"
+  description="破解常見健康迷思，用證據說清楚真相。"
+  category="myth"
+  breadcrumbItems={[{ label: '首頁', href: '/' }, { label: '迷思破解' }]}
+  totalItems={myths.length}
+>
+  <div class="myths-grid">
+    {myths.map((m) => (
+      <MythCard
+        title={m.data.title}
+        verdictSummary={m.data.verdictSummary}
+        href={`/myths/${stripExt(m.id)}/`}
+        verdict={m.data.verdict}
+        date={fmtDate(m.data.publishDate)}
+      />
+    ))}
+  </div>
+</List>
+
+<style>
+  .myths-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-card-gap);
+  }
+
+  @media (max-width: 640px) {
+    .myths-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

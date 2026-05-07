@@ -17,6 +17,10 @@ function fmtDate(d: Date): string {
   return d.toISOString().slice(0, 10);
 }
 
+function stripExt(id: string): string {
+  return id.replace(/\.[^.]+$/, '');
+}
+
 /* ------------------------------------------------------------------ */
 /*  Fetch all non-draft content                                        */
 /* ------------------------------------------------------------------ */
@@ -58,7 +62,7 @@ const featuredItems: FeaturedItem[] = [
     title: a.data.title,
     description: a.data.description,
     date: a.data.publishDate,
-    href: `/articles/${a.id}/`,
+    href: `/articles/${stripExt(a.id)}/`,
     extra: { author: a.data.author, editorReviewed: a.data.editorReviewed },
   })),
   ...allMyths.filter((m) => m.data.featured).map((m) => ({
@@ -67,7 +71,7 @@ const featuredItems: FeaturedItem[] = [
     title: m.data.title,
     description: m.data.verdictSummary,
     date: m.data.publishDate,
-    href: `/myths/${m.id}/`,
+    href: `/myths/${stripExt(m.id)}/`,
     extra: { verdict: m.data.verdict },
   })),
   ...allIngredients.filter((i) => i.data.featured).map((i) => ({
@@ -76,7 +80,7 @@ const featuredItems: FeaturedItem[] = [
     title: i.data.title,
     description: i.data.description,
     date: i.data.publishDate,
-    href: `/ingredients/${i.id}/`,
+    href: `/ingredients/${stripExt(i.id)}/`,
   })),
   ...allPodcasts.filter((p) => p.data.featured).map((p) => ({
     type: 'podcast' as const,
@@ -84,7 +88,7 @@ const featuredItems: FeaturedItem[] = [
     title: p.data.title,
     description: p.data.description,
     date: p.data.publishDate,
-    href: `/podcasts/${p.id}/`,
+    href: `/podcasts/${stripExt(p.id)}/`,
     extra: { episodeNumber: p.data.episodeNumber, duration: p.data.duration },
   })),
   ...allVideos.filter((v) => v.data.featured).map((v) => ({
@@ -93,7 +97,7 @@ const featuredItems: FeaturedItem[] = [
     title: v.data.title,
     description: v.data.tldr,
     date: v.data.publishDate,
-    href: `/videos/${v.id}/`,
+    href: `/videos/${stripExt(v.id)}/`,
     extra: { youtubeId: v.data.youtubeId },
   })),
 ].sort((a, b) => b.date.getTime() - a.date.getTime()).slice(0, 3);
@@ -283,7 +287,7 @@ const categories = [
               <ArticleCard
                 title={d.title as string}
                 description={d.description as string}
-                href={`/articles/${item.id}/`}
+                href={`/articles/${stripExt(item.id)}/`}
                 category="article"
                 author={d.author as string}
                 date={fmtDate(item.date)}
@@ -296,7 +300,7 @@ const categories = [
               <MythCard
                 title={d.title as string}
                 verdictSummary={d.verdictSummary as string}
-                href={`/myths/${item.id}/`}
+                href={`/myths/${stripExt(item.id)}/`}
                 verdict={d.verdict as 'true' | 'false' | 'insufficient' | 'contextual'}
                 date={fmtDate(item.date)}
               />
@@ -307,7 +311,7 @@ const categories = [
               <IngredientCard
                 title={d.title as string}
                 description={d.description as string}
-                href={`/ingredients/${item.id}/`}
+                href={`/ingredients/${stripExt(item.id)}/`}
                 uses={d.uses as Array<{ evidenceLevel: string }>}
               />
             );
@@ -317,7 +321,7 @@ const categories = [
               <PodcastCard
                 title={d.title as string}
                 description={d.description as string}
-                href={`/podcasts/${item.id}/`}
+                href={`/podcasts/${stripExt(item.id)}/`}
                 episodeNumber={d.episodeNumber as number}
                 duration={d.duration as string}
               />
@@ -328,7 +332,7 @@ const categories = [
               <VideoCard
                 title={d.title as string}
                 tldr={d.tldr as string}
-                href={`/videos/${item.id}/`}
+                href={`/videos/${stripExt(item.id)}/`}
                 youtubeId={d.youtubeId as string}
               />
             );
@@ -362,7 +366,7 @@ const categories = [
           <p class="podcast-layout__desc">
             每集用 30-45 分鐘，帶你讀懂一個健康主題的科學證據。不用行銷話術，只用研究數據說話。
           </p>
-          <Button variant="cta" href={latestPodcasts.length > 0 ? `/podcasts/${latestPodcasts[0].id}/` : '/podcasts/'}>
+          <Button variant="cta" href={latestPodcasts.length > 0 ? `/podcasts/${stripExt(latestPodcasts[0].id)}/` : '/podcasts/'}>
             播放最新單集
           </Button>
           <div class="podcast-layout__tags">
@@ -377,7 +381,7 @@ const categories = [
             <PodcastCard
               title={p.data.title}
               description={p.data.description}
-              href={`/podcasts/${p.id}/`}
+              href={`/podcasts/${stripExt(p.id)}/`}
               episodeNumber={p.data.episodeNumber}
               duration={p.data.duration}
             />
@@ -398,7 +402,7 @@ const categories = [
           <MythCard
             title={m.data.title}
             verdictSummary={m.data.verdictSummary}
-            href={`/myths/${m.id}/`}
+            href={`/myths/${stripExt(m.id)}/`}
             verdict={m.data.verdict}
             date={fmtDate(m.data.publishDate)}
           />
@@ -422,7 +426,7 @@ const categories = [
           <IngredientCard
             title={i.data.title}
             description={i.data.description}
-            href={`/ingredients/${i.id}/`}
+            href={`/ingredients/${stripExt(i.id)}/`}
             uses={i.data.uses}
           />
         ))}

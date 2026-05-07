@@ -1,0 +1,148 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import Article from '@/layouts/Article.astro';
+import TableOfContents from '@/components/blocks/TableOfContents.svelte';
+import ArticleCard from '@/components/blocks/ArticleCard.astro';
+import MythCard from '@/components/blocks/MythCard.astro';
+import IngredientCard from '@/components/blocks/IngredientCard.astro';
+import VideoCard from '@/components/blocks/VideoCard.astro';
+import PodcastCard from '@/components/blocks/PodcastCard.astro';
+
+function stripExt(id: string): string {
+  return id.replace(/\.[^.]+$/, '');
+}
+
+export async function getStaticPaths() {
+  const entries = await getCollection('articles', ({ data }) => !data.draft);
+  return entries.map((entry) => ({
+    params: { slug: entry.id.replace(/\.[^.]+$/, '') },
+    props: { entry },
+  }));
+}
+
+function fmtDate(d: Date): string {
+  return d.toISOString().slice(0, 10);
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await entry.render();
+const data = entry.data;
+
+/* Resolve related content */
+const relatedMyths = data.relatedMyths
+  ? (await Promise.all(data.relatedMyths.map((id) => getEntry('myths', id)))).filter(Boolean)
+  : [];
+const relatedIngredients = data.relatedIngredients
+  ? (await Promise.all(data.relatedIngredients.map((id) => getEntry('ingredients', id)))).filter(Boolean)
+  : [];
+const relatedVideos = data.relatedVideos
+  ? (await Promise.all(data.relatedVideos.map((id) => getEntry('videos', id)))).filter(Boolean)
+  : [];
+const relatedPodcasts = data.relatedPodcasts
+  ? (await Promise.all(data.relatedPodcasts.map((id) => getEntry('podcasts', id)))).filter(Boolean)
+  : [];
+
+const hasRelated = relatedMyths.length > 0 || relatedIngredients.length > 0 || relatedVideos.length > 0 || relatedPodcasts.length > 0;
+---
+
+<Article
+  title={data.title}
+  description={data.description}
+  ogImage={data.coverImage}
+  category="article"
+  publishDate={data.publishDate}
+  updatedDate={data.updatedDate}
+  author={data.author}
+  reviewer={data.reviewer}
+  readingTime={data.readingTime}
+  editorReviewed={data.editorReviewed}
+  disclosure={data.disclosure}
+  tags={data.tags}
+  breadcrumbItems={[
+    { label: '首頁', href: '/' },
+    { label: '文章', href: '/articles/' },
+    { label: data.title },
+  ]}
+  faq={data.faq}
+  references={data.references}
+  tldr={data.tldr}
+>
+  <Content />
+
+  <Fragment slot="sidebar">
+    {headings.length > 0 && (
+      <TableOfContents headings={headings} client:idle />
+    )}
+  </Fragment>
+
+  {hasRelated && (
+    <Fragment slot="after-content">
+      <section class="related-content">
+        <h2 class="related-content__title">相關內容</h2>
+        <div class="related-content__grid">
+          {relatedMyths.map((m) => (
+            <MythCard
+              title={m.data.title}
+              verdictSummary={m.data.verdictSummary}
+              href={`/myths/${stripExt(m.id)}/`}
+              verdict={m.data.verdict}
+              date={fmtDate(m.data.publishDate)}
+            />
+          ))}
+          {relatedIngredients.map((i) => (
+            <IngredientCard
+              title={i.data.title}
+              description={i.data.description}
+              href={`/ingredients/${stripExt(i.id)}/`}
+              uses={i.data.uses}
+            />
+          ))}
+          {relatedVideos.map((v) => (
+            <VideoCard
+              title={v.data.title}
+              tldr={v.data.tldr}
+              href={`/videos/${stripExt(v.id)}/`}
+              youtubeId={v.data.youtubeId}
+            />
+          ))}
+          {relatedPodcasts.map((p) => (
+            <PodcastCard
+              title={p.data.title}
+              description={p.data.description}
+              href={`/podcasts/${stripExt(p.id)}/`}
+              episodeNumber={p.data.episodeNumber}
+              duration={p.data.duration}
+            />
+          ))}
+        </div>
+      </section>
+    </Fragment>
+  )}
+</Article>
+
+<style>
+  .related-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .related-content__title {
+    font-family: var(--font-sans);
+    font-size: var(--text-h3);
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+
+  .related-content__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-card-gap);
+  }
+
+  @media (max-width: 640px) {
+    .related-content__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,192 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import Article from '@/layouts/Article.astro';
+import VerdictBadge from '@/components/ui/VerdictBadge.astro';
+import VerdictDisclaimer from '@/components/blocks/VerdictDisclaimer.astro';
+import ArticleCard from '@/components/blocks/ArticleCard.astro';
+import IngredientCard from '@/components/blocks/IngredientCard.astro';
+import VideoCard from '@/components/blocks/VideoCard.astro';
+import PodcastCard from '@/components/blocks/PodcastCard.astro';
+
+function stripExt(id: string): string {
+  return id.replace(/\.[^.]+$/, '');
+}
+
+export async function getStaticPaths() {
+  const entries = await getCollection('myths', ({ data }) => !data.draft);
+  return entries.map((entry) => ({
+    params: { slug: entry.id.replace(/\.[^.]+$/, '') },
+    props: { entry },
+  }));
+}
+
+function fmtDate(d: Date): string {
+  return d.toISOString().slice(0, 10);
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const data = entry.data;
+
+/* Resolve related content */
+const relatedArticles = data.relatedArticles
+  ? (await Promise.all(data.relatedArticles.map((id) => getEntry('articles', id)))).filter(Boolean)
+  : [];
+const relatedIngredients = data.relatedIngredients
+  ? (await Promise.all(data.relatedIngredients.map((id) => getEntry('ingredients', id)))).filter(Boolean)
+  : [];
+const relatedVideos = data.relatedVideos
+  ? (await Promise.all(data.relatedVideos.map((id) => getEntry('videos', id)))).filter(Boolean)
+  : [];
+const relatedPodcasts = data.relatedPodcasts
+  ? (await Promise.all(data.relatedPodcasts.map((id) => getEntry('podcasts', id)))).filter(Boolean)
+  : [];
+
+const hasRelated = relatedArticles.length > 0 || relatedIngredients.length > 0 || relatedVideos.length > 0 || relatedPodcasts.length > 0;
+---
+
+<Article
+  title={data.title}
+  description={data.description}
+  ogImage={data.coverImage}
+  category="myth"
+  publishDate={data.publishDate}
+  updatedDate={data.updatedDate}
+  tags={data.tags}
+  breadcrumbItems={[
+    { label: '首頁', href: '/' },
+    { label: '迷思破解', href: '/myths/' },
+    { label: data.title },
+  ]}
+  references={data.references}
+>
+  <div class="myth-verdict-header">
+    <VerdictBadge verdict={data.verdict} size="lg" />
+    <p class="myth-verdict-summary">{data.verdictSummary}</p>
+  </div>
+
+  <Content />
+
+  <div class="myth-extra">
+    <section class="myth-extra__section">
+      <h2>為什麼這個迷思會流傳？</h2>
+      <p>{data.whyItSpreads}</p>
+    </section>
+    <section class="myth-extra__section">
+      <h2>實際建議</h2>
+      <p>{data.actionAdvice}</p>
+    </section>
+  </div>
+
+  <VerdictDisclaimer updatedDate={data.updatedDate} />
+
+  {hasRelated && (
+    <Fragment slot="after-content">
+      <section class="related-content">
+        <h2 class="related-content__title">相關內容</h2>
+        <div class="related-content__grid">
+          {relatedArticles.map((a) => (
+            <ArticleCard
+              title={a.data.title}
+              description={a.data.description}
+              href={`/articles/${stripExt(a.id)}/`}
+              category="article"
+              author={a.data.author}
+              date={fmtDate(a.data.publishDate)}
+              editorReviewed={a.data.editorReviewed}
+            />
+          ))}
+          {relatedIngredients.map((i) => (
+            <IngredientCard
+              title={i.data.title}
+              description={i.data.description}
+              href={`/ingredients/${stripExt(i.id)}/`}
+              uses={i.data.uses}
+            />
+          ))}
+          {relatedVideos.map((v) => (
+            <VideoCard
+              title={v.data.title}
+              tldr={v.data.tldr}
+              href={`/videos/${stripExt(v.id)}/`}
+              youtubeId={v.data.youtubeId}
+            />
+          ))}
+          {relatedPodcasts.map((p) => (
+            <PodcastCard
+              title={p.data.title}
+              description={p.data.description}
+              href={`/podcasts/${stripExt(p.id)}/`}
+              episodeNumber={p.data.episodeNumber}
+              duration={p.data.duration}
+            />
+          ))}
+        </div>
+      </section>
+    </Fragment>
+  )}
+</Article>
+
+<style>
+  .myth-verdict-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.25rem;
+    background-color: var(--color-paper);
+    border-radius: var(--radius-card);
+    margin-bottom: 1rem;
+  }
+
+  .myth-verdict-summary {
+    font-size: var(--text-body);
+    color: var(--color-ink);
+    line-height: 1.7;
+  }
+
+  .myth-extra {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 1rem;
+  }
+
+  .myth-extra__section h2 {
+    font-family: var(--font-sans);
+    font-size: var(--text-h3);
+    font-weight: 700;
+    color: var(--color-ink);
+    margin-bottom: 0.5rem;
+  }
+
+  .myth-extra__section p {
+    font-size: var(--text-body);
+    color: color-mix(in oklch, var(--color-ink) 85%, transparent);
+    line-height: 1.8;
+  }
+
+  .related-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .related-content__title {
+    font-family: var(--font-sans);
+    font-size: var(--text-h3);
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+
+  .related-content__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-card-gap);
+  }
+
+  @media (max-width: 640px) {
+    .related-content__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
