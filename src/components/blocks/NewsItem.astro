@@ -1,0 +1,108 @@
+---
+interface Props {
+  title: string;
+  source: string;
+  date: string;
+  summary: string;
+  sourceUrl?: string;
+  tags: string[];
+}
+
+const { title, source, date, summary, sourceUrl, tags } = Astro.props;
+---
+
+<article class="news-item">
+  <div class="news-item__header">
+    <span class="news-item__source">{source}</span>
+    <span class="news-item__sep" aria-hidden="true">&middot;</span>
+    <time class="news-item__date">{date}</time>
+  </div>
+  {sourceUrl ? (
+    <h3 class="news-item__title">
+      <a href={sourceUrl} target="_blank" rel="noopener noreferrer">{title}</a>
+    </h3>
+  ) : (
+    <h3 class="news-item__title">{title}</h3>
+  )}
+  <p class="news-item__summary">{summary}</p>
+  {tags.length > 0 && (
+    <div class="news-item__tags">
+      {tags.map((tag) => (
+        <span class="news-item__tag">{tag}</span>
+      ))}
+    </div>
+  )}
+</article>
+
+<style>
+  .news-item {
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--color-fog);
+  }
+
+  .news-item:last-child {
+    border-bottom: none;
+  }
+
+  .news-item__header {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-family: var(--font-ui);
+    font-size: var(--text-meta);
+    color: color-mix(in oklch, var(--color-ink) 55%, transparent);
+    margin-bottom: 0.375rem;
+  }
+
+  .news-item__source {
+    font-weight: 600;
+  }
+
+  .news-item__title {
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    font-weight: 700;
+    color: var(--color-ink);
+    line-height: 1.4;
+    margin-bottom: 0.375rem;
+  }
+
+  .news-item__title a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .news-item__title a:hover {
+    color: var(--color-teal);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
+  .news-item__summary {
+    font-size: var(--text-meta);
+    color: color-mix(in oklch, var(--color-ink) 70%, transparent);
+    line-height: 1.6;
+    margin-bottom: 0.5rem;
+  }
+
+  .news-item__tags {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    flex-wrap: wrap;
+  }
+
+  .news-item__tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.15rem 0.5rem;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-ui);
+    font-size: var(--text-badge);
+    font-weight: 500;
+    line-height: 1.4;
+    white-space: nowrap;
+    background-color: color-mix(in oklch, var(--color-cat-news) 14%, var(--color-paper));
+    color: var(--color-cat-news);
+  }
+</style>

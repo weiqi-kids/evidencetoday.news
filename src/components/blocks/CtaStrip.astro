@@ -1,0 +1,51 @@
+---
+import Button from '../ui/Button.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  buttonText: string;
+  buttonHref: string;
+}
+
+const { title, description, buttonText, buttonHref } = Astro.props;
+---
+
+<section class="cta-strip">
+  <div class="cta-strip__inner container">
+    <h2 class="cta-strip__title">{title}</h2>
+    {description && (
+      <p class="cta-strip__desc">{description}</p>
+    )}
+    <Button variant="cta" href={buttonHref}>{buttonText}</Button>
+  </div>
+</section>
+
+<style>
+  .cta-strip {
+    background-color: white;
+    padding: var(--space-section-gap) 0;
+  }
+
+  .cta-strip__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .cta-strip__title {
+    font-family: var(--font-sans);
+    font-size: var(--text-h3);
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+
+  .cta-strip__desc {
+    font-size: var(--text-body);
+    color: color-mix(in oklch, var(--color-ink) 70%, transparent);
+    line-height: 1.7;
+    max-width: 50ch;
+  }
+</style>

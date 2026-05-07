@@ -1,0 +1,76 @@
+---
+/* Medical disclaimer block — fixed content, no props */
+---
+
+<aside class="medical-disclaimer" aria-label="醫療聲明">
+  <div class="medical-disclaimer__header">
+    <svg
+      class="medical-disclaimer__icon"
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+    </svg>
+    <strong class="medical-disclaimer__title">醫療聲明</strong>
+  </div>
+  <p class="medical-disclaimer__text">
+    本站所有內容僅供一般健康資訊參考，不構成醫療診斷、治療建議或處方。如有任何健康問題，請諮詢合格的醫療專業人員。
+  </p>
+  <a class="medical-disclaimer__link" href="/medical-disclaimer/">完整醫療聲明</a>
+</aside>
+
+<style>
+  .medical-disclaimer {
+    background-color: var(--color-paper);
+    border: 1px solid var(--color-fog);
+    border-radius: var(--radius-card);
+    padding: 1.5rem;
+  }
+
+  .medical-disclaimer__header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .medical-disclaimer__icon {
+    color: var(--color-teal);
+    flex-shrink: 0;
+  }
+
+  .medical-disclaimer__title {
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+
+  .medical-disclaimer__text {
+    font-size: var(--text-meta);
+    color: color-mix(in oklch, var(--color-ink) 65%, transparent);
+    line-height: 1.7;
+    margin-bottom: 0.75rem;
+  }
+
+  .medical-disclaimer__link {
+    font-family: var(--font-ui);
+    font-size: var(--text-meta);
+    color: var(--color-teal);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
+  .medical-disclaimer__link:hover {
+    color: var(--color-teal-hover);
+    text-decoration-thickness: 2px;
+  }
+</style>

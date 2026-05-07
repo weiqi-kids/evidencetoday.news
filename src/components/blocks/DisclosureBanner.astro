@@ -1,0 +1,28 @@
+---
+interface Props {
+  disclosure: string;
+}
+
+const { disclosure } = Astro.props;
+---
+
+{disclosure && (
+  <aside class="disclosure-banner" aria-label="利益揭露">
+    <p>{disclosure}</p>
+  </aside>
+)}
+
+<style>
+  .disclosure-banner {
+    background-color: color-mix(in oklch, var(--color-coral) 8%, var(--color-paper));
+    border-left: 4px solid var(--color-coral);
+    padding: 1rem 1.25rem;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+
+  .disclosure-banner p {
+    font-size: var(--text-meta);
+    color: var(--color-ink);
+    line-height: 1.6;
+  }
+</style>

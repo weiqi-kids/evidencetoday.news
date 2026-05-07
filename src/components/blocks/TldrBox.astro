@@ -1,0 +1,35 @@
+---
+/* TL;DR summary box — uses slot for content */
+---
+
+<aside class="tldr">
+  <span class="tldr__label">TL;DR</span>
+  <div class="tldr__content">
+    <slot />
+  </div>
+</aside>
+
+<style>
+  .tldr {
+    background-color: var(--color-teal-subtle);
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+  }
+
+  .tldr__label {
+    display: block;
+    color: var(--color-teal);
+    text-transform: uppercase;
+    font-size: var(--text-badge);
+    font-family: var(--font-ui);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    margin-bottom: 0.5rem;
+  }
+
+  .tldr__content {
+    color: var(--color-ink);
+    font-size: var(--text-body);
+    line-height: 1.8;
+  }
+</style>

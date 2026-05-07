@@ -1,0 +1,89 @@
+---
+interface Props {
+  title: string;
+  tldr: string;
+  href: string;
+  youtubeId: string;
+}
+
+const { title, tldr, href, youtubeId } = Astro.props;
+
+const thumbnailUrl = `https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg`;
+---
+
+<a href={href} class="video-card">
+  <div class="video-card__thumb" style={`background-image: url('${thumbnailUrl}')`}>
+    <div class="video-card__overlay">
+      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="white" stroke="none" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+    </div>
+  </div>
+  <div class="video-card__body">
+    <h3 class="video-card__title">{title}</h3>
+    <p class="video-card__tldr">{tldr}</p>
+  </div>
+</a>
+
+<style>
+  .video-card {
+    display: block;
+    background-color: white;
+    border: 1px solid var(--color-fog);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .video-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  .video-card__thumb {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background-size: cover;
+    background-position: center;
+    background-color: var(--color-fog);
+  }
+
+  .video-card__overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: oklch(0 0 0 / 0.35);
+    transition: background-color 0.2s ease;
+  }
+
+  .video-card:hover .video-card__overlay {
+    background-color: oklch(0 0 0 / 0.5);
+  }
+
+  .video-card__body {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .video-card__title {
+    font-family: var(--font-sans);
+    font-size: var(--text-h3);
+    font-weight: 600;
+    color: var(--color-ink);
+    line-height: 1.35;
+  }
+
+  .video-card__tldr {
+    font-size: var(--text-meta);
+    color: color-mix(in oklch, var(--color-ink) 70%, transparent);
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

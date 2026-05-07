@@ -1,0 +1,96 @@
+---
+import CategoryTag from '../ui/CategoryTag.astro';
+import Badge from '../ui/Badge.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  href: string;
+  category: 'article';
+  author: string;
+  date: string;
+  editorReviewed: boolean;
+}
+
+const { title, description, href, category, author, date, editorReviewed } = Astro.props;
+---
+
+<a href={href} class="article-card">
+  <div class="article-card__bar"></div>
+  <div class="article-card__body">
+    <div class="article-card__top">
+      <CategoryTag category={category} />
+      {editorReviewed && <Badge variant="editor">主編校稿</Badge>}
+    </div>
+    <h3 class="article-card__title">{title}</h3>
+    <p class="article-card__desc">{description}</p>
+    <div class="article-card__meta">
+      <span>{author}</span>
+      <span>{date}</span>
+    </div>
+  </div>
+</a>
+
+<style>
+  .article-card {
+    display: block;
+    background-color: white;
+    border: 1px solid var(--color-fog);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .article-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  .article-card__bar {
+    height: 6px;
+    background-color: var(--color-cat-article);
+  }
+
+  .article-card__body {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+
+  .article-card__top {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .article-card__title {
+    font-family: var(--font-sans);
+    font-size: var(--text-h3);
+    font-weight: 600;
+    color: var(--color-ink);
+    line-height: 1.35;
+  }
+
+  .article-card__desc {
+    font-size: var(--text-meta);
+    color: color-mix(in oklch, var(--color-ink) 70%, transparent);
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .article-card__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-ui);
+    font-size: var(--text-meta);
+    color: color-mix(in oklch, var(--color-ink) 55%, transparent);
+  }
+</style>

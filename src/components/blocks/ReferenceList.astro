@@ -1,0 +1,96 @@
+---
+import Badge from '../ui/Badge.astro';
+
+interface Props {
+  references: Array<{
+    title: string;
+    url?: string;
+    type: string;
+  }>;
+}
+
+const { references } = Astro.props;
+---
+
+<details class="reference-list">
+  <summary class="reference-list__summary">
+    引用來源（{references.length} 筆）
+  </summary>
+  <ol class="reference-list__items">
+    {references.map((ref) => (
+      <li class="reference-list__item">
+        <span class="reference-list__text">
+          {ref.url ? (
+            <a href={ref.url} target="_blank" rel="noopener noreferrer">{ref.title}</a>
+          ) : (
+            ref.title
+          )}
+        </span>
+        <Badge variant="evidence">{ref.type}</Badge>
+      </li>
+    ))}
+  </ol>
+</details>
+
+<style>
+  .reference-list {
+    border: 1px solid var(--color-fog);
+    border-radius: var(--radius-sm);
+  }
+
+  .reference-list__summary {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    font-family: var(--font-ui);
+    font-size: var(--text-meta);
+    font-weight: 600;
+    color: var(--color-ink);
+    cursor: pointer;
+    user-select: none;
+    list-style: none;
+  }
+
+  .reference-list__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .reference-list__summary::before {
+    content: '\25B6';
+    font-size: 0.65em;
+    transition: transform 0.2s ease;
+  }
+
+  details[open] > .reference-list__summary::before {
+    transform: rotate(90deg);
+  }
+
+  .reference-list__items {
+    padding: 0 1rem 1rem 2rem;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .reference-list__item {
+    font-size: var(--text-meta);
+    line-height: 1.6;
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .reference-list__text a {
+    color: var(--color-teal);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
+  .reference-list__text a:hover {
+    color: var(--color-teal-hover);
+    text-decoration-thickness: 2px;
+  }
+</style>

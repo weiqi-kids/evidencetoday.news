@@ -1,0 +1,23 @@
+---
+interface Props {
+  updatedDate: Date;
+}
+
+const { updatedDate } = Astro.props;
+
+const formatted = updatedDate.toISOString().slice(0, 10);
+---
+
+<p class="verdict-disclaimer">
+  本判讀基於截至 {formatted} 的公開研究證據，隨新證據發表可能調整。
+</p>
+
+<style>
+  .verdict-disclaimer {
+    font-size: var(--text-meta);
+    color: color-mix(in oklch, var(--color-ink) 65%, transparent);
+    border-top: 1px solid var(--color-fog);
+    padding-top: 1rem;
+    line-height: 1.6;
+  }
+</style>

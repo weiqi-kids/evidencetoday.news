@@ -1,0 +1,59 @@
+---
+import Badge from '../ui/Badge.astro';
+
+interface Props {
+  author: string;
+  reviewer?: string;
+  editorReviewed: boolean;
+}
+
+const { author, reviewer, editorReviewed } = Astro.props;
+---
+
+<div class="editor-info">
+  <div class="editor-info__people">
+    <span class="editor-info__item">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+      {author}
+    </span>
+    {reviewer && (
+      <span class="editor-info__item">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        審閱：{reviewer}
+      </span>
+    )}
+  </div>
+  {editorReviewed && (
+    <Badge variant="editor">主編校稿</Badge>
+  )}
+</div>
+
+<style>
+  .editor-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .editor-info__people {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .editor-info__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-ui);
+    font-size: var(--text-meta);
+    color: var(--color-ink);
+  }
+
+  .editor-info__item svg {
+    color: color-mix(in oklch, var(--color-ink) 50%, transparent);
+    flex-shrink: 0;
+  }
+</style>
