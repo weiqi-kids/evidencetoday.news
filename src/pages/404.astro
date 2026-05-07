@@ -1,0 +1,128 @@
+---
+import Base from '@/layouts/Base.astro';
+import SearchBar from '@/components/ui/SearchBar.astro';
+import Button from '@/components/ui/Button.astro';
+import ArticleCard from '@/components/blocks/ArticleCard.astro';
+import { getCollection } from 'astro:content';
+
+function stripExt(id: string): string {
+  return id.replace(/\.[^.]+$/, '');
+}
+
+function fmtDate(d: Date): string {
+  return d.toISOString().slice(0, 10);
+}
+
+const latestArticles = (await getCollection('articles', (e) => !e.data.draft))
+  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime())
+  .slice(0, 3);
+---
+
+<Base title="找不到頁面 | 本日有據">
+  <div class="not-found container">
+    <div class="not-found__content">
+      <h1>找不到這個頁面</h1>
+      <p class="not-found__subtitle">你要找的頁面可能已被移動或不存在。</p>
+      <SearchBar class="not-found__search" />
+    </div>
+
+    {latestArticles.length > 0 && (
+      <section class="not-found__recommend">
+        <h2 class="not-found__section-title">推薦內容</h2>
+        <div class="not-found__grid">
+          {latestArticles.map((a) => (
+            <ArticleCard
+              title={a.data.title}
+              description={a.data.description}
+              href={`/articles/${stripExt(a.id)}/`}
+              category="article"
+              author={a.data.author}
+              date={fmtDate(a.data.publishDate)}
+              editorReviewed={a.data.editorReviewed}
+            />
+          ))}
+        </div>
+      </section>
+    )}
+
+    <nav class="not-found__nav">
+      <Button variant="secondary" href="/">回首頁</Button>
+      <Button variant="secondary" href="/articles/">文章</Button>
+      <Button variant="secondary" href="/myths/">闢謠</Button>
+      <Button variant="secondary" href="/ingredients/">原料</Button>
+    </nav>
+  </div>
+</Base>
+
+<style>
+  .not-found {
+    padding-block: var(--space-page-y);
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .not-found__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+    padding-block: 2rem;
+  }
+
+  .not-found__content h1 {
+    font-family: var(--font-sans);
+    font-size: var(--text-h1);
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+
+  .not-found__subtitle {
+    font-size: var(--text-body);
+    color: color-mix(in oklch, var(--color-ink) 70%, transparent);
+    line-height: 1.7;
+  }
+
+  .not-found :global(.not-found__search) {
+    margin-top: 0.5rem;
+  }
+
+  .not-found__recommend {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .not-found__section-title {
+    font-family: var(--font-sans);
+    font-size: var(--text-h2);
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+
+  .not-found__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-card-gap);
+  }
+
+  @media (max-width: 1024px) {
+    .not-found__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .not-found__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .not-found__nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+</style>

@@ -1,0 +1,10 @@
+---
+import Policy from '@/layouts/Policy.astro';
+
+const mod = await import('../data/policies/editorial-policy.md');
+const Content = mod.Content;
+---
+
+<Policy title="編輯政策" updatedDate={new Date('2026-04-01')}>
+  <Content />
+</Policy>

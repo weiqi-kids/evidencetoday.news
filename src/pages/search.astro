@@ -1,0 +1,87 @@
+---
+import Base from '@/layouts/Base.astro';
+import Breadcrumb from '@/components/ui/Breadcrumb.astro';
+import SearchBar from '@/components/ui/SearchBar.astro';
+import Button from '@/components/ui/Button.astro';
+---
+
+<Base title="搜尋 | 本日有據" noindex={true}>
+  <div class="search-page container">
+    <Breadcrumb items={[{ label: '首頁', href: '/' }, { label: '搜尋結果' }]} />
+
+    <header class="search-header">
+      <h1>搜尋</h1>
+      <SearchBar class="search-page__bar" />
+    </header>
+
+    <div class="search-placeholder">
+      <p>搜尋功能將在內容量充足後啟用。目前你可以透過分類頁面瀏覽所有內容。</p>
+    </div>
+
+    <nav class="search-fallback">
+      <h2 class="search-fallback__title">瀏覽所有分類</h2>
+      <div class="search-fallback__grid">
+        <Button variant="secondary" href="/articles/">文章</Button>
+        <Button variant="secondary" href="/myths/">闢謠</Button>
+        <Button variant="secondary" href="/ingredients/">原料</Button>
+        <Button variant="secondary" href="/podcasts/">Podcast</Button>
+        <Button variant="secondary" href="/videos/">短影音</Button>
+        <Button variant="secondary" href="/news/">趨勢</Button>
+      </div>
+    </nav>
+  </div>
+</Base>
+
+<style>
+  .search-page {
+    padding-block: var(--space-page-y);
+    max-width: 68ch;
+    margin-inline: auto;
+  }
+
+  .search-header {
+    padding-block: 1.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .search-header h1 {
+    font-family: var(--font-sans);
+    font-size: var(--text-h1);
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+
+  .search-page :global(.search-page__bar) {
+    max-width: 100%;
+  }
+
+  .search-placeholder {
+    padding-block: 1rem 2rem;
+  }
+
+  .search-placeholder p {
+    font-size: var(--text-body);
+    color: color-mix(in oklch, var(--color-ink) 70%, transparent);
+    line-height: 1.7;
+  }
+
+  .search-fallback {
+    padding-block: 1rem;
+  }
+
+  .search-fallback__title {
+    font-family: var(--font-sans);
+    font-size: var(--text-h3);
+    font-weight: 700;
+    color: var(--color-ink);
+    margin-bottom: 1rem;
+  }
+
+  .search-fallback__grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+</style>
