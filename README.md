@@ -19,11 +19,92 @@ pnpm preview        # 預覽建置結果
 
 ---
 
+## 架構與已實作功能總覽
+
+> 修改本專案前，請先閱讀此段，避免重複建設或誤判現狀。
+
+### 技術架構
+
+| 層級 | 技術 | 說明 |
+|------|------|------|
+| 框架 | Astro 5 (static output) | 預設零 JS，build time 靜態生成 |
+| 互動 | Svelte 5 islands | 僅互動元件載入 JS（FAQ、TOC、d3 圖表、搜尋） |
+| 視覺化 | d3.js 子模組 | 按需引入（d3-timer, d3-scale 等），不引入整包 |
+| 色彩 | oklch（唯一定義，無 hex fallback） | CSS custom properties + color-mix() 派生色 |
+| 內容 | Astro Content Collections | Markdown/MDX + Zod schema 驗證 |
+| 搜尋 | Pagefind | Build time 索引，零後端 |
+| 部署 | GitHub Pages + GitHub Actions | main push → 自動 build + deploy |
+
+### 已實作的 SEO / AEO（不需要再做）
+
+| 功能 | 實作位置 | 說明 |
+|------|---------|------|
+| Schema.org JSON-LD | 每個頁面的 `<head>` | Article、FAQPage、VideoObject、MedicalWebPage、BreadcrumbList、Organization |
+| Open Graph + Twitter Card | `src/layouts/Base.astro` | og:title, og:description, og:type, twitter:card |
+| Canonical URL | `src/layouts/Base.astro` | 每頁自動設定 |
+| sitemap.xml | `@astrojs/sitemap` 自動生成 | |
+| robots.txt | `public/robots.txt` | 允許所有爬蟲含 GPTBot、ClaudeBot、PerplexityBot |
+| RSS Feeds | `src/pages/rss.xml.ts` + 各分類 | 主 feed + articles/myths/podcasts/videos 個別 feed |
+| llms.txt | `src/pages/llms.txt.ts` | AI 爬蟲索引（build time 動態生成） |
+| llms-full.txt | `src/pages/llms-full.txt.ts` | 全站內容摘要索引 |
+| 純文字版 | `src/pages/*/[slug].txt.ts` | 每篇內容提供 .txt 版本供 AI 讀取 |
+
+### 已實作的內容互連（不需要再做）
+
+| 功能 | 說明 |
+|------|------|
+| 交叉連結 | 10 組雙向 `related*` frontmatter 欄位，頁面自動渲染相關內容卡片 |
+| 標籤彙整 | `tags` 自動產生 `/tags/[tag]/` 頁面，跨類型匯集 |
+| 首頁焦點 | `featured: true` 的內容自動顯示在首頁 Hero 區 |
+
+### 已實作的效能優化（不需要再做）
+
+| 功能 | 說明 |
+|------|------|
+| Svelte hydration 策略 | `client:visible`（FAQ、EvidenceScale）、`client:media`（HeroParticles, desktop only）、`client:idle`（TOC） |
+| YouTube 嵌入 | 使用 iframe lazy embed，非直接載入 |
+| Astro 靜態輸出 | 零 JS baseline，只有互動元件產生 JS bundle |
+| d3.js 按需引入 | 只引入 d3-timer、d3-scale 等子模組 |
+
+### 已實作的無障礙
+
+| 功能 | 說明 |
+|------|------|
+| Skip to content | 頁頂鍵盤可見跳轉連結 |
+| Focus ring | 所有互動元素有 2px --color-teal focus ring |
+| 語意 HTML | nav、main、article、aside、footer、section |
+| aria 屬性 | FAQ accordion (aria-expanded)、breadcrumb (aria-label, aria-current) |
+| 觸控面積 | 按鈕最小 44px、FAQ 觸控區 48px |
+
+### 已實作的 CI/CD
+
+| 步驟 | 工具 | 說明 |
+|------|------|------|
+| Build | Astro | `pnpm build` |
+| 搜尋索引 | Pagefind | `pagefind --site dist` |
+| 站內連結檢查 | lychee | 失敗會擋部署 |
+| 站外連結檢查 | lychee | 失敗不擋部署（warning） |
+| 部署 | actions/deploy-pages | 自動部署至 GitHub Pages |
+
+---
+
+## 已知效能瓶頸（優化方向）
+
+以下是**目前已知但尚未處理**的效能問題，依優先順序排列：
+
+1. **Google Fonts CDN 阻塞渲染** — 目前透過外部 `<link>` 載入 4 個字體家族（Noto Sans TC、Noto Serif TC、Inter、Source Serif 4），是首屏最大阻塞資源。`src/styles/typography.css` 已預留 `@font-face` 宣告，但字體 woff2 檔案尚未下載到 `public/fonts/`。
+2. **Favicon 完全缺失** — `public/` 目錄無任何 favicon 檔案，Lighthouse 會扣分。
+3. **OG Image 缺失** — 所有頁面無 og:image，社群分享無預覽圖。`coverImage` frontmatter 欄位已設計但指向不存在的路徑。
+4. **Lighthouse CI 未啟用** — `.github/workflows/deploy.yml` 已寫好 Lighthouse 步驟但被註解，無持續效能監控。
+5. **Pagefind 搜尋頁 CSS/JS** — 搜尋頁直接載入 Pagefind 外部資源，可改為按需載入。
+
+---
+
 ## 專案結構
 
 ```
 src/
-  content.config.ts          # Content Collections schema 定義
+  content.config.ts          # Content Collections schema 定義（6 種類型的 Zod 驗證）
   content/
     articles/                # 文章（Markdown/MDX）
     myths/                   # 闢謠
@@ -34,21 +115,21 @@ src/
   data/
     policies/                # 政策頁 Markdown（非 Content Collection）
   components/
-    ui/                      # 原子元件（Button, Badge, CategoryTag 等）
-    blocks/                  # 區塊元件（Card, FAQ, TOC, CTA 等）
-    charts/                  # d3.js Svelte 互動元件
-    seo/                     # JsonLd 結構化資料元件
+    ui/                      # 原子元件（Button, Badge, CategoryTag, VerdictBadge, Breadcrumb, SearchBar）
+    blocks/                  # 區塊元件（6 種 Card, FaqAccordion, TOC, TldrBox, ReferenceList, MedicalDisclaimer, CtaStrip 等）
+    charts/                  # d3.js Svelte 互動元件（HeroParticles, EvidenceScale）
+    seo/                     # JsonLd 結構化資料輸出元件
   layouts/
-    Base.astro               # HTML shell（所有頁面繼承）
-    Article.astro            # 文章/闢謠/原料（雙欄 + sidebar）
-    Media.astro              # Podcast/短影音（單欄 + embed）
+    Base.astro               # HTML shell（所有頁面繼承，含 meta/OG/fonts/skip-to-content）
+    Article.astro            # 文章/闢謠/原料（雙欄 + sticky sidebar + TOC）
+    Media.astro              # Podcast/短影音（單欄 + embed player）
     List.astro               # 列表頁
-    Policy.astro             # 政策頁
-  pages/                     # 路由頁面
+    Policy.astro             # 政策頁（單欄 68ch）
+  pages/                     # 路由頁面（47 頁）
   styles/
-    tokens.css               # oklch design tokens
-    typography.css            # 字體系統
-    global.css               # 全域樣式
+    tokens.css               # oklch design tokens（品牌色、分類色、結論色、派生色、間距、圓角、陰影）
+    typography.css           # 字體 custom properties + clamp() 流暢字級
+    global.css               # reset + prose + container + sr-only + skip-to-content
 public/
   CNAME                      # GitHub Pages custom domain
   robots.txt                 # 爬蟲規則（含 AI bot 允許）
@@ -297,20 +378,6 @@ relatedVideos: ["sprouted-potato"]       # 連到 src/content/videos/sprouted-po
 
 ---
 
-## SEO / AEO 自動產出
-
-以下檔案在 `pnpm build` 時自動產生，不需手動維護：
-
-- `/sitemap.xml` — 全站 sitemap
-- `/rss.xml` — 主 RSS feed（最新 20 篇）
-- `/articles/rss.xml`、`/myths/rss.xml`、`/podcasts/rss.xml`、`/videos/rss.xml` — 分類 RSS
-- `/llms.txt` — AI 爬蟲索引
-- `/llms-full.txt` — AI 爬蟲完整內容索引
-- `/articles/[slug].txt`、`/myths/[slug].txt` 等 — 每篇內容的純文字版（供 AI 讀取）
-- Schema.org JSON-LD — 自動嵌入每個頁面的 `<head>`
-
----
-
 ## 待補齊項目（上線前 Blocker）
 
 - [ ] **Favicon** — 放入 `public/` 目錄：`favicon.svg`、`favicon.ico`、`apple-touch-icon.png`
@@ -320,14 +387,15 @@ relatedVideos: ["sprouted-potato"]       # 連到 src/content/videos/sprouted-po
 - [ ] **Email 信箱建立** — corrections@、editor@、hello@、transparency@ evidencetoday.news
 - [ ] **社群連結** — 在 `src/components/blocks/Footer.astro` 填入 LINE、YouTube、Podcast 平台 URL
 - [ ] **Logo SVG** — 替換 `src/components/blocks/TopNav.astro` 中的 CSS placeholder logo
+- [ ] **實際內容** — 目前每種類型僅 1 篇範例，至少需 10-15 篇文章 + 5 篇闢謠才適合正式上線
 
 ## 待補齊項目（上線後可迭代）
 
+- [ ] **自託管字體** — 下載 Google Fonts woff2 到 `public/fonts/`，替換 CDN `<link>`（**目前最大效能瓶頸**）
 - [ ] **OG Image 自動生成** — 使用 satori 在 build time 產出分享預覽圖
 - [ ] **趨勢頁 d3 熱詞圖表** — 目前顯示「即將推出」placeholder
 - [ ] **原料頁代謝路徑互動圖** — Phase 2 d3.js 視覺化
 - [ ] **Lighthouse CI** — 取消 `.github/workflows/deploy.yml` 中的 Lighthouse 註解
-- [ ] **自託管字體** — 下載 Google Fonts woff2 到 `public/fonts/`，替換 CDN `<link>`
 
 ---
 
