@@ -92,11 +92,55 @@ pnpm preview        # 預覽建置結果
 
 以下是**目前已知但尚未處理**的效能問題，依優先順序排列：
 
-1. **Google Fonts CDN 阻塞渲染** — 目前透過外部 `<link>` 載入 4 個字體家族（Noto Sans TC、Noto Serif TC、Inter、Source Serif 4），是首屏最大阻塞資源。`src/styles/typography.css` 已預留 `@font-face` 宣告，但字體 woff2 檔案尚未下載到 `public/fonts/`。
-2. **Favicon 完全缺失** — `public/` 目錄無任何 favicon 檔案，Lighthouse 會扣分。
-3. **OG Image 缺失** — 所有頁面無 og:image，社群分享無預覽圖。`coverImage` frontmatter 欄位已設計但指向不存在的路徑。
-4. **Lighthouse CI 未啟用** — `.github/workflows/deploy.yml` 已寫好 Lighthouse 步驟但被註解，無持續效能監控。
-5. **Pagefind 搜尋頁 CSS/JS** — 搜尋頁直接載入 Pagefind 外部資源，可改為按需載入。
+### 1. Google Fonts CDN 阻塞渲染（最大瓶頸）
+
+目前透過外部 `<link>` 載入 4 個字體家族，是首屏最大阻塞資源。
+
+**現狀**：`src/layouts/Base.astro:58-64` 有 Google Fonts `<link>` 標籤。`src/styles/typography.css` 已寫好 `@font-face` 宣告指向 `/fonts/*.woff2`，但 `public/fonts/` 目錄不存在。
+
+**修復步驟**：
+1. 從 Google Fonts 下載以下 woff2 檔案到 `public/fonts/`：
+   - Noto Sans TC: 400, 700
+   - Noto Serif TC: 700
+   - Inter: 400, 500, 700
+   - Source Serif 4: 600, 700
+2. 確認 `src/styles/typography.css` 中的 `@font-face` `src` 路徑與檔名一致
+3. 刪除 `src/layouts/Base.astro:58-64` 的 Google Fonts `<link>` 和 `preconnect` 標籤
+4. 在 Base.astro `<head>` 加入首屏關鍵字體 preload：
+   ```html
+   <link rel="preload" href="/fonts/NotoSansTC-Regular.woff2" as="font" type="font/woff2" crossorigin />
+   <link rel="preload" href="/fonts/NotoSerifTC-Bold.woff2" as="font" type="font/woff2" crossorigin />
+   ```
+
+### 2. Favicon 完全缺失
+
+`public/` 目錄無任何 favicon 檔案。`src/layouts/Base.astro:53-56` 已有 `<link>` 標籤指向這些路徑。
+
+**修復步驟**：放入以下檔案到 `public/`：
+- `favicon.svg` — SVG 格式主 favicon
+- `favicon.ico` — ICO 格式（16x16, 32x32）
+- `apple-touch-icon.png` — Apple 觸控圖示（180x180）
+
+### 3. OG Image 缺失
+
+`src/layouts/Base.astro:17` 預設 ogImage 為 `/og-default.jpg`，但此檔案不存在。所有頁面的 og:image 指向不存在的圖片。
+
+**修復步驟**：
+- 短期：設計一張 1200x630 的預設 OG 圖，放入 `public/og-default.jpg`
+- 中期：為各篇內容的 frontmatter `coverImage` 欄位補上實際圖片
+- 長期：使用 satori 在 build time 自動生成（品牌色底 + 標題文字 + 分類標籤）
+
+### 4. Lighthouse CI 未啟用
+
+`.github/workflows/deploy.yml:57-62` 已寫好 Lighthouse 步驟但被註解。
+
+**修復步驟**：取消該段的 `#` 註解即可。建議在前三項修復完成後再啟用，作為回歸基準線。
+
+### 5. Pagefind 搜尋頁 CSS/JS
+
+`src/pages/search.astro` 直接在 `<head>` 載入 Pagefind CSS/JS。對非搜尋頁無影響，但搜尋頁本身的首屏會被阻塞。
+
+**修復步驟**：改為動態 import，在用戶實際造訪搜尋頁時才載入。優先順序最低。
 
 ---
 
