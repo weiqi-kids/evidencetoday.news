@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "postbuild": "pagefind --site dist",
     "preview": "astro preview"
   },
   "dependencies": {
@@ -14,10 +15,23 @@
     "@astrojs/sitemap": "^3.7.2",
     "@astrojs/svelte": "^7.2.5",
     "astro": "^5.18.1",
+    "d3-array": "^3.2.4",
+    "d3-interpolate": "^3.0.1",
+    "d3-scale": "^4.0.2",
+    "d3-selection": "^3.0.0",
+    "d3-shape": "^3.2.0",
+    "d3-timer": "^3.0.1",
     "svelte": "^5.55.5"
   },
   "devDependencies": {
+    "@types/d3-array": "^3.2.2",
+    "@types/d3-interpolate": "^3.0.4",
+    "@types/d3-scale": "^4.0.9",
+    "@types/d3-selection": "^3.0.11",
+    "@types/d3-shape": "^3.1.8",
+    "@types/d3-timer": "^3.0.2",
     "@types/node": "^25.6.0",
+    "pagefind": "^1.5.2",
     "typescript": "^5.9.3"
   }
 }

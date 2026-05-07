@@ -1,7 +1,6 @@
 ---
 import Base from '@/layouts/Base.astro';
 import Breadcrumb from '@/components/ui/Breadcrumb.astro';
-import SearchBar from '@/components/ui/SearchBar.astro';
 import Button from '@/components/ui/Button.astro';
 ---
 
@@ -11,12 +10,9 @@ import Button from '@/components/ui/Button.astro';
 
     <header class="search-header">
       <h1>搜尋</h1>
-      <SearchBar class="search-page__bar" />
     </header>
 
-    <div class="search-placeholder">
-      <p>搜尋功能將在內容量充足後啟用。目前你可以透過分類頁面瀏覽所有內容。</p>
-    </div>
+    <div id="search-container"></div>
 
     <nav class="search-fallback">
       <h2 class="search-fallback__title">瀏覽所有分類</h2>
@@ -31,6 +27,14 @@ import Button from '@/components/ui/Button.astro';
     </nav>
   </div>
 </Base>
+
+<link href="/pagefind/pagefind-ui.css" rel="stylesheet">
+<script is:inline src="/pagefind/pagefind-ui.js"></script>
+<script is:inline>
+  window.addEventListener('DOMContentLoaded', () => {
+    new PagefindUI({ element: '#search-container', showSubResults: true });
+  });
+</script>
 
 <style>
   .search-page {
@@ -53,18 +57,8 @@ import Button from '@/components/ui/Button.astro';
     color: var(--color-ink);
   }
 
-  .search-page :global(.search-page__bar) {
-    max-width: 100%;
-  }
-
-  .search-placeholder {
+  #search-container {
     padding-block: 1rem 2rem;
-  }
-
-  .search-placeholder p {
-    font-size: var(--text-body);
-    color: color-mix(in oklch, var(--color-ink) 70%, transparent);
-    line-height: 1.7;
   }
 
   .search-fallback {

@@ -9,6 +9,7 @@ import PodcastCard from '@/components/blocks/PodcastCard.astro';
 import VideoCard from '@/components/blocks/VideoCard.astro';
 import NewsItem from '@/components/blocks/NewsItem.astro';
 import CtaStrip from '@/components/blocks/CtaStrip.astro';
+import HeroParticles from '@/components/charts/HeroParticles.svelte';
 import { getCollection } from 'astro:content';
 
 /* ------------------------------------------------------------------ */
@@ -214,6 +215,7 @@ const categories = [
   <!-- ============================================================== -->
   <section id="hero" class="hero">
     <div class="hero__dot-grid"></div>
+    <HeroParticles client:media="(min-width: 768px)" />
     <div class="hero__inner container">
       <div class="hero__left">
         <span class="hero__badge">主編把關・研究脈絡・白話解釋</span>

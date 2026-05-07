@@ -3,6 +3,7 @@ import { getCollection, getEntry } from 'astro:content';
 import Article from '@/layouts/Article.astro';
 import JsonLd from '@/components/seo/JsonLd.astro';
 import TableOfContents from '@/components/blocks/TableOfContents.svelte';
+import EvidenceScale from '@/components/charts/EvidenceScale.svelte';
 import ArticleCard from '@/components/blocks/ArticleCard.astro';
 import MythCard from '@/components/blocks/MythCard.astro';
 import VideoCard from '@/components/blocks/VideoCard.astro';
@@ -88,6 +89,8 @@ const ingredientBreadcrumbSchema = {
     <JsonLd data={medicalWebPageSchema} />
     <JsonLd data={ingredientBreadcrumbSchema} />
   </Fragment>
+
+  <EvidenceScale uses={data.uses} client:visible />
 
   <Content />
 
