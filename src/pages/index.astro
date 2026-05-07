@@ -1,10 +1,1032 @@
 ---
 import Base from '@/layouts/Base.astro';
+import Button from '@/components/ui/Button.astro';
+import ArticleCard from '@/components/blocks/ArticleCard.astro';
+import MythCard from '@/components/blocks/MythCard.astro';
+import IngredientCard from '@/components/blocks/IngredientCard.astro';
+import PodcastCard from '@/components/blocks/PodcastCard.astro';
+import VideoCard from '@/components/blocks/VideoCard.astro';
+import NewsItem from '@/components/blocks/NewsItem.astro';
+import CtaStrip from '@/components/blocks/CtaStrip.astro';
+import { getCollection } from 'astro:content';
+
+/* ------------------------------------------------------------------ */
+/*  Helper: format Date → YYYY-MM-DD                                   */
+/* ------------------------------------------------------------------ */
+function fmtDate(d: Date): string {
+  return d.toISOString().slice(0, 10);
+}
+
+/* ------------------------------------------------------------------ */
+/*  Fetch all non-draft content                                        */
+/* ------------------------------------------------------------------ */
+const allArticles = (await getCollection('articles', (e) => !e.data.draft))
+  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
+
+const allMyths = (await getCollection('myths', (e) => !e.data.draft))
+  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
+
+const allIngredients = (await getCollection('ingredients', (e) => !e.data.draft))
+  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
+
+const allPodcasts = (await getCollection('podcasts', (e) => !e.data.draft))
+  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
+
+const allVideos = (await getCollection('videos', (e) => !e.data.draft))
+  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
+
+const allNews = (await getCollection('news', (e) => !e.data.draft))
+  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
+
+/* ------------------------------------------------------------------ */
+/*  Featured items for Hero (featured: true)                           */
+/* ------------------------------------------------------------------ */
+type FeaturedItem = {
+  type: 'article' | 'myth' | 'ingredient' | 'podcast' | 'video';
+  slug: string;
+  title: string;
+  description: string;
+  date: Date;
+  href: string;
+  extra?: Record<string, unknown>;
+};
+
+const featuredItems: FeaturedItem[] = [
+  ...allArticles.filter((a) => a.data.featured).map((a) => ({
+    type: 'article' as const,
+    slug: a.id,
+    title: a.data.title,
+    description: a.data.description,
+    date: a.data.publishDate,
+    href: `/articles/${a.id}/`,
+    extra: { author: a.data.author, editorReviewed: a.data.editorReviewed },
+  })),
+  ...allMyths.filter((m) => m.data.featured).map((m) => ({
+    type: 'myth' as const,
+    slug: m.id,
+    title: m.data.title,
+    description: m.data.verdictSummary,
+    date: m.data.publishDate,
+    href: `/myths/${m.id}/`,
+    extra: { verdict: m.data.verdict },
+  })),
+  ...allIngredients.filter((i) => i.data.featured).map((i) => ({
+    type: 'ingredient' as const,
+    slug: i.id,
+    title: i.data.title,
+    description: i.data.description,
+    date: i.data.publishDate,
+    href: `/ingredients/${i.id}/`,
+  })),
+  ...allPodcasts.filter((p) => p.data.featured).map((p) => ({
+    type: 'podcast' as const,
+    slug: p.id,
+    title: p.data.title,
+    description: p.data.description,
+    date: p.data.publishDate,
+    href: `/podcasts/${p.id}/`,
+    extra: { episodeNumber: p.data.episodeNumber, duration: p.data.duration },
+  })),
+  ...allVideos.filter((v) => v.data.featured).map((v) => ({
+    type: 'video' as const,
+    slug: v.id,
+    title: v.data.title,
+    description: v.data.tldr,
+    date: v.data.publishDate,
+    href: `/videos/${v.id}/`,
+    extra: { youtubeId: v.data.youtubeId },
+  })),
+].sort((a, b) => b.date.getTime() - a.date.getTime()).slice(0, 3);
+
+/* ------------------------------------------------------------------ */
+/*  Latest 4 items across ALL collections for "Latest Content"         */
+/* ------------------------------------------------------------------ */
+type LatestItem = {
+  collection: 'articles' | 'myths' | 'ingredients' | 'podcasts' | 'videos' | 'news';
+  id: string;
+  date: Date;
+  data: Record<string, unknown>;
+};
+
+const latestAll: LatestItem[] = [
+  ...allArticles.map((a) => ({ collection: 'articles' as const, id: a.id, date: a.data.publishDate, data: a.data as unknown as Record<string, unknown> })),
+  ...allMyths.map((m) => ({ collection: 'myths' as const, id: m.id, date: m.data.publishDate, data: m.data as unknown as Record<string, unknown> })),
+  ...allIngredients.map((i) => ({ collection: 'ingredients' as const, id: i.id, date: i.data.publishDate, data: i.data as unknown as Record<string, unknown> })),
+  ...allPodcasts.map((p) => ({ collection: 'podcasts' as const, id: p.id, date: p.data.publishDate, data: p.data as unknown as Record<string, unknown> })),
+  ...allVideos.map((v) => ({ collection: 'videos' as const, id: v.id, date: v.data.publishDate, data: v.data as unknown as Record<string, unknown> })),
+  ...allNews.map((n) => ({ collection: 'news' as const, id: n.id, date: n.data.publishDate, data: n.data as unknown as Record<string, unknown> })),
+].sort((a, b) => b.date.getTime() - a.date.getTime()).slice(0, 4);
+
+/* ------------------------------------------------------------------ */
+/*  Section-specific slices                                            */
+/* ------------------------------------------------------------------ */
+const latestMyths = allMyths.slice(0, 3);
+const latestIngredients = allIngredients.slice(0, 4);
+const latestPodcasts = allPodcasts.slice(0, 3);
+const latestNews = allNews.slice(0, 5);
+
+/* ------------------------------------------------------------------ */
+/*  Category grid data                                                 */
+/* ------------------------------------------------------------------ */
+const categories = [
+  {
+    key: 'article',
+    en: 'Article',
+    zh: '文章',
+    desc: '深度解析健康議題，以系統性回顧與隨機對照試驗為根據。',
+    count: allArticles.length,
+    href: '/articles/',
+    color: 'var(--color-cat-article)',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>`,
+  },
+  {
+    key: 'myth',
+    en: 'Myth',
+    zh: '闢謠',
+    desc: '破解常見健康迷思，用證據說清楚真相。',
+    count: allMyths.length,
+    href: '/myths/',
+    color: 'var(--color-cat-myth)',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="12" r="10"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`,
+  },
+  {
+    key: 'ingredient',
+    en: 'Ingredient',
+    zh: '原料',
+    desc: '營養素與保健成分的實證資料庫。',
+    count: allIngredients.length,
+    href: '/ingredients/',
+    color: 'var(--color-cat-ingredient)',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2"/><path d="M8.5 2h7"/></svg>`,
+  },
+  {
+    key: 'podcast',
+    en: 'Podcast',
+    zh: 'Podcast',
+    desc: '用耳朵吸收健康知識，通勤路上也能學。',
+    count: allPodcasts.length,
+    href: '/podcasts/',
+    color: 'var(--color-cat-podcast)',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>`,
+  },
+  {
+    key: 'video',
+    en: 'Video',
+    zh: '短影音',
+    desc: '三到十分鐘的影片，快速掌握一個健康主題。',
+    count: allVideos.length,
+    href: '/videos/',
+    color: 'var(--color-cat-video)',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>`,
+  },
+  {
+    key: 'news',
+    en: 'News',
+    zh: '趨勢',
+    desc: '每週健康新聞雷達，追蹤最新研究動態。',
+    count: allNews.length,
+    href: '/news/',
+    color: 'var(--color-cat-news)',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>`,
+  },
+];
 ---
 
 <Base title="本日有據 — 把健康議題，講得有根據，也講得讓人看得懂">
-  <div class="container" style="padding: 4rem 0;">
-    <h1>本日有據</h1>
-    <p>網站建置中。</p>
-  </div>
+
+  <!-- ============================================================== -->
+  <!--  1. Hero                                                        -->
+  <!-- ============================================================== -->
+  <section id="hero" class="hero">
+    <div class="hero__dot-grid"></div>
+    <div class="hero__inner container">
+      <div class="hero__left">
+        <span class="hero__badge">主編把關・研究脈絡・白話解釋</span>
+        <h1 class="hero__title">把健康議題，講得有根據，<br>也講得讓人看得懂。</h1>
+        <p class="hero__subtitle">
+          我們整理最新的醫學研究與營養科學，經過主編審查後，用白話文讓你真正讀懂。不販售恐懼，不誇大療效，只給你查得到出處的資訊。
+        </p>
+        <div class="hero__buttons">
+          <Button variant="primary" href="/articles/">最新文章 →</Button>
+          <Button variant="secondary" href="/myths/" class="hero-btn-secondary">迷思破解</Button>
+          <Button variant="cta" href="#cta">追蹤 LINE 拿整理筆記</Button>
+        </div>
+        <div class="hero__trust">
+          <div class="hero__trust-card">
+            <span class="hero__trust-number">100%</span>
+            <span class="hero__trust-label">主編審稿</span>
+          </div>
+          <div class="hero__trust-card">
+            <span class="hero__trust-number">可查證</span>
+            <span class="hero__trust-label">每篇附參考文獻</span>
+          </div>
+          <div class="hero__trust-card">
+            <span class="hero__trust-number">零業配</span>
+            <span class="hero__trust-label">無廠商贊助內容</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero__right">
+        {featuredItems.map((item) => (
+          <a href={item.href} class="hero__featured-card">
+            <span class="hero__featured-type">{
+              item.type === 'article' ? '文章' :
+              item.type === 'myth' ? '闢謠' :
+              item.type === 'ingredient' ? '原料' :
+              item.type === 'podcast' ? 'Podcast' : '短影音'
+            }</span>
+            <span class="hero__featured-title">{item.title}</span>
+            <span class="hero__featured-desc">{item.description}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!--  2. Category Grid                                               -->
+  <!-- ============================================================== -->
+  <section id="categories" class="section-categories">
+    <div class="container">
+      <h2 class="section-title">探索所有內容</h2>
+      <div class="category-grid">
+        {categories.map((cat) => (
+          <a href={cat.href} class="category-card" style={`--cat-color: ${cat.color}`}>
+            <div class="category-card__icon" set:html={cat.icon} />
+            <span class="category-card__en">{cat.en}</span>
+            <h3 class="category-card__title">{cat.zh}</h3>
+            <p class="category-card__desc">{cat.desc}</p>
+            <div class="category-card__footer">
+              <span class="category-card__count">{cat.count} 篇</span>
+              <span class="category-card__link">查看分類 →</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!--  3. Latest Content                                              -->
+  <!-- ============================================================== -->
+  <section id="latest" class="section-latest">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">最新內容</h2>
+        <Button variant="secondary" href="/articles/">看全部內容</Button>
+      </div>
+      <div class="latest-grid">
+        {latestAll.map((item) => {
+          const d = item.data;
+          if (item.collection === 'articles') {
+            return (
+              <ArticleCard
+                title={d.title as string}
+                description={d.description as string}
+                href={`/articles/${item.id}/`}
+                category="article"
+                author={d.author as string}
+                date={fmtDate(item.date)}
+                editorReviewed={d.editorReviewed as boolean}
+              />
+            );
+          }
+          if (item.collection === 'myths') {
+            return (
+              <MythCard
+                title={d.title as string}
+                verdictSummary={d.verdictSummary as string}
+                href={`/myths/${item.id}/`}
+                verdict={d.verdict as 'true' | 'false' | 'insufficient' | 'contextual'}
+                date={fmtDate(item.date)}
+              />
+            );
+          }
+          if (item.collection === 'ingredients') {
+            return (
+              <IngredientCard
+                title={d.title as string}
+                description={d.description as string}
+                href={`/ingredients/${item.id}/`}
+                uses={d.uses as Array<{ evidenceLevel: string }>}
+              />
+            );
+          }
+          if (item.collection === 'podcasts') {
+            return (
+              <PodcastCard
+                title={d.title as string}
+                description={d.description as string}
+                href={`/podcasts/${item.id}/`}
+                episodeNumber={d.episodeNumber as number}
+                duration={d.duration as string}
+              />
+            );
+          }
+          if (item.collection === 'videos') {
+            return (
+              <VideoCard
+                title={d.title as string}
+                tldr={d.tldr as string}
+                href={`/videos/${item.id}/`}
+                youtubeId={d.youtubeId as string}
+              />
+            );
+          }
+          if (item.collection === 'news') {
+            return (
+              <NewsItem
+                title={d.title as string}
+                source={d.source as string}
+                date={fmtDate(item.date)}
+                summary={d.summary as string}
+                sourceUrl={d.sourceUrl as string | undefined}
+                tags={d.tags as string[]}
+              />
+            );
+          }
+          return null;
+        })}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!--  4. Podcast Block                                               -->
+  <!-- ============================================================== -->
+  <section id="podcasts" class="section-podcast">
+    <div class="container">
+      <div class="podcast-layout">
+        <div class="podcast-layout__left">
+          <h2 class="podcast-layout__title">把複雜的健康資訊，變成可以用耳朵吸收的內容。</h2>
+          <p class="podcast-layout__desc">
+            每集用 30-45 分鐘，帶你讀懂一個健康主題的科學證據。不用行銷話術，只用研究數據說話。
+          </p>
+          <Button variant="cta" href={latestPodcasts.length > 0 ? `/podcasts/${latestPodcasts[0].id}/` : '/podcasts/'}>
+            播放最新單集
+          </Button>
+          <div class="podcast-layout__tags">
+            <span class="podcast-tag">#實證醫學</span>
+            <span class="podcast-tag">#營養科學</span>
+            <span class="podcast-tag">#保健食品</span>
+            <span class="podcast-tag">#迷思破解</span>
+          </div>
+        </div>
+        <div class="podcast-layout__right">
+          {latestPodcasts.map((p) => (
+            <PodcastCard
+              title={p.data.title}
+              description={p.data.description}
+              href={`/podcasts/${p.id}/`}
+              episodeNumber={p.data.episodeNumber}
+              duration={p.data.duration}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!--  5. Myth Block                                                  -->
+  <!-- ============================================================== -->
+  <section id="myths" class="section-myths">
+    <div class="container">
+      <h2 class="section-title">迷思破解</h2>
+      <div class="myths-grid">
+        {latestMyths.map((m) => (
+          <MythCard
+            title={m.data.title}
+            verdictSummary={m.data.verdictSummary}
+            href={`/myths/${m.id}/`}
+            verdict={m.data.verdict}
+            date={fmtDate(m.data.publishDate)}
+          />
+        ))}
+      </div>
+      <div class="section-footer">
+        <Button variant="secondary" href="/myths/">看全部闢謠</Button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!--  6. Ingredient Block                                            -->
+  <!-- ============================================================== -->
+  <section id="ingredients" class="section-ingredients">
+    <div class="container">
+      <h2 class="section-title">原料知識庫</h2>
+      <p class="section-subtitle">用研究證據說話，不用行銷話術</p>
+      <div class="ingredients-grid">
+        {latestIngredients.map((i) => (
+          <IngredientCard
+            title={i.data.title}
+            description={i.data.description}
+            href={`/ingredients/${i.id}/`}
+            uses={i.data.uses}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!--  7. Trends Block                                                -->
+  <!-- ============================================================== -->
+  <section id="trends" class="section-trends">
+    <div class="container">
+      <h2 class="section-title">健康議題雷達</h2>
+      <div class="trends-layout">
+        <div class="trends-layout__left">
+          {latestNews.map((n) => (
+            <NewsItem
+              title={n.data.title}
+              source={n.data.source}
+              date={fmtDate(n.data.publishDate)}
+              summary={n.data.summary}
+              sourceUrl={n.data.sourceUrl}
+              tags={n.data.tags}
+            />
+          ))}
+        </div>
+        <div class="trends-layout__right">
+          <div class="trends-placeholder">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+            </svg>
+            <span class="trends-placeholder__title">趨勢圖表</span>
+            <span class="trends-placeholder__subtitle">即將推出</span>
+          </div>
+        </div>
+      </div>
+      <div class="section-footer">
+        <a href="/news/" class="trends-link">查看完整趨勢 →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!--  8. CTA Block                                                   -->
+  <!-- ============================================================== -->
+  <section id="cta">
+    <CtaStrip
+      title="追蹤 LINE，回覆關鍵字拿整理筆記"
+      buttonText="立即追蹤"
+      buttonHref="#"
+    />
+  </section>
+
 </Base>
+
+<style>
+  /* ==========================================================================
+     1. Hero
+     ========================================================================== */
+
+  .hero {
+    position: relative;
+    background: linear-gradient(135deg, var(--color-teal), var(--color-navy));
+    padding: clamp(3rem, 2rem + 4vw, 6rem) 0;
+    overflow: hidden;
+  }
+
+  .hero__dot-grid {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle at 1px 1px, oklch(1 0 0 / 0.15) 1px, transparent 0);
+    background-size: 22px 22px;
+    pointer-events: none;
+  }
+
+  .hero__inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 55% 45%;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .hero__left {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .hero__badge {
+    display: inline-flex;
+    align-self: flex-start;
+    padding: 0.35rem 0.85rem;
+    border-radius: var(--radius-pill);
+    background-color: oklch(1 0 0 / 0.15);
+    color: oklch(1 0 0 / 0.9);
+    font-family: var(--font-ui);
+    font-size: var(--text-badge);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  .hero__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-h1);
+    font-weight: 700;
+    color: white;
+    line-height: 1.3;
+  }
+
+  .hero__subtitle {
+    font-size: var(--text-body);
+    color: oklch(1 0 0 / 0.8);
+    line-height: 1.7;
+    max-width: 50ch;
+  }
+
+  .hero__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  /* Override secondary button text color on dark bg */
+  .hero__buttons :global(.btn--secondary) {
+    color: white;
+    border-color: oklch(1 0 0 / 0.5);
+  }
+
+  .hero__buttons :global(.btn--secondary:hover) {
+    background-color: oklch(1 0 0 / 0.12);
+    border-color: oklch(1 0 0 / 0.7);
+  }
+
+  .hero__trust {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .hero__trust-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-sm);
+    background-color: oklch(1 0 0 / 0.1);
+    backdrop-filter: blur(4px);
+    min-width: 120px;
+  }
+
+  .hero__trust-number {
+    font-family: var(--font-ui);
+    font-size: var(--text-h3);
+    font-weight: 700;
+    color: white;
+  }
+
+  .hero__trust-label {
+    font-family: var(--font-ui);
+    font-size: var(--text-badge);
+    color: oklch(1 0 0 / 0.7);
+  }
+
+  .hero__right {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .hero__featured-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    padding: 1.25rem;
+    border-radius: var(--radius-card);
+    background-color: oklch(1 0 0 / 0.08);
+    backdrop-filter: blur(4px);
+    text-decoration: none;
+    color: white;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .hero__featured-card:hover {
+    background-color: oklch(1 0 0 / 0.14);
+    transform: translateY(-2px);
+    color: white;
+  }
+
+  .hero__featured-type {
+    font-family: var(--font-ui);
+    font-size: var(--text-badge);
+    font-weight: 600;
+    color: var(--color-on-dark-link);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .hero__featured-title {
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  .hero__featured-desc {
+    font-size: var(--text-meta);
+    color: oklch(1 0 0 / 0.7);
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Hero mobile */
+  @media (max-width: 768px) {
+    .hero__inner {
+      grid-template-columns: 1fr;
+    }
+
+    .hero__title br {
+      display: none;
+    }
+
+    .hero__trust {
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding-bottom: 0.5rem;
+    }
+
+    .hero__trust::-webkit-scrollbar {
+      display: none;
+    }
+
+    .hero__trust-card {
+      flex-shrink: 0;
+    }
+  }
+
+  /* ==========================================================================
+     2. Category Grid
+     ========================================================================== */
+
+  .section-categories {
+    padding: var(--space-section-gap) 0;
+  }
+
+  .section-title {
+    font-family: var(--font-sans);
+    font-size: var(--text-h2);
+    font-weight: 700;
+    color: var(--color-ink);
+    margin-bottom: 1.5rem;
+  }
+
+  .section-subtitle {
+    font-size: var(--text-body);
+    color: color-mix(in oklch, var(--color-ink) 70%, transparent);
+    line-height: 1.7;
+    margin-top: -1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .section-header .section-title {
+    margin-bottom: 0;
+  }
+
+  .section-footer {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-card-gap);
+  }
+
+  .category-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.5rem;
+    border-radius: var(--radius-card);
+    border: 1px solid var(--color-fog);
+    background-color: white;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+
+  .category-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card-hover);
+    border-color: var(--cat-color);
+    color: inherit;
+  }
+
+  .category-card__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-sm);
+    background-color: color-mix(in oklch, var(--cat-color) 12%, var(--color-paper));
+    color: var(--cat-color);
+  }
+
+  .category-card__icon :global(svg) {
+    display: block;
+  }
+
+  .category-card__en {
+    font-family: var(--font-ui);
+    font-size: var(--text-badge);
+    font-weight: 600;
+    color: var(--cat-color);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .category-card__title {
+    font-family: var(--font-sans);
+    font-size: var(--text-h3);
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+
+  .category-card__desc {
+    font-size: var(--text-meta);
+    color: color-mix(in oklch, var(--color-ink) 70%, transparent);
+    line-height: 1.6;
+  }
+
+  .category-card__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+    padding-top: 0.5rem;
+    font-family: var(--font-ui);
+    font-size: var(--text-meta);
+  }
+
+  .category-card__count {
+    color: color-mix(in oklch, var(--color-ink) 55%, transparent);
+  }
+
+  .category-card__link {
+    color: var(--cat-color);
+    font-weight: 600;
+  }
+
+  @media (max-width: 1024px) {
+    .category-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .category-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ==========================================================================
+     3. Latest Content
+     ========================================================================== */
+
+  .section-latest {
+    padding: var(--space-section-gap) 0;
+    background-color: var(--color-paper);
+  }
+
+  .latest-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-card-gap);
+  }
+
+  @media (max-width: 1024px) {
+    .latest-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .latest-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ==========================================================================
+     4. Podcast Block
+     ========================================================================== */
+
+  .section-podcast {
+    background-color: var(--color-navy);
+    padding: var(--space-section-gap) 0;
+  }
+
+  .podcast-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    align-items: center;
+  }
+
+  .podcast-layout__left {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .podcast-layout__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-h2);
+    font-weight: 700;
+    color: var(--color-on-dark-heading);
+    line-height: 1.35;
+  }
+
+  .podcast-layout__desc {
+    font-size: var(--text-body);
+    color: var(--color-on-dark-body);
+    line-height: 1.7;
+  }
+
+  .podcast-layout__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .podcast-tag {
+    display: inline-flex;
+    padding: 0.25rem 0.65rem;
+    border-radius: var(--radius-pill);
+    background-color: oklch(1 0 0 / 0.1);
+    color: var(--color-on-dark-meta);
+    font-family: var(--font-ui);
+    font-size: var(--text-badge);
+    font-weight: 500;
+  }
+
+  .podcast-layout__right {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  @media (max-width: 768px) {
+    .podcast-layout {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ==========================================================================
+     5. Myth Block
+     ========================================================================== */
+
+  .section-myths {
+    padding: var(--space-section-gap) 0;
+    background-color: var(--color-paper);
+  }
+
+  .myths-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-card-gap);
+  }
+
+  @media (max-width: 1024px) {
+    .myths-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .myths-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ==========================================================================
+     6. Ingredient Block
+     ========================================================================== */
+
+  .section-ingredients {
+    padding: var(--space-section-gap) 0;
+    background-color: white;
+  }
+
+  .ingredients-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-card-gap);
+  }
+
+  @media (max-width: 1024px) {
+    .ingredients-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .ingredients-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ==========================================================================
+     7. Trends Block
+     ========================================================================== */
+
+  .section-trends {
+    padding: var(--space-section-gap) 0;
+    background-color: color-mix(in oklch, var(--color-fog) 20%, white);
+  }
+
+  .trends-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  .trends-layout__left {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .trends-layout__right {
+    position: sticky;
+    top: 2rem;
+  }
+
+  .trends-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 3rem 2rem;
+    border-radius: var(--radius-card);
+    border: 2px dashed var(--color-fog);
+    background-color: white;
+    color: color-mix(in oklch, var(--color-ink) 40%, transparent);
+    text-align: center;
+    min-height: 280px;
+  }
+
+  .trends-placeholder :global(svg) {
+    display: block;
+  }
+
+  .trends-placeholder__title {
+    font-family: var(--font-sans);
+    font-size: var(--text-h3);
+    font-weight: 600;
+    color: color-mix(in oklch, var(--color-ink) 55%, transparent);
+  }
+
+  .trends-placeholder__subtitle {
+    font-family: var(--font-ui);
+    font-size: var(--text-meta);
+    color: color-mix(in oklch, var(--color-ink) 40%, transparent);
+  }
+
+  .trends-link {
+    font-family: var(--font-ui);
+    font-size: var(--text-body);
+    font-weight: 600;
+    color: var(--color-teal);
+    text-decoration: none;
+  }
+
+  .trends-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
+  @media (max-width: 768px) {
+    .trends-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .trends-layout__right {
+      position: static;
+    }
+  }
+</style>
