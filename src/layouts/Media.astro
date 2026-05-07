@@ -1,0 +1,76 @@
+---
+import Base from '@/layouts/Base.astro';
+import Breadcrumb from '@/components/ui/Breadcrumb.astro';
+import CategoryTag from '@/components/ui/CategoryTag.astro';
+import AuthorMeta from '@/components/blocks/AuthorMeta.astro';
+import MedicalDisclaimer from '@/components/blocks/MedicalDisclaimer.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  category: 'podcast' | 'video';
+  publishDate: Date;
+  updatedDate?: Date;
+  tags: string[];
+  breadcrumbItems: Array<{ label: string; href?: string }>;
+}
+
+const {
+  title,
+  description,
+  ogImage,
+  category,
+  publishDate,
+  updatedDate,
+  tags,
+  breadcrumbItems,
+} = Astro.props;
+---
+
+<Base title={`${title} | 本日有據`} description={description} ogImage={ogImage} ogType="article">
+  <div class="media-layout container">
+    <Breadcrumb items={breadcrumbItems} />
+
+    <header class="media-header">
+      <CategoryTag category={category} />
+      <AuthorMeta publishDate={publishDate} updatedDate={updatedDate} />
+      <h1>{title}</h1>
+    </header>
+
+    <div class="media-content">
+      <slot name="player" />
+      <div class="prose">
+        <slot />
+      </div>
+      <slot name="after-content" />
+      <MedicalDisclaimer />
+    </div>
+  </div>
+</Base>
+
+<style>
+  .media-layout {
+    padding-block: var(--space-page-y);
+  }
+
+  .media-header {
+    padding-block: 1.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .media-header h1 {
+    max-width: 40ch;
+  }
+
+  .media-content {
+    max-width: 48rem;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding-block: 2rem;
+  }
+</style>

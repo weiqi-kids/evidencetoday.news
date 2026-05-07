@@ -1,0 +1,168 @@
+---
+import Base from '@/layouts/Base.astro';
+import Breadcrumb from '@/components/ui/Breadcrumb.astro';
+import CategoryTag from '@/components/ui/CategoryTag.astro';
+import Badge from '@/components/ui/Badge.astro';
+import DisclosureBanner from '@/components/blocks/DisclosureBanner.astro';
+import AuthorMeta from '@/components/blocks/AuthorMeta.astro';
+import EditorInfo from '@/components/blocks/EditorInfo.astro';
+import TldrBox from '@/components/blocks/TldrBox.astro';
+import FaqAccordion from '@/components/blocks/FaqAccordion.svelte';
+import ReferenceList from '@/components/blocks/ReferenceList.astro';
+import MedicalDisclaimer from '@/components/blocks/MedicalDisclaimer.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  category: 'article' | 'myth' | 'ingredient';
+  publishDate: Date;
+  updatedDate: Date;
+  author?: string;
+  reviewer?: string;
+  readingTime?: number;
+  editorReviewed?: boolean;
+  disclosure?: string;
+  tags: string[];
+  breadcrumbItems: Array<{ label: string; href?: string }>;
+  faq?: Array<{ question: string; answer: string }>;
+  references?: Array<{ title: string; url?: string; type: string }>;
+  tldr?: string;
+}
+
+const {
+  title,
+  description,
+  ogImage,
+  category,
+  publishDate,
+  updatedDate,
+  author,
+  reviewer,
+  readingTime,
+  editorReviewed = false,
+  disclosure,
+  tags,
+  breadcrumbItems,
+  faq,
+  references,
+  tldr,
+} = Astro.props;
+---
+
+<Base title={`${title} | 本日有據`} description={description} ogImage={ogImage} ogType="article">
+  <div class="article-layout container">
+    <Breadcrumb items={breadcrumbItems} />
+
+    <header class="article-header">
+      <div class="article-header__meta">
+        <CategoryTag category={category} />
+        {editorReviewed && <Badge variant="editor">主編校稿</Badge>}
+      </div>
+      {disclosure && <DisclosureBanner disclosure={disclosure} />}
+      <AuthorMeta publishDate={publishDate} updatedDate={updatedDate} readingTime={readingTime} />
+      <h1>{title}</h1>
+      {(author || reviewer) && (
+        <EditorInfo
+          author={author ?? '編輯部'}
+          reviewer={reviewer}
+          editorReviewed={editorReviewed}
+        />
+      )}
+    </header>
+
+    <div class="article-grid">
+      <div class="article-content">
+        {tldr && <TldrBox>{tldr}</TldrBox>}
+        <div class="prose">
+          <slot />
+        </div>
+        {faq && faq.length > 0 && (
+          <section class="article-faq">
+            <h2>常見問題</h2>
+            <FaqAccordion items={faq} client:visible />
+          </section>
+        )}
+        {references && references.length > 0 && (
+          <section class="article-references">
+            <ReferenceList references={references} />
+          </section>
+        )}
+        <MedicalDisclaimer />
+        <slot name="after-content" />
+      </div>
+      <aside class="article-sidebar">
+        <slot name="sidebar" />
+      </aside>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .article-layout {
+    padding-block: var(--space-page-y);
+  }
+
+  .article-header {
+    background-color: var(--color-paper);
+    padding-block: 1.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .article-header__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .article-header h1 {
+    max-width: 40ch;
+  }
+
+  .article-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding-block: 2rem;
+    background-color: white;
+    border-radius: var(--radius-card);
+    padding: 2rem;
+  }
+
+  .article-content {
+    max-width: 68ch;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .article-faq {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .article-references {
+    margin-top: 0;
+  }
+
+  .article-sidebar {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .article-grid {
+      grid-template-columns: 0.7fr 0.3fr;
+    }
+
+    .article-sidebar {
+      display: block;
+      position: sticky;
+      top: 6rem;
+      align-self: start;
+    }
+  }
+</style>
