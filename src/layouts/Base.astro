@@ -1,0 +1,77 @@
+---
+import TopNav from '@/components/blocks/TopNav.astro';
+import Footer from '@/components/blocks/Footer.astro';
+import '@/styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+  ogType?: string;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = '把健康議題，講得有根據，也講得讓人看得懂。',
+  ogImage = '/og-default.jpg',
+  ogType = 'website',
+  noindex = false,
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const ogImageURL = new URL(ogImage, Astro.site);
+---
+
+<!doctype html>
+<html lang="zh-Hant-TW">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={ogImageURL} />
+    <meta property="og:locale" content="zh_TW" />
+    <meta property="og:site_name" content="本日有據 Evidence Today" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageURL} />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Noto+Serif+TC:wght@700&family=Inter:wght@400;500;700&family=Source+Serif+4:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <slot name="head" />
+  </head>
+  <body>
+    <a href="#main-content" class="skip-to-content">跳到主要內容</a>
+    <TopNav />
+    <main id="main-content">
+      <slot />
+    </main>
+    <Footer />
+    <slot name="scripts" />
+  </body>
+</html>

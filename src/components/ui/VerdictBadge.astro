@@ -1,0 +1,63 @@
+---
+interface Props {
+  verdict: 'true' | 'false' | 'insufficient' | 'contextual';
+  size?: 'sm' | 'lg';
+  class?: string;
+}
+
+const { verdict, size = 'sm', class: className } = Astro.props;
+
+const labelMap: Record<string, string> = {
+  true: '真',
+  false: '假',
+  insufficient: '證據不足',
+  contextual: '情境成立',
+};
+
+const label = labelMap[verdict];
+const classes = `verdict verdict--${verdict} verdict--${size}${className ? ` ${className}` : ''}`;
+---
+
+<span class={classes}>{label}</span>
+
+<style>
+  .verdict {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-ui);
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+    color: white;
+  }
+
+  /* Sizes */
+  .verdict--sm {
+    padding: 0.2rem 0.6rem;
+    font-size: var(--text-badge);
+  }
+
+  .verdict--lg {
+    padding: 0.4rem 1rem;
+    font-size: var(--text-meta);
+  }
+
+  /* Verdict colors */
+  .verdict--true {
+    background-color: var(--color-verdict-true);
+  }
+
+  .verdict--false {
+    background-color: var(--color-verdict-false);
+  }
+
+  .verdict--insufficient {
+    background-color: var(--color-verdict-insufficient);
+  }
+
+  .verdict--contextual {
+    background-color: var(--color-verdict-contextual);
+  }
+</style>

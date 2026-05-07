@@ -1,0 +1,66 @@
+---
+interface Props {
+  category: 'article' | 'myth' | 'ingredient' | 'podcast' | 'video' | 'news';
+  class?: string;
+}
+
+const { category, class: className } = Astro.props;
+
+const labelMap: Record<string, string> = {
+  article: '文章',
+  myth: '闢謠',
+  ingredient: '原料',
+  podcast: 'Podcast',
+  video: '短影音',
+  news: '趨勢',
+};
+
+const label = labelMap[category];
+const classes = `cat-tag cat-tag--${category}${className ? ` ${className}` : ''}`;
+---
+
+<span class={classes}>{label}</span>
+
+<style>
+  .cat-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-ui);
+    font-size: var(--text-badge);
+    font-weight: 500;
+    line-height: 1.4;
+    white-space: nowrap;
+  }
+
+  .cat-tag--article {
+    background-color: color-mix(in oklch, var(--color-cat-article) 14%, var(--color-paper));
+    color: var(--color-cat-article);
+  }
+
+  .cat-tag--myth {
+    background-color: color-mix(in oklch, var(--color-cat-myth) 14%, var(--color-paper));
+    color: var(--color-cat-myth);
+  }
+
+  .cat-tag--ingredient {
+    background-color: color-mix(in oklch, var(--color-cat-ingredient) 14%, var(--color-paper));
+    color: var(--color-cat-ingredient);
+  }
+
+  .cat-tag--podcast {
+    background-color: color-mix(in oklch, var(--color-cat-podcast) 14%, var(--color-paper));
+    color: var(--color-cat-podcast);
+  }
+
+  .cat-tag--video {
+    background-color: color-mix(in oklch, var(--color-cat-video) 14%, var(--color-paper));
+    color: var(--color-cat-video);
+  }
+
+  .cat-tag--news {
+    background-color: color-mix(in oklch, var(--color-cat-news) 14%, var(--color-paper));
+    color: var(--color-cat-news);
+  }
+</style>
