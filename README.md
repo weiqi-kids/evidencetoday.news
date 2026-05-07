@@ -5,13 +5,16 @@
 - 網站：https://evidencetoday.news
 - 技術：Astro 5 + Svelte 5 + d3.js + oklch CSS
 - 部署：GitHub Pages（push main 自動部署）
+- 套件管理器：**pnpm**（不是 npm）
+
+> **給 AI 和新進開發者：修改或優化本專案前，必須先讀完「架構與已實作功能總覽」和「已知效能瓶頸」兩個段落。** SEO（JSON-LD、OG、canonical、sitemap、RSS）、AEO（llms.txt、.txt endpoints）、Svelte hydration 策略（client:visible / client:media / client:idle）、無障礙（skip-to-content、focus ring、aria）、font-display: swap 都已經實作完成。不要重複建議這些。真正需要修的東西列在「已知效能瓶頸」段落，每個都有精確的檔案路徑和修復步驟。
 
 ---
 
 ## 快速開始
 
 ```bash
-pnpm install        # 安裝依賴
+pnpm install        # 安裝依賴（不是 npm）
 pnpm dev            # 啟動開發伺服器 (localhost:4321)
 pnpm build          # 建置靜態網站 (輸出至 dist/)
 pnpm preview        # 預覽建置結果
@@ -61,10 +64,19 @@ pnpm preview        # 預覽建置結果
 
 | 功能 | 說明 |
 |------|------|
-| Svelte hydration 策略 | `client:visible`（FAQ、EvidenceScale）、`client:media`（HeroParticles, desktop only）、`client:idle`（TOC） |
+| Svelte hydration 策略 | `client:visible`（FAQ、EvidenceScale）、`client:media`（HeroParticles, desktop only）、`client:idle`（TOC）— 已是最佳策略，不需要再調整 |
 | YouTube 嵌入 | 使用 iframe lazy embed，非直接載入 |
 | Astro 靜態輸出 | 零 JS baseline，只有互動元件產生 JS bundle |
 | d3.js 按需引入 | 只引入 d3-timer、d3-scale 等子模組 |
+| font-display: swap | `src/styles/typography.css` 所有 `@font-face` 已設定 `font-display: swap` |
+
+### 容易搞混的元件
+
+| 元件 | 位置 | 說明 |
+|------|------|------|
+| `SearchBar.astro` | `src/components/ui/` | **純展示用的搜尋輸入框**（用在 404 頁等地方），不含搜尋邏輯 |
+| `search.astro` | `src/pages/` | **實際搜尋結果頁**，整合了 Pagefind UI（CSS + JS + 搜尋索引） |
+| `TopNav.astro` | `src/components/blocks/` | 導覽列中的搜尋圖示連結到 `/search/`，不是 SearchBar 元件 |
 
 ### 已實作的無障礙
 
