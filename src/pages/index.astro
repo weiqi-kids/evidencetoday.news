@@ -1,5 +1,6 @@
 ---
 import Base from '@/layouts/Base.astro';
+import JsonLd from '@/components/seo/JsonLd.astro';
 import Button from '@/components/ui/Button.astro';
 import ArticleCard from '@/components/blocks/ArticleCard.astro';
 import MythCard from '@/components/blocks/MythCard.astro';
@@ -197,6 +198,16 @@ const categories = [
 ---
 
 <Base title="本日有據 — 把健康議題，講得有根據，也講得讓人看得懂">
+  <Fragment slot="head">
+    <JsonLd data={{
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: '本日有據',
+      alternateName: 'Evidence Today',
+      url: 'https://evidencetoday.news',
+      publishingPrinciples: 'https://evidencetoday.news/editorial-policy/',
+    }} />
+  </Fragment>
 
   <!-- ============================================================== -->
   <!--  1. Hero                                                        -->

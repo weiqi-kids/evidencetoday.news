@@ -1,6 +1,7 @@
 ---
 import { getCollection, getEntry } from 'astro:content';
 import Article from '@/layouts/Article.astro';
+import JsonLd from '@/components/seo/JsonLd.astro';
 import TableOfContents from '@/components/blocks/TableOfContents.svelte';
 import ArticleCard from '@/components/blocks/ArticleCard.astro';
 import MythCard from '@/components/blocks/MythCard.astro';
@@ -43,6 +44,45 @@ const relatedPodcasts = data.relatedPodcasts
   : [];
 
 const hasRelated = relatedMyths.length > 0 || relatedIngredients.length > 0 || relatedVideos.length > 0 || relatedPodcasts.length > 0;
+
+/* JSON-LD structured data */
+const slug = entry.id.replace(/\.[^.]+$/, '');
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: data.title,
+  description: data.description,
+  author: { '@type': 'Person', name: data.author },
+  datePublished: data.publishDate.toISOString(),
+  dateModified: data.updatedDate.toISOString(),
+  publisher: {
+    '@type': 'Organization',
+    name: '本日有據',
+    url: 'https://evidencetoday.news',
+  },
+};
+
+const faqSchema = data.faq && data.faq.length > 0
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: data.faq.map((item) => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: { '@type': 'Answer', text: item.answer },
+      })),
+    }
+  : null;
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: '首頁', item: 'https://evidencetoday.news/' },
+    { '@type': 'ListItem', position: 2, name: '文章', item: 'https://evidencetoday.news/articles/' },
+    { '@type': 'ListItem', position: 3, name: data.title, item: `https://evidencetoday.news/articles/${slug}/` },
+  ],
+};
 ---
 
 <Article
@@ -67,6 +107,12 @@ const hasRelated = relatedMyths.length > 0 || relatedIngredients.length > 0 || r
   references={data.references}
   tldr={data.tldr}
 >
+  <Fragment slot="head">
+    <JsonLd data={articleSchema} />
+    {faqSchema && <JsonLd data={faqSchema} />}
+    <JsonLd data={breadcrumbSchema} />
+  </Fragment>
+
   <Content />
 
   <Fragment slot="sidebar">

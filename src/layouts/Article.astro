@@ -51,6 +51,7 @@ const {
 ---
 
 <Base title={`${title} | 本日有據`} description={description} ogImage={ogImage} ogType="article">
+  <Fragment slot="head"><slot name="head" /></Fragment>
   <div class="article-layout container">
     <Breadcrumb items={breadcrumbItems} />
 
