@@ -605,9 +605,36 @@ Cron（台灣 06:17 / 12:17 / 18:17 / 00:17）
 
 ### 手動調整
 
-- 修改抓取關鍵字 / RSS feeds → 編輯 `data/news-automation-config.json`
+- 修改抓取關鍵字 / 搜尋來源 → 編輯 `data/news-automation-config.json` 的 `webSearch.queries`
 - 修改排程頻率 → [Claude Code Scheduled](https://claude.ai/code/scheduled)
 - 修改撰文 / 審核規則 → 編輯 spec 文件
+- 手動觸發一次 → 在 Claude Code 中使用 `RemoteTrigger` 工具的 `run` action
+
+### 遠端環境限制（踩坑紀錄）
+
+排程 agent 跑在 Anthropic 雲端的 CCR 沙箱環境，有以下限制：
+
+| 工具 | 狀態 | 說明 |
+|------|------|------|
+| WebSearch | 可用 | 走 Anthropic 內建通道，不受沙箱限制 |
+| WebFetch | 不可用 | 直接 HTTP 請求被沙箱封鎖（403） |
+| PubMed API | 不可用 | 同上，無法直接呼叫 E-utilities |
+| RSS Feeds | 不可用 | 同上，所有外部 RSS 都回 403 |
+| Tavily MCP | 不可用 | 本機 MCP server，遠端環境無法存取 |
+| Agent (sub-agent) | 可用 | 可派 sonnet sub-agent 平行工作 |
+| Bash (git) | 可用 | 可 commit + push + gh pr create |
+
+因此管線只使用 WebSearch，透過 `site:` 運算子定向搜尋 PubMed、WHO、FDA、衛福部等來源。
+
+### 已知問題與防呆
+
+| 問題 | 原因 | 已加入的防護 |
+|------|------|-------------|
+| tags 含 `/` 導致 build 失敗 | Astro `/tags/[tag]/` 路由無法處理斜線 | spec 撰文規則禁止 tags 含 `/` |
+| publishDate 差一天 | 遠端 agent 用 UTC 而非台灣時間 | trigger prompt 明確指示用 UTC+8 |
+| 文章重複產出 | 去重 key 格式不一致 | 統一用完整 URL 作為 key |
+| 新聞沒有詳細頁 | 原設計只有列表頁 | 已建 `src/pages/news/[slug].astro` |
+| 主編選題沒有連結 | 連結指向空的 sourceUrl | 已改為指向 `/news/[slug]/` |
 
 ---
 
