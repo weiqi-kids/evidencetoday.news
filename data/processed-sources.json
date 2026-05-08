@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-05-08T18:00:00Z",
+  "lastRun": "2026-05-08T22:00:00Z",
   "processed": {
     "PMID:42098536": {
       "processedAt": "2026-05-08T12:00:00Z",
@@ -181,6 +181,94 @@
     "https://pmc.ncbi.nlm.nih.gov/articles/PMC12921729/": {
       "processedAt": "2026-05-08T18:00:00Z",
       "outputFile": null
+    },
+    "PMID:41769658": {
+      "processedAt": "2026-05-08T22:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-22-04.md"
+    },
+    "PMID:40842757": {
+      "processedAt": "2026-05-08T22:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-22-04.md"
+    },
+    "PMID:41864373": {
+      "processedAt": "2026-05-08T22:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-22-02.md"
+    },
+    "PMID:41665740": {
+      "processedAt": "2026-05-08T22:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-22-02.md"
+    },
+    "PMID:38892674": {
+      "processedAt": "2026-05-08T22:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-22-02.md"
+    },
+    "https://www.who.int/news/item/27-01-2026-who-urges-schools-worldwide-to-promote-healthy-eating-for-children": {
+      "processedAt": "2026-05-08T22:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-22-05.md"
+    },
+    "https://www.who.int/news-room/events/detail/2026/04/10/default-calendar/ultra-processed-foods--a-one-health-agenda-for-action-and-accountability": {
+      "processedAt": "2026-05-08T22:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-22-01.md"
+    },
+    "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/blueroot-health-expands-voluntary-allergy-alert-undeclared-egg-hazelnut-and-soy-vital-nutrients": {
+      "processedAt": "2026-05-08T22:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-22-06.md"
+    },
+    "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/blueroot-health-issues-voluntary-allergy-alert-undeclared-egg-hazelnut-and-soy-vital-nutrients-aller": {
+      "processedAt": "2026-05-08T22:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-22-06.md"
+    },
+    "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/herbsforever-llc-issues-allergy-alert-undeclared-wheat-herbsforever-brand-dietary-supplements": {
+      "processedAt": "2026-05-08T22:00:00Z",
+      "outputFile": null
+    },
+    "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/supplement-manufacturing-partner-inc-issues-allergy-alert-undeclared-milk-havasu-nutrition-beet-root": {
+      "processedAt": "2026-05-08T22:00:00Z",
+      "outputFile": null
+    },
+    "https://www.fda.gov/food/hfp-constituent-updates/fda-releases-2026-deliverables-human-foods-program": {
+      "processedAt": "2026-05-08T22:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-22-01.md"
+    },
+    "https://www.fda.gov/food/hfp-constituent-updates/fda-issues-proposed-rule-front-package-nutrition-labeling": {
+      "processedAt": "2026-05-08T22:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-22-01.md"
+    },
+    "https://www.fda.gov/food/hfp-constituent-updates/fda-finalizes-updated-healthy-nutrient-content-claim": {
+      "processedAt": "2026-05-08T22:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-22-01.md"
+    },
+    "https://www.fda.gov/food/hfp-constituent-updates/fda-announces-public-meeting-dietary-supplement-innovation-and-scope-dietary-ingredients": {
+      "processedAt": "2026-05-08T22:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-22-06.md"
+    },
+    "https://www.fda.gov/news-events/press-announcements/fda-works-further-improve-nutrition-reduce-diet-related-chronic-disease-dietary-guidance-statements": {
+      "processedAt": "2026-05-08T22:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-22-01.md"
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/uyGn5mXv3-AgOOe_wmLO_g?typeid=9": {
+      "processedAt": "2026-05-08T22:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-22-07.md"
+    },
+    "https://www.thelancet.com/pdfs/journals/eclinm/PIIS2589-5370(25)00412-2.pdf": {
+      "processedAt": "2026-05-08T22:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-22-04.md"
+    },
+    "https://www.nature.com/articles/s41598-025-12650-y": {
+      "processedAt": "2026-05-08T22:00:00Z",
+      "outputFile": null
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12665681/": {
+      "processedAt": "2026-05-08T22:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-22-03.md"
+    },
+    "https://www.nature.com/articles/s41467-026-68791-9": {
+      "processedAt": "2026-05-08T22:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-22-03.md"
+    },
+    "https://www.nih.gov/news-events/news-releases/studies-find-microbiome-changes-may-be-signature-mecfs": {
+      "processedAt": "2026-05-08T22:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-22-03.md"
     }
   }
 }
