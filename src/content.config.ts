@@ -124,6 +124,15 @@ const ingredients = defineCollection({
       }),
     ),
     mechanism: z.string().optional(),
+    pathwaySteps: z
+      .array(
+        z.object({
+          name: z.string(),
+          description: z.string(),
+          enzyme: z.string().optional(),
+        }),
+      )
+      .optional(),
     safety: z
       .object({
         general: z.string(),
