@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-05-08T12:00:00Z",
+  "lastRun": "2026-05-08T18:00:00Z",
   "processed": {
     "PMID:42098536": {
       "processedAt": "2026-05-08T12:00:00Z",
@@ -84,6 +84,94 @@
     },
     "https://pmc.ncbi.nlm.nih.gov/articles/PMC12950072/": {
       "processedAt": "2026-05-08T12:00:00Z",
+      "outputFile": null
+    },
+    "https://www.thelancet.com/journals/eclinm/article/PIIS2589-5370(25)00676-5/fulltext": {
+      "processedAt": "2026-05-08T18:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-18-01.md"
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC13056668/": {
+      "processedAt": "2026-05-08T18:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-18-01.md"
+    },
+    "https://www.nature.com/articles/s44323-024-00018-w": {
+      "processedAt": "2026-05-08T18:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-18-01.md"
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12863603/": {
+      "processedAt": "2026-05-08T18:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-18-01.md"
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12993674/": {
+      "processedAt": "2026-05-08T18:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-18-02.md"
+    },
+    "https://www.nature.com/articles/d41586-025-02633-4": {
+      "processedAt": "2026-05-08T18:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-18-02.md"
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/40402417/": {
+      "processedAt": "2026-05-08T18:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-18-02.md"
+    },
+    "https://www.fda.gov/food/outbreaks-foodborne-illness/outbreak-investigation-salmonella-moringa-leaf-powder-january-2026": {
+      "processedAt": "2026-05-08T18:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-18-03.md"
+    },
+    "https://www.fda.gov/food/alerts-advisories-safety-information/fda-advises-consumers-retailers-and-distributors-not-eat-sell-or-distribute-addall-xr-shot-or-addall": {
+      "processedAt": "2026-05-08T18:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-18-03.md"
+    },
+    "https://www.fda.gov/food/alerts-advisories-safety-information/fda-issues-warning-about-certain-supplements-substituted-toxic-yellow-oleander": {
+      "processedAt": "2026-05-08T18:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-18-03.md"
+    },
+    "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/saputo-usa-recalls-great-value-cottage-cheese-because-possible-health-risk": {
+      "processedAt": "2026-05-08T18:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-18-04.md"
+    },
+    "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/diva-fam-inc-announces-voluntary-recall-sea-moss-gel-superfood-products-due-possible-health-risk": {
+      "processedAt": "2026-05-08T18:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-18-04.md"
+    },
+    "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/gerber-products-company-announces-voluntary-recall-limited-batches-arrowroot-biscuits-out-abundance": {
+      "processedAt": "2026-05-08T18:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-18-04.md"
+    },
+    "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/ghirardelli-chocolate-company-recalls-powdered-beverage-mixes-because-possible-health-risk": {
+      "processedAt": "2026-05-08T18:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-18-04.md"
+    },
+    "https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(25)01565-X/abstract": {
+      "processedAt": "2026-05-08T18:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-18-05.md"
+    },
+    "https://www.statnews.com/2026/01/07/new-dietary-guidelines-review-panel-financial-ties-beef-dairy-industry/": {
+      "processedAt": "2026-05-08T18:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-18-05.md"
+    },
+    "https://www.fda.gov/about-fda/human-foods-program/human-foods-program-2026-priority-deliverables": {
+      "processedAt": "2026-05-08T18:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-18-06.md"
+    },
+    "https://www.fda.gov/vaccines-blood-biologics/development-approval-process-cber/2026-biological-approvals": {
+      "processedAt": "2026-05-08T18:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-18-06.md"
+    },
+    "https://dpcpsi.nih.gov/onr/news/nutrition-news": {
+      "processedAt": "2026-05-08T18:00:00Z",
+      "outputFile": null
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12899522/": {
+      "processedAt": "2026-05-08T18:00:00Z",
+      "outputFile": null
+    },
+    "https://www.fda.gov/science-research/advancing-regulatory-science/2026-fda-broad-agency-announcement-day-01202026": {
+      "processedAt": "2026-05-08T18:00:00Z",
+      "outputFile": null
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12921729/": {
+      "processedAt": "2026-05-08T18:00:00Z",
       "outputFile": null
     }
   }
