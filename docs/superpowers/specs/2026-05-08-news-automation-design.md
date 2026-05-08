@@ -130,30 +130,20 @@ interface RawMaterial {
 
 **注意：** RSS feed URL 可能隨機構改版而變動，寫在設定檔 `data/news-automation-config.json` 中，方便修改。
 
-### 3.4 Tavily Search
+### 3.4 Web Search（一般健康新聞）
 
-使用 MCP `tavily_search` 工具，執行多組關鍵字搜尋：
+使用 WebSearch 工具（Claude Code 內建，本機與遠端環境皆可用），執行多組關鍵字搜尋。若環境有 Tavily MCP 可用，亦可使用 `tavily_search` 作為替代。
 
-```json
-{
-  "queries": [
-    "health nutrition research latest",
-    "public health announcement WHO FDA",
-    "dietary supplement safety study",
-    "mental health gut microbiome research",
-    "food safety recall alert",
-    "exercise sleep chronic disease new study"
-  ],
-  "search_depth": "advanced",
-  "max_results": 10,
-  "include_domains": [
-    "nih.gov", "who.int", "fda.gov",
+對 config 中 `tavily.queries` 的每組關鍵字，執行一次 WebSearch：
+
+```
+WebSearch({
+  query: "health nutrition research latest {current_year}",
+  allowed_domains: ["nih.gov", "who.int", "fda.gov",
     "nature.com", "thelancet.com", "bmj.com",
     "medpagetoday.com", "statnews.com",
-    "mohw.gov.tw", "cdc.gov.tw"
-  ],
-  "time_range": "day"
-}
+    "mohw.gov.tw", "cdc.gov.tw"]
+})
 ```
 
 **關鍵字清單** 存在 `data/news-automation-config.json`，可隨時調整。
