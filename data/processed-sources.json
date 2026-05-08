@@ -102,6 +102,14 @@
       "processedAt": "2026-05-08T18:00:00Z",
       "outputFile": "src/content/news/radar-2026-05-08-18-01.md"
     },
+    "PMID:40018491": {
+      "processedAt": "2026-05-08T18:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-18-02.md"
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12528139/": {
+      "processedAt": "2026-05-08T18:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-18-01.md"
+    },
     "https://pmc.ncbi.nlm.nih.gov/articles/PMC12993674/": {
       "processedAt": "2026-05-08T18:00:00Z",
       "outputFile": "src/content/news/radar-2026-05-08-18-02.md"
