@@ -455,6 +455,62 @@ relatedVideos: ["sprouted-potato"]       # 連到 src/content/videos/sprouted-po
 
 ---
 
+## 新聞自動化管線
+
+「健康議題雷達」（`/news/`）的內容由 Claude Code scheduled trigger 全自動產出，每 6 小時執行一次。
+
+### 運作流程
+
+```
+Cron（台灣 06:17 / 12:17 / 18:17 / 00:17）
+  │
+  ├─ 資料抓取（平行三管道）
+  │   ├─ PubMed API（systematic review / meta-analysis / RCT / guideline）
+  │   ├─ RSS Feeds（WHO / FDA Press / FDA Recalls / FDA MedWatch / 衛福部）
+  │   └─ WebSearch（一般健康新聞，domain 過濾）
+  │
+  ├─ 去重過濾（比對 data/processed-sources.json）
+  ├─ 編輯企劃（五維度加權評分 → 分組 → 撰文工單）
+  ├─ 平行撰文（每份工單一個 Sonnet agent）
+  ├─ 連結驗證（確認所有引用連結可連線且內容相符）
+  ├─ 動態審核委員會（依文章內容決定臨床/受眾/媒體角色與人數）
+  ├─ 審核迴圈（反覆審修，直到零建議或判定未收斂）
+  │
+  └─ 發布
+      ├─ 通過 → commit + push main → auto deploy
+      └─ 未收斂 → draft: true → 開 PR → 人工審核
+```
+
+### 去重機制
+
+`data/processed-sources.json` 記錄已處理的來源，避免重複撰文：
+- PubMed：以 `PMID:{id}` 為 key
+- RSS / WebSearch：以完整 URL 為 key
+- 超過 90 天的條目自動清除
+
+### 審核收斂規則
+
+- 審核角色由 AI 根據文章內容動態決定（不固定）
+- 每輪追蹤建議總數（totalSuggestions）和 critical 數量
+- 零建議 → 自動發布
+- 連續 3 輪未收斂 → 開 PR 等人工審核
+
+### 相關檔案
+
+| 檔案 | 用途 |
+|------|------|
+| `docs/superpowers/specs/2026-05-08-news-automation-design.md` | 完整設計規格 |
+| `data/news-automation-config.json` | 抓取設定（關鍵字、RSS URLs、MeSH terms、評分閾值） |
+| `data/processed-sources.json` | 去重追蹤 |
+
+### 手動調整
+
+- 修改抓取關鍵字 / RSS feeds → 編輯 `data/news-automation-config.json`
+- 修改排程頻率 → [Claude Code Scheduled](https://claude.ai/code/scheduled)
+- 修改撰文 / 審核規則 → 編輯 spec 文件
+
+---
+
 ## 設計規格
 
 完整設計規格（經四輪審查通過）：
