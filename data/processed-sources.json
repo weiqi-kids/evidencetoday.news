@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "lastRun": "2026-05-08T12:00:00Z",
+  "processed": {
+    "PMID:42098536": {
+      "processedAt": "2026-05-08T12:00:00Z",
+      "outputFile": null
+    },
+    "PMID:42098193": {
+      "processedAt": "2026-05-08T12:00:00Z",
+      "outputFile": null
+    },
+    "PMID:42097790": {
+      "processedAt": "2026-05-08T12:00:00Z",
+      "outputFile": null
+    },
+    "PMID:42097691": {
+      "processedAt": "2026-05-08T12:00:00Z",
+      "outputFile": null
+    },
+    "PMID:42097659": {
+      "processedAt": "2026-05-08T12:00:00Z",
+      "outputFile": null
+    },
+    "PMID:42097647": {
+      "processedAt": "2026-05-08T12:00:00Z",
+      "outputFile": null
+    },
+    "PMID:42097613": {
+      "processedAt": "2026-05-08T12:00:00Z",
+      "outputFile": null
+    },
+    "PMID:42096697": {
+      "processedAt": "2026-05-08T12:00:00Z",
+      "outputFile": null
+    },
+    "PMID:42096689": {
+      "processedAt": "2026-05-08T12:00:00Z",
+      "outputFile": null
+    },
+    "PMID:42096679": {
+      "processedAt": "2026-05-08T12:00:00Z",
+      "outputFile": null
+    },
+    "PMID:41587736": {
+      "processedAt": "2026-05-08T12:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-12-06.md"
+    },
+    "url:fda-cinnamon-lead": {
+      "processedAt": "2026-05-08T12:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-12-02.md"
+    },
+    "url:fda-stoltzfus-dairy": {
+      "processedAt": "2026-05-08T12:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-12-02.md"
+    },
+    "url:fda-jcb-flavors": {
+      "processedAt": "2026-05-08T12:00:00Z",
+      "outputFile": "src/content/news/radar-2026-05-08-12-02.md"
+    },
+    "url:who-hantavirus-cruise": {
+      "processedAt": "2026-05-08T12:00:00Z",
+      "outputFile": null
+    },
+    "url:mohw-hantavirus-no-tw": {
+      "processedAt": "2026-05-08T12:00:00Z",
+      "outputFile": null
+    },
+    "url:mohw-hantavirus-monitor": {
+      "processedAt": "2026-05-08T12:00:00Z",
+      "outputFile": null
+    },
+    "url:mohw-mothers-day-screening": {
+      "processedAt": "2026-05-08T12:00:00Z",
+      "outputFile": null
+    }
+  }
+}

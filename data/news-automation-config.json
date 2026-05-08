@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "schedule": {
+    "cron": "0 0,6,12,18 * * *",
+    "timezone": "Asia/Taipei"
+  },
+  "pubmed": {
+    "reldate": 1,
+    "retmax": 50,
+    "meshTerms": [
+      "Nutritional Sciences", "Diet", "Dietary Supplements",
+      "Food Safety", "Public Health", "Chronic Disease",
+      "Mental Health", "Exercise", "Sleep", "Gut Microbiome"
+    ],
+    "publicationTypes": [
+      "systematic review", "meta-analysis",
+      "randomized controlled trial", "practice guideline"
+    ]
+  },
+  "rssFeeds": [
+    {
+      "name": "WHO",
+      "url": "https://www.who.int/rss-feeds/news-english.xml",
+      "enabled": true
+    },
+    {
+      "name": "FDA Press",
+      "url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
+      "enabled": true
+    },
+    {
+      "name": "FDA Recalls",
+      "url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/recalls/rss.xml",
+      "enabled": true
+    },
+    {
+      "name": "FDA MedWatch",
+      "url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/medwatch/rss.xml",
+      "enabled": true
+    },
+    {
+      "name": "衛福部",
+      "url": "https://www.mohw.gov.tw/rss-16-1.html",
+      "enabled": true
+    }
+  ],
+  "tavily": {
+    "queries": [
+      "health nutrition research latest",
+      "public health announcement WHO FDA",
+      "dietary supplement safety study",
+      "mental health gut microbiome research",
+      "food safety recall alert",
+      "exercise sleep chronic disease new study"
+    ],
+    "includeDomains": [
+      "nih.gov", "who.int", "fda.gov",
+      "nature.com", "thelancet.com", "bmj.com",
+      "medpagetoday.com", "statnews.com",
+      "mohw.gov.tw", "cdc.gov.tw"
+    ],
+    "maxResults": 10
+  },
+  "editorial": {
+    "scoreThreshold": 5.0,
+    "maxMaterialsPerArticle": 5,
+    "minMaterialsPerGroupedArticle": 2,
+    "soloArticleMinScore": 7.0
+  },
+  "review": {
+    "nonConvergenceThreshold": 3
+  },
+  "dedup": {
+    "retentionDays": 90
+  }
+}
