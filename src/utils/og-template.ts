@@ -46,22 +46,20 @@ export async function generateOgSvg(title: string, collection: string): Promise<
                     display: 'flex',
                     marginBottom: '24px',
                   },
-                  children: [
-                    {
-                      type: 'span',
-                      props: {
-                        style: {
-                          backgroundColor: pillColor,
-                          color: 'white',
-                          padding: '6px 20px',
-                          borderRadius: '9999px',
-                          fontSize: '20px',
-                          fontWeight: 700,
-                        },
-                        children: label,
+                  children: {
+                    type: 'span',
+                    props: {
+                      style: {
+                        backgroundColor: pillColor,
+                        color: 'white',
+                        padding: '6px 20px',
+                        borderRadius: '9999px',
+                        fontSize: '20px',
+                        fontWeight: 700,
                       },
+                      children: label,
                     },
-                  ],
+                  },
                 },
               },
             ]
@@ -70,6 +68,7 @@ export async function generateOgSvg(title: string, collection: string): Promise<
           type: 'div',
           props: {
             style: {
+              display: 'flex',
               color: 'white',
               fontSize: '48px',
               fontWeight: 700,
@@ -84,23 +83,22 @@ export async function generateOgSvg(title: string, collection: string): Promise<
           type: 'div',
           props: {
             style: {
+              display: 'flex',
               marginTop: 'auto',
               borderTop: '1px solid rgba(255, 255, 255, 0.4)',
               paddingTop: '20px',
             },
-            children: [
-              {
-                type: 'span',
-                props: {
-                  style: {
-                    color: 'white',
-                    fontSize: '24px',
-                    fontWeight: 400,
-                  },
-                  children: '本日有據 Evidence Today',
+            children: {
+              type: 'span',
+              props: {
+                style: {
+                  color: 'white',
+                  fontSize: '24px',
+                  fontWeight: 400,
                 },
+                children: '本日有據 Evidence Today',
               },
-            ],
+            },
           },
         },
       ],

@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises';
-import { fileURLToPath } from 'node:url';
+import { join } from 'node:path';
 
-const FONT_DIR = new URL('../assets/fonts/', import.meta.url);
+const FONT_DIR = join(process.cwd(), 'src/assets/fonts');
 
 let fontCache: { regular: ArrayBuffer; bold: ArrayBuffer } | null = null;
 
@@ -9,8 +9,8 @@ export async function loadFonts() {
   if (fontCache) return fontCache;
 
   const [regular, bold] = await Promise.all([
-    readFile(fileURLToPath(new URL('NotoSansTC-Regular.ttf', FONT_DIR))),
-    readFile(fileURLToPath(new URL('NotoSansTC-Bold.ttf', FONT_DIR))),
+    readFile(join(FONT_DIR, 'NotoSansTC-Regular-static.ttf')),
+    readFile(join(FONT_DIR, 'NotoSansTC-Bold-static.ttf')),
   ]);
 
   fontCache = {
