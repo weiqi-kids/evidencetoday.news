@@ -71,7 +71,7 @@ const videoBreadcrumbSchema = {
 <Media
   title={data.title}
   description={data.description}
-  ogImage={data.coverImage}
+  ogImage={data.coverImage || `/og/videos/${slug}.png`}
   category="video"
   publishDate={data.publishDate}
   updatedDate={data.updatedDate}

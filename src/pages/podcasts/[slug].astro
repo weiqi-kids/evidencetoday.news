@@ -85,7 +85,7 @@ const podcastBreadcrumbSchema = {
 <Media
   title={data.title}
   description={data.description}
-  ogImage={data.coverImage}
+  ogImage={data.coverImage || `/og/podcasts/${slug}.png`}
   category="podcast"
   publishDate={data.publishDate}
   updatedDate={data.updatedDate}
