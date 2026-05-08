@@ -507,6 +507,30 @@ relatedVideos: ["sprouted-potato"]       # 連到 src/content/videos/sprouted-po
 
 建議統一標籤命名（例如用「維他命C」而非混用「維生素C」）。
 
+**標籤命名禁忌：** tags 不得包含 `/`（斜線），會導致 Astro 無法產生 `/tags/[tag]/` 路由而 build 失敗。例如 `ME/CFS` 應改為 `慢性疲勞症候群`。
+
+---
+
+## 時區規則
+
+全站日期統一使用 **台灣時間（Asia/Taipei, UTC+8）**。
+
+| 項目 | 規則 |
+|------|------|
+| `publishDate` frontmatter | 以台灣日期為準（如 UTC 5/8 22:00 = 台灣 5/9 06:00 → 寫 `2026-05-09`） |
+| 網站日期顯示 | 統一由 `src/utils/date.ts` 的 `fmtDate()` 處理，使用 `Asia/Taipei` 時區 |
+| 新聞檔名 | `radar-{YYYY}-{MM}-{DD}-{HH}-{NN}.md` 中的日期和小時以台灣時間為準 |
+| 排程 cron | 設定為 UTC，對應台灣時間見下表 |
+
+排程時間對照：
+
+| UTC | 台灣時間 |
+|-----|---------|
+| 22:17 | 06:17 |
+| 04:17 | 12:17 |
+| 10:17 | 18:17 |
+| 16:17 | 00:17 |
+
 ---
 
 ## 待補齊項目（上線前 Blocker）
