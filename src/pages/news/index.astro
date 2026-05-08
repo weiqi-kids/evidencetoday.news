@@ -5,6 +5,8 @@ import NewsItem from '@/components/blocks/NewsItem.astro';
 import ArticleCard from '@/components/blocks/ArticleCard.astro';
 import MythCard from '@/components/blocks/MythCard.astro';
 import { getCollection, getEntry } from 'astro:content';
+import TrendBubbles from '@/components/charts/TrendBubbles.svelte';
+import { getTopTags } from '@/utils/tag-stats';
 
 function fmtDate(d: Date): string {
   return d.toISOString().slice(0, 10);
@@ -41,6 +43,8 @@ const relatedMyths = (
 ).filter(Boolean);
 
 const hasRelated = relatedArticles.length > 0 || relatedMyths.length > 0;
+
+const topTags = await getTopTags();
 ---
 
 <Base title="趨勢 | 本日有據" description="每週健康新聞雷達，追蹤最新研究動態與編輯精選議題。">
@@ -108,16 +112,10 @@ const hasRelated = relatedArticles.length > 0 || relatedMyths.length > 0;
       </div>
     </section>
 
-    <!-- Section 3: Trend Radar Placeholder -->
+    <!-- Section 3: Trend Radar -->
     <section class="news-section">
       <h2 class="news-section__title">健康議題雷達</h2>
-      <div class="trend-chart-placeholder">
-        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
-        </svg>
-        <span class="trend-chart-placeholder__title">趨勢圖表</span>
-        <span class="trend-chart-placeholder__subtitle">D3 互動圖表即將推出</span>
-      </div>
+      <TrendBubbles tags={topTags} client:visible />
     </section>
 
     <!-- Section 4: Related Content -->
@@ -304,35 +302,6 @@ const hasRelated = relatedArticles.length > 0 || relatedMyths.length > 0;
   .news-list {
     display: flex;
     flex-direction: column;
-  }
-
-  /* Trend chart placeholder */
-  .trend-chart-placeholder {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-    padding: 3rem 2rem;
-    border-radius: var(--radius-card);
-    border: 2px dashed var(--color-fog);
-    background-color: white;
-    color: color-mix(in oklch, var(--color-ink) 40%, transparent);
-    text-align: center;
-    min-height: 280px;
-  }
-
-  .trend-chart-placeholder__title {
-    font-family: var(--font-sans);
-    font-size: var(--text-h3);
-    font-weight: 600;
-    color: color-mix(in oklch, var(--color-ink) 55%, transparent);
-  }
-
-  .trend-chart-placeholder__subtitle {
-    font-family: var(--font-ui);
-    font-size: var(--text-meta);
-    color: color-mix(in oklch, var(--color-ink) 40%, transparent);
   }
 
   /* Related grid */

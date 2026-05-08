@@ -10,6 +10,8 @@ import VideoCard from '@/components/blocks/VideoCard.astro';
 import NewsItem from '@/components/blocks/NewsItem.astro';
 import CtaStrip from '@/components/blocks/CtaStrip.astro';
 import HeroParticles from '@/components/charts/HeroParticles.svelte';
+import TrendBubbles from '@/components/charts/TrendBubbles.svelte';
+import { getTopTags } from '@/utils/tag-stats';
 import { getCollection } from 'astro:content';
 
 /* ------------------------------------------------------------------ */
@@ -134,6 +136,8 @@ const latestNews = allNews.slice(0, 5);
 /* ------------------------------------------------------------------ */
 /*  Category grid data                                                 */
 /* ------------------------------------------------------------------ */
+const topTags = await getTopTags();
+
 const categories = [
   {
     key: 'article',
@@ -467,13 +471,7 @@ const categories = [
           ))}
         </div>
         <div class="trends-layout__right">
-          <div class="trends-placeholder">
-            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
-            </svg>
-            <span class="trends-placeholder__title">趨勢圖表</span>
-            <span class="trends-placeholder__subtitle">即將推出</span>
-          </div>
+          <TrendBubbles tags={topTags} client:visible />
         </div>
       </div>
       <div class="section-footer">
@@ -990,38 +988,6 @@ const categories = [
   .trends-layout__right {
     position: sticky;
     top: 2rem;
-  }
-
-  .trends-placeholder {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-    padding: 3rem 2rem;
-    border-radius: var(--radius-card);
-    border: 2px dashed var(--color-fog);
-    background-color: white;
-    color: color-mix(in oklch, var(--color-ink) 40%, transparent);
-    text-align: center;
-    min-height: 280px;
-  }
-
-  .trends-placeholder :global(svg) {
-    display: block;
-  }
-
-  .trends-placeholder__title {
-    font-family: var(--font-sans);
-    font-size: var(--text-h3);
-    font-weight: 600;
-    color: color-mix(in oklch, var(--color-ink) 55%, transparent);
-  }
-
-  .trends-placeholder__subtitle {
-    font-family: var(--font-ui);
-    font-size: var(--text-meta);
-    color: color-mix(in oklch, var(--color-ink) 40%, transparent);
   }
 
   .trends-link {
