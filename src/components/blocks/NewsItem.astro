@@ -4,11 +4,12 @@ interface Props {
   source: string;
   date: string;
   summary: string;
+  href: string;
   sourceUrl?: string;
   tags: string[];
 }
 
-const { title, source, date, summary, sourceUrl, tags } = Astro.props;
+const { title, source, date, summary, href, sourceUrl, tags } = Astro.props;
 ---
 
 <article class="news-item">
@@ -17,13 +18,9 @@ const { title, source, date, summary, sourceUrl, tags } = Astro.props;
     <span class="news-item__sep" aria-hidden="true">&middot;</span>
     <time class="news-item__date">{date}</time>
   </div>
-  {sourceUrl ? (
-    <h3 class="news-item__title">
-      <a href={sourceUrl} target="_blank" rel="noopener noreferrer">{title}</a>
-    </h3>
-  ) : (
-    <h3 class="news-item__title">{title}</h3>
-  )}
+  <h3 class="news-item__title">
+    <a href={href}>{title}</a>
+  </h3>
   <p class="news-item__summary">{summary}</p>
   {tags.length > 0 && (
     <div class="news-item__tags">

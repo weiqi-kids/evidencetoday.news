@@ -361,6 +361,7 @@ const categories = [
                 source={d.source as string}
                 date={fmtDate(item.date)}
                 summary={d.summary as string}
+                href={`/news/${item.id.replace(/\.[^.]+$/, '')}/`}
                 sourceUrl={d.sourceUrl as string | undefined}
                 tags={d.tags as string[]}
               />
@@ -465,6 +466,7 @@ const categories = [
               source={n.data.source}
               date={fmtDate(n.data.publishDate)}
               summary={n.data.summary}
+              href={`/news/${stripExt(n.id)}/`}
               sourceUrl={n.data.sourceUrl}
               tags={n.data.tags}
             />

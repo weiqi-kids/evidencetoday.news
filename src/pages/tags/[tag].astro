@@ -141,6 +141,7 @@ const { tag, entries } = Astro.props;
             source={d.source as string}
             date={fmtDate(item.date)}
             summary={d.summary as string}
+            href={`/news/${item.id.replace(/\.[^.]+$/, '')}/`}
             sourceUrl={d.sourceUrl as string | undefined}
             tags={d.tags as string[]}
           />
