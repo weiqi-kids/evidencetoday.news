@@ -171,10 +171,10 @@ WebSearch({
 
 ### 4.2 比對邏輯
 
-- PubMed：以 PMID 為 key
-- RSS / Tavily：以 URL 的 SHA-256 hash 為 key
+- PubMed：以 `PMID:{id}` 為 key（如 `PMID:42098536`）
+- RSS / WebSearch：以素材的完整 URL 為 key（如 `https://www.fda.gov/...`），直接比對字串
 - 已存在於 `processed` 中的來源 → 跳過
-- 每次執行結束後，將本次處理的來源寫入 `processed`
+- 每次執行結束後，將本次所有進入素材池的來源（無論是否產出文章）寫入 `processed`
 
 ### 4.3 清理策略
 

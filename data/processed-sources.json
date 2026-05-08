@@ -46,31 +46,43 @@
       "processedAt": "2026-05-08T12:00:00Z",
       "outputFile": "src/content/news/radar-2026-05-08-12-06.md"
     },
-    "url:fda-cinnamon-lead": {
+    "https://www.fda.gov/food/alerts-advisories-safety-information/more-ground-cinnamon-products-added-fda-public-health-alert-due-presence-elevated-levels-lead": {
       "processedAt": "2026-05-08T12:00:00Z",
       "outputFile": "src/content/news/radar-2026-05-08-12-02.md"
     },
-    "url:fda-stoltzfus-dairy": {
+    "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/stoltzfus-family-dairy-recalls-sour-cream-and-onion-cheese-curds-because-possible-health-risk": {
       "processedAt": "2026-05-08T12:00:00Z",
       "outputFile": "src/content/news/radar-2026-05-08-12-02.md"
     },
-    "url:fda-jcb-flavors": {
+    "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/jcb-flavors-llc-issues-voluntary-recall-topical-seasonings-due-potential-health-risk": {
       "processedAt": "2026-05-08T12:00:00Z",
       "outputFile": "src/content/news/radar-2026-05-08-12-02.md"
     },
-    "url:who-hantavirus-cruise": {
+    "https://www.who.int/news/item/07-05-2026-who-s-response-to-hantavirus-cases-linked-to-a-cruise-ship": {
       "processedAt": "2026-05-08T12:00:00Z",
       "outputFile": null
     },
-    "url:mohw-hantavirus-no-tw": {
+    "https://www.mohw.gov.tw/cp-16-86305-1.html": {
       "processedAt": "2026-05-08T12:00:00Z",
       "outputFile": null
     },
-    "url:mohw-hantavirus-monitor": {
+    "https://www.mohw.gov.tw/cp-16-86297-1.html": {
       "processedAt": "2026-05-08T12:00:00Z",
       "outputFile": null
     },
-    "url:mohw-mothers-day-screening": {
+    "https://www.mohw.gov.tw/cp-16-86304-1.html": {
+      "processedAt": "2026-05-08T12:00:00Z",
+      "outputFile": null
+    },
+    "https://www.nature.com/articles/s41390-026-05069-2": {
+      "processedAt": "2026-05-08T12:00:00Z",
+      "outputFile": null
+    },
+    "https://www.nature.com/articles/s41366-026-02099-y": {
+      "processedAt": "2026-05-08T12:00:00Z",
+      "outputFile": null
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12950072/": {
       "processedAt": "2026-05-08T12:00:00Z",
       "outputFile": null
     }
