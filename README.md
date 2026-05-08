@@ -375,6 +375,29 @@ relatedIngredients: ["ingredient-slug"]
 ---
 ```
 
+### 修改既有內容
+
+1. 找到要修改的檔案：
+   - 文章：`src/content/articles/{slug}.mdx`
+   - 闢謠：`src/content/myths/{slug}.mdx`
+   - 原料：`src/content/ingredients/{slug}.mdx`
+   - Podcast：`src/content/podcasts/{slug}.mdx`
+   - 短影音：`src/content/videos/{slug}.mdx`
+   - 趨勢新聞：`src/content/news/{slug}.md`
+   - 不確定 slug？用 `grep -r "文章標題關鍵字" src/content/` 搜尋
+
+2. 修改 frontmatter 或內文後，更新 `updatedDate` 為今天日期
+
+3. 本地預覽 → commit → push
+
+### 刪除內容
+
+**暫時下架（推薦）：** 將 frontmatter 的 `draft` 設為 `true`，檔案保留但不會出現在網站上。日後可隨時改回 `false` 重新上架。
+
+**永久刪除：** 直接刪除檔案。刪除前確認：
+- 其他內容的 `related*` 欄位是否引用了這個 slug（用 `grep -r "slug-name" src/content/` 檢查），有的話一併移除引用
+- commit message 說明刪除原因
+
 ### 更新政策頁
 
 直接編輯 `src/data/policies/` 下的 Markdown 檔案：
@@ -385,6 +408,58 @@ relatedIngredients: ["ingredient-slug"]
 - `disclosure.md` — 利益揭露政策
 
 `privacy.astro` 和 `terms.astro` 為 inline 內容，直接編輯 `src/pages/` 下的 `.astro` 檔案。
+
+### 新增政策頁
+
+1. 在 `src/data/policies/` 建立新的 `.md` 檔案（如 `cookie-policy.md`）
+2. 在 `src/pages/` 建立對應的 `.astro` 頁面（如 `cookie-policy.astro`），參考 `src/pages/about.astro` 的結構，使用 `Policy` layout
+3. 在 `src/components/blocks/Footer.astro` 加入新頁面的連結
+
+### 圖片管理
+
+| 用途 | 存放位置 | 命名規則 |
+|------|---------|---------|
+| 文章封面 / OG 分享圖 | `public/images/articles/` | `{slug}.jpg`（1200x630） |
+| 闢謠封面 | `public/images/myths/` | `{slug}.jpg` |
+| 原料封面 | `public/images/ingredients/` | `{slug}.jpg` |
+| 全站預設 OG | `public/og-default.jpg` | 固定檔名 |
+
+在 frontmatter 中以 `coverImage: "/images/articles/{slug}.jpg"` 引用。目前 `public/images/` 目錄尚未建立，首次使用時需先 `mkdir -p public/images/articles`。
+
+### 新聞自動化管線的手動介入
+
+**審核未收斂的 PR：**
+1. 至 [GitHub PR 列表](https://github.com/weiqi-kids/evidencetoday.news/pulls) 找到標題為 `News Draft: ...` 的 PR
+2. PR body 會列出所有未解決的審核建議
+3. 在 PR 的 branch 上修改文章（修正建議指出的問題）
+4. 將 frontmatter 的 `draft` 改為 `false`
+5. Merge PR → 自動部署上線
+
+**修改自動產出的文章：**
+- 直接編輯 `src/content/news/radar-*.md`，commit + push 即可
+- 自動化管線不會覆蓋已存在的檔案（去重機制保護）
+
+**調整抓取關鍵字：**
+- 編輯 `data/news-automation-config.json` 的 `webSearch.queries` 陣列
+- 每組查詢可調整 `query`（搜尋字串）、`allowed_domains`（來源過濾）、`max_results`
+- commit + push 後，下次排程自動使用新設定
+
+**調整排程頻率：**
+- 至 [Claude Code Scheduled](https://claude.ai/code/scheduled) 修改 cron expression
+
+### Schema 驗證失敗排錯
+
+`pnpm build` 或 `pnpm dev` 時如果出現 Content Collection schema 錯誤，常見原因：
+
+| 錯誤訊息 | 原因 | 修正方式 |
+|---------|------|---------|
+| `Required at "title"` | 必填欄位缺失 | 補上該欄位 |
+| `Expected string, received number` | 型別錯誤 | 檢查值的格式（如日期要用 `2026-05-08` 不是 `20260508`） |
+| `Invalid enum value` | 列舉值不在允許範圍 | 檢查 `src/content.config.ts` 中允許的值（如 verdict 只接受 true/false/insufficient/contextual） |
+| `Array must contain at least 1 element(s)` | 必填陣列為空 | myths 的 `evidence` 和 `references` 至少要有一筆 |
+| `String must contain at most 155 character(s)` | description 超過 155 字 | 縮短 description |
+
+Schema 定義檔：`src/content.config.ts`，所有欄位的型別、必填/選填、允許值都在這裡。
 
 ---
 
