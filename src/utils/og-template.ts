@@ -19,8 +19,17 @@ const CATEGORY_COLORS: Record<string, string> = {
 
 const TEAL_HEX = '#1a6b6e';
 
+// Satori doesn't support -webkit-line-clamp. Truncate title to ~2 lines.
+// At 48px font, ~1040px usable width, CJK chars are ~48px each → ~21 chars/line → 42 for 2 lines.
+// Mixed CJK/Latin: use 50 as safe limit.
+function truncateTitle(title: string, maxLen = 50): string {
+  if (title.length <= maxLen) return title;
+  return title.slice(0, maxLen - 1) + '…';
+}
+
 export async function generateOgSvg(title: string, collection: string): Promise<string> {
   const fonts = await loadFonts();
+  const displayTitle = truncateTitle(title);
   const label = CATEGORY_LABELS[collection];
   const pillColor = CATEGORY_COLORS[collection] || TEAL_HEX;
 
@@ -76,7 +85,7 @@ export async function generateOgSvg(title: string, collection: string): Promise<
               overflow: 'hidden',
               textOverflow: 'ellipsis',
             },
-            children: title,
+            children: displayTitle,
           },
         },
         {
