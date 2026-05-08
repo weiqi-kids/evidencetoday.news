@@ -1,65 +1,72 @@
 {
-  "version": 1,
+  "version": 2,
   "schedule": {
-    "cron": "0 0,6,12,18 * * *",
+    "cron": "17 4,10,16,22 * * *",
     "timezone": "Asia/Taipei"
   },
-  "pubmed": {
-    "reldate": 1,
-    "retmax": 50,
-    "meshTerms": [
-      "Nutritional Sciences", "Diet", "Dietary Supplements",
-      "Food Safety", "Public Health", "Chronic Disease",
-      "Mental Health", "Exercise", "Sleep", "Gut Microbiome"
-    ],
-    "publicationTypes": [
-      "systematic review", "meta-analysis",
-      "randomized controlled trial", "practice guideline"
-    ]
-  },
-  "rssFeeds": [
-    {
-      "name": "WHO",
-      "url": "https://www.who.int/rss-feeds/news-english.xml",
-      "enabled": true
-    },
-    {
-      "name": "FDA Press",
-      "url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-      "enabled": true
-    },
-    {
-      "name": "FDA Recalls",
-      "url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/recalls/rss.xml",
-      "enabled": true
-    },
-    {
-      "name": "FDA MedWatch",
-      "url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/medwatch/rss.xml",
-      "enabled": true
-    },
-    {
-      "name": "衛福部",
-      "url": "https://www.mohw.gov.tw/rss-16-1.html",
-      "enabled": true
-    }
-  ],
-  "tavily": {
+  "webSearch": {
     "queries": [
-      "health nutrition research latest",
-      "public health announcement WHO FDA",
-      "dietary supplement safety study",
-      "mental health gut microbiome research",
-      "food safety recall alert",
-      "exercise sleep chronic disease new study"
-    ],
-    "includeDomains": [
-      "nih.gov", "who.int", "fda.gov",
-      "nature.com", "thelancet.com", "bmj.com",
-      "medpagetoday.com", "statnews.com",
-      "mohw.gov.tw", "cdc.gov.tw"
-    ],
-    "maxResults": 10
+      {
+        "name": "PubMed 學術文獻",
+        "query": "site:pubmed.ncbi.nlm.nih.gov systematic review OR meta-analysis nutrition diet supplement 2026",
+        "allowed_domains": ["pubmed.ncbi.nlm.nih.gov", "pmc.ncbi.nlm.nih.gov"],
+        "max_results": 10
+      },
+      {
+        "name": "PubMed RCT",
+        "query": "site:pubmed.ncbi.nlm.nih.gov randomized controlled trial diet exercise sleep mental health 2026",
+        "allowed_domains": ["pubmed.ncbi.nlm.nih.gov", "pmc.ncbi.nlm.nih.gov"],
+        "max_results": 10
+      },
+      {
+        "name": "WHO 公告",
+        "query": "site:who.int news health nutrition food safety 2026",
+        "allowed_domains": ["who.int"],
+        "max_results": 5
+      },
+      {
+        "name": "FDA 召回與安全警示",
+        "query": "site:fda.gov recall safety alert food supplement 2026",
+        "allowed_domains": ["fda.gov"],
+        "max_results": 5
+      },
+      {
+        "name": "FDA 公告",
+        "query": "site:fda.gov press announcement food drug nutrition 2026",
+        "allowed_domains": ["fda.gov"],
+        "max_results": 5
+      },
+      {
+        "name": "衛福部新聞",
+        "query": "site:mohw.gov.tw 衛福部 健康 食安 2026",
+        "allowed_domains": ["mohw.gov.tw"],
+        "max_results": 5
+      },
+      {
+        "name": "衛福部疾管署",
+        "query": "site:cdc.gov.tw 疾管署 疫情 傳染病 2026",
+        "allowed_domains": ["cdc.gov.tw"],
+        "max_results": 5
+      },
+      {
+        "name": "Nature/Lancet/BMJ 研究",
+        "query": "nutrition health diet supplement clinical trial 2026",
+        "allowed_domains": ["nature.com", "thelancet.com", "bmj.com"],
+        "max_results": 10
+      },
+      {
+        "name": "健康新聞媒體",
+        "query": "health nutrition research new study findings 2026",
+        "allowed_domains": ["medpagetoday.com", "statnews.com", "medscape.com"],
+        "max_results": 5
+      },
+      {
+        "name": "腸道菌/睡眠/運動研究",
+        "query": "gut microbiome sleep exercise chronic disease new research 2026",
+        "allowed_domains": ["nih.gov", "nature.com", "pubmed.ncbi.nlm.nih.gov"],
+        "max_results": 5
+      }
+    ]
   },
   "editorial": {
     "scoreThreshold": 5.0,

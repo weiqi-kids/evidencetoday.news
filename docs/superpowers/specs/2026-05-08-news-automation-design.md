@@ -17,10 +17,12 @@
 Cron（每 6 小時，可調）
   │
   ▼
-Phase 1：資料抓取（平行三管道）
-  ├─ PubMed E-utilities API
-  ├─ RSS Feeds（WHO / FDA / 衛福部）
-  └─ Tavily Search（一般健康新聞）
+Phase 1：資料抓取（WebSearch 多組查詢）
+  對 config 中每組查詢平行執行 WebSearch，涵蓋：
+  ├─ PubMed 學術文獻（site:pubmed.ncbi.nlm.nih.gov）
+  ├─ WHO / FDA / 衛福部官方公告（site: 過濾）
+  ├─ Nature / Lancet / BMJ 研究期刊
+  └─ 健康新聞媒體
   │
   ▼
 去重過濾（比對 data/processed-sources.json）
@@ -56,7 +58,9 @@ Phase 7：收尾
 
 ## 3. Phase 1：資料抓取層
 
-三個管道平行執行，各自回傳統一格式的素材物件。
+使用 WebSearch 工具（Claude Code 內建）執行多組查詢，透過 `site:` 和 `allowed_domains` 定向搜尋不同來源。
+
+> **為何只用 WebSearch？** 遠端 CCR 環境的網路沙箱封鎖了直接 HTTP 請求（PubMed API、RSS Feeds 均回傳 403），但 WebSearch 走 Anthropic 內建通道不受此限制。透過精確的 `site:` 查詢可覆蓋原本三個管道的所有來源。
 
 ### 3.1 統一素材格式
 
@@ -75,76 +79,28 @@ interface RawMaterial {
 }
 ```
 
-### 3.2 PubMed E-utilities
+### 3.2 WebSearch 多組查詢
 
-**API 端點：**
-- 搜尋：`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi`
-- 擷取：`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi`
+使用 WebSearch 工具（Claude Code 內建），對 `data/news-automation-config.json` 中 `webSearch.queries` 的每組查詢執行搜尋。
 
-**搜尋策略：**
-```
-查詢條件：
-  db = pubmed
-  datetype = edat（Entrez date，入庫日期）
-  reldate = 1（PubMed API 最小粒度為天，無法指定小時。每 6 小時排程會重複看到同日結果，由 §4 去重機制處理重疊）
-  retmax = 50
-  sort = date
+每組查詢定義了：
+- `query`：搜尋字串（使用 `site:` 運算子定向特定來源）
+- `allowed_domains`：限定回傳結果的網域
+- `max_results`：每組最多回傳筆數
 
-篩選 publication type（PT filter）：
-  - systematic review[pt]
-  - meta-analysis[pt]
-  - randomized controlled trial[pt]
-  - practice guideline[pt]
+**查詢分類與覆蓋範圍：**
 
-主題篩選（MeSH terms，OR 組合）：
-  - "Nutritional Sciences"[MeSH]
-  - "Diet"[MeSH]
-  - "Dietary Supplements"[MeSH]
-  - "Food Safety"[MeSH]
-  - "Public Health"[MeSH]
-  - "Chronic Disease"[MeSH]
-  - "Mental Health"[MeSH]
-  - "Exercise"[MeSH]
-  - "Sleep"[MeSH]
-  - "Gut Microbiome"[MeSH]
+| 類別 | 覆蓋來源 | 查詢策略 |
+|------|---------|---------|
+| 學術文獻 | PubMed, PMC | `site:pubmed.ncbi.nlm.nih.gov` + 研究類型關鍵字 |
+| 官方公告 | WHO, FDA, 衛福部, 疾管署 | `site:` 各機構網域 |
+| 期刊研究 | Nature, Lancet, BMJ | `allowed_domains` 過濾 |
+| 健康新聞 | MedPage Today, STAT News | `allowed_domains` 過濾 |
+| 專題研究 | 腸道菌/睡眠/運動 | 跨網域主題搜尋 |
 
-查詢範例（節錄部分 MeSH terms，實際執行時使用 config 中全部 terms）：
-  (systematic review[pt] OR meta-analysis[pt] OR randomized controlled trial[pt])
-  AND ("Nutritional Sciences"[MeSH] OR "Diet"[MeSH] OR "Dietary Supplements"[MeSH]
-       OR "Public Health"[MeSH] OR "Mental Health"[MeSH])
-  AND reldate=1
-```
+**執行方式：** 對所有查詢平行執行 WebSearch，合併結果後進入去重。
 
-**efetch 回傳格式：** `retmode=xml`，解析 `<Article>` 節點取 Title、Abstract、PMID、PublicationType、MeshHeadingList。
-
-### 3.3 RSS Feeds
-
-| 來源 | Feed URL | 解析方式 |
-|------|----------|----------|
-| WHO News | `https://www.who.int/rss-feeds/news-english.xml` | 標準 RSS 2.0 |
-| FDA Press Announcements | `https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml` | RSS 2.0 |
-| FDA Safety Alerts | `https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/safety/rss.xml` | RSS 2.0 |
-| 衛福部新聞 | `https://www.mohw.gov.tw/rss-16.html` | RSS 2.0 |
-
-**篩選：** 取最近 24 小時內的條目（比對 `<pubDate>` 或 `<updated>`）。與 PubMed 同理，重疊部分由 §4 去重機制處理。
-
-**注意：** RSS feed URL 可能隨機構改版而變動，寫在設定檔 `data/news-automation-config.json` 中，方便修改。
-
-### 3.4 Web Search（一般健康新聞）
-
-使用 WebSearch 工具（Claude Code 內建，本機與遠端環境皆可用），執行多組關鍵字搜尋。若環境有 Tavily MCP 可用，亦可使用 `tavily_search` 作為替代。
-
-對 config 中 `tavily.queries` 的每組關鍵字，執行一次 WebSearch：
-
-```
-WebSearch({
-  query: "health nutrition research latest {current_year}",
-  allowed_domains: ["nih.gov", "who.int", "fda.gov",
-    "nature.com", "thelancet.com", "bmj.com",
-    "medpagetoday.com", "statnews.com",
-    "mohw.gov.tw", "cdc.gov.tw"]
-})
-```
+**查詢清單維護：** 編輯 `data/news-automation-config.json` 的 `webSearch.queries` 陣列即可新增、修改或刪除查詢。
 
 **關鍵字清單** 存在 `data/news-automation-config.json`，可隨時調整。
 
