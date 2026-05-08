@@ -4,6 +4,7 @@ import Article from '@/layouts/Article.astro';
 import JsonLd from '@/components/seo/JsonLd.astro';
 import TableOfContents from '@/components/blocks/TableOfContents.svelte';
 import EvidenceScale from '@/components/charts/EvidenceScale.svelte';
+import PathwayDiagram from '@/components/charts/PathwayDiagram.svelte';
 import ArticleCard from '@/components/blocks/ArticleCard.astro';
 import MythCard from '@/components/blocks/MythCard.astro';
 import VideoCard from '@/components/blocks/VideoCard.astro';
@@ -90,6 +91,15 @@ const ingredientBreadcrumbSchema = {
     <JsonLd data={ingredientBreadcrumbSchema} />
   </Fragment>
 
+  {data.pathwaySteps && data.pathwaySteps.length > 0 ? (
+    <PathwayDiagram steps={data.pathwaySteps} client:visible />
+  ) : data.mechanism ? (
+    <section class="mechanism-text">
+      <h3>作用機制</h3>
+      <p>{data.mechanism}</p>
+    </section>
+  ) : null}
+
   <EvidenceScale uses={data.uses} client:visible />
 
   <Content />
@@ -172,5 +182,26 @@ const ingredientBreadcrumbSchema = {
     .related-content__grid {
       grid-template-columns: 1fr;
     }
+  }
+
+  .mechanism-text {
+    padding: 1.5rem;
+    border-radius: var(--radius-card);
+    border: 1px solid var(--color-fog);
+    background-color: white;
+  }
+
+  .mechanism-text h3 {
+    font-family: var(--font-sans);
+    font-size: var(--text-h3);
+    font-weight: 700;
+    color: var(--color-ink);
+    margin-bottom: 0.75rem;
+  }
+
+  .mechanism-text p {
+    font-size: var(--text-body);
+    color: var(--color-ink);
+    line-height: 1.8;
   }
 </style>
