@@ -464,15 +464,16 @@ relatedVideos: ["sprouted-potato"]       # 連到 src/content/videos/sprouted-po
 ```
 Cron（台灣 06:17 / 12:17 / 18:17 / 00:17）
   │
-  ├─ 資料抓取（平行三管道）
-  │   ├─ PubMed API（systematic review / meta-analysis / RCT / guideline）
-  │   ├─ RSS Feeds（WHO / FDA Press / FDA Recalls / FDA MedWatch / 衛福部）
-  │   └─ WebSearch（一般健康新聞，domain 過濾）
+  ├─ 資料抓取（WebSearch 多組定向查詢）
+  │   ├─ PubMed 學術文獻（site:pubmed.ncbi.nlm.nih.gov）
+  │   ├─ WHO / FDA / 衛福部 / 疾管署官方公告（site: 各機構）
+  │   ├─ Nature / Lancet / BMJ 研究期刊
+  │   └─ 健康新聞媒體（MedPage Today、STAT News 等）
   │
   ├─ 去重過濾（比對 data/processed-sources.json）
   ├─ 編輯企劃（五維度加權評分 → 分組 → 撰文工單）
   ├─ 平行撰文（每份工單一個 Sonnet agent）
-  ├─ 連結驗證（確認所有引用連結可連線且內容相符）
+  ├─ 連結驗證（確認所有引用連結存在且內容相符）
   ├─ 動態審核委員會（依文章內容決定臨床/受眾/媒體角色與人數）
   ├─ 審核迴圈（反覆審修，直到零建議或判定未收斂）
   │
@@ -484,8 +485,8 @@ Cron（台灣 06:17 / 12:17 / 18:17 / 00:17）
 ### 去重機制
 
 `data/processed-sources.json` 記錄已處理的來源，避免重複撰文：
-- PubMed：以 `PMID:{id}` 為 key
-- RSS / WebSearch：以完整 URL 為 key
+- PubMed 結果：以 `PMID:{id}` 為 key
+- 其他來源：以完整 URL 為 key
 - 超過 90 天的條目自動清除
 
 ### 審核收斂規則
@@ -500,7 +501,7 @@ Cron（台灣 06:17 / 12:17 / 18:17 / 00:17）
 | 檔案 | 用途 |
 |------|------|
 | `docs/superpowers/specs/2026-05-08-news-automation-design.md` | 完整設計規格 |
-| `data/news-automation-config.json` | 抓取設定（關鍵字、RSS URLs、MeSH terms、評分閾值） |
+| `data/news-automation-config.json` | 抓取設定（WebSearch 查詢、domain 過濾、評分閾值） |
 | `data/processed-sources.json` | 去重追蹤 |
 
 ### 手動調整
