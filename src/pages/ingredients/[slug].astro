@@ -72,7 +72,7 @@ const ingredientBreadcrumbSchema = {
 <Article
   title={data.title}
   description={data.description}
-  ogImage={data.coverImage}
+  ogImage={data.coverImage || `/og/ingredients/${slug}.png`}
   category="ingredient"
   publishDate={data.publishDate}
   updatedDate={data.updatedDate}

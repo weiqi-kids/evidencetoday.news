@@ -76,7 +76,7 @@ const mythBreadcrumbSchema = {
 <Article
   title={data.title}
   description={data.description}
-  ogImage={data.coverImage}
+  ogImage={data.coverImage || `/og/myths/${slug}.png`}
   category="myth"
   publishDate={data.publishDate}
   updatedDate={data.updatedDate}
