@@ -69,11 +69,7 @@ const topTags = await getTopTags();
                 <time class="editor-pick__date">{fmtDate(n.data.publishDate)}</time>
               </div>
               <h3 class="editor-pick__title">
-                {n.data.sourceUrl ? (
-                  <a href={n.data.sourceUrl} target="_blank" rel="noopener noreferrer">{n.data.title}</a>
-                ) : (
-                  n.data.title
-                )}
+                <a href={`/news/${stripExt(n.id)}/`}>{n.data.title}</a>
               </h3>
               <p class="editor-pick__summary">{n.data.summary}</p>
               {n.data.editorComment && (
