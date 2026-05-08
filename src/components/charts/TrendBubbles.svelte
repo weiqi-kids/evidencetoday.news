@@ -16,7 +16,7 @@
 
   const radiusScale = scaleSqrt()
     .domain([1, Math.max(...tags.map((t) => t.count), 1)])
-    .range([18, 55]);
+    .range([20, 60]);
 
   onMount(() => {
     const rect = svgEl.parentElement.getBoundingClientRect();
