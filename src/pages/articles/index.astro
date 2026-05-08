@@ -2,10 +2,7 @@
 import List from '@/layouts/List.astro';
 import ArticleCard from '@/components/blocks/ArticleCard.astro';
 import { getCollection } from 'astro:content';
-
-function fmtDate(d: Date): string {
-  return d.toISOString().slice(0, 10);
-}
+import { fmtDate } from '@/utils/date';
 
 function stripExt(id: string): string {
   return id.replace(/\.[^.]+$/, '');

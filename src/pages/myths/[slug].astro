@@ -8,6 +8,7 @@ import ArticleCard from '@/components/blocks/ArticleCard.astro';
 import IngredientCard from '@/components/blocks/IngredientCard.astro';
 import VideoCard from '@/components/blocks/VideoCard.astro';
 import PodcastCard from '@/components/blocks/PodcastCard.astro';
+import { fmtDate } from '@/utils/date';
 
 function stripExt(id: string): string {
   return id.replace(/\.[^.]+$/, '');
@@ -19,10 +20,6 @@ export async function getStaticPaths() {
     params: { slug: entry.id.replace(/\.[^.]+$/, '') },
     props: { entry },
   }));
-}
-
-function fmtDate(d: Date): string {
-  return d.toISOString().slice(0, 10);
 }
 
 const { entry } = Astro.props;

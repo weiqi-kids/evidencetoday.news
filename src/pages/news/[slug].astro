@@ -8,13 +8,10 @@ import MythCard from '@/components/blocks/MythCard.astro';
 import IngredientCard from '@/components/blocks/IngredientCard.astro';
 import VideoCard from '@/components/blocks/VideoCard.astro';
 import PodcastCard from '@/components/blocks/PodcastCard.astro';
+import { fmtDate } from '@/utils/date';
 
 function stripExt(id: string): string {
   return id.replace(/\.[^.]+$/, '');
-}
-
-function fmtDate(d: Date): string {
-  return d.toISOString().slice(0, 10);
 }
 
 export async function getStaticPaths() {

@@ -7,13 +7,10 @@ import PodcastCard from '@/components/blocks/PodcastCard.astro';
 import VideoCard from '@/components/blocks/VideoCard.astro';
 import NewsItem from '@/components/blocks/NewsItem.astro';
 import { getCollection } from 'astro:content';
+import { fmtDate } from '@/utils/date';
 
 function stripExt(id: string): string {
   return id.replace(/\.[^.]+$/, '');
-}
-
-function fmtDate(d: Date): string {
-  return d.toISOString().slice(0, 10);
 }
 
 type TaggedEntry = {

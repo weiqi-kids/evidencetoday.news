@@ -4,13 +4,10 @@ import SearchBar from '@/components/ui/SearchBar.astro';
 import Button from '@/components/ui/Button.astro';
 import ArticleCard from '@/components/blocks/ArticleCard.astro';
 import { getCollection } from 'astro:content';
+import { fmtDate } from '@/utils/date';
 
 function stripExt(id: string): string {
   return id.replace(/\.[^.]+$/, '');
-}
-
-function fmtDate(d: Date): string {
-  return d.toISOString().slice(0, 10);
 }
 
 const latestArticles = (await getCollection('articles', (e) => !e.data.draft))
