@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-05-09T12:00:00Z",
+  "lastRun": "2026-05-09T16:17:00Z",
   "processed": {
     "PMID:42098536": {
       "processedAt": "2026-05-08T12:00:00Z",
@@ -285,6 +285,26 @@
     "https://www.cdc.gov.tw/Bulletin/Detail/giyutoLsHxpQ5W4W5-0bHg?typeid=9": {
       "processedAt": "2026-05-09T10:00:00Z",
       "outputFile": "src/content/news/radar-2026-05-09-18-02.md"
+    },
+    "https://www.cdc.gov.tw/TravelEpidemic/Detail/l3pMhSuOr0TDuWIW-_y94A?epidemicId=4y7BogIICZ-nQXZeJKptNA": {
+      "processedAt": "2026-05-09T16:17:00Z",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/AXG37sOc0tSeYH5Utn2ndw?typeid=9": {
+      "processedAt": "2026-05-09T16:17:00Z",
+      "outputFile": null
+    },
+    "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/second-nature-brands-issues-allergy-alert-undeclared-cashews-pistachois-and-cherries-keto-crunch": {
+      "processedAt": "2026-05-09T16:17:00Z",
+      "outputFile": null
+    },
+    "https://www.who.int/publications/i/item/9789240118324": {
+      "processedAt": "2026-05-09T16:17:00Z",
+      "outputFile": null
+    },
+    "PMID:39116016": {
+      "processedAt": "2026-05-09T16:17:00Z",
+      "outputFile": null
     }
   }
 }
