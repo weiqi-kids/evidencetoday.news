@@ -301,6 +301,7 @@ const categories = [
                 description={d.description as string}
                 href={`/articles/${stripExt(item.id)}/`}
                 category="article"
+                coverImage={d.coverImage as string | undefined}
                 author={d.author as string}
                 date={fmtDate(item.date)}
                 editorReviewed={d.editorReviewed as boolean}

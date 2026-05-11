@@ -26,6 +26,7 @@ const articles = (await getCollection('articles', (e) => !e.data.draft && !e.id.
         description={a.data.description}
         href={`/articles/${stripExt(a.id)}/`}
         category="article"
+        coverImage={a.data.coverImage}
         author={a.data.author}
         date={fmtDate(a.data.publishDate)}
         editorReviewed={a.data.editorReviewed}
