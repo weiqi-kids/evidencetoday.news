@@ -10,11 +10,12 @@ import Button from '@/components/ui/Button.astro';
 
     <header class="search-header">
       <h1>搜尋</h1>
+      <p class="search-header__desc">輸入關鍵字，使用 Pagefind 全文搜尋文章、趨勢、Podcast、短影音、闢謠與原料內容。</p>
     </header>
 
     <div id="search-container"></div>
 
-    <nav class="search-fallback">
+    <nav class="search-fallback" aria-label="內容分類入口">
       <h2 class="search-fallback__title">瀏覽所有分類</h2>
       <div class="search-fallback__grid">
         <Button variant="secondary" href="/articles/">文章</Button>
@@ -25,6 +26,17 @@ import Button from '@/components/ui/Button.astro';
         <Button variant="secondary" href="/news/">趨勢</Button>
       </div>
     </nav>
+
+    <section class="search-hot-tags" aria-label="熱門標籤">
+      <h2 class="search-fallback__title">熱門標籤</h2>
+      <div class="search-hot-tags__list">
+        <a href="/tags/魚油/">魚油</a>
+        <a href="/tags/Omega-3/">Omega-3</a>
+        <a href="/tags/薑黃素/">薑黃素</a>
+        <a href="/tags/保健食品/">保健食品</a>
+      </div>
+      <p class="search-note">若找不到結果，請嘗試同義詞（例如：魚油 / Omega-3）或改用較短關鍵字。</p>
+    </section>
   </div>
 </Base>
 
@@ -32,7 +44,15 @@ import Button from '@/components/ui/Button.astro';
 <script is:inline src="/pagefind/pagefind-ui.js"></script>
 <script is:inline>
   window.addEventListener('DOMContentLoaded', () => {
-    new PagefindUI({ element: '#search-container', showSubResults: true });
+    new PagefindUI({
+      element: '#search-container',
+      showSubResults: true,
+      resetStyles: false,
+      translations: {
+        placeholder: '搜尋關鍵字（例如：魚油、Omega-3、三酸甘油酯、薑黃素）',
+      },
+      processResult: (result) => result,
+    });
   });
 </script>
 
@@ -44,10 +64,10 @@ import Button from '@/components/ui/Button.astro';
   }
 
   .search-header {
-    padding-block: 1.5rem 2rem;
+    padding-block: 1.5rem 1.25rem;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.75rem;
   }
 
   .search-header h1 {
@@ -57,11 +77,17 @@ import Button from '@/components/ui/Button.astro';
     color: var(--color-ink);
   }
 
+  .search-header__desc {
+    color: color-mix(in oklch, var(--color-ink) 72%, transparent);
+    line-height: 1.7;
+  }
+
   #search-container {
     padding-block: 1rem 2rem;
   }
 
-  .search-fallback {
+  .search-fallback,
+  .search-hot-tags {
     padding-block: 1rem;
   }
 
@@ -77,5 +103,27 @@ import Button from '@/components/ui/Button.astro';
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
+  }
+
+  .search-hot-tags__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .search-hot-tags__list a {
+    font-family: var(--font-ui);
+    font-size: var(--text-meta);
+    text-decoration: none;
+    background: var(--color-fog);
+    border-radius: 999px;
+    padding: 0.3rem 0.7rem;
+    color: var(--color-ink);
+  }
+
+  .search-note {
+    margin-top: 0.75rem;
+    color: color-mix(in oklch, var(--color-ink) 65%, transparent);
+    font-size: var(--text-meta);
   }
 </style>
