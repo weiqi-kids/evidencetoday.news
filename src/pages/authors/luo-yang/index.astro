@@ -1,15 +1,15 @@
 ---
 import Base from '@/layouts/Base.astro';
+import { getCollection } from 'astro:content';
 import { existsSync } from 'node:fs';
-import { getPublishedArticles } from '@/utils/articles';
 
 function stripExt(id: string) {
   return id.replace(/\.[^.]+$/, '');
 }
 
 const hasEditorPhoto = existsSync(new URL('../../../../public/images/authors/luo-yang.jpg', import.meta.url));
-const articles = (await getPublishedArticles())
-  .filter((article) => article.data.author === '羅揚');
+const articles = (await getCollection('articles', (e) => !e.data.draft && e.data.author === '羅揚'))
+  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
 ---
 
 <Base title="羅揚｜本日有據主編" description="本日有據主編羅揚簡介、Podcast 與文章列表。">
