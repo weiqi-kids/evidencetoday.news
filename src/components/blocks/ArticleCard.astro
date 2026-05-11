@@ -1,6 +1,7 @@
 ---
 import CategoryTag from '../ui/CategoryTag.astro';
 import Badge from '../ui/Badge.astro';
+import { existsSync } from 'node:fs';
 
 interface Props {
   title: string;
@@ -14,11 +15,18 @@ interface Props {
 }
 
 const { title, description, href, category, author, date, editorReviewed, coverImage } = Astro.props;
+const safeCoverImage =
+  typeof coverImage === 'string' &&
+  (coverImage.startsWith('http://') ||
+    coverImage.startsWith('https://') ||
+    (coverImage.startsWith('/') && existsSync(new URL(`../../../public${coverImage}`, import.meta.url))))
+    ? coverImage
+    : undefined;
 ---
 
 <a href={href} class="article-card">
-  {coverImage ? (
-    <img class="article-card__image" src={coverImage} alt={`${title} 縮圖`} loading="lazy" />
+  {safeCoverImage ? (
+    <img class="article-card__image" src={safeCoverImage} alt={`${title} 縮圖`} loading="lazy" />
   ) : (
     <div class="article-card__image article-card__image--fallback" aria-hidden="true"></div>
   )}
