@@ -26,3 +26,6 @@ Thumbs.db
 
 # database
 *.db
+
+# Local-only binary asset (upload via deployment CMS or manual server upload)
+public/images/authors/luo-yang.jpg

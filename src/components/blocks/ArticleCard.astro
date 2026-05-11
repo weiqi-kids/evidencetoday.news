@@ -1,6 +1,7 @@
 ---
 import CategoryTag from '../ui/CategoryTag.astro';
 import Badge from '../ui/Badge.astro';
+import { existsSync } from 'node:fs';
 
 interface Props {
   title: string;
@@ -10,17 +11,30 @@ interface Props {
   author: string;
   date: string;
   editorReviewed: boolean;
+  coverImage?: string;
 }
 
-const { title, description, href, category, author, date, editorReviewed } = Astro.props;
+const { title, description, href, category, author, date, editorReviewed, coverImage } = Astro.props;
+const safeCoverImage =
+  typeof coverImage === 'string' &&
+  (coverImage.startsWith('http://') ||
+    coverImage.startsWith('https://') ||
+    (coverImage.startsWith('/') && existsSync(new URL(`../../../public${coverImage}`, import.meta.url))))
+    ? coverImage
+    : undefined;
 ---
 
 <a href={href} class="article-card">
+  {safeCoverImage ? (
+    <img class="article-card__image" src={safeCoverImage} alt={`${title} 縮圖`} loading="lazy" />
+  ) : (
+    <div class="article-card__image article-card__image--fallback" aria-hidden="true"></div>
+  )}
   <div class="article-card__bar"></div>
   <div class="article-card__body">
     <div class="article-card__top">
       <CategoryTag category={category} />
-      {editorReviewed && <Badge variant="editor">主編校稿</Badge>}
+      {editorReviewed && <Badge variant="editor">主編把關</Badge>}
     </div>
     <h3 class="article-card__title">{title}</h3>
     <p class="article-card__desc">{description}</p>
@@ -51,6 +65,17 @@ const { title, description, href, category, author, date, editorReviewed } = Ast
   .article-card__bar {
     height: 6px;
     background-color: var(--color-cat-article);
+  }
+
+  .article-card__image {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    display: block;
+  }
+
+  .article-card__image--fallback {
+    background: linear-gradient(180deg, #eef3ff, #f8fbff);
   }
 
   .article-card__body {
