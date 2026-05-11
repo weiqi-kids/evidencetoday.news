@@ -1,0 +1,33 @@
+---
+import Base from '@/layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { existsSync } from 'node:fs';
+
+function stripExt(id: string) { return id.replace(/\.[^.]+$/, ''); }
+const hasEditorPhoto = existsSync(new URL('../../../../public/images/authors/luo-yang.jpg', import.meta.url));
+const articles = (await getCollection('articles', (e) => !e.data.draft && e.data.author === '羅揚'))
+  .sort((a,b)=>b.data.publishDate.getTime()-a.data.publishDate.getTime());
+---
+<Base title="羅揚｜本日有據主編" description="本日有據主編羅揚簡介、Podcast 與文章列表。">
+  <main class="container editor-page">
+    <h1>羅揚｜本日有據主編</h1>
+    <section class="editor-hero">
+      {hasEditorPhoto ? (
+        <img src="/images/authors/luo-yang.jpg" alt="本日有據主編羅揚" loading="lazy" />
+      ) : (
+        <div class="editor-photo-fallback" role="img" aria-label="本日有據主編羅揚">
+          羅揚
+        </div>
+      )}
+      <div>
+        <p>姓名：羅揚</p>
+        <p>身分：本日有據主編</p>
+      </div>
+    </section>
+    <section><h2>專業背景與內容理念</h2><p>羅揚是《本日有據 Evidence Today》主編，具牙醫學與口腔衛生材料研究背景，長期關注營養科學、保健食品、預防醫學與健康資訊傳播。他的內容工作重點，是把複雜的研究資料、醫學名詞與保健食品議題，轉化成一般人能理解、能判斷、能應用的知識。</p><p>羅揚同時主持 Podcast《喜聞樂健》，持續以白話方式討論健康、營養與保健食品觀念。他相信健康資訊不應只是艱深名詞的堆疊，也不應淪為恐嚇式行銷；真正有價值的健康內容，應該讓讀者知道「證據到哪裡為止」、「哪些說法過度延伸」、「一般人在生活中可以怎麼判斷」。</p><p>本日有據的編輯原則，是不販售恐懼、不誇大療效、不接受廠商業配，並盡可能讓每一篇內容都保留研究脈絡、限制說明與實際生活判斷。</p></section>
+    <section><h2>Podcast</h2><p><a href="/podcasts/">前往《喜聞樂健》Podcast 專區</a></p></section>
+    <section><h2>文章列表</h2><ul>{articles.map((a)=><li><a href={`/articles/${stripExt(a.id)}/`}>{a.data.title}</a></li>)}</ul></section>
+    <section><h2>醫療聲明</h2><p>本站內容僅供一般健康資訊參考，不構成醫療建議。請依個人狀況諮詢專業醫療人員。</p></section>
+  </main>
+</Base>
+<style>.editor-page{padding:3rem 0}.editor-hero{display:grid;grid-template-columns:220px 1fr;gap:1rem;align-items:start}.editor-hero img,.editor-photo-fallback{width:100%;border-radius:12px;aspect-ratio:2/3;object-fit:cover}.editor-photo-fallback{display:grid;place-items:center;background:linear-gradient(180deg,#eef3ff,#f8fbff);font-weight:700;color:#1f355e}@media(max-width:700px){.editor-hero{grid-template-columns:1fr}}</style>

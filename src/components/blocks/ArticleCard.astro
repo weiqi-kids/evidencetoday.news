@@ -20,7 +20,7 @@ const { title, description, href, category, author, date, editorReviewed } = Ast
   <div class="article-card__body">
     <div class="article-card__top">
       <CategoryTag category={category} />
-      {editorReviewed && <Badge variant="editor">主編校稿</Badge>}
+      {editorReviewed && <Badge variant="editor">主編把關</Badge>}
     </div>
     <h3 class="article-card__title">{title}</h3>
     <p class="article-card__desc">{description}</p>

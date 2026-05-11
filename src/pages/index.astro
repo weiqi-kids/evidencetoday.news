@@ -22,7 +22,7 @@ function stripExt(id: string): string {
 /* ------------------------------------------------------------------ */
 /*  Fetch all non-draft content                                        */
 /* ------------------------------------------------------------------ */
-const allArticles = (await getCollection('articles', (e) => !e.data.draft))
+const allArticles = (await getCollection('articles', (e) => !e.data.draft && !e.id.startsWith('lodes-')))
   .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
 
 const allMyths = (await getCollection('myths', (e) => !e.data.draft))
@@ -219,25 +219,26 @@ const categories = [
         <span class="hero__badge">主編把關・研究脈絡・白話解釋</span>
         <h1 class="hero__title">把健康議題，講得有根據，<br>也講得讓人看得懂。</h1>
         <p class="hero__subtitle">
-          我們整理最新的醫學研究與營養科學，經過主編審查後，用白話文讓你真正讀懂。不販售恐懼，不誇大療效，只給你查得到出處的資訊。
+          我們整理最新的醫學研究與營養科學，以研究資料、公共資訊與主編判讀，整理健康、營養、保健食品與公共衛生議題。不販售恐懼，不誇大療效。
         </p>
         <div class="hero__buttons">
           <Button variant="primary" href="/articles/">最新文章 →</Button>
           <Button variant="secondary" href="/myths/" class="hero-btn-secondary">迷思破解</Button>
+          <Button variant="secondary" href="/authors/luo-yang/">認識主編</Button>
           <Button variant="cta" href="#cta">追蹤 LINE 拿整理筆記</Button>
         </div>
         <div class="hero__trust">
           <div class="hero__trust-card">
-            <span class="hero__trust-number">100%</span>
-            <span class="hero__trust-label">主編審稿</span>
+            <span class="hero__trust-number">主編把關</span>
+            <span class="hero__trust-label">每篇內容經主編整理、編輯與事實查核</span>
           </div>
           <div class="hero__trust-card">
             <span class="hero__trust-number">可查證</span>
-            <span class="hero__trust-label">每篇附參考文獻</span>
+            <span class="hero__trust-label">盡可能附上研究來源與資料脈絡</span>
           </div>
           <div class="hero__trust-card">
             <span class="hero__trust-number">零業配</span>
-            <span class="hero__trust-label">無廠商贊助內容</span>
+            <span class="hero__trust-label">不接受廠商付費置入或贊助內容</span>
           </div>
         </div>
       </div>
