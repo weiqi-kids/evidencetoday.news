@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none">
+  <rect width="800" height="450" rx="8" fill="#FDF5EE"/>
+  <circle cx="400" cy="195" r="65" fill="#F0D8B8" opacity="0.5"/>
+  <path d="M400 150 l-35 60 h70 Z" fill="#D4864A" opacity="0.6"/>
+  <text x="400" y="205" text-anchor="middle" font-family="sans-serif" font-size="32" font-weight="bold" fill="#FDF5EE">!</text>
+  <rect x="350" y="240" width="100" height="12" rx="3" fill="#D4864A" opacity="0.3"/>
+  <rect x="360" y="258" width="80" height="8" rx="2" fill="#D4864A" opacity="0.2"/>
+  <text x="400" y="320" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#B87040" opacity="0.8">FOOD SAFETY</text>
+</svg>

@@ -9,6 +9,7 @@ import IngredientCard from '@/components/blocks/IngredientCard.astro';
 import VideoCard from '@/components/blocks/VideoCard.astro';
 import PodcastCard from '@/components/blocks/PodcastCard.astro';
 import { fmtDate } from '@/utils/date';
+import { getDisplayTitle, getNewsCategory, getNewsHeroImage } from '@/utils/news';
 
 function stripExt(id: string): string {
   return id.replace(/\.[^.]+$/, '');
@@ -26,6 +27,10 @@ const { entry } = Astro.props;
 const { Content } = await entry.render();
 const data = entry.data;
 const slug = entry.id.replace(/\.[^.]+$/, '');
+
+const displayTitle = getDisplayTitle(data.titleDisplay, data.title);
+const category = getNewsCategory(data.tags, data.category);
+const heroImage = getNewsHeroImage(data.heroImage, data.thumbnail, data.tags, data.category);
 
 /* Resolve related content */
 const relatedArticles = data.relatedArticles
@@ -46,13 +51,17 @@ const relatedPodcasts = data.relatedPodcasts
 
 const hasRelated = relatedArticles.length > 0 || relatedMyths.length > 0 || relatedIngredients.length > 0 || relatedVideos.length > 0 || relatedPodcasts.length > 0;
 
+/* Meta description */
+const metaDesc = (data.subtitle || data.summary || '').slice(0, 140);
+
 /* JSON-LD */
 const articleSchema = {
   '@context': 'https://schema.org',
   '@type': 'NewsArticle',
-  headline: data.title,
-  description: data.summary,
-  author: { '@type': 'Organization', name: data.source },
+  headline: displayTitle,
+  description: metaDesc,
+  image: new URL(heroImage, 'https://evidencetoday.news').href,
+  author: { '@type': 'Organization', name: '本日有據' },
   datePublished: data.publishDate.toISOString(),
   publisher: {
     '@type': 'Organization',
@@ -67,12 +76,12 @@ const breadcrumbSchema = {
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: '首頁', item: 'https://evidencetoday.news/' },
     { '@type': 'ListItem', position: 2, name: '趨勢', item: 'https://evidencetoday.news/news/' },
-    { '@type': 'ListItem', position: 3, name: data.title, item: `https://evidencetoday.news/news/${slug}/` },
+    { '@type': 'ListItem', position: 3, name: displayTitle, item: `https://evidencetoday.news/news/${slug}/` },
   ],
 };
 ---
 
-<Base title={`${data.title} | 本日有據`} description={data.summary} ogType="article">
+<Base title={`${displayTitle} | 本日有據`} description={metaDesc} ogType="article">
   <Fragment slot="head">
     <JsonLd data={articleSchema} />
     <JsonLd data={breadcrumbSchema} />
@@ -82,40 +91,52 @@ const breadcrumbSchema = {
     <Breadcrumb items={[
       { label: '首頁', href: '/' },
       { label: '趨勢', href: '/news/' },
-      { label: data.title },
+      { label: displayTitle },
     ]} />
 
     <article class="news-article">
+      {/* ---- Hero ---- */}
       <header class="news-article__header">
-        <div class="news-article__bar"></div>
-        <div class="news-article__meta">
-          <span class="news-article__source">{data.source}</span>
-          <span aria-hidden="true">&middot;</span>
-          <time>{fmtDate(data.publishDate)}</time>
-        </div>
-        <h1 class="news-article__title">{data.title}</h1>
-        <p class="news-article__summary">{data.summary}</p>
-        {data.tags.length > 0 && (
-          <div class="news-article__tags">
-            {data.tags.map((tag) => (
-              <span class="news-article__tag">{tag}</span>
-            ))}
-          </div>
+        <span class="news-article__cat">{category}</span>
+        <h1 class="news-article__title">{displayTitle}</h1>
+        {data.subtitle && (
+          <p class="news-article__subtitle">{data.subtitle}</p>
         )}
+        <div class="news-article__meta">
+          <time>{fmtDate(data.publishDate)}</time>
+          {data.sourceUrl && (
+            <>
+              <span aria-hidden="true">&middot;</span>
+              <a href={data.sourceUrl} target="_blank" rel="noopener noreferrer" class="news-article__source-link">原始來源</a>
+            </>
+          )}
+        </div>
       </header>
 
-      {data.editorComment && (
-        <blockquote class="editor-comment">
-          <span class="editor-comment__label">主編觀點</span>
-          <p>{data.editorComment}</p>
-        </blockquote>
-      )}
+      {/* ---- Hero image ---- */}
+      <div class="news-article__hero-img">
+        <img src={heroImage} alt={displayTitle} loading="eager" />
+      </div>
 
+      {/* ---- Body (Markdown content) ---- */}
       <div class="news-article__body prose">
         <Content />
       </div>
+
+      {/* ---- 我的觀點與行動建議 ---- */}
+      {data.editorComment && (
+        <aside class="editor-action">
+          <h2 class="editor-action__heading">我的觀點與行動建議</h2>
+          <div class="editor-action__content">
+            {data.editorComment.split('\n\n').map((para) => (
+              <p>{para}</p>
+            ))}
+          </div>
+        </aside>
+      )}
     </article>
 
+    {/* ---- Related ---- */}
     {hasRelated && (
       <section class="related-section">
         <h2 class="related-section__title">你可能想看</h2>
@@ -177,106 +198,110 @@ const breadcrumbSchema = {
   }
 
   .news-article {
-    max-width: 72ch;
+    max-width: 52rem;
     margin: 0 auto;
   }
 
+  /* ---- Header / Hero ---- */
   .news-article__header {
-    padding-block: 1.5rem 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .news-article__bar {
-    width: 3rem;
-    height: 4px;
-    border-radius: var(--radius-pill);
-    background-color: var(--color-cat-news);
-  }
-
-  .news-article__meta {
-    display: flex;
-    align-items: center;
-    gap: 0.375rem;
-    font-family: var(--font-ui);
-    font-size: var(--text-meta);
-    color: color-mix(in oklch, var(--color-ink) 55%, transparent);
-  }
-
-  .news-article__source {
-    font-weight: 600;
-  }
-
-  .news-article__title {
-    font-family: var(--font-sans);
-    font-size: var(--text-h1);
-    font-weight: 700;
-    color: var(--color-ink);
-    line-height: 1.3;
-  }
-
-  .news-article__summary {
-    font-size: var(--text-body);
-    color: color-mix(in oklch, var(--color-ink) 70%, transparent);
-    line-height: 1.7;
-  }
-
-  .news-article__tags {
-    display: flex;
-    align-items: center;
-    gap: 0.375rem;
-    flex-wrap: wrap;
-  }
-
-  .news-article__tag {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.15rem 0.5rem;
-    border-radius: var(--radius-pill);
-    font-family: var(--font-ui);
-    font-size: var(--text-badge);
-    font-weight: 500;
-    line-height: 1.4;
-    white-space: nowrap;
-    background-color: color-mix(in oklch, var(--color-cat-news) 14%, white);
-    color: var(--color-cat-news);
-  }
-
-  .editor-comment {
-    margin: 0 0 2rem;
-    padding: 1.25rem 1.5rem;
-    background-color: var(--color-paper);
-    border-left: 4px solid var(--color-cat-news);
-    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding-block: 1.5rem 1rem;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
   }
 
-  .editor-comment__label {
+  .news-article__cat {
+    display: inline-flex;
+    align-self: flex-start;
+    padding: 0.2rem 0.65rem;
+    border-radius: var(--radius-pill);
     font-family: var(--font-ui);
-    font-size: var(--text-badge);
-    font-weight: 700;
-    color: var(--color-cat-news);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: white;
+    background: color-mix(in oklch, var(--color-cat-news) 90%, black);
   }
 
-  .editor-comment p {
-    margin: 0;
-    font-size: var(--text-meta);
-    color: color-mix(in oklch, var(--color-ink) 75%, transparent);
+  .news-article__title {
+    font-family: var(--font-serif);
+    font-size: clamp(1.5rem, 1.2rem + 1.5vw, 2.25rem);
+    font-weight: 700;
+    color: var(--color-ink);
+    line-height: 1.35;
+  }
+
+  .news-article__subtitle {
+    font-size: var(--text-body);
+    color: color-mix(in oklch, var(--color-ink) 65%, transparent);
     line-height: 1.7;
   }
 
-  .news-article__body {
-    padding-block: 1rem 3rem;
+  .news-article__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-ui);
+    font-size: var(--text-meta);
+    color: color-mix(in oklch, var(--color-ink) 50%, transparent);
   }
 
-  /* Related */
+  .news-article__source-link {
+    color: var(--color-teal);
+    font-weight: 500;
+  }
+
+  /* ---- Hero image ---- */
+  .news-article__hero-img {
+    aspect-ratio: 16 / 9;
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    background: var(--color-fog);
+    margin-bottom: 2rem;
+  }
+
+  .news-article__hero-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* ---- Body ---- */
+  .news-article__body {
+    max-width: 52rem;
+    padding-block: 0 2rem;
+  }
+
+  /* ---- 我的觀點與行動建議 ---- */
+  .editor-action {
+    margin: 0 0 2.5rem;
+    padding: 1.5rem 1.75rem;
+    background: color-mix(in oklch, var(--color-teal) 6%, var(--color-paper));
+    border-left: 4px solid var(--color-teal);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+
+  .editor-action__heading {
+    font-family: var(--font-sans);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-teal);
+    margin-bottom: 0.75rem;
+  }
+
+  .editor-action__content p {
+    font-size: var(--text-body);
+    color: color-mix(in oklch, var(--color-ink) 80%, transparent);
+    line-height: 1.8;
+    margin-bottom: 0.75rem;
+  }
+
+  .editor-action__content p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* ---- Related ---- */
   .related-section {
-    max-width: 72ch;
+    max-width: 52rem;
     margin: 0 auto;
     padding-block: 2rem 0;
     border-top: 2px solid var(--color-fog);
@@ -296,7 +321,16 @@ const breadcrumbSchema = {
     gap: var(--space-card-gap);
   }
 
+  /* ---- Mobile ---- */
   @media (max-width: 640px) {
+    .news-article__title {
+      font-size: 1.4rem;
+    }
+
+    .editor-action {
+      padding: 1.25rem 1.25rem;
+    }
+
     .related-grid {
       grid-template-columns: 1fr;
     }

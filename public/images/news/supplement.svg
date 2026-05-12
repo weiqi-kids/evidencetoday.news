@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none">
+  <rect width="800" height="450" rx="8" fill="#F2F5EF"/>
+  <rect x="375" y="160" width="50" height="80" rx="10" fill="#7BA668" opacity="0.5"/>
+  <rect x="385" y="150" width="30" height="18" rx="5" fill="#5B8C3F" opacity="0.5"/>
+  <circle cx="400" cy="195" r="6" fill="#F2F5EF" opacity="0.8"/>
+  <circle cx="400" cy="215" r="6" fill="#F2F5EF" opacity="0.8"/>
+  <text x="400" y="310" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#5B8C3F" opacity="0.8">SUPPLEMENT</text>
+</svg>

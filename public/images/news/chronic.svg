@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none">
+  <rect width="800" height="450" rx="8" fill="#F5EFF3"/>
+  <path d="M380 210 Q400 170 420 210 Q440 250 400 270 Q360 250 380 210Z" fill="#9C6080" opacity="0.4"/>
+  <path d="M385 205 Q400 180 415 205 Q430 230 400 245 Q370 230 385 205Z" fill="#B87898" opacity="0.5"/>
+  <path d="M360 200 Q400 200 440 200" stroke="#9C6080" stroke-width="1.5" opacity="0.3"/>
+  <polyline points="360,200 375,200 380,185 390,215 400,190 410,210 420,195 425,200 440,200" stroke="#9C6080" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+  <text x="400" y="320" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#9C6080" opacity="0.8">CHRONIC</text>
+</svg>

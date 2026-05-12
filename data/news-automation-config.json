@@ -25,18 +25,6 @@
         "max_results": 5
       },
       {
-        "name": "FDA 召回與安全警示",
-        "query": "site:fda.gov recall safety alert food supplement 2026",
-        "allowed_domains": ["fda.gov"],
-        "max_results": 5
-      },
-      {
-        "name": "FDA 公告",
-        "query": "site:fda.gov press announcement food drug nutrition 2026",
-        "allowed_domains": ["fda.gov"],
-        "max_results": 5
-      },
-      {
         "name": "衛福部新聞",
         "query": "site:mohw.gov.tw 衛福部 健康 食安 2026",
         "allowed_domains": ["mohw.gov.tw"],

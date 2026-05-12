@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none">
+  <rect width="800" height="450" rx="8" fill="#F0F3EE"/>
+  <path d="M360 180 Q340 200 360 220 Q380 240 360 260 Q340 280 380 280 Q420 280 440 260 Q460 240 440 220 Q420 200 440 180" stroke="#6A9A5A" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.5"/>
+  <circle cx="370" cy="195" r="5" fill="#8AB87A" opacity="0.6"/>
+  <circle cx="350" cy="225" r="4" fill="#A0C890" opacity="0.5"/>
+  <circle cx="390" cy="250" r="6" fill="#8AB87A" opacity="0.5"/>
+  <circle cx="430" cy="235" r="4" fill="#A0C890" opacity="0.6"/>
+  <circle cx="445" cy="200" r="5" fill="#8AB87A" opacity="0.5"/>
+  <text x="400" y="330" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#6A9A5A" opacity="0.8">GUT HEALTH</text>
+</svg>

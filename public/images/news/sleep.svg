@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none">
+  <rect width="800" height="450" rx="8" fill="#EEF3F8"/>
+  <circle cx="400" cy="200" r="80" fill="#C8D8E8" opacity="0.6"/>
+  <circle cx="400" cy="200" r="50" fill="#A0B8D0" opacity="0.5"/>
+  <path d="M370 190 Q400 160 430 190 Q440 200 430 210 Q400 240 370 210 Q360 200 370 190Z" fill="#4A7A8C" opacity="0.7"/>
+  <text x="400" y="320" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#4A7A8C" opacity="0.8">SLEEP</text>
+  <path d="M440 170 l15-15 M455 155 l10 0 M455 155 l0-10" stroke="#4A7A8C" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+  <path d="M460 185 l12-12 M472 173 l8 0 M472 173 l0-8" stroke="#4A7A8C" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+</svg>

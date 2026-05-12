@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none">
+  <rect width="800" height="450" rx="8" fill="#EFF3F8"/>
+  <circle cx="400" cy="160" r="20" fill="#4A7A9C" opacity="0.5"/>
+  <line x1="400" y1="180" x2="400" y2="230" stroke="#4A7A9C" stroke-width="4" stroke-linecap="round" opacity="0.5"/>
+  <line x1="400" y1="195" x2="370" y2="215" stroke="#4A7A9C" stroke-width="3" stroke-linecap="round" opacity="0.5"/>
+  <line x1="400" y1="195" x2="430" y2="215" stroke="#4A7A9C" stroke-width="3" stroke-linecap="round" opacity="0.5"/>
+  <line x1="400" y1="230" x2="375" y2="265" stroke="#4A7A9C" stroke-width="3" stroke-linecap="round" opacity="0.5"/>
+  <line x1="400" y1="230" x2="425" y2="265" stroke="#4A7A9C" stroke-width="3" stroke-linecap="round" opacity="0.5"/>
+  <rect x="340" y="185" width="12" height="6" rx="3" fill="#4A7A9C" opacity="0.4"/>
+  <rect x="448" y="185" width="12" height="6" rx="3" fill="#4A7A9C" opacity="0.4"/>
+  <text x="400" y="320" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#4A7A9C" opacity="0.8">EXERCISE</text>
+</svg>

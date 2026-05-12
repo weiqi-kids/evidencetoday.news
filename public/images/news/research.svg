@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none">
+  <rect width="800" height="450" rx="8" fill="#EFF2F6"/>
+  <circle cx="390" cy="200" r="35" fill="none" stroke="#4A6A8C" stroke-width="3" opacity="0.5"/>
+  <line x1="415" y1="225" x2="440" y2="250" stroke="#4A6A8C" stroke-width="4" stroke-linecap="round" opacity="0.5"/>
+  <rect x="355" y="190" width="20" height="3" rx="1.5" fill="#4A6A8C" opacity="0.3"/>
+  <rect x="355" y="200" width="30" height="3" rx="1.5" fill="#4A6A8C" opacity="0.3"/>
+  <rect x="355" y="210" width="25" height="3" rx="1.5" fill="#4A6A8C" opacity="0.3"/>
+  <text x="400" y="310" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#4A6A8C" opacity="0.8">RESEARCH</text>
+</svg>
