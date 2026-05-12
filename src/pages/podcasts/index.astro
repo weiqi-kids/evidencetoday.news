@@ -1,13 +1,122 @@
 ---
 import List from '@/layouts/List.astro';
 import { getCollection } from 'astro:content';
-function stripExt(id:string){return id.replace(/\.[^.]+$/,'');}
-const podcasts=(await getCollection('podcasts',(e)=>!e.data.draft && e.data.title && (e.data.audioUrl||e.data.embedUrl))).sort((a,b)=>b.data.publishDate.getTime()-a.data.publishDate.getTime());
-const links={firstory:'https://open.firstory.me/user/cm54wunhn07kb01151eda467n/platforms',spotify:'https://open.firstory.me/user/cm54wunhn07kb01151eda467n/platforms',kkbox:'https://open.firstory.me/user/cm54wunhn07kb01151eda467n/platforms',pocket:'https://open.firstory.me/user/cm54wunhn07kb01151eda467n/platforms'};
+
+function stripExt(id: string) {
+  return id.replace(/\.[^.]+$/, '');
+}
+
+const podcasts = (await getCollection('podcasts', (e) => !e.data.draft && e.data.title && (e.data.audioUrl || e.data.embedUrl)))
+  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
+
+const links = {
+  firstory: 'https://open.firstory.me/user/cm54wunhn07kb01151eda467n/platforms',
+  spotify: 'https://open.firstory.me/user/cm54wunhn07kb01151eda467n/platforms',
+  kkbox: 'https://open.firstory.me/user/cm54wunhn07kb01151eda467n/platforms',
+  pocket: 'https://open.firstory.me/user/cm54wunhn07kb01151eda467n/platforms',
+  all: 'https://open.firstory.me/user/cm54wunhn07kb01151eda467n/episodes',
+};
 ---
-<List title="Podcast《喜聞樂健》" description="用耳朵聽懂健康，不被行銷話術牽著走。" category="podcast" breadcrumbItems={[{label:'首頁',href:'/'},{label:'Podcast'}]} totalItems={podcasts.length}>
-<h2>節目介紹</h2><p>《喜聞樂健》是由羅揚主持的健康知識 Podcast，從保健食品、營養科學、生活健康與常見迷思出發，用一般人聽得懂的方式，整理研究證據與實際判斷。節目不走誇大療效與恐嚇式行銷，而是希望幫助聽眾建立更穩定的健康判斷力。</p>
-<p>主持人：羅揚｜節目：喜聞樂健</p>
-<p><a href={links.firstory}>Firstory</a> · <a href={links.spotify}>Spotify</a> · <a href={links.kkbox}>KKBOX</a> · <a href={links.pocket}>Pocket Casts</a> · <a href={links.firstory}>全平台收聽</a></p>
-<h2>已發布集數</h2><ul>{podcasts.map((p)=><li><a href={`/podcasts/${stripExt(p.id)}/`}>EP{p.data.episodeNumber}｜{p.data.title}</a></li>)}</ul>
+
+<List title="Podcast《喜聞樂健》" description="用耳朵聽懂健康，不被行銷話術牽著走。" category="podcast" breadcrumbItems={[{ label: '首頁', href: '/' }, { label: 'Podcast' }]} totalItems={podcasts.length}>
+  <section class="podcast-hero">
+    <h2>節目介紹</h2>
+    <p>《喜聞樂健》是由羅揚主持的健康知識 Podcast，從保健食品、營養科學、生活健康與常見迷思出發，用一般人聽得懂的方式，整理研究證據與實際判斷。節目不走誇大療效與恐嚇式行銷，而是希望幫助聽眾建立更穩定的健康判斷力。</p>
+    <p class="podcast-host">主持人：羅揚｜節目：喜聞樂健</p>
+    <div class="platform-buttons">
+      <a href={links.firstory}>Firstory</a>
+      <a href={links.spotify}>Spotify</a>
+      <a href={links.kkbox}>KKBOX</a>
+      <a href={links.pocket}>Pocket Casts</a>
+      <a href={links.all}>全平台收聽</a>
+    </div>
+  </section>
+
+  <section class="podcast-episodes">
+    <h2>已發布集數</h2>
+    <div class="episode-grid">
+      {podcasts.map((p) => (
+        <article class="episode-card">
+          <p class="episode-card__meta">EP{p.data.episodeNumber} · {p.data.duration}</p>
+          <h3><a href={`/podcasts/${stripExt(p.id)}/`}>{p.data.title}</a></h3>
+          <p class="episode-card__date">{p.data.publishDate.toLocaleDateString('zh-TW')}</p>
+          <p class="episode-card__desc">{p.data.description}</p>
+        </article>
+      ))}
+    </div>
+  </section>
 </List>
+
+<style>
+  .podcast-hero,
+  .podcast-episodes {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .podcast-host {
+    color: color-mix(in oklch, var(--color-ink) 70%, transparent);
+    font-size: var(--text-meta);
+  }
+
+  .platform-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.25rem;
+  }
+
+  .platform-buttons a {
+    text-decoration: none;
+    border: 1px solid var(--color-fog);
+    border-radius: 999px;
+    padding: 0.4rem 0.85rem;
+    font-family: var(--font-ui);
+    font-size: var(--text-meta);
+    color: var(--color-ink);
+    background: white;
+  }
+
+  .platform-buttons a:hover {
+    background: var(--color-fog);
+  }
+
+  .episode-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .episode-card {
+    border: 1px solid var(--color-fog);
+    border-radius: var(--radius-card);
+    padding: 1rem;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .episode-card__meta,
+  .episode-card__date {
+    font-size: var(--text-meta);
+    color: color-mix(in oklch, var(--color-ink) 60%, transparent);
+  }
+
+  .episode-card h3 a {
+    color: var(--color-ink);
+    text-decoration: none;
+  }
+
+  .episode-card__desc {
+    color: color-mix(in oklch, var(--color-ink) 72%, transparent);
+    line-height: 1.7;
+  }
+
+  @media (max-width: 768px) {
+    .episode-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

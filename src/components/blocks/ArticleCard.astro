@@ -28,7 +28,7 @@ const safeCoverImage =
   {safeCoverImage ? (
     <img class="article-card__image" src={safeCoverImage} alt={`${title} 縮圖`} loading="lazy" />
   ) : (
-    <div class="article-card__image article-card__image--fallback" aria-hidden="true"></div>
+    <div class="article-card__image article-card__image--fallback" aria-hidden="true">本日有據</div>
   )}
   <div class="article-card__bar"></div>
   <div class="article-card__body">
@@ -75,7 +75,17 @@ const safeCoverImage =
   }
 
   .article-card__image--fallback {
-    background: linear-gradient(180deg, #eef3ff, #f8fbff);
+    background: linear-gradient(
+      160deg,
+      color-mix(in oklch, var(--color-cat-article) 16%, white),
+      color-mix(in oklch, var(--color-fog) 45%, white)
+    );
+    display: grid;
+    place-items: center;
+    color: color-mix(in oklch, var(--color-ink) 55%, transparent);
+    font-family: var(--font-ui);
+    font-size: var(--text-meta);
+    letter-spacing: 0.04em;
   }
 
   .article-card__body {
