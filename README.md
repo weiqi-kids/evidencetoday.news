@@ -11,6 +11,99 @@
 
 ---
 
+## AI 任務：撰寫趨勢文章
+
+> 當收到「撰寫趨勢文章」指令時，依下方步驟執行。完整 SOP 見 `docs/news_sop.md`。
+
+### 步驟 1：準備
+
+1. 讀取 `data/news-automation-config.json` 取得搜尋查詢清單
+2. 讀取 `data/processed-sources.json` 取得已處理來源（用於去重）
+3. 取得今天的台灣日期（UTC+8），作為 `publishDate` 和檔名
+
+### 步驟 2：搜尋素材
+
+對 config 中的 8 組查詢執行網路搜尋，收集最新的健康研究與公衛新聞。
+
+過濾規則：
+- 跳過已在 `processed-sources.json` 中的來源（比對 PMID 或完整 URL）
+- 跳過超過 7 天的舊聞
+- 素材池為空 → 回報「本次無新素材」並結束
+
+### 步驟 3：評分與選題
+
+對每則素材以五維度加權評分（證據等級 30%、影響範圍 25%、新穎性 20%、實用性 15%、話題性 10%）。
+
+- 加權總分 >= 5.0 才進入撰文
+- 同主題素材合併為一篇（2-5 則）
+- 高分素材（>= 7.0）可單獨成篇
+- 判定 `editorPick`：官方政策更新、高證據等級結論修正、平均分 >= 8.0、食安緊急事件
+
+### 步驟 4：撰寫文章
+
+在 `src/content/news/` 建立 `.md` 檔案。
+
+**檔名格式**：`radar-{YYYY}-{MM}-{DD}-{HH}-{NN}.md`（台灣時間，NN 為序號從 01）
+
+**Frontmatter 必填欄位**：
+
+```yaml
+---
+title: "原始標題"
+titleDisplay: "口語化前台標題——用一般人聽得懂的話，不要學術語氣"
+subtitle: "一句話副標，15-30 字"
+category: "主分類"  # 睡眠/飲食/食品安全/運動營養/慢性病/公共衛生/保健食品/腸道健康/研究新知
+source: "本日有據編輯室"
+publishDate: 2026-05-12  # 台灣日期
+tags: ["標籤A", "標籤B"]  # 禁止含 /
+summary: "100-150 字摘要"
+intro: "2-4 句白話開頭介紹：研究看什麼？為什麼值得注意？和日常生活有什麼關係？"
+termBox:  # 有專有名詞時才加
+  - term: "名詞"
+    definition: "白話解釋，3-5 句"
+evidenceNote: "2-3 句白話證據提醒，例如：這類研究能看見關聯，但還不能證明因果。"
+pmid: "12345678"  # 有 PubMed 來源時才加
+editorPick: false
+editorComment: "我的觀點與行動建議：1 段觀點 + 3-5 點行動建議"
+draft: false
+---
+```
+
+**選填欄位**：`sourceUrl`、`heroImage`、`thumbnail`、`relatedArticles`、`relatedMyths`、`relatedIngredients`、`relatedVideos`、`relatedPodcasts`
+
+**內文結構**：
+1. 用友善小標題（如「研究看見什麼？」而非「研究設計與方法」）
+2. 保留核心發現，用白話呈現
+3. 不要堆砌統計術語
+4. 不要寫獨立的「研究限制」章節（已在 `evidenceNote`）
+5. 不要寫「結語」章節（已在 `editorComment`）
+6. 不要在文末寫「來源：[...]」（已在 `pmid`）
+
+**語言規範**：
+- 台灣繁體中文，台灣慣用醫學術語
+- 專有名詞首次出現附英文：「丁酸（butyrate）」
+- 禁止中國用語（「視頻」→「影片」、「信息」→「資訊」）
+- 禁止聳動用語：「震驚」「突破性」「革命性」
+- 禁止具體醫療建議，改為「建議諮詢醫療團隊」
+- 禁止醫療承諾：「可以治療」→「研究發現相關」
+
+### 步驟 5：更新去重紀錄
+
+將本次所有進入素材池的來源寫入 `data/processed-sources.json`：
+- PubMed：`"PMID:{id}": {"processedAt": "ISO8601", "outputFile": "檔案路徑或 null"}`
+- 其他：`"完整URL": {"processedAt": "ISO8601", "outputFile": "檔案路徑或 null"}`
+
+### 步驟 6：驗證與發布
+
+```bash
+pnpm build                    # 確認零錯誤
+git add src/content/news/radar-*.md data/processed-sources.json
+git commit -m "news: auto-generated health radar YYYY-MM-DD HH:MM"
+git push origin main          # 觸發自動部署
+```
+
+---
+
 ## 快速開始
 
 ```bash
