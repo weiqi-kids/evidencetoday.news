@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-05-12T12:00:00Z",
+  "lastRun": "2026-05-12T14:40:00Z",
   "processed": {
     "PMID:42098536": {
       "processedAt": "2026-05-08T12:00:00Z",
@@ -389,6 +389,18 @@
     "https://pubmed.ncbi.nlm.nih.gov/41770781/": {
       "processedAt": "2026-05-12T12:00:00Z",
       "outputFile": "src/content/news/radar-2026-05-12-20-01.md"
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/l26a4ubInJSp3tioH9HjiA?typeId=9": {
+      "processedAt": "2026-05-12T14:40:00Z",
+      "outputFile": "src/content/news/radar-2026-05-12-22-01.md"
+    },
+    "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON600": {
+      "processedAt": "2026-05-12T14:40:00Z",
+      "outputFile": "src/content/news/radar-2026-05-12-22-01.md"
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/y-8WwSZtKW-JANyrfc6B4A?typeid=9": {
+      "processedAt": "2026-05-12T14:40:00Z",
+      "outputFile": "src/content/news/radar-2026-05-12-22-02.md"
     }
   }
 }
