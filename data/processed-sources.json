@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-05-12T04:31:29Z",
+  "lastRun": "2026-05-12T10:41:04Z",
   "processed": {
     "PMID:42098536": {
       "processedAt": "2026-05-08T12:00:00Z",
@@ -142,7 +142,7 @@
       "processedAt": "2026-05-08T18:00:00Z",
       "outputFile": "src/content/news/radar-2026-05-08-18-04.md"
     },
-    "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/gerber-products-company-announces-voluntary-recall-limited-batches-arrowroot-biscuits-out-abundance": {
+    "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/gerber-products-company-announces-voluntary-nationwide-recall-limited-batches-arrowroot-biscuits-out-abundance": {
       "processedAt": "2026-05-08T18:00:00Z",
       "outputFile": "src/content/news/radar-2026-05-08-18-04.md"
     },
@@ -365,6 +365,18 @@
     "PMID:42030610": {
       "processedAt": "2026-05-12T04:31:29Z",
       "outputFile": "src/content/news/radar-2026-05-12-12-03.md"
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12952596/": {
+      "processedAt": "2026-05-12T10:41:04Z",
+      "outputFile": "src/content/news/radar-2026-05-12-18-01.md"
+    },
+    "https://www.who.int/news-room/events/detail/2026/05/13/default-calendar/who-health-emergencies-epi-win-webinar--launch-of-the-updated-who-manuals-on-strengthening-surveillance-of-and-response-to-foodborne-disease": {
+      "processedAt": "2026-05-12T10:41:04Z",
+      "outputFile": "src/content/news/radar-2026-05-12-18-02.md"
+    },
+    "https://www.cdc.gov.tw/TravelEpidemic/Detail/L31roB9oaiZ8NLdCANMkKw?epidemicId=RTR5UFvttLLtdIdG-J05ag": {
+      "processedAt": "2026-05-12T10:41:04Z",
+      "outputFile": null
     }
   }
 }
