@@ -360,20 +360,35 @@ relatedArticles: ["article-slug"]
 
 ```yaml
 ---
-title: "新聞標題"
+title: "原始標題（可含健康雷達前綴，前台會自動清理）"
+titleDisplay: "口語化前台標題（選填，優先於自動清理結果）"
+subtitle: "一句話副標（選填，15-30 字）"
+category: "主分類（選填，會從 tags 自動推斷）"  # 睡眠/飲食/食品安全/運動營養/慢性病/公共衛生/保健食品/腸道健康/研究新知
 source: "來源媒體名稱"
 sourceUrl: "https://原始新聞連結"
 publishDate: 2026-05-08
 tags: ["標籤"]
 summary: "一句話摘要"
-editorPick: false                        # true = 主編選題，會顯示在趨勢頁頂部
-editorComment: "主編評語（editorPick 為 true 時填寫）"
+heroImage: "/images/news/xxx.jpg"          # 選填，文章主圖（有分類 fallback SVG）
+thumbnail: "/images/news/xxx-thumb.jpg"    # 選填，列表縮圖（有分類 fallback SVG）
+intro: "2-4 句白話開頭介紹（選填）"
+termBox:                                   # 選填，專有名詞科普
+  - term: "名詞"
+    definition: "白話解釋"
+evidenceNote: "2-3 句白話證據提醒（選填）"
+pmid: "12345678"                           # 選填，PubMed ID
+editorPick: false                          # true = 主編選題
+editorComment: "我的觀點與行動建議（前台以此名稱顯示）"
 draft: false
 relatedArticles: ["article-slug"]
 relatedMyths: ["myth-slug"]
 relatedIngredients: ["ingredient-slug"]
 ---
 ```
+
+**標題處理邏輯：** 前台標題優先使用 `titleDisplay`，若沒有則自動從 `title` 移除「健康雷達 YYYY-MM-DD HH：」前綴。`title` 保留原始值供後台與 SEO 使用。
+
+**圖片 fallback：** 若未提供 `heroImage` / `thumbnail`，系統會根據分類自動使用 `public/images/news/` 下的 SVG 預設圖。
 
 ### 修改既有內容
 
@@ -565,7 +580,7 @@ Cron（台灣 06:17 / 12:17 / 18:17 / 00:17）
   │
   ├─ 資料抓取（WebSearch 多組定向查詢）
   │   ├─ PubMed 學術文獻（site:pubmed.ncbi.nlm.nih.gov）
-  │   ├─ WHO / FDA / 衛福部 / 疾管署官方公告（site: 各機構）
+  │   ├─ WHO / 衛福部 / 疾管署官方公告（site: 各機構）
   │   ├─ Nature / Lancet / BMJ 研究期刊
   │   └─ 健康新聞媒體（MedPage Today、STAT News 等）
   │
