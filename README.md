@@ -87,19 +87,63 @@ draft: false
 - 禁止具體醫療建議，改為「建議諮詢醫療團隊」
 - 禁止醫療承諾：「可以治療」→「研究發現相關」
 
-### 步驟 5：更新去重紀錄
+### 步驟 5：自動審核（反覆修正直到通過）
+
+撰寫完成後，對每篇文章執行以下審核清單。**任何一項不通過就修正文章，重新審核，直到全部通過為止。**
+
+**A. Build 驗證**
+```bash
+pnpm build    # 必須零錯誤，否則修正 frontmatter 後重試
+```
+
+**B. Frontmatter 完整性檢查**
+- [ ] `titleDisplay` 存在且為口語化標題（不含「健康雷達」、不含日期、不像論文標題）
+- [ ] `subtitle` 存在且 15-30 字
+- [ ] `category` 存在且為允許值之一（睡眠/飲食/食品安全/運動營養/慢性病/公共衛生/保健食品/腸道健康/研究新知）
+- [ ] `tags` 不含 `/` 字元
+- [ ] `summary` 為 100-150 字
+- [ ] `intro` 存在且為 2-4 句白話
+- [ ] `evidenceNote` 存在且為 2-3 句白話
+- [ ] `editorComment` 存在且包含觀點 + 行動建議
+- [ ] `publishDate` 為台灣日期
+
+**C. 內容品質檢查**
+- [ ] 標題沒有學術語氣（不用「統合分析」「跨疾患」「多角度解析」等詞彙作標題）
+- [ ] 內文沒有獨立的「研究限制」章節
+- [ ] 內文沒有「結語」章節
+- [ ] 內文沒有文末「來源：[...]」行
+- [ ] 小標題是友善語氣（「研究看見什麼？」而非「研究設計與方法」）
+- [ ] 沒有聳動用語（「震驚」「突破性」「革命性」）
+- [ ] 沒有具體醫療建議（「應該每天吃 X mg」）
+- [ ] 沒有醫療承諾（「可以治療」「一定有效」「證實可以改善」）
+- [ ] 沒有中國用語（「視頻」「信息」「數據」應為「影片」「資訊」「數據」）
+
+**D. 修正迴圈**
+- 若任何檢查項不通過 → 修正文章 → 重新執行 `pnpm build` → 重新審核
+- 最多修正 5 輪。5 輪後仍有問題 → 將 `draft` 設為 `true`，在 PR body 列出未解決問題
+
+### 步驟 6：更新去重紀錄
 
 將本次所有進入素材池的來源寫入 `data/processed-sources.json`：
 - PubMed：`"PMID:{id}": {"processedAt": "ISO8601", "outputFile": "檔案路徑或 null"}`
 - 其他：`"完整URL": {"processedAt": "ISO8601", "outputFile": "檔案路徑或 null"}`
 
-### 步驟 6：驗證與發布
+### 步驟 7：發布
 
 ```bash
-pnpm build                    # 確認零錯誤
+pnpm build                    # 最終確認零錯誤
 git add src/content/news/radar-*.md data/processed-sources.json
 git commit -m "news: auto-generated health radar YYYY-MM-DD HH:MM"
 git push origin main          # 觸發自動部署
+```
+
+如果無法 push main（例如在 Codex 沙箱環境），改為開 PR：
+```bash
+git checkout -b news/radar-YYYY-MM-DD-HH
+git add src/content/news/radar-*.md data/processed-sources.json
+git commit -m "news: auto-generated health radar YYYY-MM-DD HH:MM"
+git push origin HEAD
+# 開 PR，body 中說明：審核全部通過，可直接 merge
 ```
 
 ---
