@@ -22,9 +22,12 @@ const ingredients = (await getCollection('ingredients', (e) => !e.data.draft))
     {ingredients.map((i) => (
       <IngredientCard
         title={i.data.title}
+        titleEn={i.data.titleEn}
         description={i.data.description}
         href={`/ingredients/${stripExt(i.id)}/`}
         uses={i.data.uses}
+        coverImage={i.data.coverImage}
+        tags={i.data.tags}
       />
     ))}
   </div>

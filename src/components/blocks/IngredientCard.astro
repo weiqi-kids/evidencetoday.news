@@ -3,22 +3,37 @@ import Badge from '../ui/Badge.astro';
 
 interface Props {
   title: string;
+  titleEn?: string;
   description: string;
   href: string;
+  coverImage?: string;
   uses: Array<{ evidenceLevel: string }>;
+  tags?: string[];
 }
 
-const { title, description, href, uses } = Astro.props;
+const { title, titleEn, description, href, coverImage, uses, tags = [] } = Astro.props;
 
 /* Show top 2 uses as evidence level badges */
 const topUses = uses.slice(0, 2);
+const topTags = tags.slice(0, 3);
 ---
 
 <a href={href} class="ingredient-card">
   <div class="ingredient-card__bar"></div>
+  {coverImage && (
+    <img class="ingredient-card__thumb" src={coverImage} alt={`${title} 原料縮圖`} loading="lazy" />
+  )}
   <div class="ingredient-card__body">
     <h3 class="ingredient-card__title">{title}</h3>
+    {titleEn && <p class="ingredient-card__title-en">{titleEn}</p>}
     <p class="ingredient-card__desc">{description}</p>
+    {topTags.length > 0 && (
+      <div class="ingredient-card__tags">
+        {topTags.map((tag) => (
+          <span class="ingredient-card__tag">{tag}</span>
+        ))}
+      </div>
+    )}
     {topUses.length > 0 && (
       <div class="ingredient-card__badges">
         {topUses.map((use) => (
@@ -51,6 +66,14 @@ const topUses = uses.slice(0, 2);
     background-color: var(--color-cat-ingredient);
   }
 
+  .ingredient-card__thumb {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    display: block;
+    border-bottom: 1px solid var(--color-fog);
+  }
+
   .ingredient-card__body {
     padding: 1.25rem;
     display: flex;
@@ -66,6 +89,11 @@ const topUses = uses.slice(0, 2);
     line-height: 1.35;
   }
 
+  .ingredient-card__title-en {
+    font-size: var(--text-meta);
+    color: color-mix(in oklch, var(--color-ink) 70%, transparent);
+  }
+
   .ingredient-card__desc {
     font-size: var(--text-meta);
     color: color-mix(in oklch, var(--color-ink) 70%, transparent);
@@ -76,10 +104,20 @@ const topUses = uses.slice(0, 2);
     overflow: hidden;
   }
 
+  .ingredient-card__tags,
   .ingredient-card__badges {
     display: flex;
     align-items: center;
     gap: 0.375rem;
     flex-wrap: wrap;
+  }
+
+  .ingredient-card__tag {
+    font-size: 0.72rem;
+    color: var(--color-cat-ingredient);
+    border: 1px solid color-mix(in oklch, var(--color-cat-ingredient) 25%, var(--color-fog));
+    background-color: color-mix(in oklch, var(--color-cat-ingredient) 10%, white);
+    border-radius: 999px;
+    padding: 0.1rem 0.45rem;
   }
 </style>
