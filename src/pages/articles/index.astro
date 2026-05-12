@@ -1,15 +1,14 @@
 ---
 import List from '@/layouts/List.astro';
 import ArticleCard from '@/components/blocks/ArticleCard.astro';
-import { getCollection } from 'astro:content';
 import { fmtDate } from '@/utils/date';
+import { getPublishedArticles } from '@/utils/articles';
 
 function stripExt(id: string): string {
   return id.replace(/\.[^.]+$/, '');
 }
 
-const articles = (await getCollection('articles', (e) => !e.data.draft))
-  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
+const articles = await getPublishedArticles();
 ---
 
 <List
@@ -26,6 +25,7 @@ const articles = (await getCollection('articles', (e) => !e.data.draft))
         description={a.data.description}
         href={`/articles/${stripExt(a.id)}/`}
         category="article"
+        coverImage={a.data.coverImage}
         author={a.data.author}
         date={fmtDate(a.data.publishDate)}
         editorReviewed={a.data.editorReviewed}
