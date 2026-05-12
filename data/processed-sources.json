@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-05-10T04:17:00Z",
+  "lastRun": "2026-05-12T04:31:29Z",
   "processed": {
     "PMID:42098536": {
       "processedAt": "2026-05-08T12:00:00Z",
@@ -353,6 +353,18 @@
     "https://www.nature.com/articles/s41591-025-04085-9": {
       "processedAt": "2026-05-10T04:17:00Z",
       "outputFile": "src/content/news/radar-2026-05-10-12-03.md"
+    },
+    "PMID:41635649": {
+      "processedAt": "2026-05-12T04:31:29Z",
+      "outputFile": "src/content/news/radar-2026-05-12-12-01.md"
+    },
+    "PMID:40704138": {
+      "processedAt": "2026-05-12T04:31:29Z",
+      "outputFile": "src/content/news/radar-2026-05-12-12-02.md"
+    },
+    "PMID:42030610": {
+      "processedAt": "2026-05-12T04:31:29Z",
+      "outputFile": "src/content/news/radar-2026-05-12-12-03.md"
     }
   }
 }
