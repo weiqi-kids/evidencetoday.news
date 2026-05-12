@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-05-12T11:26:35Z",
+  "lastRun": "2026-05-12T12:30:00Z",
   "processed": {
     "PMID:42098536": {
       "processedAt": "2026-05-08T12:00:00Z",
@@ -381,6 +381,10 @@
     "https://www.mohw.gov.tw/dl-94177-e0b956c6-ead7-4897-8a8c-394c44f9f975.html": {
       "processedAt": "2026-05-12T11:26:35Z",
       "outputFile": "src/content/news/radar-2026-05-12-19-01.md"
+    },
+    "PMID:41850487": {
+      "processedAt": "2026-05-12T12:30:00Z",
+      "outputFile": "src/content/news/radar-2026-05-12-19-02.md"
     }
   }
 }
