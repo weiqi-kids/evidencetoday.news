@@ -118,10 +118,40 @@ const breadcrumbSchema = {
         <img src={heroImage} alt={displayTitle} loading="eager" />
       </div>
 
+      {/* ---- Intro ---- */}
+      {data.intro && (
+        <div class="news-article__intro">
+          <p>{data.intro}</p>
+        </div>
+      )}
+
+      {/* ---- 先看懂這個詞 ---- */}
+      {data.termBox && data.termBox.length > 0 && (
+        <aside class="term-box">
+          <h2 class="term-box__heading">先看懂這個詞</h2>
+          <dl class="term-box__list">
+            {data.termBox.map((item) => (
+              <>
+                <dt class="term-box__term">{item.term}</dt>
+                <dd class="term-box__def">{item.definition}</dd>
+              </>
+            ))}
+          </dl>
+        </aside>
+      )}
+
       {/* ---- Body (Markdown content) ---- */}
       <div class="news-article__body prose">
         <Content />
       </div>
+
+      {/* ---- 證據提醒 ---- */}
+      {data.evidenceNote && (
+        <aside class="evidence-note">
+          <h2 class="evidence-note__heading">證據提醒</h2>
+          <p class="evidence-note__text">{data.evidenceNote}</p>
+        </aside>
+      )}
 
       {/* ---- 我的觀點與行動建議 ---- */}
       {data.editorComment && (
@@ -133,6 +163,16 @@ const breadcrumbSchema = {
             ))}
           </div>
         </aside>
+      )}
+
+      {/* ---- 資料來源 ---- */}
+      {data.pmid && (
+        <footer class="source-ref">
+          <h2 class="source-ref__heading">資料來源</h2>
+          <p class="source-ref__link">
+            PubMed PMID：<a href={`https://pubmed.ncbi.nlm.nih.gov/${data.pmid}/`} target="_blank" rel="noopener noreferrer">{data.pmid}</a>
+          </p>
+        </footer>
       )}
     </article>
 
@@ -265,10 +305,105 @@ const breadcrumbSchema = {
     object-fit: cover;
   }
 
+  /* ---- Intro ---- */
+  .news-article__intro {
+    margin-bottom: 1.75rem;
+  }
+
+  .news-article__intro p {
+    font-size: 1.05rem;
+    color: color-mix(in oklch, var(--color-ink) 80%, transparent);
+    line-height: 1.85;
+  }
+
+  /* ---- 先看懂這個詞 ---- */
+  .term-box {
+    margin-bottom: 2rem;
+    padding: 1.25rem 1.5rem;
+    background: color-mix(in oklch, var(--color-cat-news) 6%, var(--color-paper));
+    border-radius: var(--radius-sm);
+    border: 1px solid color-mix(in oklch, var(--color-cat-news) 15%, transparent);
+  }
+
+  .term-box__heading {
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--color-cat-news);
+    margin-bottom: 0.75rem;
+  }
+
+  .term-box__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .term-box__term {
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+
+  .term-box__def {
+    font-size: var(--text-meta);
+    color: color-mix(in oklch, var(--color-ink) 70%, transparent);
+    line-height: 1.7;
+    margin-bottom: 0.25rem;
+  }
+
   /* ---- Body ---- */
   .news-article__body {
     max-width: 52rem;
     padding-block: 0 2rem;
+  }
+
+  /* ---- 證據提醒 ---- */
+  .evidence-note {
+    margin-bottom: 2rem;
+    padding: 1.25rem 1.5rem;
+    background: color-mix(in oklch, var(--color-fog) 50%, white);
+    border-radius: var(--radius-sm);
+    border-left: 3px solid var(--color-fog);
+  }
+
+  .evidence-note__heading {
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: color-mix(in oklch, var(--color-ink) 65%, transparent);
+    margin-bottom: 0.5rem;
+  }
+
+  .evidence-note__text {
+    font-size: var(--text-meta);
+    color: color-mix(in oklch, var(--color-ink) 65%, transparent);
+    line-height: 1.75;
+  }
+
+  /* ---- 資料來源 ---- */
+  .source-ref {
+    margin-bottom: 2.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-fog);
+  }
+
+  .source-ref__heading {
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: color-mix(in oklch, var(--color-ink) 55%, transparent);
+    margin-bottom: 0.5rem;
+  }
+
+  .source-ref__link {
+    font-size: var(--text-meta);
+    color: color-mix(in oklch, var(--color-ink) 60%, transparent);
+  }
+
+  .source-ref__link a {
+    color: var(--color-teal);
   }
 
   /* ---- 我的觀點與行動建議 ---- */

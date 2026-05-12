@@ -244,6 +244,13 @@ const news = defineCollection({
     summary: z.string(),
     heroImage: z.string().optional(),
     thumbnail: z.string().optional(),
+    intro: z.string().optional(),
+    termBox: z.array(z.object({
+      term: z.string(),
+      definition: z.string(),
+    })).optional(),
+    evidenceNote: z.string().optional(),
+    pmid: z.string().optional(),
     editorPick: z.boolean().default(false),
     editorComment: z.string().optional(),
     relatedArticles: z.array(z.string()).optional(),
