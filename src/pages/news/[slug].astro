@@ -81,7 +81,7 @@ const breadcrumbSchema = {
 };
 ---
 
-<Base title={`${displayTitle} | 本日有據`} description={metaDesc} ogType="article">
+<Base title={`${displayTitle} | 本日有據`} description={metaDesc} ogImage={data.heroImage || data.thumbnail || `/og/index.png`} ogType="article">
   <Fragment slot="head">
     <JsonLd data={articleSchema} />
     <JsonLd data={breadcrumbSchema} />
@@ -264,7 +264,7 @@ const breadcrumbSchema = {
 
   .news-article__title {
     font-family: var(--font-serif);
-    font-size: clamp(1.5rem, 1.2rem + 1.5vw, 2.25rem);
+    font-size: 1.4rem;
     font-weight: 700;
     color: var(--color-ink);
     line-height: 1.35;
@@ -409,7 +409,7 @@ const breadcrumbSchema = {
   /* ---- 我的觀點與行動建議 ---- */
   .editor-action {
     margin: 0 0 2.5rem;
-    padding: 1.5rem 1.75rem;
+    padding: clamp(1.25rem, 0.75rem + 1.5vw, 1.75rem);
     background: color-mix(in oklch, var(--color-teal) 6%, var(--color-paper));
     border-left: 4px solid var(--color-teal);
     border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
@@ -452,22 +452,17 @@ const breadcrumbSchema = {
 
   .related-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
     gap: var(--space-card-gap);
   }
 
-  /* ---- Mobile ---- */
-  @media (max-width: 640px) {
+  @media (min-width: 640px) {
     .news-article__title {
-      font-size: 1.4rem;
-    }
-
-    .editor-action {
-      padding: 1.25rem 1.25rem;
+      font-size: clamp(1.5rem, 1.2rem + 1.5vw, 2.25rem);
     }
 
     .related-grid {
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 </style>
