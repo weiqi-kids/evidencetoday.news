@@ -16,6 +16,7 @@ interface Props {
   description: string;
   ogImage?: string;
   category: 'article' | 'myth' | 'ingredient';
+  variant?: 'prose' | 'cards';
   publishDate: Date;
   updatedDate: Date;
   author?: string;
@@ -35,6 +36,7 @@ const {
   description,
   ogImage,
   category,
+  variant = 'prose',
   publishDate,
   updatedDate,
   author,
@@ -72,7 +74,7 @@ const {
       )}
     </header>
 
-    <div class="article-grid">
+    <div class:list={['article-grid', `article-grid--${variant}`]}>
       <div class="article-content">
         {tldr && <TldrBox>{tldr}</TldrBox>}
         <div class="prose">
@@ -105,7 +107,6 @@ const {
   }
 
   .article-header {
-    background-color: var(--color-paper);
     padding-block: 1.5rem 2rem;
     display: flex;
     flex-direction: column;
@@ -128,9 +129,17 @@ const {
     grid-template-columns: 1fr;
     gap: 2rem;
     padding-block: 2rem;
+  }
+
+  .article-grid--prose {
     background-color: white;
     border-radius: var(--radius-card);
-    padding: 2rem;
+    padding: clamp(1rem, 0.5rem + 3vw, 2rem);
+  }
+
+  .article-grid--cards {
+    background: transparent;
+    padding-inline: 0;
   }
 
   .article-content {
@@ -155,7 +164,7 @@ const {
   }
 
   @media (min-width: 1024px) {
-    .article-grid {
+    .article-grid--prose {
       grid-template-columns: 0.7fr 0.3fr;
     }
 
