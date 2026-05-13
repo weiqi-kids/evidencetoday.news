@@ -236,27 +236,9 @@ GitHub Actions 自動執行：build → Pagefind 索引 → 連結檢查 → 部
 
 ## 已知效能瓶頸（優化方向）
 
-### 1. Google Fonts CDN 阻塞渲染（最大瓶頸）
+### 1. Pagefind 搜尋頁 CSS/JS
 
-`src/layouts/Base.astro:58-64` 的外部 `<link>` 是首屏最大阻塞資源。`src/styles/typography.css` 已寫好 `@font-face` 指向 `/fonts/*.woff2`，但 `public/fonts/` 目錄不存在。
-
-**修復**：下載 woff2 到 `public/fonts/` → 刪除 Google Fonts `<link>` → 加 preload。
-
-### 2. Favicon 完全缺失
-
-`public/` 無 favicon。需放入 `favicon.svg`、`favicon.ico`、`apple-touch-icon.png`。
-
-### 3. OG Image 缺失
-
-`og-default.jpg` 不存在。短期放一張 1200x630 預設圖，長期用 satori 自動生成。
-
-### 4. Lighthouse CI 未啟用
-
-`.github/workflows/deploy.yml:57-62` 已寫好但被註解。前三項修完後取消註解。
-
-### 5. Pagefind 搜尋頁 CSS/JS
-
-`src/pages/search.astro` 直接載入 Pagefind CSS/JS。改為動態 import 可優化。優先順序最低。
+`src/pages/search.astro` 直接載入 Pagefind CSS/JS。改為動態 import 可優化。優先順序低。
 
 ---
 
@@ -264,7 +246,7 @@ GitHub Actions 自動執行：build → Pagefind 索引 → 連結檢查 → 部
 
 ### 上線前 Blocker
 
-- [ ] Favicon
+- [x] ~~Favicon~~ （已完成：favicon.svg + favicon.ico + apple-touch-icon.png）
 - [ ] 利益揭露具體內容 — `src/data/policies/disclosure.md`
 - [ ] 隱私權政策正式文案 — `src/pages/privacy.astro`
 - [ ] 使用條款正式文案 — `src/pages/terms.astro`
@@ -275,11 +257,12 @@ GitHub Actions 自動執行：build → Pagefind 索引 → 連結檢查 → 部
 
 ### 上線後可迭代
 
-- [ ] 自託管字體（最大效能瓶頸）
-- [ ] OG Image 自動生成
-- [ ] Lighthouse CI
-- [ ] 趨勢頁 d3 熱詞圖表
-- [ ] 原料頁代謝路徑互動圖
+- [x] ~~自託管字體~~ （已完成：fontsource，移除 Google Fonts CDN）
+- [x] ~~OG Image 自動生成~~ （已完成：satori + sharp，支援 6 種內容類型）
+- [x] ~~Lighthouse CI~~ （已完成：warn mode，閾值 Perf≥90 SEO≥95 A11y≥95 BP≥90）
+- [x] ~~趨勢頁 d3 熱詞圖表~~ （已完成：TrendBubbles 加入趨勢列表頁）
+- [ ] 原料頁補齊更多 pathwaySteps 資料
+- [ ] Pagefind 搜尋頁動態載入
 
 ---
 
