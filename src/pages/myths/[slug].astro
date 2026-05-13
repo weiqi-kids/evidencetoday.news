@@ -3,220 +3,51 @@ import { getCollection, getEntry } from 'astro:content';
 import Article from '@/layouts/Article.astro';
 import JsonLd from '@/components/seo/JsonLd.astro';
 import VerdictBadge from '@/components/ui/VerdictBadge.astro';
-import VerdictDisclaimer from '@/components/blocks/VerdictDisclaimer.astro';
-import ArticleCard from '@/components/blocks/ArticleCard.astro';
-import IngredientCard from '@/components/blocks/IngredientCard.astro';
-import VideoCard from '@/components/blocks/VideoCard.astro';
-import PodcastCard from '@/components/blocks/PodcastCard.astro';
-import { fmtDate } from '@/utils/date';
-
-function stripExt(id: string): string {
-  return id.replace(/\.[^.]+$/, '');
-}
+import { validateMythArticle } from '@/utils/myths/validate';
 
 export async function getStaticPaths() {
   const entries = await getCollection('myths', ({ data }) => !data.draft);
-  return entries.map((entry) => ({
-    params: { slug: entry.id.replace(/\.[^.]+$/, '') },
-    props: { entry },
-  }));
+  return entries.map((entry) => ({ params: { slug: entry.id.replace(/\.[^.]+$/, '') }, props: { entry } }));
 }
-
 const { entry } = Astro.props;
 const { Content } = await entry.render();
-const data = entry.data;
+const d = entry.data;
+const errors = validateMythArticle(entry);
+if (errors.length > 0) throw new Error(`[myth:${entry.id}] ${errors.join(' | ')}`);
 
-/* Resolve related content */
-const relatedArticles = data.relatedArticles
-  ? (await Promise.all(data.relatedArticles.map((id) => getEntry('articles', id)))).filter(Boolean)
-  : [];
-const relatedIngredients = data.relatedIngredients
-  ? (await Promise.all(data.relatedIngredients.map((id) => getEntry('ingredients', id)))).filter(Boolean)
-  : [];
-const relatedVideos = data.relatedVideos
-  ? (await Promise.all(data.relatedVideos.map((id) => getEntry('videos', id)))).filter(Boolean)
-  : [];
-const relatedPodcasts = data.relatedPodcasts
-  ? (await Promise.all(data.relatedPodcasts.map((id) => getEntry('podcasts', id)))).filter(Boolean)
-  : [];
-
-const hasRelated = relatedArticles.length > 0 || relatedIngredients.length > 0 || relatedVideos.length > 0 || relatedPodcasts.length > 0;
-
-/* JSON-LD structured data */
-const slug = entry.id.replace(/\.[^.]+$/, '');
-const mythArticleSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Article',
-  headline: data.title,
-  description: data.description,
-  author: { '@type': 'Organization', name: '本日有據編輯室' },
-  datePublished: data.publishDate.toISOString(),
-  dateModified: data.updatedDate.toISOString(),
-  publisher: {
-    '@type': 'Organization',
-    name: '本日有據',
-    url: 'https://evidencetoday.news',
-  },
-};
-
-const mythBreadcrumbSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: [
-    { '@type': 'ListItem', position: 1, name: '首頁', item: 'https://evidencetoday.news/' },
-    { '@type': 'ListItem', position: 2, name: '迷思破解', item: 'https://evidencetoday.news/myths/' },
-    { '@type': 'ListItem', position: 3, name: data.title, item: `https://evidencetoday.news/myths/${slug}/` },
-  ],
-};
+const canonical = `https://evidencetoday.news/myths/${entry.id.replace(/\.[^.]+$/, '')}/`;
+const related = d.relatedArticles ? (await Promise.all(d.relatedArticles.map((id) => getEntry('articles', id)))).filter(Boolean) : [];
+const articleSchema = { '@context':'https://schema.org','@type':'Article',headline:d.ogTitle,description:d.ogDescription,image:[d.ogImage || d.shareCardImage],datePublished:d.publishDate.toISOString(),dateModified:d.updatedDate.toISOString(),author:{'@type':'Person',name:d.author},publisher:{'@type':'Organization',name:'本日有據'},mainEntityOfPage:canonical };
 ---
-
-<Article
-  title={data.title}
-  description={data.description}
-  ogImage={data.coverImage || `/og/myths/${slug}.png`}
-  category="myth"
-  publishDate={data.publishDate}
-  updatedDate={data.updatedDate}
-  tags={data.tags}
-  breadcrumbItems={[
-    { label: '首頁', href: '/' },
-    { label: '迷思破解', href: '/myths/' },
-    { label: data.title },
-  ]}
-  references={data.references}
->
+<Article title={d.ogTitle} description={d.ogDescription} ogImage={d.ogImage || d.shareCardImage} category="myth" publishDate={d.publishDate} updatedDate={d.updatedDate} author={d.author} reviewer={d.editor} tags={d.topicTags} breadcrumbItems={[{label:'首頁',href:'/'},{label:'健康迷思雷達',href:'/myths/'},{label:d.title}]} references={d.references}>
   <Fragment slot="head">
-    <JsonLd data={mythArticleSchema} />
-    <JsonLd data={mythBreadcrumbSchema} />
+    <meta property="article:published_time" content={d.publishDate.toISOString()} />
+    <meta property="article:modified_time" content={d.updatedDate.toISOString()} />
+    <meta property="article:author" content={d.author} />
+    <meta name="keywords" content={d.topicTags.join(',')} />
+    <JsonLd data={articleSchema} />
   </Fragment>
-
-  <div class="myth-verdict-header">
-    <VerdictBadge verdict={data.verdict} size="lg" />
-    <p class="myth-verdict-summary">{data.verdictSummary}</p>
-  </div>
-
+  <section><h1>{d.title}</h1><p>迷思原句：{d.mythClaim}</p><VerdictBadge verdict={d.verdict} size="lg" /><p>{d.verdictSummary}</p><p>證據強度：{d.evidenceLevel}｜更新日期：{d.updatedDate.toISOString().slice(0,10)}｜作者：{d.author}／主編：{d.editor}</p></section>
+  <section><h2>30 秒看結論</h2><ul>{d.tldr.map((item)=><li>{item}</li>)}</ul></section>
+  <section><h2>本篇適用與不適用情境</h2><div><h3>適用情境</h3><ul>{d.applicableContext.map((item)=><li>{item}</li>)}</ul></div><div><h3>不適用情境</h3><ul>{d.notApplicableContext.map((item)=><li>{item}</li>)}</ul></div></section>
+  <section><h2>網路上怎麼流傳？</h2><p>{d.currentSituation}</p><ul>{d.popularVersions.map((item)=><li>{item}</li>)}</ul><p>流傳來源：{d.rumorSources.join('、')}（擴散程度：{d.spreadLevel}）</p></section>
+  <section><h2>為什麼這個說法容易被相信？</h2><ul>{d.whyItSpreads.map((item)=><li>{item}</li>)}</ul></section>
+  <section><h2>白話辯證</h2><p>{d.plainLanguageAnalysis}</p></section>
+  <section><h2>科學證據</h2><p>{d.scientificEvidence}</p></section>
+  <section><h2>證據階梯</h2><ul><li>系統性回顧 / 統合分析：{d.evidencePyramid.systematicReview ?? '無'}</li><li>隨機對照試驗 RCT：{d.evidencePyramid.randomizedControlledTrial ?? '無'}</li><li>觀察性研究：{d.evidencePyramid.observationalStudy ?? '無'}</li><li>動物 / 細胞研究：{d.evidencePyramid.animalOrInVitro ?? '無'}</li><li>專家意見 / 機制推論：{d.evidencePyramid.expertOpinionOrMechanism ?? '無'}</li></ul></section>
+  <section><h2>一般人最安全做法</h2><h3>可以做</h3><ul>{d.safeActions.map((item)=><li>{item}</li>)}</ul><h3>不建議</h3><ul>{d.avoidActions.map((item)=><li>{item}</li>)}</ul></section>
+  <section><h2>一張圖看懂這則迷思</h2><p>你可以儲存或分享這張圖卡，但完整判讀與來源請以本頁內容為準。</p><img src={d.shareCardImage} alt={`${d.title}：${d.verdictSummary}`} /></section>
+  <section><h2>更新與更正紀錄</h2>{d.correctionLog.length===0 ? <p>本文目前尚無更正紀錄。</p>:<ul>{d.correctionLog.map((log)=><li>{log.date}：{log.description}</li>)}</ul>}</section>
+  <section><h2>醫療聲明</h2><p>{d.medicalDisclaimer}</p></section>
+  {related.length>0 && <section><h2>延伸閱讀</h2><ul>{related.map((r)=><li><a href={`/articles/${r.id.replace(/\.[^.]+$/, '')}/`}>{r.data.title}</a></li>)}</ul></section>}
+  <section><h2>覺得這篇有幫助？</h2><p>點擊分享這則知識，讓更多人少被健康謠言誤導。</p><button id="share-btn" aria-label="分享這則知識">分享這則知識</button><button id="copy-btn" aria-label="複製連結">複製連結</button><a aria-label="傳到 LINE" target="_blank" rel="noopener noreferrer" href={`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(canonical)}`}>傳到 LINE</a><p id="share-status" aria-live="polite"></p></section>
   <Content />
-
-  <div class="myth-extra">
-    <section class="myth-extra__section">
-      <h2>為什麼這個迷思會流傳？</h2>
-      <p>{data.whyItSpreads}</p>
-    </section>
-    <section class="myth-extra__section">
-      <h2>實際建議</h2>
-      <p>{data.actionAdvice}</p>
-    </section>
-  </div>
-
-  <VerdictDisclaimer updatedDate={data.updatedDate} />
-
-  {hasRelated && (
-    <Fragment slot="after-content">
-      <section class="related-content">
-        <h2 class="related-content__title">相關內容</h2>
-        <div class="related-content__grid">
-          {relatedArticles.map((a) => (
-            <ArticleCard
-              title={a.data.title}
-              description={a.data.description}
-              href={`/articles/${stripExt(a.id)}/`}
-              category="article"
-              author={a.data.author}
-              date={fmtDate(a.data.publishDate)}
-              editorReviewed={a.data.editorReviewed}
-            />
-          ))}
-          {relatedIngredients.map((i) => (
-            <IngredientCard
-              title={i.data.title}
-              description={i.data.description}
-              href={`/ingredients/${stripExt(i.id)}/`}
-              uses={i.data.uses}
-            />
-          ))}
-          {relatedVideos.map((v) => (
-            <VideoCard
-              title={v.data.title}
-              tldr={v.data.tldr}
-              href={`/videos/${stripExt(v.id)}/`}
-              youtubeId={v.data.youtubeId}
-            />
-          ))}
-          {relatedPodcasts.map((p) => (
-            <PodcastCard
-              title={p.data.title}
-              description={p.data.description}
-              href={`/podcasts/${stripExt(p.id)}/`}
-              episodeNumber={p.data.episodeNumber}
-              duration={p.data.duration}
-            />
-          ))}
-        </div>
-      </section>
-    </Fragment>
-  )}
 </Article>
-
-<style>
-  .myth-verdict-header {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    padding: 1.25rem;
-    background-color: var(--color-paper);
-    border-radius: var(--radius-card);
-    margin-bottom: 1rem;
-  }
-
-  .myth-verdict-summary {
-    font-size: var(--text-body);
-    color: var(--color-ink);
-    line-height: 1.7;
-  }
-
-  .myth-extra {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    margin-top: 1rem;
-  }
-
-  .myth-extra__section h2 {
-    font-family: var(--font-sans);
-    font-size: var(--text-h3);
-    font-weight: 700;
-    color: var(--color-ink);
-    margin-bottom: 0.5rem;
-  }
-
-  .myth-extra__section p {
-    font-size: var(--text-body);
-    color: color-mix(in oklch, var(--color-ink) 85%, transparent);
-    line-height: 1.8;
-  }
-
-  .related-content {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .related-content__title {
-    font-family: var(--font-sans);
-    font-size: var(--text-h3);
-    font-weight: 700;
-    color: var(--color-ink);
-  }
-
-  .related-content__grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-card-gap);
-  }
-
-  @media (max-width: 640px) {
-    .related-content__grid {
-      grid-template-columns: 1fr;
-    }
-  }
-</style>
+<script define:vars={{ canonical, title: d.title, summary: d.verdictSummary }}>
+  const status = document.getElementById('share-status');
+  document.getElementById('share-btn')?.addEventListener('click', async () => {
+    if (navigator.share) { await navigator.share({ title, text: summary, url: canonical }); status.textContent='已開啟分享'; return; }
+    await navigator.clipboard.writeText(canonical); status.textContent='已複製連結';
+  });
+  document.getElementById('copy-btn')?.addEventListener('click', async () => { await navigator.clipboard.writeText(canonical); status.textContent='已複製連結'; });
+</script>

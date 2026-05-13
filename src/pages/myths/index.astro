@@ -1,47 +1,42 @@
 ---
 import List from '@/layouts/List.astro';
-import MythCard from '@/components/blocks/MythCard.astro';
 import { getCollection } from 'astro:content';
 import { fmtDate } from '@/utils/date';
+import VerdictBadge from '@/components/ui/VerdictBadge.astro';
 
-function stripExt(id: string): string {
-  return id.replace(/\.[^.]+$/, '');
-}
-
-const myths = (await getCollection('myths', (e) => !e.data.draft))
-  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
+const myths = (await getCollection('myths', (e) => !e.data.draft)).sort(
+  (a, b) => b.data.updatedDate.getTime() - a.data.updatedDate.getTime(),
+);
+const mythData = myths.map((m) => ({
+  slug: m.id.replace(/\.[^.]+$/, ''),
+  title: m.data.title,
+  mythClaim: m.data.mythClaim,
+  verdict: m.data.verdict,
+  verdictSummary: m.data.verdictSummary,
+  evidenceLevel: m.data.evidenceLevel,
+  topicTags: m.data.topicTags,
+  updatedDate: m.data.updatedDate.toISOString(),
+  updatedLabel: fmtDate(m.data.updatedDate),
+  shareCardImage: m.data.shareCardImage,
+}));
+const topicOptions = [...new Set(mythData.flatMap((m) => m.topicTags))].sort();
 ---
-
-<List
-  title="迷思破解"
-  description="破解常見健康迷思，用證據說清楚真相。"
-  category="myth"
-  breadcrumbItems={[{ label: '首頁', href: '/' }, { label: '迷思破解' }]}
-  totalItems={myths.length}
->
-  <div class="myths-grid">
-    {myths.map((m) => (
-      <MythCard
-        title={m.data.title}
-        verdictSummary={m.data.verdictSummary}
-        href={`/myths/${stripExt(m.id)}/`}
-        verdict={m.data.verdict}
-        date={fmtDate(m.data.publishDate)}
-      />
-    ))}
-  </div>
+<List title="健康迷思雷達" description="闢謠專區" category="myth" breadcrumbItems={[{label:'首頁',href:'/'},{label:'健康迷思雷達'}]} totalItems={myths.length}>
+  <section class="intro"><p>我們整理近期網路與社群流傳的健康說法，依據公開研究、官方資料與編輯判讀，協助讀者分辨哪些說法站得住腳，哪些需要保留。</p><p>本頁內容僅供健康教育參考，不取代醫師、營養師或藥師的個別建議。</p></section>
+  <div class="filters"><input id="q" placeholder="搜尋標題、迷思原句、摘要、主題" /><select id="verdict"><option value="">全部判讀</option><option>大致正確</option><option>大致錯誤</option><option>證據不足</option><option>情境成立</option><option>過度簡化</option><option>需謹慎</option></select><select id="topic"><option value="">全部主題</option>{topicOptions.map(t=><option>{t}</option>)}</select><select id="evidence"><option value="">全部證據強度</option><option>高</option><option>中</option><option>低</option><option>資料不足</option></select><select id="sort"><option value="new">最新更新</option><option value="old">最早更新</option></select></div>
+  <div id="list" class="myths-grid"></div>
+  <p id="empty" class="empty" hidden>目前沒有符合條件的迷思判讀，請調整篩選條件。</p>
 </List>
-
-<style>
-  .myths-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-card-gap);
-  }
-
-  @media (max-width: 640px) {
-    .myths-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-</style>
+<script define:vars={{ mythData }}>
+  const list = document.getElementById('list'); const empty = document.getElementById('empty');
+  const controls = ['q','verdict','topic','evidence','sort'].map(id=>document.getElementById(id));
+  const render = () => {
+    const [q,v,t,e,s] = controls.map(c=>c.value.trim());
+    const kw=q.toLowerCase();
+    const filtered=mythData.filter(m=> (!kw || [m.title,m.mythClaim,m.verdictSummary,...m.topicTags].join(' ').toLowerCase().includes(kw)) && (!v||m.verdict===v) && (!t||m.topicTags.includes(t)) && (!e||m.evidenceLevel===e)).sort((a,b)=> s==='old'? new Date(a.updatedDate)-new Date(b.updatedDate):new Date(b.updatedDate)-new Date(a.updatedDate));
+    list.innerHTML = filtered.map(m=>`<article class='card'><img src='${m.shareCardImage}' alt='${m.title}'/><h3>${m.title}</h3><p class='claim'>迷思原句：${m.mythClaim}</p><p>${m.verdictSummary}</p><p>證據強度：${m.evidenceLevel}・更新：${m.updatedLabel}</p><a href='/myths/${m.slug}/' class='btn'>查看判讀</a></article>`).join('');
+    empty.hidden = filtered.length!==0;
+  };
+  controls.forEach(c=>c.addEventListener('input', render)); render();
+</script>
+<style>.filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.75rem;margin:1rem 0}.filters input,.filters select{padding:.6rem;border:1px solid var(--color-fog);border-radius:10px}.myths-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}.card{background:#fff;border:1px solid var(--color-fog);border-radius:var(--radius-card);padding:1rem}.card img{width:100%;border-radius:10px}.btn{display:inline-block;margin-top:.5rem}.empty{margin-top:1rem}@media(max-width:640px){.myths-grid{grid-template-columns:1fr}}</style>
