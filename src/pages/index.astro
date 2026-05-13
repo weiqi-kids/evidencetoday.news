@@ -14,6 +14,8 @@ import { getTopTags } from '@/utils/tag-stats';
 import { getCollection } from 'astro:content';
 import { fmtDate } from '@/utils/date';
 import { getPublishedArticles } from '@/utils/articles';
+import shortsData from '@/data/youtube-shorts.json';
+import { videoItemsSchema } from '@/lib/youtube';
 
 function stripExt(id: string): string {
   return id.replace(/\.[^.]+$/, '');
