@@ -2,8 +2,8 @@
    Typography — Evidence Today (本日有據)
    Font family stacks and fluid type scale using clamp().
 
-   Fonts are loaded via Google Fonts CDN <link> tags in the base layout.
-   Self-hosted woff2 files under /fonts/ can replace the CDN later.
+   Fonts are self-hosted via fontsource, imported in Base.astro.
+   OG image generation uses static TTF instances in src/assets/fonts/.
    ========================================================================== */
 
 :root {
