@@ -1,47 +1,16 @@
 ---
 import List from '@/layouts/List.astro';
-import MythCard from '@/components/blocks/MythCard.astro';
 import { getCollection } from 'astro:content';
-import { fmtDate } from '@/utils/date';
+import MythSquareCardVisual from '@/components/myths/MythSquareCardVisual.astro';
 
-function stripExt(id: string): string {
-  return id.replace(/\.[^.]+$/, '');
-}
-
-const myths = (await getCollection('myths', (e) => !e.data.draft))
-  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
+const myths = (await getCollection('myths', (e) => !e.data.draft)).sort((a, b) => b.data.updatedDate.getTime() - a.data.updatedDate.getTime());
+const topicOptions = [...new Set(myths.flatMap((m) => m.data.topicTags))].sort();
+const themeFor = (slug:string)=> slug.includes('lemon') ? 'lemon' : slug.includes('vitamin') ? 'vitamin' : 'default';
 ---
-
-<List
-  title="迷思破解"
-  description="破解常見健康迷思，用證據說清楚真相。"
-  category="myth"
-  breadcrumbItems={[{ label: '首頁', href: '/' }, { label: '迷思破解' }]}
-  totalItems={myths.length}
->
-  <div class="myths-grid">
-    {myths.map((m) => (
-      <MythCard
-        title={m.data.title}
-        verdictSummary={m.data.verdictSummary}
-        href={`/myths/${stripExt(m.id)}/`}
-        verdict={m.data.verdict}
-        date={fmtDate(m.data.publishDate)}
-      />
-    ))}
-  </div>
+<List title="健康迷思雷達" description="闢謠專區" category="myth" breadcrumbItems={[{ label: '首頁', href: '/' }, { label: '健康迷思雷達' }]} totalItems={myths.length}>
+  <div class="filters"><input id="q" placeholder="搜尋標題、迷思原句、摘要、主題" /><select id="verdict"><option value="">全部判讀</option><option>大致正確</option><option>大致錯誤</option><option>證據不足</option><option>情境成立</option><option>過度簡化</option><option value="需謹慎">須謹慎</option></select><select id="topic"><option value="">全部主題</option>{topicOptions.map((t) => <option>{t}</option>)}</select><select id="evidence"><option value="">全部證據強度</option><option>高</option><option>中</option><option>低</option><option>資料不足</option></select><select id="sort"><option value="new">最新更新</option><option value="old">最早更新</option></select></div>
+  <div id="list" class="myths-grid">{myths.map((m) => <a href={`/myths/${m.id.replace(/\.[^.]+$/, '')}/`} class="myth-card" data-title={m.data.title} data-claim={m.data.mythClaim} data-summary={m.data.verdictSummary} data-tags={m.data.topicTags.join(' ')} data-verdict={m.data.verdict} data-evidence={m.data.evidenceLevel} data-topic={m.data.topicTags.join('|')} data-updated={m.data.updatedDate.toISOString()}><MythSquareCardVisual title={m.data.title} verdict={m.data.verdict === '需謹慎' ? '須謹慎' : m.data.verdict} evidenceLevel={m.data.evidenceLevel} summary={m.data.verdictSummary} theme={themeFor(m.id)} /></a>)}</div>
+  <p id="empty" class="empty" hidden>目前沒有符合條件的迷思判讀，請調整篩選條件。</p>
 </List>
-
-<style>
-  .myths-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-card-gap);
-  }
-
-  @media (max-width: 640px) {
-    .myths-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-</style>
+<script>/* same */const cards=[...document.querySelectorAll('.myth-card')]; const controls=['q','verdict','topic','evidence','sort'].map((id)=>document.getElementById(id)); const empty=document.getElementById('empty'); const list=document.getElementById('list'); const render=()=>{const [q,v,t,e,s]=controls.map((c)=>c.value.trim());const kw=q.toLowerCase();const visible=cards.filter((card)=>{const text=`${card.dataset.title} ${card.dataset.claim} ${card.dataset.summary} ${card.dataset.tags}`.toLowerCase();const ok=(!kw||text.includes(kw))&&(!v||card.dataset.verdict===v)&&(!t||card.dataset.topic.split('|').includes(t))&&(!e||card.dataset.evidence===e);card.hidden=!ok;return ok;}).sort((a,b)=>s==='old'?new Date(a.dataset.updated)-new Date(b.dataset.updated):new Date(b.dataset.updated)-new Date(a.dataset.updated));visible.forEach((card)=>list.appendChild(card));empty.hidden=visible.length!==0}; controls.forEach((c)=>c.addEventListener('input',render)); render();</script>
+<style>.filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.75rem;margin:1rem 0}.filters input,.filters select{padding:.6rem;border:1px solid var(--color-fog);border-radius:10px}.myths-grid{display:grid;grid-template-columns:repeat(2,minmax(0,420px));justify-content:start;gap:1rem}.myth-card{display:block;border-radius:18px;overflow:clip;transition:.2s;min-width:0;text-decoration:none}.myth-card,.myth-card *{text-decoration:none}.myth-card:hover,.myth-card:focus-visible{transform:translateY(-2px);box-shadow:var(--shadow-card-hover);outline:2px solid color-mix(in oklch,var(--color-cat-myth) 35%,white)}@media(max-width:768px){.myths-grid{grid-template-columns:1fr}}</style>
