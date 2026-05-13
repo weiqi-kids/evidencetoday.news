@@ -527,7 +527,7 @@ const categories = [
   }
 
   .hero__badge {
-    font-size: clamp(1rem, 2.5vw, 1.18rem);
+    font-size: clamp(1.06rem, 2.3vw, 1.24rem);
     font-weight: 700;
     display: inline-flex;
     align-self: flex-start;
@@ -752,8 +752,8 @@ const categories = [
   }
 
   .category-card__icon {
-    inline-size: 3.25rem;
-    block-size: 3.25rem;
+    inline-size: clamp(4.2rem,6vw,5.2rem);
+    block-size: clamp(4.2rem,6vw,5.2rem);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -769,7 +769,7 @@ const categories = [
   }
 
   .category-card__en {
-    font-size: .95rem;
+    font-size: clamp(1rem,1.5vw,1.08rem);
     font-family: var(--font-ui);
     font-size: var(--text-badge);
     font-weight: 600;
@@ -786,7 +786,7 @@ const categories = [
   }
 
   .category-card__desc {
-    font-size: 1.02rem;
+    font-size: clamp(1.1rem,1.8vw,1.2rem);
     font-size: var(--text-meta);
     color: color-mix(in oklch, var(--color-ink) 70%, transparent);
     line-height: 1.6;
@@ -803,7 +803,7 @@ const categories = [
   }
 
   .category-card__count {
-    font-size: 1.02rem;
+    font-size: clamp(1.1rem,1.8vw,1.2rem);
     font-weight: 700;
     color: color-mix(in oklch, var(--color-ink) 55%, transparent);
   }
