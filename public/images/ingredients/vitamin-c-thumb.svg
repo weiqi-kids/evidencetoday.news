@@ -1,0 +1,14 @@
+<svg width="960" height="540" viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+<title id="title">維他命 C 原料縮圖</title><desc id="desc">維他命 C 的柑橘類食物來源縮圖。</desc>
+<rect width="960" height="540" fill="#f4fbf5"/>
+<circle cx="130" cy="110" r="58" fill="#d8eddc"/>
+<circle cx="835" cy="445" r="72" fill="#d8eddc"/>
+<circle cx="280" cy="300" r="86" fill="#f4c76e"/>
+<circle cx="470" cy="258" r="78" fill="#f7d98d"/>
+<circle cx="650" cy="312" r="88" fill="#f2ba5b"/>
+<ellipse cx="280" cy="300" rx="26" ry="20" fill="#fff3dc" opacity="0.8"/>
+<ellipse cx="470" cy="258" rx="24" ry="18" fill="#fff3dc" opacity="0.8"/>
+<ellipse cx="650" cy="312" rx="27" ry="21" fill="#fff3dc" opacity="0.8"/>
+<rect x="398" y="156" width="164" height="232" rx="26" fill="#a8c78d" opacity="0.92"/>
+<text x="480" y="488" text-anchor="middle" font-size="44" font-family="sans-serif" fill="#2f5e3b">維他命 C</text>
+</svg>
