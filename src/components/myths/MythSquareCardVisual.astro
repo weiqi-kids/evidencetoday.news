@@ -1,0 +1,12 @@
+---
+interface Props { title:string; verdict:string; evidenceLevel:string; summary:string; theme?:'lemon'|'vitamin'|'default'; brandLabel?:string; className?:string; }
+const { title, verdict, evidenceLevel, summary, theme='default', brandLabel='本日有據 Evidence Today', className='' } = Astro.props;
+---
+<div class={`myth-visual ${theme} ${className}`}>
+  <div class="decor" aria-hidden="true"></div>
+  <p class="brand">{brandLabel}</p>
+  <h3>{title}</h3>
+  <div class="badges"><span class="pill verdict">判讀：{verdict}</span><span class="pill evidence">證據強度：{evidenceLevel}</span></div>
+  <p class="summary">{summary}</p>
+</div>
+<style>.myth-visual{aspect-ratio:1/1;width:100%;position:relative;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(20px,4vw,40px);border-radius:18px;overflow:hidden;isolation:isolate;min-width:0}.decor{position:absolute;inset:0;z-index:-1}.myth-visual.lemon .decor{background:linear-gradient(135deg,#fff9e8,#e8f7ef)}.myth-visual.vitamin .decor{background:linear-gradient(135deg,#fff7ed,#fffde8)}.myth-visual.default .decor{background:linear-gradient(135deg,#f8fafc,#eef2ff)}.brand{font-size:clamp(13px,1.4vw,20px);font-weight:700}.myth-visual h3{font-size:clamp(28px,4.2vw,64px);line-height:1.2;margin:.5rem 0 1rem;word-break:keep-all}.badges{display:flex;flex-wrap:wrap;gap:.6rem}.pill{display:inline-flex;align-items:center;justify-content:center;gap:4px;padding:8px 14px;border-radius:999px;font-size:clamp(14px,1.3vw,18px);font-weight:700;line-height:1.2;white-space:nowrap}.verdict{background:#fff1db;color:#7a4b08}.evidence{background:#e7efff;color:#1e3a8a}.summary{font-size:clamp(16px,1.9vw,30px);line-height:1.5;margin-top:1rem}@media(max-width:640px){.myth-visual h3{font-size:clamp(26px,8vw,42px)}.summary{font-size:18px}}</style>
