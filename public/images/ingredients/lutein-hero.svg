@@ -1,4 +1,1 @@
-<svg width="1200" height="675" viewBox="0 0 1200 675" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
-<title id="title">葉黃素主視覺</title><desc id="desc">金盞花與葉菜、黃斑概念插圖。</desc>
-<rect width="1200" height="675" fill="#f7fced"/><circle cx="250" cy="320" r="95" fill="#f8d35d"/><circle cx="250" cy="320" r="45" fill="#f6b93b"/><ellipse cx="560" cy="390" rx="130" ry="85" fill="#80b96a"/><ellipse cx="780" cy="380" rx="130" ry="85" fill="#6ea95c"/><ellipse cx="980" cy="330" rx="120" ry="90" fill="#e2f0b2"/><circle cx="980" cy="330" r="36" fill="#f8d35d"/>
-<text x="600" y="620" text-anchor="middle" font-size="48" font-family="sans-serif" fill="#4f7a2d">Lutein</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="葉黃素"><rect width="1600" height="900" fill="#ECFDF5"/><text x="800" y="470" text-anchor="middle" fill="#047857" font-family="Noto Sans TC, Inter, Arial, sans-serif" font-size="120" font-weight="700">葉黃素</text></svg>

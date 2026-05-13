@@ -1,8 +1,1 @@
-<svg width="960" height="540" viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
-<title id="title">維生素 E 原料縮圖</title><desc id="desc">維生素 E 的食物來源縮圖。</desc>
-<rect width="960" height="540" fill="#f4fbf5"/>
-<ellipse cx="230" cy="350" rx="120" ry="80" fill="#7cb489"/>
-<ellipse cx="730" cy="350" rx="120" ry="80" fill="#7cb489"/>
-<rect x="405" y="170" width="150" height="240" rx="26" fill="#a8c78d"/>
-<text x="480" y="490" text-anchor="middle" font-size="44" font-family="sans-serif" fill="#2f5e3b">維生素 E</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="Vitamin E"><rect width="1600" height="900" fill="#F7F3E9"/><text x="800" y="470" text-anchor="middle" fill="#8A6A0A" font-family="Noto Sans TC, Inter, Arial, sans-serif" font-size="120" font-weight="700">Vitamin E</text></svg>

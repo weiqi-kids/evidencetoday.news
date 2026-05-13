@@ -1,3 +1,1 @@
-<svg width="960" height="540" viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
-<title id="title">維生素 D 縮圖</title><desc id="desc">暖黃與藍綠色維生素 D 縮圖。</desc>
-<rect width="960" height="540" fill="#f6fbff"/><circle cx="180" cy="130" r="58" fill="#ffe08a"/><ellipse cx="390" cy="305" rx="130" ry="70" fill="#79c1c9"/><rect x="600" y="200" width="170" height="210" rx="24" fill="#b9d9df"/><text x="480" y="485" text-anchor="middle" font-size="42" font-family="sans-serif" fill="#2f6e74">維生素 D</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="Vitamin D"><rect width="1600" height="900" fill="#FFF7D6"/><text x="800" y="470" text-anchor="middle" fill="#A16207" font-family="Noto Sans TC, Inter, Arial, sans-serif" font-size="120" font-weight="700">Vitamin D</text></svg>
