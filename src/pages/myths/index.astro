@@ -1,48 +1,17 @@
 ---
 import List from '@/layouts/List.astro';
 import { getCollection } from 'astro:content';
-import { fmtDate } from '@/utils/date';
-import VerdictBadge from '@/components/ui/VerdictBadge.astro';
 
-const myths = (await getCollection('myths', (e) => !e.data.draft)).sort(
-  (a, b) => b.data.updatedDate.getTime() - a.data.updatedDate.getTime(),
-);
+const myths = (await getCollection('myths', (e) => !e.data.draft)).sort((a, b) => b.data.updatedDate.getTime() - a.data.updatedDate.getTime());
 const topicOptions = [...new Set(myths.flatMap((m) => m.data.topicTags))].sort();
 ---
 <List title="健康迷思雷達" description="闢謠專區" category="myth" breadcrumbItems={[{ label: '首頁', href: '/' }, { label: '健康迷思雷達' }]} totalItems={myths.length}>
-  <section class="intro"><p>我們整理近期網路與社群流傳的健康說法，依據公開研究、官方資料與編輯判讀，協助讀者分辨哪些說法站得住腳，哪些需要保留。</p><p>本頁內容僅供健康教育參考，不取代醫師、營養師或藥師的個別建議。</p></section>
-  <div class="filters">
-    <input id="q" placeholder="搜尋標題、迷思原句、摘要、主題" />
-    <select id="verdict"><option value="">全部判讀</option><option>大致正確</option><option>大致錯誤</option><option>證據不足</option><option>情境成立</option><option>過度簡化</option><option value="需謹慎">須謹慎</option></select>
-    <select id="topic"><option value="">全部主題</option>{topicOptions.map((t) => <option>{t}</option>)}</select>
-    <select id="evidence"><option value="">全部證據強度</option><option>高</option><option>中</option><option>低</option><option>資料不足</option></select>
-    <select id="sort"><option value="new">最新更新</option><option value="old">最早更新</option></select>
-  </div>
-  <div id="list" class="myths-grid">
-    {myths.map((m) => (
-      <a href={`/myths/${m.id.replace(/\.[^.]+$/, '')}/`} class="myth-card" data-title={m.data.title} data-claim={m.data.mythClaim} data-summary={m.data.verdictSummary} data-tags={m.data.topicTags.join(' ')} data-verdict={m.data.verdict} data-evidence={m.data.evidenceLevel} data-topic={m.data.topicTags.join('|')} data-updated={m.data.updatedDate.toISOString()}>
-        <img src={m.data.shareCardImage || m.data.ogImage || '/og/index.png'} alt={m.data.title} />
-        <div class="body"><VerdictBadge verdict={m.data.verdict} /><h2>{m.data.title}</h2><p class="claim">迷思原句：{m.data.mythClaim}</p><p>{m.data.verdictSummary}</p><p class="meta">證據強度：{m.data.evidenceLevel}・更新：{fmtDate(m.data.updatedDate)}</p></div>
-      </a>
-    ))}
-  </div>
+  <div class="filters"><input id="q" placeholder="搜尋標題、迷思原句、摘要、主題" /><select id="verdict"><option value="">全部判讀</option><option>大致正確</option><option>大致錯誤</option><option>證據不足</option><option>情境成立</option><option>過度簡化</option><option value="需謹慎">須謹慎</option></select><select id="topic"><option value="">全部主題</option>{topicOptions.map((t) => <option>{t}</option>)}</select><select id="evidence"><option value="">全部證據強度</option><option>高</option><option>中</option><option>低</option><option>資料不足</option></select><select id="sort"><option value="new">最新更新</option><option value="old">最早更新</option></select></div>
+  <div id="list" class="myths-grid">{myths.map((m) => <a href={`/myths/${m.id.replace(/\.[^.]+$/, '')}/`} class="myth-card" data-title={m.data.title} data-claim={m.data.mythClaim} data-summary={m.data.verdictSummary} data-tags={m.data.topicTags.join(' ')} data-verdict={m.data.verdict} data-evidence={m.data.evidenceLevel} data-topic={m.data.topicTags.join('|')} data-updated={m.data.updatedDate.toISOString()}><img src={m.data.shareCardImage || m.data.ogImage || '/og/index.png'} alt={m.data.title} /></a>)}</div>
   <p id="empty" class="empty" hidden>目前沒有符合條件的迷思判讀，請調整篩選條件。</p>
 </List>
 <script>
-  const cards = [...document.querySelectorAll('.myth-card')];
-  const controls = ['q', 'verdict', 'topic', 'evidence', 'sort'].map((id) => document.getElementById(id));
-  const empty = document.getElementById('empty');
-  const list = document.getElementById('list');
-  const render = () => {
-    const [q, v, t, e, s] = controls.map((c) => c.value.trim()); const kw = q.toLowerCase();
-    const visible = cards.filter((card) => {
-      const text = `${card.dataset.title} ${card.dataset.claim} ${card.dataset.summary} ${card.dataset.tags}`.toLowerCase();
-      const ok = (!kw || text.includes(kw)) && (!v || card.dataset.verdict === v) && (!t || card.dataset.topic.split('|').includes(t)) && (!e || card.dataset.evidence === e);
-      card.hidden = !ok; return ok;
-    }).sort((a,b)=> s==='old'? new Date(a.dataset.updated)-new Date(b.dataset.updated):new Date(b.dataset.updated)-new Date(a.dataset.updated));
-    visible.forEach((card)=>list.appendChild(card));
-    empty.hidden = visible.length !== 0;
-  };
-  controls.forEach((c) => c.addEventListener('input', render)); render();
+const cards=[...document.querySelectorAll('.myth-card')]; const controls=['q','verdict','topic','evidence','sort'].map((id)=>document.getElementById(id)); const empty=document.getElementById('empty'); const list=document.getElementById('list');
+const render=()=>{const [q,v,t,e,s]=controls.map((c)=>c.value.trim());const kw=q.toLowerCase();const visible=cards.filter((card)=>{const text=`${card.dataset.title} ${card.dataset.claim} ${card.dataset.summary} ${card.dataset.tags}`.toLowerCase();const ok=(!kw||text.includes(kw))&&(!v||card.dataset.verdict===v)&&(!t||card.dataset.topic.split('|').includes(t))&&(!e||card.dataset.evidence===e);card.hidden=!ok;return ok;}).sort((a,b)=>s==='old'?new Date(a.dataset.updated)-new Date(b.dataset.updated):new Date(b.dataset.updated)-new Date(a.dataset.updated));visible.forEach((card)=>list.appendChild(card));empty.hidden=visible.length!==0}; controls.forEach((c)=>c.addEventListener('input',render)); render();
 </script>
-<style>.filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.75rem;margin:1rem 0}.filters input,.filters select{padding:.6rem;border:1px solid var(--color-fog);border-radius:10px}.myths-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}.myth-card{display:block;background:#fff;border:1px solid var(--color-fog);border-radius:var(--radius-card);overflow:hidden;text-decoration:none;color:inherit;transition:.2s}.myth-card:hover,.myth-card:focus-visible{transform:translateY(-2px);box-shadow:var(--shadow-card-hover);outline:2px solid color-mix(in oklch,var(--color-cat-myth) 35%,white)}.myth-card img{width:100%;aspect-ratio:1200/630;object-fit:cover}.body{padding:1rem}.body h2{font-size:var(--text-h3)}.claim{color:color-mix(in oklch,var(--color-ink) 85%,transparent)}.meta{font-size:var(--text-meta);color:color-mix(in oklch,var(--color-ink) 65%,transparent)}@media(max-width:640px){.myths-grid{grid-template-columns:1fr}}</style>
+<style>.filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.75rem;margin:1rem 0}.filters input,.filters select{padding:.6rem;border:1px solid var(--color-fog);border-radius:10px}.myths-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}.myth-card{display:block;border-radius:18px;overflow:hidden;border:1px solid var(--color-fog);background:#fff;transition:.2s}.myth-card img{width:100%;aspect-ratio:1/1;object-fit:cover}.myth-card:hover,.myth-card:focus-visible{transform:translateY(-2px);box-shadow:var(--shadow-card-hover);outline:2px solid color-mix(in oklch,var(--color-cat-myth) 35%,white)}@media(max-width:640px){.myths-grid{grid-template-columns:1fr}}</style>

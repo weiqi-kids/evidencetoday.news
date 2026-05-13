@@ -1,12 +1,8 @@
-<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="喝檸檬水真的可以排毒嗎，判讀過度簡化，證據強度低">
-<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff9e8"/><stop offset="1" stop-color="#e8f7ef"/></linearGradient></defs>
-<rect width="1200" height="630" fill="url(#bg)"/>
-<circle cx="1030" cy="120" r="90" fill="#ffe082" opacity="0.6"/><circle cx="1080" cy="170" r="35" fill="#fff6c4"/>
-<rect x="70" y="70" width="1060" height="490" rx="28" fill="#ffffff" opacity="0.92"/>
-<text x="110" y="130" font-size="34" font-family="Noto Sans TC, sans-serif" fill="#1d3b2e" font-weight="700">本日有據 Evidence Today</text>
-<text x="110" y="200" font-size="56" font-family="Noto Sans TC, sans-serif" fill="#111827" font-weight="700">喝檸檬水真的可以排毒嗎？</text>
-<rect x="110" y="245" width="240" height="56" rx="28" fill="#fff2dc"/><text x="130" y="282" font-size="30" font-family="Noto Sans TC, sans-serif" fill="#7a4b08" font-weight="700">判讀：過度簡化</text>
-<rect x="370" y="245" width="180" height="56" rx="28" fill="#eef2ff"/><text x="390" y="282" font-size="30" font-family="Noto Sans TC, sans-serif" fill="#1e3a8a" font-weight="700">證據強度：低</text>
-<text x="110" y="360" font-size="36" font-family="Noto Sans TC, sans-serif" fill="#1f2937">補充水分有幫助，但「排毒」不能簡化成</text>
-<text x="110" y="410" font-size="36" font-family="Noto Sans TC, sans-serif" fill="#1f2937">靠單一飲品完成。</text>
+<svg width="1200" height="1200" viewBox="0 0 1200 1200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="喝檸檬水真的可以排毒嗎，判讀過度簡化，證據強度低">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff9e8"/><stop offset="1" stop-color="#e8f7ef"/></linearGradient></defs><rect width="1200" height="1200" fill="url(#bg)"/>
+<text x="90" y="110" font-size="36" font-family="Noto Sans TC, sans-serif" fill="#1d3b2e" font-weight="700">本日有據 Evidence Today</text>
+<text x="90" y="340" font-size="78" font-family="Noto Sans TC, sans-serif" fill="#0f172a" font-weight="800">喝檸檬水真的</text><text x="90" y="430" font-size="78" font-family="Noto Sans TC, sans-serif" fill="#0f172a" font-weight="800">可以排毒嗎？</text>
+<rect x="90" y="520" rx="34" ry="34" width="370" height="80" fill="#fff1db"/><text x="122" y="573" font-size="44" font-family="Noto Sans TC, sans-serif" fill="#7a4b08" font-weight="700">判讀：過度簡化</text>
+<rect x="490" y="520" rx="34" ry="34" width="300" height="80" fill="#e7efff"/><text x="522" y="573" font-size="44" font-family="Noto Sans TC, sans-serif" fill="#1e3a8a" font-weight="700">證據強度：低</text>
+<text x="90" y="760" font-size="48" font-family="Noto Sans TC, sans-serif" fill="#1f2937">補充水分有幫助，但「排毒」不能簡化成</text><text x="90" y="835" font-size="48" font-family="Noto Sans TC, sans-serif" fill="#1f2937">靠單一飲品完成。</text>
 </svg>
