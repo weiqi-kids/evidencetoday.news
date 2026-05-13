@@ -179,13 +179,13 @@ const breadcrumbSchema = {
 
   .related-content__grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
     gap: var(--space-card-gap);
   }
 
-  @media (max-width: 640px) {
+  @media (min-width: 640px) {
     .related-content__grid {
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 </style>

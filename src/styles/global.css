@@ -34,7 +34,7 @@ html {
 body {
   font-family: var(--font-sans);
   font-size: var(--text-body);
-  line-height: 1.7;
+  line-height: 1.65;
   color: var(--color-ink);
   background-color: var(--color-paper);
   -webkit-font-smoothing: antialiased;
@@ -146,11 +146,11 @@ img {
 .prose {
   max-width: 68ch;
   font-size: var(--text-body);
-  line-height: 1.8;
+  line-height: 1.75;
 }
 
 .prose > * + * {
-  margin-top: 1.25em;
+  margin-top: 1em;
 }
 
 .prose h1 {
@@ -158,11 +158,11 @@ img {
 }
 
 .prose h2 {
-  margin-top: 1.75em;
+  margin-top: 1.5em;
 }
 
 .prose h3 {
-  margin-top: 1.5em;
+  margin-top: 1.25em;
 }
 
 .prose h4,
@@ -274,27 +274,27 @@ img {
 }
 
 /* ==========================================================================
-   Mobile adjustments
+   Desktop enhancements
    ========================================================================== */
 
-@media (max-width: 768px) {
+@media (min-width: 768px) {
   body {
-    line-height: 1.65;
+    line-height: 1.7;
   }
 
   .prose {
-    line-height: 1.75;
+    line-height: 1.8;
   }
 
   .prose > * + * {
-    margin-top: 1em;
+    margin-top: 1.25em;
   }
 
   .prose h2 {
-    margin-top: 1.5em;
+    margin-top: 1.75em;
   }
 
   .prose h3 {
-    margin-top: 1.25em;
+    margin-top: 1.5em;
   }
 }
