@@ -1,11 +1,11 @@
 ---
-interface Props { title:string; verdict:string; evidenceLevel:string; summary:string; theme?:'lemon'|'vitamin'|'default'; brandLabel?:string; className?:string; }
-const { title, verdict, evidenceLevel, summary, theme='default', brandLabel='本日有據 Evidence Today', className='' } = Astro.props;
+interface Props { title:string; verdict:string; evidenceLevel:string; summary:string; theme?:'lemon'|'vitamin'|'default'; brandLabel?:string; className?:string; showTitle?: boolean; }
+const { title, verdict, evidenceLevel, summary, theme='default', brandLabel='本日有據 Evidence Today', className='', showTitle=true } = Astro.props;
 ---
 <div class={`myth-visual ${theme} ${className}`} role='img' aria-label={`${title}，判讀${verdict}，證據強度${evidenceLevel}`}>
   <div class="decor" aria-hidden="true"><span class='shape s1'></span><span class='shape s2'></span><span class='shape s3'></span></div>
   <p class="brand">{brandLabel}</p>
-  <h3>{title}</h3>
+  {showTitle && <h3>{title}</h3>}
   <div class="badges"><span class="pill verdict">判讀：{verdict}</span><span class="pill evidence">證據強度：{evidenceLevel}</span></div>
   <p class="summary">{summary}</p>
 </div>
