@@ -1,63 +1,8 @@
 ---
-interface Props {
-  verdict: 'true' | 'false' | 'insufficient' | 'contextual';
-  size?: 'sm' | 'lg';
-  class?: string;
-}
-
-const { verdict, size = 'sm', class: className } = Astro.props;
-
-const labelMap: Record<string, string> = {
-  true: '真',
-  false: '假',
-  insufficient: '證據不足',
-  contextual: '情境成立',
-};
-
-const label = labelMap[verdict];
-const classes = `verdict verdict--${verdict} verdict--${size}${className ? ` ${className}` : ''}`;
+import { VERDICT_META, type MythVerdict } from '@/utils/myths/schema';
+interface Props { verdict: MythVerdict; size?: 'sm'|'lg'; class?: string; }
+const { verdict, size='sm', class: className } = Astro.props;
+const meta = VERDICT_META[verdict];
 ---
-
-<span class={classes}>{label}</span>
-
-<style>
-  .verdict {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: var(--radius-pill);
-    font-family: var(--font-ui);
-    font-weight: 700;
-    line-height: 1;
-    white-space: nowrap;
-    color: white;
-  }
-
-  /* Sizes */
-  .verdict--sm {
-    padding: 0.2rem 0.6rem;
-    font-size: var(--text-badge);
-  }
-
-  .verdict--lg {
-    padding: 0.4rem 1rem;
-    font-size: var(--text-meta);
-  }
-
-  /* Verdict colors */
-  .verdict--true {
-    background-color: var(--color-verdict-true);
-  }
-
-  .verdict--false {
-    background-color: var(--color-verdict-false);
-  }
-
-  .verdict--insufficient {
-    background-color: var(--color-verdict-insufficient);
-  }
-
-  .verdict--contextual {
-    background-color: var(--color-verdict-contextual);
-  }
-</style>
+<span class={`verdict verdict--${meta.tone} verdict--${size}${className ? ` ${className}` : ''}`} aria-label={`判讀結果：${verdict}，${meta.description}`}><span aria-hidden="true">{meta.icon}</span>{size==='sm'?meta.shortLabel:verdict}</span>
+<style>.verdict{display:inline-flex;gap:.35rem;align-items:center;border-radius:999px;font-weight:700}.verdict--sm{padding:.2rem .6rem;font-size:var(--text-badge)}.verdict--lg{padding:.45rem .9rem}.verdict--positive{background:#dff6e8;color:#165a35}.verdict--negative{background:#fde8ea;color:#8a1f2d}.verdict--neutral{background:#eef1f6;color:#364152}.verdict--context{background:#e6f0ff;color:#18427d}.verdict--caution{background:#fff2dc;color:#7a4b08}.verdict--warning{background:#fff1e8;color:#7a2e0f}</style>

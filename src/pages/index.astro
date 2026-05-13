@@ -216,8 +216,8 @@ const categories = [
     <HeroParticles client:media="(min-width: 768px)" />
     <div class="hero__inner container">
       <div class="hero__left">
-        <span class="hero__badge">主編把關・研究脈絡・白話解釋</span>
-        <h1 class="hero__title">把健康議題，講得有根據，<br>也講得讓人看得懂。</h1>
+        <span class="hero__badge">主編把關 ・ 研究脈絡 ・ 白話解釋</span>
+        <h1 class="hero__title">健康議題，有據也好懂。</h1>
         <p class="hero__subtitle">
           我們整理最新的醫學研究與營養科學，以研究資料、公共資訊與主編判讀，整理健康、營養、保健食品與公共衛生議題。不販售恐懼，不誇大療效。
         </p>
@@ -225,7 +225,7 @@ const categories = [
           <Button variant="primary" href="/articles/">最新文章 →</Button>
           <Button variant="secondary" href="/myths/" class="hero-btn-secondary">迷思破解</Button>
           <Button variant="secondary" href="/authors/luo-yang/">認識主編</Button>
-          <Button variant="cta" href="#cta">追蹤 LINE 拿整理筆記</Button>
+          
         </div>
         <div class="hero__trust">
           <div class="hero__trust-card">
@@ -274,7 +274,7 @@ const categories = [
             <p class="category-card__desc">{cat.desc}</p>
             <div class="category-card__footer">
               <span class="category-card__count">{cat.count} 篇</span>
-              <span class="category-card__link">查看分類 →</span>
+              
             </div>
           </a>
         ))}
@@ -527,6 +527,8 @@ const categories = [
   }
 
   .hero__badge {
+    font-size: clamp(1.06rem, 2.3vw, 1.24rem);
+    font-weight: 700;
     display: inline-flex;
     align-self: flex-start;
     padding: 0.35rem 0.85rem;
@@ -555,6 +557,7 @@ const categories = [
   }
 
   .hero__buttons {
+    flex-wrap: wrap;
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
@@ -749,6 +752,8 @@ const categories = [
   }
 
   .category-card__icon {
+    inline-size: clamp(4.2rem,6vw,5.2rem);
+    block-size: clamp(4.2rem,6vw,5.2rem);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -764,6 +769,7 @@ const categories = [
   }
 
   .category-card__en {
+    font-size: clamp(1rem,1.5vw,1.08rem);
     font-family: var(--font-ui);
     font-size: var(--text-badge);
     font-weight: 600;
@@ -780,6 +786,7 @@ const categories = [
   }
 
   .category-card__desc {
+    font-size: clamp(1.1rem,1.8vw,1.2rem);
     font-size: var(--text-meta);
     color: color-mix(in oklch, var(--color-ink) 70%, transparent);
     line-height: 1.6;
@@ -796,6 +803,8 @@ const categories = [
   }
 
   .category-card__count {
+    font-size: clamp(1.1rem,1.8vw,1.2rem);
+    font-weight: 700;
     color: color-mix(in oklch, var(--color-ink) 55%, transparent);
   }
 
