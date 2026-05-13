@@ -1,51 +1,35 @@
 ---
 import List from '@/layouts/List.astro';
-import VideoCard from '@/components/blocks/VideoCard.astro';
-import { getCollection } from 'astro:content';
+import shortsData from '@/data/youtube-shorts.json';
+import { videoItemsSchema, YOUTUBE_CHANNEL_URL } from '@/lib/youtube';
+import { fmtDate } from '@/utils/date';
 
-function stripExt(id: string): string {
-  return id.replace(/\.[^.]+$/, '');
-}
-
-const videos = (await getCollection('videos', (e) => !e.data.draft))
-  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
+const videos = videoItemsSchema.safeParse(shortsData).success ? videoItemsSchema.parse(shortsData) : [];
 ---
 
 <List
-  title="短影音"
-  description="三到十分鐘的影片，快速掌握一個健康主題。"
+  title="短影音｜本日有據 Evidence Today"
+  description="本日有據短影音整理健康、營養、醫學與生活科普重點，用短時間看懂有根據的健康資訊。"
   category="video"
   breadcrumbItems={[{ label: '首頁', href: '/' }, { label: '短影音' }]}
   totalItems={videos.length}
 >
-  <div class="videos-grid">
-    {videos.map((v) => (
-      <VideoCard
-        title={v.data.title}
-        tldr={v.data.tldr}
-        href={`/videos/${stripExt(v.id)}/`}
-        youtubeId={v.data.youtubeId}
-      />
-    ))}
-  </div>
+  <p class="subtitle">用 60 秒掌握一個健康觀念，所有影片同步自本日有據 YouTube Shorts。</p>
+  {videos.length === 0 ? (
+    <p class="fallback">目前短影音資料暫時無法載入，請稍後再試，或前往<a href={YOUTUBE_CHANNEL_URL} target="_blank" rel="noopener noreferrer">本日有據 YouTube 頻道</a>觀看。</p>
+  ) : (
+    <div class="videos-grid">
+      {videos.map((v) => (
+        <article class="video-card">
+          <div class="video-frame"><iframe src={v.embedUrl} title={v.title} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+          <h3>{v.title}</h3>
+          <p>{v.publishedAt ? fmtDate(new Date(v.publishedAt)) : '日期待補'}</p>
+          <a href={v.shortsUrl} target="_blank" rel="noopener noreferrer">在 YouTube 觀看</a>
+        </article>
+      ))}
+    </div>
+  )}
 </List>
-
 <style>
-  .videos-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-card-gap);
-  }
-
-  @media (max-width: 1024px) {
-    .videos-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (max-width: 640px) {
-    .videos-grid {
-      grid-template-columns: 1fr;
-    }
-  }
+.subtitle{margin-bottom:1rem}.videos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-card-gap)}.video-card{border:1px solid var(--color-fog);border-radius:var(--radius-card);padding:1rem;background:#fff}.video-frame{aspect-ratio:9/16;width:100%;overflow:hidden;border-radius:var(--radius-sm);background:var(--color-fog)}.video-frame iframe{width:100%;height:100%;border:0}.fallback a{margin-left:.25rem}@media (max-width:1024px){.videos-grid{grid-template-columns:repeat(2,1fr)}}@media (max-width:640px){.videos-grid{grid-template-columns:1fr}}
 </style>
