@@ -35,8 +35,7 @@ const allIngredients = (await getCollection('ingredients', (e) => !e.data.draft)
 const allPodcasts = (await getCollection('podcasts', (e) => !e.data.draft))
   .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
 
-const allVideos = (await getCollection('videos', (e) => !e.data.draft))
-  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
+const allVideos = videoItemsSchema.safeParse(shortsData).success ? videoItemsSchema.parse(shortsData) : [];
 
 const allNews = (await getCollection('news', (e) => !e.data.draft))
   .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
