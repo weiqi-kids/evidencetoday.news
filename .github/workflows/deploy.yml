@@ -17,6 +17,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      YOUTUBE_CHANNEL_ID: UCTejYxFd04qma-LY0_Z17NQ
     steps:
       - name: Checkout
         uses: actions/checkout@v4
