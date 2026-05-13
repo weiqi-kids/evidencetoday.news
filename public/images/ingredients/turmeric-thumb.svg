@@ -1,3 +1,1 @@
-<svg width="960" height="540" viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
-<title id="title">薑黃縮圖</title><desc id="desc">暖黃橘色薑黃原料縮圖。</desc>
-<rect width="960" height="540" fill="#fff7e9"/><ellipse cx="270" cy="300" rx="150" ry="70" fill="#d89a43"/><circle cx="500" cy="300" r="78" fill="#f2b13e"/><g fill="#f9cf6a"><circle cx="680" cy="270" r="20"/><circle cx="730" cy="320" r="20"/><circle cx="780" cy="270" r="20"/></g><text x="480" y="485" text-anchor="middle" font-size="42" font-family="sans-serif" fill="#8a5320">薑黃</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="薑黃"><rect width="1600" height="900" fill="#FFF7ED"/><text x="800" y="470" text-anchor="middle" fill="#C2410C" font-family="Noto Sans TC, Inter, Arial, sans-serif" font-size="120" font-weight="700">薑黃</text></svg>

@@ -1,10 +1,1 @@
-<svg width="1200" height="675" viewBox="0 0 1200 675" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
-<title id="title">維生素 E 食物來源示意</title><desc id="desc">堅果、種子、植物油與酪梨的簡約插圖。</desc>
-<rect width="1200" height="675" fill="#f4fbf5"/>
-<circle cx="160" cy="140" r="72" fill="#d8eddc"/><circle cx="1040" cy="560" r="96" fill="#d8eddc"/>
-<ellipse cx="320" cy="420" rx="130" ry="90" fill="#7cb489"/><ellipse cx="880" cy="420" rx="130" ry="90" fill="#7cb489"/>
-<rect x="500" y="240" width="200" height="300" rx="34" fill="#a8c78d"/>
-<rect x="555" y="190" width="90" height="70" rx="18" fill="#d6e6b9"/>
-<circle cx="300" cy="390" r="22" fill="#d9b47a"/><circle cx="350" cy="450" r="22" fill="#d9b47a"/><circle cx="840" cy="390" r="22" fill="#d9b47a"/><circle cx="900" cy="450" r="22" fill="#d9b47a"/>
-<text x="600" y="620" text-anchor="middle" font-size="48" font-family="sans-serif" fill="#2f5e3b">Vitamin E</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="Vitamin E"><rect width="1600" height="900" fill="#F7F3E9"/><text x="800" y="470" text-anchor="middle" fill="#8A6A0A" font-family="Noto Sans TC, Inter, Arial, sans-serif" font-size="120" font-weight="700">Vitamin E</text></svg>

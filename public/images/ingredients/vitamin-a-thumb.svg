@@ -1,3 +1,1 @@
-<svg width="960" height="540" viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
-<title id="title">維生素 A 縮圖</title><desc id="desc">橘黃綠色維生素 A 原料縮圖。</desc>
-<rect width="960" height="540" fill="#fff8ef"/><rect x="160" y="280" width="170" height="70" rx="35" fill="#f28c3c"/><ellipse cx="490" cy="320" rx="110" ry="78" fill="#f5a65a"/><rect x="620" y="220" width="180" height="150" rx="20" fill="#7eb26d"/><text x="480" y="485" text-anchor="middle" font-size="42" font-family="sans-serif" fill="#946028">維生素 A</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="Vitamin A"><rect width="1600" height="900" fill="#FFF1E8"/><text x="800" y="470" text-anchor="middle" fill="#B45309" font-family="Noto Sans TC, Inter, Arial, sans-serif" font-size="120" font-weight="700">Vitamin A</text></svg>

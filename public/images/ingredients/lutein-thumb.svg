@@ -1,3 +1,1 @@
-<svg width="960" height="540" viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
-<title id="title">葉黃素縮圖</title><desc id="desc">黃綠色葉黃素原料縮圖。</desc>
-<rect width="960" height="540" fill="#f7fced"/><circle cx="230" cy="280" r="80" fill="#f8d35d"/><ellipse cx="480" cy="310" rx="120" ry="78" fill="#80b96a"/><ellipse cx="690" cy="295" rx="110" ry="82" fill="#e2f0b2"/><text x="480" y="485" text-anchor="middle" font-size="42" font-family="sans-serif" fill="#4f7a2d">葉黃素</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="葉黃素"><rect width="1600" height="900" fill="#ECFDF5"/><text x="800" y="470" text-anchor="middle" fill="#047857" font-family="Noto Sans TC, Inter, Arial, sans-serif" font-size="120" font-weight="700">葉黃素</text></svg>
