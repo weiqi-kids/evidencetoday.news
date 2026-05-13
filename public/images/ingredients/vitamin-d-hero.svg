@@ -1,0 +1,5 @@
+<svg width="1200" height="675" viewBox="0 0 1200 675" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+<title id="title">維生素 D 主視覺</title><desc id="desc">日照、魚類與骨骼概念的簡約插圖。</desc>
+<rect width="1200" height="675" fill="#f6fbff"/><circle cx="180" cy="130" r="70" fill="#ffe08a"/><g stroke="#ffe08a" stroke-width="8"><line x1="180" y1="30" x2="180" y2="0"/><line x1="100" y1="60" x2="70" y2="35"/><line x1="260" y1="60" x2="290" y2="35"/></g>
+<ellipse cx="420" cy="390" rx="150" ry="80" fill="#79c1c9"/><circle cx="365" cy="380" r="12" fill="#fff"/><rect x="700" y="240" width="220" height="270" rx="28" fill="#b9d9df"/><path d="M810 290c40 0 70 30 70 70s-30 70-70 70-70-30-70-70 30-70 70-70z" fill="none" stroke="#6aa0aa" stroke-width="16"/>
+<text x="600" y="620" text-anchor="middle" font-size="48" font-family="sans-serif" fill="#2f6e74">Vitamin D</text></svg>
