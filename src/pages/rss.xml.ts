@@ -11,7 +11,6 @@ export async function GET(context: APIContext) {
     getCollection('articles', ({ data }) => !data.draft),
     getCollection('myths', ({ data }) => !data.draft),
     getCollection('podcasts', ({ data }) => !data.draft),
-    getCollection('videos', ({ data }) => !data.draft),
   ]);
 
   type RssItem = {
@@ -39,12 +38,6 @@ export async function GET(context: APIContext) {
       description: e.data.description,
       pubDate: e.data.publishDate,
       link: `/podcasts/${stripExt(e.id)}/`,
-    })),
-    ...videos.map((e) => ({
-      title: e.data.title,
-      description: e.data.description,
-      pubDate: e.data.publishDate,
-      link: `/videos/${stripExt(e.id)}/`,
     })),
   ];
 
