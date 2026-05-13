@@ -1,0 +1,6 @@
+<svg width="1200" height="675" viewBox="0 0 1200 675" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+<title id="title">維生素 B 群主視覺</title><desc id="desc">多個模組化圓點象徵維生素 B 家族。</desc>
+<rect width="1200" height="675" fill="#f2f9ff"/>
+<g fill="#71a8d8"><circle cx="220" cy="220" r="48"/><circle cx="360" cy="180" r="44"/><circle cx="500" cy="240" r="46"/><circle cx="640" cy="190" r="44"/><circle cx="780" cy="245" r="46"/><circle cx="920" cy="200" r="44"/></g>
+<g fill="#88c56f"><circle cx="290" cy="380" r="46"/><circle cx="430" cy="430" r="42"/><circle cx="570" cy="390" r="46"/><circle cx="710" cy="440" r="42"/><circle cx="850" cy="390" r="46"/></g>
+<text x="600" y="620" text-anchor="middle" font-size="48" font-family="sans-serif" fill="#2f5f86">Vitamin B Complex</text></svg>
