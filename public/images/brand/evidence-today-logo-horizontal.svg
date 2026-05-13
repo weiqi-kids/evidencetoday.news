@@ -1,0 +1,6 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 560 120' role='img' aria-label='本日有據 Evidence Today'>
+  <circle cx='52' cy='60' r='42' fill='#fff' stroke='#0f5b3d' stroke-width='4'/>
+  <path d='M35 72h34M36 52l16-14 16 14M42 72V50m20 22V50' fill='none' stroke='#0f5b3d' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/>
+  <text x='106' y='58' font-size='44' font-family='Noto Serif TC,serif' fill='#0f5b3d' font-weight='700'>本日有據</text>
+  <text x='108' y='92' font-size='21' font-family='Georgia,serif' letter-spacing='6' fill='#0f5b3d'>EVIDENCE TODAY</text>
+</svg>
