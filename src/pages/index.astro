@@ -6,7 +6,6 @@ import ArticleCard from '@/components/blocks/ArticleCard.astro';
 import MythCard from '@/components/blocks/MythCard.astro';
 import IngredientCard from '@/components/blocks/IngredientCard.astro';
 import PodcastCard from '@/components/blocks/PodcastCard.astro';
-import VideoCard from '@/components/blocks/VideoCard.astro';
 import NewsItem from '@/components/blocks/NewsItem.astro';
 import CtaStrip from '@/components/blocks/CtaStrip.astro';
 import HeroParticles from '@/components/charts/HeroParticles.svelte';
@@ -34,8 +33,7 @@ const allIngredients = (await getCollection('ingredients', (e) => !e.data.draft)
 const allPodcasts = (await getCollection('podcasts', (e) => !e.data.draft))
   .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
 
-const allVideos = (await getCollection('videos', (e) => !e.data.draft))
-  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
+const allVideos = videoItemsSchema.safeParse(shortsData).success ? videoItemsSchema.parse(shortsData) : [];
 
 const allNews = (await getCollection('news', (e) => !e.data.draft))
   .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
@@ -89,15 +87,6 @@ const featuredItems: FeaturedItem[] = [
     href: `/podcasts/${stripExt(p.id)}/`,
     extra: { episodeNumber: p.data.episodeNumber, duration: p.data.duration },
   })),
-  ...allVideos.filter((v) => v.data.featured).map((v) => ({
-    type: 'video' as const,
-    slug: v.id,
-    title: v.data.title,
-    description: v.data.tldr,
-    date: v.data.publishDate,
-    href: `/videos/${stripExt(v.id)}/`,
-    extra: { youtubeId: v.data.youtubeId },
-  })),
 ].sort((a, b) => b.date.getTime() - a.date.getTime()).slice(0, 3);
 
 /* ------------------------------------------------------------------ */
@@ -115,7 +104,6 @@ const latestAll: LatestItem[] = [
   ...allMyths.map((m) => ({ collection: 'myths' as const, id: m.id, date: m.data.publishDate, data: m.data as unknown as Record<string, unknown> })),
   ...allIngredients.map((i) => ({ collection: 'ingredients' as const, id: i.id, date: i.data.publishDate, data: i.data as unknown as Record<string, unknown> })),
   ...allPodcasts.map((p) => ({ collection: 'podcasts' as const, id: p.id, date: p.data.publishDate, data: p.data as unknown as Record<string, unknown> })),
-  ...allVideos.map((v) => ({ collection: 'videos' as const, id: v.id, date: v.data.publishDate, data: v.data as unknown as Record<string, unknown> })),
   ...allNews.map((n) => ({ collection: 'news' as const, id: n.id, date: n.data.publishDate, data: n.data as unknown as Record<string, unknown> })),
 ].sort((a, b) => b.date.getTime() - a.date.getTime()).slice(0, 4);
 
