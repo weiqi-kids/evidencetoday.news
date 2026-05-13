@@ -11,6 +11,98 @@
 
 ---
 
+## CSS / RWD 修改規範（必讀）
+
+> **AI 修改版面前必須遵守以下規則。違反任何一條都會導致手機或電腦版崩壞。**
+
+### 1. 斷點（Breakpoints）
+
+**只允許使用以下 4 個斷點值，全部用 `min-width`（mobile-first）：**
+
+| 名稱 | 值 | 用途 |
+|------|------|------|
+| `sm` | `640px` | 手機 → 大手機 |
+| `md` | `768px` | 手機 → 平板 |
+| `lg` | `1024px` | 平板 → 桌面 |
+| `xl` | `1280px` | 桌面 → 寬螢幕 |
+
+**禁止：**
+- `max-width` media query（這是 desktop-first，本站統一用 mobile-first）
+- 自創斷點（例如 760px、600px、960px）
+- 在同一個元件中混用 `min-width` 和 `max-width`
+
+**正確寫法：**
+```css
+/* 基礎樣式 = 手機版 */
+.grid { grid-template-columns: 1fr; }
+
+/* 平板以上 */
+@media (min-width: 768px) {
+  .grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* 桌面以上 */
+@media (min-width: 1024px) {
+  .grid { grid-template-columns: repeat(3, 1fr); }
+}
+```
+
+### 2. Spacing 用 Fluid（禁止寫死像素再用 media query 覆蓋）
+
+```css
+/* 正確：一條 clamp() 搞定，手機到桌面連續過渡 */
+padding: clamp(1rem, 0.5rem + 2vw, 2rem);
+
+/* 禁止：寫死後用 media query 分段覆蓋 */
+padding: 2rem;
+@media (max-width: 768px) { padding: 1rem; }
+```
+
+### 3. Layout 架構（Article.astro 的 variant 系統）
+
+`Article.astro` 提供兩種 variant：
+
+| Variant | 用途 | 視覺效果 |
+|---------|------|---------|
+| `prose`（預設） | articles、ingredients | 白底卡片包住內容，桌面版雙欄 + sidebar |
+| `cards` | myths | 透明背景，內容區塊各自提供容器 |
+
+**修改版面時：**
+- 不要在 `Article.astro` 的 `.article-grid` 上加視覺樣式（背景、圓角、陰影）— 這些由 variant 控制
+- `--prose` variant 的 `.article-content` 有 `max-width: 68ch`；`--cards` variant 沒有
+- 新增 variant 時，同時定義 `.article-grid--{name}` 的完整樣式（背景、padding、max-width）
+
+### 4. Scoped Styles 規則
+
+Astro 的 `<style>` 是 scoped（自動加 `data-astro-cid-*`），不會外溢：
+
+- **Layout 檔案**（`Article.astro`、`Media.astro`）只負責骨架（grid、sidebar），不寫內容樣式
+- **Page 檔案**（`myths/[slug].astro`）負責自己的視覺樣式（`.block` 的背景、padding）
+- 不要用 `:global()` 覆蓋 layout 的 class — 改用 variant prop
+- 不要在全域 CSS 中加頁面特定的樣式
+
+### 5. 禁止事項
+
+- 不要把整個 `<style>` 壓成一行（不可讀、不可維護）
+- 不要用 `!important`
+- 不要用 `px` 定義 font-size（用 `clamp()` 或 CSS custom properties）
+- 不要新增外部 CDN（字體、CSS framework）— 本站全部自託管
+- 不要直接修改 `tokens.css` 的 oklch 色值（經 4 輪審查定案）
+
+### 6. 修改前自檢
+
+修改任何 CSS 後，**必須**在以下三個寬度確認：
+
+1. **375px**（iPhone SE）— 單欄、無 sidebar
+2. **768px**（iPad）— 過渡斷點
+3. **1280px**（桌面）— 完整版面
+
+```bash
+pnpm build  # 零錯誤才算通過
+```
+
+---
+
 ## AI 任務：撰寫趨勢文章
 
 > 當收到「撰寫趨勢文章」指令時，依下方步驟執行。完整 SOP 見 `docs/news_sop.md`。
