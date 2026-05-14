@@ -51,8 +51,15 @@
         }
         const bw = maxX - minX;
         const bh = maxY - minY;
-        const pad = Math.max(bw, bh) * 0.025;
-        viewBox = `${minX - pad} ${minY - pad} ${bw + pad * 2} ${bh + pad * 2}`;
+        if (bw <= 0 || bh <= 0) return;
+        const cx = (minX + maxX) / 2;
+        const cy = (minY + maxY) / 2;
+        const scale = Math.min((width * 0.95) / bw, (height * 0.95) / bh);
+        for (const n of nodes) {
+          n.x = width / 2 + (n.x - cx) * scale;
+          n.y = height / 2 + (n.y - cy) * scale;
+          n.r *= scale;
+        }
         nodes = [...nodes];
       });
 
