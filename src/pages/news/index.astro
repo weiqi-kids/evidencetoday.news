@@ -104,6 +104,8 @@ const topTags = await getTopTags(12);
     border: 1px solid color-mix(in oklch, var(--color-fog) 80%, transparent);
     border-radius: var(--radius-card);
     max-height: 50vh;
+    display: flex;
+    flex-direction: column;
     overflow: hidden;
   }
 
@@ -113,10 +115,13 @@ const topTags = await getTopTags(12);
     font-weight: 700;
     color: var(--color-ink);
     margin-bottom: 1rem;
+    flex-shrink: 0;
   }
 
   .trend-section__chart {
-    min-height: 200px;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
   }
 
   /* ---- Card ---- */

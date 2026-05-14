@@ -119,7 +119,7 @@
     border-radius: var(--radius-card);
     border: 1px solid var(--color-fog);
     background-color: white;
-    min-height: 280px;
+    height: 100%;
     overflow: hidden;
   }
 
@@ -127,7 +127,6 @@
     display: block;
     width: 100%;
     height: 100%;
-    min-height: 280px;
   }
 
   .bubble-group circle {
