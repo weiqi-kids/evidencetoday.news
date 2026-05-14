@@ -19,6 +19,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       YOUTUBE_CHANNEL_ID: UCTejYxFd04qma-LY0_Z17NQ
+      YOUTUBE_MAX_VIDEOS: 100
+      YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4

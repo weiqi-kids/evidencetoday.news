@@ -5,6 +5,7 @@ import Breadcrumb from '@/components/ui/Breadcrumb.astro';
 interface Props {
   title: string;
   description: string;
+  seoTitle?: string;
   category?: 'article' | 'myth' | 'ingredient' | 'podcast' | 'video' | 'news';
   breadcrumbItems: Array<{ label: string; href?: string }>;
   totalItems?: number;
@@ -13,13 +14,14 @@ interface Props {
 const {
   title,
   description,
+  seoTitle,
   category,
   breadcrumbItems,
   totalItems,
 } = Astro.props;
 ---
 
-<Base title={`${title} | 本日有據`} description={description}>
+<Base title={seoTitle ?? `${title} | 本日有據`} description={description}>
   <div class="list-layout container">
     <Breadcrumb items={breadcrumbItems} />
 

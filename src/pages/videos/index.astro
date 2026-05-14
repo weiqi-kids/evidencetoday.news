@@ -8,8 +8,9 @@ const videos = videoItemsSchema.safeParse(shortsData).success ? videoItemsSchema
 ---
 
 <List
-  title="短影音｜本日有據 Evidence Today"
+  title="短影音"
   description="本日有據短影音整理健康、營養、醫學與生活科普重點，用短時間看懂有根據的健康資訊。"
+  seoTitle="短影音｜本日有據 Evidence Today"
   category="video"
   breadcrumbItems={[{ label: '首頁', href: '/' }, { label: '短影音' }]}
   totalItems={videos.length}
