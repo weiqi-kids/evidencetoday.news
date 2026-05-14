@@ -9,6 +9,7 @@
   let svgEl;
   let width = 400;
   let height = 280;
+  let viewBox = '0 0 400 280';
   let nodes = [];
   let hoveredIndex = -1;
   let tooltipX = 0;
@@ -37,6 +38,21 @@
       .force('y', forceY(height / 2).strength(0.05))
       .on('tick', () => {
         nodes = [...nodes];
+      })
+      .on('end', () => {
+        if (!nodes.length) return;
+        let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+        for (const n of nodes) {
+          minX = Math.min(minX, n.x - n.r);
+          maxX = Math.max(maxX, n.x + n.r);
+          minY = Math.min(minY, n.y - n.r);
+          maxY = Math.max(maxY, n.y + n.r);
+        }
+        const bw = maxX - minX;
+        const bh = maxY - minY;
+        const pad = Math.max(bw, bh) * 0.025;
+        viewBox = `${minX - pad} ${minY - pad} ${bw + pad * 2} ${bh + pad * 2}`;
+        nodes = [...nodes];
       });
 
     return () => sim.stop();
@@ -63,7 +79,7 @@
 </script>
 
 <div class="trend-bubbles">
-  <svg bind:this={svgEl} viewBox="0 0 {width} {height}" role="img" aria-label="熱門標籤氣泡圖">
+  <svg bind:this={svgEl} viewBox={viewBox} role="img" aria-label="熱門標籤氣泡圖">
     {#each nodes as node, i}
       <g
         transform="translate({node.x},{node.y})"
