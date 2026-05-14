@@ -104,8 +104,6 @@ const topTags = await getTopTags(12);
     border: 1px solid color-mix(in oklch, var(--color-fog) 80%, transparent);
     border-radius: var(--radius-card);
     max-height: 50vh;
-    display: flex;
-    flex-direction: column;
     overflow: hidden;
   }
 
@@ -115,12 +113,11 @@ const topTags = await getTopTags(12);
     font-weight: 700;
     color: var(--color-ink);
     margin-bottom: 1rem;
-    flex-shrink: 0;
   }
 
+  /* 50vh - padding 3rem - title ~1.5rem - title margin 1rem = calc(50vh - 5.5rem) */
   .trend-section__chart {
-    flex: 1;
-    min-height: 0;
+    height: calc(50vh - 5.5rem);
     overflow: hidden;
   }
 
