@@ -22,7 +22,8 @@
   onMount(() => {
     const rect = svgEl.parentElement.getBoundingClientRect();
     width = rect.width;
-    height = Math.max(280, rect.height);
+    height = rect.height || 280;
+    viewBox = `0 0 ${width} ${height}`;
 
     nodes = tags.map((t) => ({
       ...t,

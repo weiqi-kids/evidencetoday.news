@@ -122,20 +122,10 @@ const topTags = await getTopTags(12);
     flex: 1;
     min-height: 0;
     overflow: hidden;
-    display: flex;
-    flex-direction: column;
   }
 
   .trend-section__chart > :global(astro-island) {
-    flex: 1;
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .trend-section__chart > :global(astro-island) > :global(.trend-bubbles) {
-    flex: 1;
-    min-height: 0;
+    display: contents;
   }
 
   /* ---- Card ---- */
