@@ -9,6 +9,6 @@ export async function GET(context: APIContext) {
     title: '本日有據 — 短影音',
     description: '本日有據 YouTube Shorts 同步列表。',
     site: context.site!,
-    items: videos.slice(0, 20).map((v) => ({ title: v.title, description: v.title, pubDate: v.publishedAt ? new Date(v.publishedAt) : new Date(), link: '/videos/' })),
+    items: videos.map((v) => ({ title: v.title, description: v.title, pubDate: v.publishedAt ? new Date(v.publishedAt) : new Date(), link: '/videos/' })),
   });
 }
