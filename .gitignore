@@ -38,3 +38,4 @@ src/data/youtube-shorts.json
 # Claude Code personal overrides (per-contributor; .claude/settings.json is shared and tracked)
 .claude/settings.local.json
 .claude/worktrees/
+.claude/scheduled_tasks.lock
