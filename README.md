@@ -9,6 +9,21 @@
 
 ---
 
+## 修改紀律（必讀）
+
+**功能改動必須同步文件**。動到以下任一路徑：
+
+- `src/components/`、`src/layouts/`、`src/pages/` 內非 [slug] 的元件邏輯
+- `src/styles/`、`src/lib/`、`src/utils/`
+- `scripts/`、`.github/workflows/`
+- `astro.config.mjs`、`src/content.config.ts`、`package.json` 的 scripts/dependencies
+
+…就**必須同時更新** `README.md` 或 `docs/` 內對應的 playbook。沒有同步 → CI `docs-sync-check` 會 fail，PR 無法合併。例外場景請在 PR body 或 commit message 加 `[skip docs]`（適用 typo / 純測試 / build 設定微調）。
+
+純內容變動（`src/content/`、`src/data/policies/`、`public/images/` 等）不在此規則內。
+
+---
+
 ## 我要做什麼？（任務索引）
 
 > 改任何東西**先找到對應 playbook**，再動手。每個 playbook 列出「鎖定參數、修改流程、常見陷阱、驗證清單」。

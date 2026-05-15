@@ -56,6 +56,13 @@ deploy (ubuntu-latest, needs: build)
 | lycheeverse/lychee-action | v2 | v2 | OK |
 | treosh/lighthouse-ci-action | v12 | v12 | OK |
 
+### 其他 workflow
+
+| Workflow | 觸發 | 用途 |
+|---|---|---|
+| `deploy.yml` | push main | 主部署管線（上方詳述） |
+| `docs-sync-check.yml` | pull_request | 比對 PR 是否改了 functional code 卻沒同步 docs；沒同步 → fail check → 無法 merge。Escape hatch：PR body 或任一 commit message 含 `[skip docs]`。規則同 README 「修改紀律」 |
+
 ### Lighthouse 閾值（lighthouserc.json）
 
 | 指標 | 閾值 | 模式 |

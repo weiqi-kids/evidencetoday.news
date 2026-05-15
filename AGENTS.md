@@ -6,6 +6,21 @@
 
 使用 **pnpm**（不是 npm）。
 
+## 修改紀律（任何 AI agent 都必須遵守）
+
+**改功能程式碼時，必須同步更新文件**。命中以下任一路徑 = 功能改動：
+
+- `src/components/`、`src/layouts/`、`src/styles/`、`src/lib/`、`src/utils/`
+- `src/pages/` 內 `.astro` / `.ts` / `.svelte`
+- `scripts/`、`.github/workflows/`
+- `astro.config.mjs`、`src/content.config.ts`、`package.json`（scripts/dependencies）
+
+→ **必須同時** 改 `README.md` 或 `docs/playbooks/*.md` 對應檔案。沒同步的 PR 會被 `docs-sync-check` workflow 擋下，無法合併。例外場景在 PR body / commit message 加 `[skip docs]` 跳過（限 typo / 純測試 / build 設定微調）。
+
+純內容變動（`src/content/`、`src/data/policies/`、`public/images/` 等）不在此規則內。
+
+對應的 playbook 在 `docs/playbooks/`：topnav / design-tokens / article-layout / home-hero / d3-charts / external-apis / new-content-type / ci-cd。動之前先看對應 playbook 的「鎖定參數」與「常見陷阱」。
+
 ## 常用任務
 
 ### 撰寫趨勢文章
