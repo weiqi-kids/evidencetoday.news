@@ -24,7 +24,9 @@ build (ubuntu-latest)
 ├─ setup Node 20 (cache: pnpm)
 ├─ pnpm install --frozen-lockfile
 ├─ pnpm build
-├─ Build Pagefind index
+│   ├─ prebuild: pnpm run sync:youtube      ← fail-loud, no fallback
+│   ├─ astro build
+│   └─ postbuild: pagefind --site dist
 ├─ lychee internal links check (offline, fail: true)
 ├─ lychee external links check (fail: false, continue-on-error)
 ├─ Lighthouse CI (continue-on-error)
@@ -33,6 +35,14 @@ build (ubuntu-latest)
 deploy (ubuntu-latest, needs: build)
 └─ deploy-pages@v5
 ```
+
+### Build artifacts produced by sync (不入 repo)
+
+| 檔案 | 產生時機 | 處理 |
+|---|---|---|
+| `src/data/youtube-shorts.json` | `prebuild` 階段（YouTube Data API） | `.gitignore` 排除；CI 跑時臨時寫入，build 結束丟棄 |
+
+若 prebuild sync 失敗 → `pnpm build` 整個中斷 → 後續 step（lighthouse / upload / deploy）不會跑 → CI 紅燈通知。詳見 [external-apis.md](./external-apis.md) 的 fail-loud 設計。
 
 ### Action 版本鎖定
 

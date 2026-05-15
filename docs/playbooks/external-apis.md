@@ -30,10 +30,17 @@
 
 - 檔案：`scripts/sync-youtube-shorts.mjs` + `src/lib/youtube.ts`
 - 模式：**Data API + 分頁**（`pageToken` 迴圈直到 `nextPageToken` 為空）
-- 用途：抓 channel 的 Shorts 列表，寫進 `src/data/youtube-shorts.json`
-- 觸發：手動跑或 cron
-- **歷史踩坑**：曾經沒做完整分頁，只拿第一頁（commit `23f48a4` 修）
-- API key：環境變數 `YOUTUBE_API_KEY`
+- 觸發：`package.json` 的 `"prebuild"` 在每次 `pnpm build` 之前自動呼叫
+- API key：環境變數 `YOUTUBE_API_KEY`（GitHub Actions 走 secrets）
+- 產出：`src/data/youtube-shorts.json`
+- **`src/data/youtube-shorts.json` 是 build artifact，已加入 `.gitignore` 不入 repo**。每次 build 由 prebuild sync 重新產生，避免 repo 內容跟線上 production 內容脫節
+- **fail-loud 設計（commit `0a3ac4e`）**：
+  - 在 GitHub Actions (`GITHUB_ACTIONS=true`) 或本機設了 `YOUTUBE_API_KEY` → 跑 sync，**任何錯誤直接 throw → CI 紅燈**
+  - 本機沒設 key → 寫 `[]` 空陣列佔位讓 astro import 解析得到，`/videos/` 顯示 fallback「目前暫時無法載入」訊息
+  - **沒有 RSS fallback、沒有 existing-json fallback、沒有空陣列救援** — 任何隱性 fallback 都會掩蓋同步壞掉的事實
+- **歷史踩坑**：
+  - 曾經沒做完整分頁，只拿第一頁（commit `23f48a4` 修）
+  - 曾經沉默 fallback 到 RSS / stale json，導致 sync 壞掉沒人知道（commit `0a3ac4e` 改為 fail-loud）
 
 #### 趨勢新聞自動化（WebSearch only）
 
@@ -74,7 +81,10 @@
 3. **寫整合 script**：放 `scripts/{name}.mjs`，CLI 可手動跑
 4. **加 env var 文件**：在 README 或 `.env.example` 註明需要的環境變數
 5. **加去重邏輯**：避免重複處理同一筆資料，跟 `processed-sources.json` 格式一致
-6. **加錯誤處理**：API 失敗不能 crash，必須 fallback
+6. **決定錯誤處理哲學**：
+   - **fail-loud**（推薦給 build-time 整合，例如 YouTube sync）：失敗就 throw 中斷 build，CI 紅燈通知 → 真實狀態優先於可用性
+   - **fail-soft**（推薦給內容自動化，例如趨勢新聞）：失敗就略過該筆繼續處理，記 log 供事後 review → 可用性優先於完整性
+   - **絕對禁止**：「沉默 fallback 到 stale 資料」（既看不到失敗、又顯示假新鮮的內容）
 7. **dry-run 模式**：加 `--dry-run` flag，輸出會抓什麼但不寫檔
 8. **本機測試**：跑 dry-run + 真實 run 各一次
 9. **遠端測試**：透過 trigger 跑一次，看 CCR 環境是否正常
