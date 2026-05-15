@@ -29,3 +29,8 @@ Thumbs.db
 
 # Local-only binary asset (upload via deployment CMS or manual server upload)
 public/images/authors/luo-yang.jpg
+
+# YouTube sync output — generated at build time by scripts/sync-youtube-shorts.mjs.
+# Not tracked because the runner regenerates it on every deploy; checking it in
+# would create perpetual diff noise and mask sync failures behind stale data.
+src/data/youtube-shorts.json
