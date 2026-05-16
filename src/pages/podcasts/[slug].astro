@@ -106,7 +106,7 @@ const podcastBreadcrumbSchema = {
           title={`${data.title} Firstory podcast player`}
           loading="lazy"
           width="100%"
-          height="260"
+          height="180"
           allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
           class="podcast-player__iframe"
         ></iframe>
@@ -203,24 +203,24 @@ const podcastBreadcrumbSchema = {
 <style>
   .podcast-player {
     width: 100%;
-    max-width: 960px;
     margin: 0 auto;
     border-radius: var(--radius-card);
-    overflow: visible;
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    background: white;
   }
 
   .podcast-player__iframe {
     width: 100%;
+    height: 180px;
     border: 0;
     border-radius: var(--radius-card);
     display: block;
-    box-shadow: var(--shadow-card);
     background: white;
   }
 
   .podcast-player-fallback,
   .podcast-player-empty {
-    max-width: 960px;
     margin: 0 auto;
     padding: 1.25rem;
     border: 1px solid var(--color-fog);
