@@ -4,6 +4,9 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    # Keep the static Shorts page in sync with new public YouTube uploads.
+    - cron: '15 * * * *'
 
 permissions:
   contents: read
