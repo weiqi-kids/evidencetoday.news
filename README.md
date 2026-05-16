@@ -217,3 +217,9 @@ GitHub Actions 自動執行：build → Pagefind 索引 → 連結檢查 → 部
 | [`docs/playbooks/ci-cd.md`](docs/playbooks/ci-cd.md) | CI/CD 與 deploy.yml 維護 |
 | [`docs/superpowers/specs/2026-05-07-evidencetoday-design.md`](docs/superpowers/specs/2026-05-07-evidencetoday-design.md) | 完整設計規格（品牌 / 色彩 / 字體 / 頁面 / 元件） |
 | [`docs/superpowers/specs/2026-05-08-news-automation-design.md`](docs/superpowers/specs/2026-05-08-news-automation-design.md) | 趨勢新聞自動化技術設計規格 |
+
+
+### Podcast 播放器資料欄位
+
+Podcast 單集建議使用 `embedUrl` 指向 Firstory 內嵌播放器（`https://open.firstory.me/embed/story/...`）。
+若暫時沒有 `embedUrl`，可用 `externalUrl` 作為外部收聽連結；單集頁不應再使用不可互動的假播放器區塊。

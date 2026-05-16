@@ -54,7 +54,7 @@ const podcastArticleSchema = {
   '@context': 'https://schema.org',
   '@type': 'Article',
   headline: data.title,
-  description: data.description,
+  description: data.summary || data.description,
   datePublished: data.publishDate.toISOString(),
   publisher: {
     '@type': 'Organization',
@@ -103,23 +103,20 @@ const podcastBreadcrumbSchema = {
       <div class="podcast-player">
         <iframe
           src={data.embedUrl}
-          width="100%"
-          height="232"
-          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          title={`${data.title} Firstory podcast player`}
           loading="lazy"
-          style="border-radius: 12px; border: 0;"
+          width="100%"
+          height="260"
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          class="podcast-player__iframe"
         ></iframe>
       </div>
-    ) : (
-      <div class="podcast-player-placeholder">
-        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-          <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-          <line x1="12" y1="19" x2="12" y2="23"/>
-          <line x1="8" y1="23" x2="16" y2="23"/>
-        </svg>
-        <span>EP {data.episodeNumber} &middot; {data.duration}</span>
+    ) : data.externalUrl ? (
+      <div class="podcast-player-fallback">
+        <a href={data.externalUrl} target="_blank" rel="noopener noreferrer">前往 Firstory 收聽</a>
       </div>
+    ) : (
+      <p class="podcast-player-empty">本集音訊尚未上架，請稍後回來收聽。</p>
     )}
   </Fragment>
 
@@ -206,21 +203,49 @@ const podcastBreadcrumbSchema = {
 <style>
   .podcast-player {
     width: 100%;
+    max-width: 960px;
+    margin: 0 auto;
+    border-radius: var(--radius-card);
+    overflow: visible;
   }
 
-  .podcast-player-placeholder {
-    display: flex;
-    flex-direction: column;
+  .podcast-player__iframe {
+    width: 100%;
+    border: 0;
+    border-radius: var(--radius-card);
+    display: block;
+    box-shadow: var(--shadow-card);
+    background: white;
+  }
+
+  .podcast-player-fallback,
+  .podcast-player-empty {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 1.25rem;
+    border: 1px solid var(--color-fog);
+    border-radius: var(--radius-card);
+    background: white;
+    color: var(--color-ink);
+    font-size: var(--text-body);
+    line-height: 1.6;
+  }
+
+  .podcast-player-fallback a {
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.75rem;
-    padding: 2.5rem;
-    border-radius: var(--radius-card);
-    background-color: var(--color-navy);
-    color: var(--color-on-dark-meta);
-    text-align: center;
+    text-decoration: none;
+    border: 1px solid var(--color-fog);
+    border-radius: 999px;
+    padding: 0.45rem 0.95rem;
+    color: var(--color-ink);
     font-family: var(--font-ui);
-    font-size: var(--text-body);
+    font-size: var(--text-meta);
+  }
+
+  .podcast-player-fallback a:hover {
+    background: var(--color-fog);
   }
 
   .podcast-chapters,

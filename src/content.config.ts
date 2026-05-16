@@ -37,6 +37,7 @@ const articles = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string().max(155),
+    summary: z.string().max(155).optional(),
     author: z.string(),
     reviewer: z.string().optional(),
     publishDate: z.coerce.date(),
@@ -200,7 +201,8 @@ const podcasts = defineCollection({
     updatedDate: z.coerce.date().optional(),
     duration: z.string(),
     audioUrl: z.string().optional(),
-    embedUrl: z.string().optional(),
+    embedUrl: z.string().url().optional(),
+    externalUrl: z.string().url().optional(),
     coverImage: z.string().optional(),
     featured: z.boolean().default(false),
     chapters: z
