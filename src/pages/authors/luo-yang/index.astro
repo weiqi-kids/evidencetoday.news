@@ -17,12 +17,15 @@ const articles = (await getCollection('articles', (e) => !e.data.draft && e.data
     </header>
 
     <section class="editor-hero">
-      <img
-        src="/images/authors/luo-yang-editor-portrait.svg"
-        alt="本日有據主編羅揚"
-        loading="eager"
-        decoding="async"
-      />
+      <picture class="editor-portrait">
+        <source srcset="/images/authors/luo-yang.jpg" type="image/jpeg" />
+        <img
+          src="/images/authors/luo-yang-editor-portrait.svg"
+          alt="本日有據主編羅揚"
+          loading="eager"
+          decoding="async"
+        />
+      </picture>
       <div class="editor-meta card">
         <p><strong>姓名：</strong>羅揚</p>
         <p><strong>身分：</strong>本日有據主編</p>
@@ -34,6 +37,21 @@ const articles = (await getCollection('articles', (e) => !e.data.draft && e.data
       <p>羅揚是《本日有據 Evidence Today》主編，具牙醫學與口腔衛生材料研究背景，長期關注營養科學、保健食品、預防醫學與健康資訊傳播。他的內容工作重點，是把複雜的研究資料、醫學名詞與保健食品議題，轉化成一般人能理解、能判斷、能應用的知識。</p>
       <p>羅揚同時主持 Podcast《喜聞樂健》，持續以白話方式討論健康、營養與保健食品觀念。他相信健康資訊不應只是艱深名詞的堆疊，也不應淪為恐嚇式行銷；真正有價值的健康內容，應該讓讀者知道「證據到哪裡為止」、「哪些說法過度延伸」、「一般人在生活中可以怎麼判斷」。</p>
       <p>本日有據的編輯原則，是不販售恐懼、不誇大療效、不接受廠商業配，並盡可能讓每一篇內容都保留研究脈絡、限制說明與實際生活判斷。</p>
+    </section>
+
+    <section class="card section-block">
+      <h2>核心信念</h2>
+      <p>保健食品是補充，不是取代；健康是長期累積，不是短時間衝出來的；吃得精準比吃得很多更重要；判斷力比跟風更重要；教育價值不靠恐嚇與誇大建立。</p>
+    </section>
+
+    <section class="card section-block">
+      <h2>內容紅線</h2>
+      <p>不把保健食品講成藥物，不暗示能直接治療疾病，不把單一成分講成萬用解方，不用恐懼訴求威逼讀者，個人經驗不寫成普遍結果，並以教育觀點取代「診間」與「臨床觀察」式敘事。</p>
+    </section>
+
+    <section class="card section-block">
+      <h2>專業領域</h2>
+      <p>保健食品觀念教育、營養補充定位與使用時機、食療與日常營養整合、常見迷思拆解、熟齡族群健康溝通。</p>
     </section>
 
     <section class="card section-block">
@@ -75,6 +93,11 @@ const articles = (await getCollection('articles', (e) => !e.data.draft && e.data
     grid-template-columns: minmax(180px, 220px) 1fr;
     gap: 1rem;
     align-items: stretch;
+  }
+
+  .editor-portrait {
+    display: block;
+    width: 100%;
   }
 
   .editor-hero img,
