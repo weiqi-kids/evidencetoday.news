@@ -11,6 +11,19 @@ For both pages, avoid build-time `existsSync` checks for the portrait. Render th
 
 When the hero uses `<picture>`, also set `display: block; width: 100%;` on the picture so it fills its grid column (see `.editor-portrait` in the author page styles). Without this, picture's default inline display collapses the portrait width.
 
+## Editor meta card (右側 at-a-glance)
+
+`.editor-meta` 卡片提供快速一覽資訊，與肖像並列。目前欄位：
+
+- 姓名
+- 身分
+- 學科背景
+- Podcast
+- 關注主題
+- 聯絡（mailto 連結）
+
+新增欄位時保持「一行一欄」的 `<p><strong>標籤：</strong>內容</p>` 結構，避免換成 `<ul>` 或表格，否則需要重寫 CSS 並會破壞與肖像的視覺平衡。聯絡 email 須與 `src/data/policies/about.md` 一致（目前為 `evidencetodaynews@gmail.com`）。
+
 ## Content blocks on the author page
 
 The author page mirrors the editor section from `src/data/policies/about.md`. Keep these blocks in sync when one side changes:
