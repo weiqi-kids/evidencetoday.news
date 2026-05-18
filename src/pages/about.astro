@@ -8,3 +8,16 @@ const Content = mod.Content;
 <Policy title="關於本日有據" updatedDate={new Date('2026-05-07')}>
   <Content />
 </Policy>
+
+
+<style>
+  :global(.principles-subitems) {
+    margin-left: 2rem;
+  }
+
+  @media (max-width: 640px) {
+    :global(.principles-subitems) {
+      margin-left: 1rem;
+    }
+  }
+</style>
