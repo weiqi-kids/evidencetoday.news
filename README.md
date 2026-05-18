@@ -188,7 +188,7 @@ GitHub Actions 自動執行：build → Pagefind 索引 → 連結檢查 → 部
 - [ ] 利益揭露具體內容 — `src/data/policies/disclosure.md`
 - [ ] 隱私權政策正式文案 — `src/pages/privacy.astro`
 - [ ] 使用條款正式文案 — `src/pages/terms.astro`
-- [ ] Email 信箱 — corrections@、editor@、hello@、transparency@
+- [ ] Email 信箱 — evidencetodaynews@gmail.com（單一聯絡信箱）
 - [ ] 社群連結 — `src/components/blocks/Footer.astro`
 - [ ] Logo SVG — `src/components/blocks/TopNav.astro`
 - [ ] 實際內容量 — 至少 10-15 篇文章 + 5 篇闢謠
