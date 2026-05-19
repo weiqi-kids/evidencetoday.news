@@ -89,7 +89,13 @@ const ingredientBreadcrumbSchema = {
   </Fragment>
 
   {data.pathwaySteps && data.pathwaySteps.length > 0 ? (
-    <PathwayDiagram steps={data.pathwaySteps} client:visible />
+    <>
+      <PathwayDiagram steps={data.pathwaySteps} client:visible aria-hidden="true" />
+      <section class="mechanism-text">
+        <h3>機制重點摘要（純文字）</h3>
+        <p>{data.pathwaySteps.map((step) => `${step.name}：${step.description}`).join('；')}</p>
+      </section>
+    </>
   ) : data.mechanism ? (
     <section class="mechanism-text">
       <h3>作用機制</h3>
