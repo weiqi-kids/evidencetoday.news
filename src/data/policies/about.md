@@ -53,4 +53,4 @@
 如果你發現我們的內容有任何錯誤，或有任何建議與合作提案，歡迎來信：
 
 - 電子郵件：evidencetodaynews@gmail.com
-- 錯誤回報：evidencetodaynews@gmail.com
+- 錯誤回報：evidencetodaynewsdesk@gmail.com
