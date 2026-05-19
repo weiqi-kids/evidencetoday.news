@@ -8,9 +8,9 @@ import MythCard from '@/components/blocks/MythCard.astro';
 import IngredientCard from '@/components/blocks/IngredientCard.astro';
 import VideoCard from '@/components/blocks/VideoCard.astro';
 import { fmtDate } from '@/utils/date';
+import { getPublishedPodcasts, parseDurationToIso, stripPodcastSlug } from '@/utils/podcasts';
 
-function stripExt(id: string): string { return id.replace(/\.[^.]+$/, ''); }
-export async function getStaticPaths() { const entries = await getCollection('podcasts', ({ data }) => !data.draft); return entries.map((entry) => ({ params: { slug: entry.id.replace(/\.[^.]+$/, '') }, props: { entry } })); }
+export async function getStaticPaths() { const entries = getPublishedPodcasts(await getCollection('podcasts')); return entries.map((entry) => ({ params: { slug: stripPodcastSlug(entry.id) }, props: { entry } })); }
 const { entry } = Astro.props;
 const { Content } = await entry.render();
 const data = entry.data;
@@ -19,8 +19,8 @@ const relatedMyths = data.relatedMyths ? (await Promise.all(data.relatedMyths.ma
 const relatedIngredients = data.relatedIngredients ? (await Promise.all(data.relatedIngredients.map((id) => getEntry('ingredients', id)))).filter(Boolean) : [];
 const relatedVideos = data.relatedVideos ? (await Promise.all(data.relatedVideos.map((id) => getEntry('videos', id)))).filter(Boolean) : [];
 const hasRelated = relatedArticles.length > 0 || relatedMyths.length > 0 || relatedIngredients.length > 0 || relatedVideos.length > 0;
-const slug = entry.id.replace(/\.[^.]+$/, '');
-const sec = data.duration.split(':').slice(-2); const isoDuration = `PT${sec[0] || '0'}M${sec[1] || '0'}S`;
+const slug = stripPodcastSlug(entry.id);
+const isoDuration = parseDurationToIso(data.duration);
 const podcastArticleSchema = { '@context': 'https://schema.org', '@type': 'Article', headline: data.title, description: data.summary || data.description, datePublished: data.publishDate.toISOString(), dateModified: (data.updatedDate || data.publishDate).toISOString(), publisher: { '@type': 'Organization', name: '本日有據', url: 'https://evidencetoday.news' }, audio: { '@type': 'AudioObject', name: data.title, contentUrl: data.audioUrl || data.externalUrl, embedUrl: data.embedUrl, duration: isoDuration } };
 const podcastBreadcrumbSchema = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: '首頁', item: 'https://evidencetoday.news/' }, { '@type': 'ListItem', position: 2, name: 'Podcast', item: 'https://evidencetoday.news/podcasts/' }, { '@type': 'ListItem', position: 3, name: data.title, item: `https://evidencetoday.news/podcasts/${slug}/` }] };
 ---
@@ -30,11 +30,11 @@ const podcastBreadcrumbSchema = { '@context': 'https://schema.org', '@type': 'Br
   <Fragment slot="player">{data.embedUrl ? <div class="podcast-player"><iframe src={data.embedUrl} title={`${data.title} Firstory podcast player`} loading="lazy" width="100%" height="180" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" class="podcast-player__iframe"></iframe></div> : <p class="podcast-player-empty">本集音訊尚未上架，請稍後回來收聽。</p>}</Fragment>
   <Content />
   <Fragment slot="after-content">
-    {data.keyPoints?.length > 0 && <section><h2>本集重點</h2><ul>{data.keyPoints.map((k)=><li>{k}</li>)}</ul></section>}
-    {data.showNotes?.length > 0 && <section><h2>Show Notes</h2><ol>{data.showNotes.map((n)=><li>{n}</li>)}</ol></section>}
-    {data.chapters?.length > 0 && <section><h2>章節時間</h2><ol class="chapters-list">{data.chapters.map((ch)=><li><strong>{ch.time}</strong> {ch.title}</li>)}</ol></section>}
+    {data.keyPoints?.length > 0 && <section class="podcast-section"><h2 class="podcast-section__title">本集重點</h2><ul class="podcast-section__list">{data.keyPoints.map((k)=><li>{k}</li>)}</ul></section>}
+    {data.showNotes?.length > 0 && <section class="podcast-section"><h2 class="podcast-section__title">Show Notes</h2><ol class="podcast-section__list">{data.showNotes.map((n)=><li>{n}</li>)}</ol></section>}
+    {data.chapters?.length > 0 && <section class="podcast-section"><h2 class="podcast-section__title">本集段落</h2><ol class="podcast-section__list chapters-list">{data.chapters.map((ch)=><li><strong>{ch.time}</strong> {ch.title}</li>)}</ol></section>}
     {data.references?.length > 0 && <ReferenceList references={data.references} />}
     {hasRelated && <section class="related-content"><h2 class="related-content__title">延伸閱讀</h2><div class="related-content__grid">{relatedArticles.map((a)=><ArticleCard title={a.data.title} description={a.data.description} href={`/articles/${stripExt(a.id)}/`} category="article" author={a.data.author} date={fmtDate(a.data.publishDate)} editorReviewed={a.data.editorReviewed} />)}{relatedMyths.map((m)=><MythCard title={m.data.title} verdictSummary={m.data.verdictSummary} href={`/myths/${stripExt(m.id)}/`} verdict={m.data.verdict} date={fmtDate(m.data.publishDate)} />)}{relatedIngredients.map((i)=><IngredientCard title={i.data.title} description={i.data.description} href={`/ingredients/${stripExt(i.id)}/`} uses={i.data.uses} />)}{relatedVideos.map((v)=><VideoCard title={v.data.title} tldr={v.data.tldr} href={`/videos/${stripExt(v.id)}/`} youtubeId={v.data.youtubeId} />)}</div></section>}
   </Fragment>
 </Media>
-<style>.episode-summary{line-height:1.8}.episode-meta{font-family:var(--font-ui);font-size:var(--text-meta);color:color-mix(in oklch,var(--color-ink) 65%,transparent)} .podcast-player{border-radius:var(--radius-card);overflow:hidden;background:white;box-shadow:var(--shadow-card)} .podcast-player__iframe{border:0;display:block} .chapters-list{display:flex;flex-direction:column;gap:.5rem}.related-content__grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-card-gap)}@media (max-width:640px){.related-content__grid{grid-template-columns:1fr}}</style>
+<style>.episode-summary{line-height:1.82}.episode-meta{font-family:var(--font-ui);font-size:var(--text-meta);color:color-mix(in oklch,var(--color-ink) 65%,transparent)} .podcast-player{border-radius:var(--radius-card);overflow:hidden;background:white;box-shadow:var(--shadow-card)} .podcast-player__iframe{border:0;display:block} .podcast-section{margin-block:1.5rem 2rem;padding-top:.25rem}.podcast-section__title{margin:0 0 1rem;line-height:1.3;padding-top:.25rem;border:0}.podcast-section__list{display:flex;flex-direction:column;gap:.75rem;margin:0;padding-inline-start:1.25rem} .chapters-list{display:flex;flex-direction:column;gap:.5rem}.related-content__grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-card-gap)}@media (max-width:640px){.related-content__grid{grid-template-columns:1fr}}</style>

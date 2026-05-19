@@ -214,6 +214,8 @@ const podcasts = defineCollection({
       )
       .optional(),
     showNotes: z.array(z.string()).optional(),
+    summary: z.string().max(500).optional(),
+    keyPoints: z.array(z.string()).optional(),
     references: z.array(referenceSchema).optional(),
     relatedArticles: z.array(z.string()).optional(),
     relatedMyths: z.array(z.string()).optional(),
