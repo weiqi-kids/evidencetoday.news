@@ -78,3 +78,7 @@
 - design tokens：[design-tokens.md](./design-tokens.md)
 - 架構與 SEO：[../architecture.md](../architecture.md)
 - 設計 spec：`docs/superpowers/specs/2026-05-07-evidencetoday-design.md`
+
+## 近期調整（2026-05）
+- Hero 主文案目前為：「把健康議題，講得有根據，也講得讓人看得懂。」
+- Hero 副文案目前為：「本日有據是一個以文章、Podcast、短影音、闢謠與原料整理為核心的健康編輯平台。由主編審稿把關，持續追蹤研究、迷思與日常健康議題。」
