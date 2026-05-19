@@ -27,7 +27,7 @@
 
 ### Hero 細節
 
-- **catch phrase**：「健康議題，有據也好懂。」（品牌語，動之前確認）
+- **catch phrase**：「把健康議題，講得有根據，也講得讓人看得懂。」（品牌語，動之前確認）
 - **HeroParticles**：canvas 全幅，desktop only（mobile 不渲染以省電）
 - **CTA buttons**：「最新文章」「迷思破解」「認識主編」
 - **JSON-LD**：`@type: "WebSite"` + `Organization` 結構化資料，用於 Google Knowledge Graph

@@ -7,7 +7,6 @@ import MythCard from '@/components/blocks/MythCard.astro';
 import IngredientCard from '@/components/blocks/IngredientCard.astro';
 import PodcastCard from '@/components/blocks/PodcastCard.astro';
 import NewsItem from '@/components/blocks/NewsItem.astro';
-import CtaStrip from '@/components/blocks/CtaStrip.astro';
 import HeroParticles from '@/components/charts/HeroParticles.svelte';
 import TrendBubbles from '@/components/charts/TrendBubbles.svelte';
 import { getTopTags } from '@/utils/tag-stats';
@@ -207,9 +206,9 @@ const categories = [
     <div class="hero__inner container">
       <div class="hero__left">
         <span class="hero__badge">主編把關 ・ 研究脈絡 ・ 白話解釋</span>
-        <h1 class="hero__title">健康議題，有據也好懂。</h1>
+        <h1 class="hero__title">把健康議題，講得有根據，也講得讓人看得懂。</h1>
         <p class="hero__subtitle">
-          我們整理最新的醫學研究與營養科學，以研究資料、公共資訊與主編判讀，整理健康、營養、保健食品與公共衛生議題。不販售恐懼，不誇大療效。
+          健康資訊常常太複雜、太片段，也太容易被誇大。本日有據用白話整理研究、新聞與常見迷思，讓一般人也能看懂健康議題背後的根據。
         </p>
         <div class="hero__buttons">
           <Button variant="primary" href="/articles/">最新文章 →</Button>
@@ -467,17 +466,6 @@ const categories = [
     </div>
   </section>
 
-  <!-- ============================================================== -->
-  <!--  8. CTA Block                                                   -->
-  <!-- ============================================================== -->
-  <section id="cta">
-    <CtaStrip
-      title="追蹤 LINE，回覆關鍵字拿整理筆記"
-      buttonText="立即追蹤"
-      buttonHref="#"
-    />
-  </section>
-
 </Base>
 
 <style>
@@ -516,8 +504,6 @@ const categories = [
   }
 
   .hero__badge {
-    font-size: clamp(1.06rem, 2.3vw, 1.24rem);
-    font-weight: 700;
     display: inline-flex;
     align-self: flex-start;
     padding: 0.35rem 0.85rem;
@@ -546,7 +532,6 @@ const categories = [
   }
 
   .hero__buttons {
-    flex-wrap: wrap;
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
@@ -741,13 +726,11 @@ const categories = [
   }
 
   .category-card__icon {
-    inline-size: clamp(4.2rem,6vw,5.2rem);
-    block-size: clamp(4.2rem,6vw,5.2rem);
+    inline-size: 3rem;
+    block-size: 3rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 48px;
-    height: 48px;
     border-radius: var(--radius-sm);
     background-color: color-mix(in oklch, var(--cat-color) 12%, var(--color-paper));
     color: var(--cat-color);
@@ -758,7 +741,6 @@ const categories = [
   }
 
   .category-card__en {
-    font-size: clamp(1rem,1.5vw,1.08rem);
     font-family: var(--font-ui);
     font-size: var(--text-badge);
     font-weight: 600;
@@ -775,7 +757,6 @@ const categories = [
   }
 
   .category-card__desc {
-    font-size: clamp(1.1rem,1.8vw,1.2rem);
     font-size: var(--text-meta);
     color: color-mix(in oklch, var(--color-ink) 70%, transparent);
     line-height: 1.6;
@@ -792,7 +773,7 @@ const categories = [
   }
 
   .category-card__count {
-    font-size: clamp(1.1rem,1.8vw,1.2rem);
+    font-size: var(--text-meta);
     font-weight: 700;
     color: color-mix(in oklch, var(--color-ink) 55%, transparent);
   }
