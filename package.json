@@ -9,7 +9,8 @@
     "postbuild": "pagefind --site dist",
     "preview": "astro preview",
     "sync:youtube": "node scripts/sync-youtube-shorts.mjs",
-    "prebuild": "pnpm run sync:youtube"
+    "prebuild": "pnpm run sync:youtube",
+    "content:audit": "node scripts/audit-ai-tone.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.14",

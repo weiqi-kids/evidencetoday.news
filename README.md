@@ -65,6 +65,7 @@ pnpm install        # 安裝依賴（不是 npm）
 pnpm dev            # 啟動開發伺服器 (localhost:4321)
 pnpm build          # 建置靜態網站 (輸出至 dist/)
 pnpm preview        # 預覽建置結果
+pnpm content:audit  # 掃描內容的 AI 感句型與模糊引用
 ```
 
 ---

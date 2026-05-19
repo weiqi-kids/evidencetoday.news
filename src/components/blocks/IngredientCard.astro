@@ -1,6 +1,4 @@
 ---
-import Badge from '../ui/Badge.astro';
-
 interface Props {
   title: string;
   titleEn?: string;
@@ -13,8 +11,18 @@ interface Props {
 
 const { title, titleEn, description, href, coverImage, uses, tags = [] } = Astro.props;
 
-/* Show top 2 uses as evidence level badges */
-const topUses = uses.slice(0, 2);
+const evidenceLabels: Record<string, string> = {
+  'meta-analysis': '系統性回顧／統合分析',
+  rct: '隨機對照試驗',
+  observational: '觀察性研究',
+  animal: '動物實驗',
+  'in-vitro': '體外實驗',
+};
+
+const uniqueEvidence = Array.from(new Set(uses.map((use) => use.evidenceLevel)));
+const mappedEvidence = uniqueEvidence
+  .map((level) => evidenceLabels[level] ?? null)
+  .filter((label): label is string => Boolean(label));
 const topTags = tags.slice(0, 3);
 ---
 
@@ -34,12 +42,12 @@ const topTags = tags.slice(0, 3);
         ))}
       </div>
     )}
-    {topUses.length > 0 && (
-      <div class="ingredient-card__badges">
-        {topUses.map((use) => (
-          <Badge variant="evidence">{use.evidenceLevel}</Badge>
-        ))}
-      </div>
+    {mappedEvidence.length > 0 && (
+      <p class="ingredient-card__evidence">
+        {mappedEvidence.length >= 2
+          ? `證據概況：${mappedEvidence.slice(0, 2).join('、')}`
+          : `目前證據：${mappedEvidence[0]}為主`}
+      </p>
     )}
   </div>
 </a>
@@ -104,8 +112,7 @@ const topTags = tags.slice(0, 3);
     overflow: hidden;
   }
 
-  .ingredient-card__tags,
-  .ingredient-card__badges {
+  .ingredient-card__tags {
     display: flex;
     align-items: center;
     gap: 0.375rem;
@@ -119,5 +126,11 @@ const topTags = tags.slice(0, 3);
     background-color: color-mix(in oklch, var(--color-cat-ingredient) 10%, white);
     border-radius: 999px;
     padding: 0.1rem 0.45rem;
+  }
+  .ingredient-card__evidence {
+    margin: 0;
+    font-size: 0.78rem;
+    line-height: 1.55;
+    color: color-mix(in oklch, var(--color-ink) 76%, transparent);
   }
 </style>
