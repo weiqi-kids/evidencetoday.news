@@ -37,6 +37,7 @@ const {
       <CategoryTag category={category} />
       <AuthorMeta publishDate={publishDate} updatedDate={updatedDate} />
       <h1>{title}</h1>
+      <slot name="summary" />
     </header>
 
     <div class="media-content">
