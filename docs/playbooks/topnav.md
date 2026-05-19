@@ -131,3 +131,8 @@
 - 設計 token：[design-tokens.md](./design-tokens.md)
 - CSS / RWD 通用規範：[../../README.md#css--rwd-修改規範](../../README.md)
 - 字體變數定義：`src/styles/typography.css`
+
+## 近期調整（2026-05）
+- 品牌區目前僅保留 logo icon + 中文站名「本日有據」，不含英文副標與分隔線。
+- 主選單 `.topnav__link` 採 `var(--font-ui)`、`font-weight: 600`、`font-size: 0.98rem`。
+- 搜尋與漢堡按鈕 icon 使用 inline SVG（分別 20px / 22px），不使用 emoji 或文字符號。
