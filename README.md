@@ -248,4 +248,5 @@ Podcast 單集建議使用 `embedUrl` 指向 Firstory 內嵌播放器（`https:/
 - Podcast 列表與首頁 Podcast 區塊統一使用 `getPublishedPodcasts()`，避免重複顯示測試檔或舊檔。
 - 去重優先使用 `episodeNumber`，缺少時回退到 slug。
 - 單集 JSON-LD 時長請使用 `parseDurationToIso()`，同時支援 `MM:SS` 與 `HH:MM:SS`。
-- Podcast 單集內容段落建議使用「內容摘要」「Show Notes」「本集段落」三段式。
+- Podcast 列表與首頁最新單集排序使用 `updatedDate ?? publishDate`，確保更新後能自動成為最新單集。
+- Podcast 單集頁後段以「內容摘要」「本集重點」為主，Show Notes / 本集段落不在前台渲染。

@@ -5,7 +5,6 @@ import { getCollection } from 'astro:content';
 import { getPublishedPodcasts, stripPodcastSlug } from '@/utils/podcasts';
 
 const podcasts = getPublishedPodcasts(await getCollection('podcasts'));
-
 const latest = podcasts[0];
 ---
 
@@ -13,7 +12,7 @@ const latest = podcasts[0];
   <section class="podcast-hero">
     <p class="podcast-eyebrow">喜聞樂健</p>
     <h2>每一集，從一個健康問題開始。</h2>
-    <p>我在《喜聞樂健》不只想分享知識。我更想把我怎麼看這些健康問題、我會怎麼判斷，慢慢講給你聽。每集大約 15 分鐘左右，陪你把健康觀念和養生方向，一點一點建立起來。</p>
+    <p>我在《喜聞樂健》不只想分享知識，也想把我怎麼看這些健康問題、我會怎麼判斷，慢慢講給你聽。每集大約 15 分鐘左右，陪你把健康觀念和養生方向，一點一點建立起來。</p>
     <div class="hero-actions">
       {latest && <a href={`/podcasts/${stripPodcastSlug(latest.id)}/`}>收聽最新一集</a>}
       <a href="#all-episodes">查看所有集數</a>
@@ -26,18 +25,42 @@ const latest = podcasts[0];
     <article><h3>養生方向</h3><p>該治療時治療，該保健時保健，不把兩件事混在一起。</p></article>
   </section>
 
-  {latest && <section><h2>最新單集</h2><PodcastCard title={latest.data.title} description={latest.data.description} href={`/podcasts/${stripPodcastSlug(latest.id)}/`} episodeNumber={latest.data.episodeNumber} duration={latest.data.duration} publishDate={latest.data.publishDate} /></section>}
+  {latest && <section class="latest-episode"><h2>最新單集</h2><div class="latest-episode__card"><PodcastCard title={latest.data.title} description={latest.data.summary || latest.data.description} href={`/podcasts/${stripPodcastSlug(latest.id)}/`} episodeNumber={latest.data.episodeNumber} duration={latest.data.duration} publishDate={latest.data.updatedDate || latest.data.publishDate} /></div></section>}
 
-  <section id="all-episodes"><h2>所有集數</h2><div class="episode-grid">{podcasts.map((p) => <PodcastCard title={p.data.title} description={p.data.summary || p.data.description} href={`/podcasts/${stripPodcastSlug(p.id)}/`} episodeNumber={p.data.episodeNumber} duration={p.data.duration} publishDate={p.data.publishDate} />)}</div></section>
+  <section id="all-episodes" class="all-episodes"><h2>所有集數</h2><div class="episode-grid">{podcasts.map((p) => <PodcastCard title={p.data.title} description={p.data.summary || p.data.description} href={`/podcasts/${stripPodcastSlug(p.id)}/`} episodeNumber={p.data.episodeNumber} duration={p.data.duration} publishDate={p.data.updatedDate || p.data.publishDate} />)}</div></section>
 </List>
 
 <style>
-  .podcast-hero,.position-cards,.episode-grid{display:flex;flex-direction:column;gap:.9rem}
-  .podcast-eyebrow{font-family:var(--font-ui);color:var(--color-cat-podcast);font-weight:700}
-  .hero-actions{display:flex;gap:.7rem;flex-wrap:wrap}
-  .hero-actions a{border:1px solid var(--color-fog);padding:.45rem .9rem;border-radius:999px;text-decoration:none}
-  .position-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
-  .position-cards article{border:1px solid var(--color-fog);background:white;border-radius:var(--radius-card);padding:1rem}
-  .episode-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
-  @media (max-width: 768px){.position-cards,.episode-grid{grid-template-columns:1fr}}
+  .podcast-hero {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.9rem, 0.8rem + 0.5vw, 1.4rem);
+    max-width: 45rem;
+    margin-bottom: clamp(2.2rem, 1.6rem + 2vw, 3.6rem);
+  }
+  .podcast-eyebrow { font-family: var(--font-ui); color: var(--color-cat-podcast); font-weight: 700; }
+  .podcast-hero p { line-height: 1.8; }
+  .hero-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.35rem; }
+  .hero-actions a { border: 1px solid var(--color-fog); padding: 0.5rem 0.95rem; border-radius: 999px; text-decoration: none; }
+  .position-cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(0.9rem, 0.8rem + 0.6vw, 1.25rem);
+    margin-bottom: clamp(2.8rem, 2rem + 2.2vw, 4rem);
+  }
+  .position-cards article { border: 1px solid var(--color-fog); background: white; border-radius: var(--radius-card); padding: clamp(1rem, 0.95rem + 0.4vw, 1.3rem); }
+  .latest-episode { margin-bottom: clamp(2.8rem, 2rem + 2vw, 3.8rem); }
+  .latest-episode h2, .all-episodes h2 { margin-bottom: clamp(1rem, 0.8rem + 0.6vw, 1.4rem); }
+  .latest-episode__card { max-width: 48rem; }
+  .episode-grid { display: grid; grid-template-columns: 1fr; gap: clamp(1rem, 0.95rem + 0.5vw, 1.35rem); }
+
+  @media (min-width: 768px) {
+    .position-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .episode-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media (min-width: 1024px) {
+    .podcast-hero { max-width: 720px; }
+    .latest-episode__card { max-width: 54rem; }
+  }
 </style>
