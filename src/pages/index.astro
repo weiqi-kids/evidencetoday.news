@@ -368,7 +368,7 @@ const categories = [
           <p class="podcast-layout__desc">
             《喜聞樂健》以每集約 15 分鐘的篇幅，從一個健康問題切入，整理健康知識、保養觀念與判斷方式。希望讓健康資訊不只是知道，還能在日常生活中更容易理解與使用。
           </p>
-          <Button variant="cta" href={latestPodcasts.length > 0 ? `/podcasts/${stripPodcastSlug(latestPodcasts[0].id)}/` : '/podcasts/'}>
+          <Button class="podcast-layout__cta" variant="cta" href={latestPodcasts.length > 0 ? `/podcasts/${stripPodcastSlug(latestPodcasts[0].id)}/` : '/podcasts/'}>
             播放最新單集
           </Button>
           <div class="podcast-layout__tags">
@@ -527,7 +527,7 @@ const categories = [
   .hero__subtitle {
     font-size: var(--text-body);
     color: oklch(1 0 0 / 0.8);
-    line-height: 1.7;
+    line-height: 1.78;
     max-width: 50ch;
   }
 
@@ -675,7 +675,7 @@ const categories = [
   .section-subtitle {
     font-size: var(--text-body);
     color: color-mix(in oklch, var(--color-ink) 70%, transparent);
-    line-height: 1.7;
+    line-height: 1.78;
     margin-top: -1rem;
     margin-bottom: 1.5rem;
   }
@@ -826,25 +826,31 @@ const categories = [
      4. Podcast Block
      ========================================================================== */
 
-  .section-podcast {
+   .section-podcast {
+    overflow-x: clip;
     background-color: var(--color-navy);
     padding: var(--space-section-gap) 0;
   }
 
   .podcast-layout {
     display: grid;
+    min-width: 0;
     grid-template-columns: 1fr 1fr;
     gap: 2.5rem;
     align-items: center;
   }
 
   .podcast-layout__left {
+    min-width: 0;
+    max-width: 44rem;
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
   }
 
   .podcast-layout__title {
+    overflow-wrap: anywhere;
+    word-break: normal;
     font-family: var(--font-serif);
     font-size: var(--text-h2);
     font-weight: 700;
@@ -853,9 +859,17 @@ const categories = [
   }
 
   .podcast-layout__desc {
+    max-width: 42rem;
     font-size: var(--text-body);
     color: var(--color-on-dark-body);
-    line-height: 1.7;
+    line-height: 1.78;
+  }
+
+  .podcast-layout__cta {
+    width: fit-content;
+    max-width: 100%;
+    position: relative;
+    z-index: 1;
   }
 
   .podcast-layout__tags {
@@ -876,12 +890,13 @@ const categories = [
   }
 
   .podcast-layout__right {
+    min-width: 0;
     display: flex;
     flex-direction: column;
     gap: 1rem;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     .podcast-layout {
       grid-template-columns: 1fr;
     }
