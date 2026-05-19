@@ -240,10 +240,13 @@ Podcast 單集建議使用 `embedUrl` 指向 Firstory 內嵌播放器（`https:/
 
 - 節目名稱固定為「喜聞樂健」，定位為每集約 15 分鐘的健康觀念與健康知識分享。
 - `/podcasts/` 頻道頁需包含節目定位說明，不可退化成純播放器清單。
-- 單集頁建議至少含摘要、本集重點、Show Notes、章節與醫療聲明。
+- 單集頁建議至少含播放器、內容摘要與本集重點；Show Notes / 本集段落可留在資料層但不在前台渲染。
 
 
 ## Podcast 頁面資料規則
+
+- 首頁 Podcast 區塊版型需避免欄位擠壓：`section-podcast` / `podcast-layout` / 左右欄都要可縮（`min-width: 0`），CTA 不可覆蓋卡片點擊區。
+- Podcast 卡片連結必須使用父層傳入 `href`，不可在卡片元件內推導或覆蓋。
 
 - Podcast 列表與首頁 Podcast 區塊統一使用 `getPublishedPodcasts()`，避免重複顯示測試檔或舊檔。
 - 去重優先使用 `episodeNumber`，缺少時回退到 slug。

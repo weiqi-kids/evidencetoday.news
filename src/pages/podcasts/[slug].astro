@@ -10,6 +10,10 @@ import VideoCard from '@/components/blocks/VideoCard.astro';
 import { fmtDate } from '@/utils/date';
 import { getPublishedPodcasts, parseDurationToIso, stripPodcastSlug } from '@/utils/podcasts';
 
+function stripExt(id: string): string {
+  return id.replace(/\.[^.]+$/, '');
+}
+
 export async function getStaticPaths() { const entries = getPublishedPodcasts(await getCollection('podcasts')); return entries.map((entry) => ({ params: { slug: stripPodcastSlug(entry.id) }, props: { entry } })); }
 const { entry } = Astro.props;
 const { Content } = await entry.render();
