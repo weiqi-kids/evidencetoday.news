@@ -27,6 +27,17 @@
 
 ### Hero 細節
 
+### Hero 右側焦點卡（首頁編輯層級）
+
+- `featuredItems[0]`：主焦點卡（本週焦點）
+- `featuredItems.slice(1, 3)`：次焦點卡（最多 2 張）
+- 資料不足時要安全降級：
+  - 0 筆：不渲染右側焦點區
+  - 1 筆：只渲染主焦點
+  - 2 筆：1 主 + 1 次
+  - 3 筆以上：1 主 + 2 次
+- 主焦點可顯示補充 meta（例如 myth verdict、podcast 集數/時長、article 主編把關）但不可改動資料來源邏輯。
+
 - **catch phrase**：「把健康議題，講得有根據，也講得讓人看得懂。」（品牌語，動之前確認）
 - **HeroParticles**：canvas 全幅，desktop only（mobile 不渲染以省電）
 - **CTA buttons**：「最新文章」「迷思破解」「認識主編」
