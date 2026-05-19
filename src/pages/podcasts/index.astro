@@ -1,5 +1,6 @@
 ---
 import List from '@/layouts/List.astro';
+import PodcastCard from '@/components/blocks/PodcastCard.astro';
 import { getCollection } from 'astro:content';
 
 function stripExt(id: string) {
@@ -9,114 +10,38 @@ function stripExt(id: string) {
 const podcasts = (await getCollection('podcasts', (e) => !e.data.draft && e.data.title && (e.data.audioUrl || e.data.embedUrl)))
   .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
 
-const links = {
-  firstory: 'https://open.firstory.me/user/cm54wunhn07kb01151eda467n/platforms',
-  spotify: 'https://open.firstory.me/user/cm54wunhn07kb01151eda467n/platforms',
-  kkbox: 'https://open.firstory.me/user/cm54wunhn07kb01151eda467n/platforms',
-  pocket: 'https://open.firstory.me/user/cm54wunhn07kb01151eda467n/platforms',
-  all: 'https://open.firstory.me/user/cm54wunhn07kb01151eda467n/episodes',
-};
+const latest = podcasts[0];
 ---
 
-<List title="Podcast《喜聞樂健》" description="用耳朵聽懂健康，不被行銷話術牽著走。" category="podcast" breadcrumbItems={[{ label: '首頁', href: '/' }, { label: 'Podcast' }]} totalItems={podcasts.length}>
+<List title="Podcast《喜聞樂健》" description="健康知識，不只知道，還要會判斷。" category="podcast" breadcrumbItems={[{ label: '首頁', href: '/' }, { label: 'Podcast' }]} totalItems={podcasts.length}>
   <section class="podcast-hero">
-    <h2>節目介紹</h2>
-    <p>《喜聞樂健》是由羅揚主持的健康知識 Podcast，從保健食品、營養科學、生活健康與常見迷思出發，用一般人聽得懂的方式，整理研究證據與實際判斷。節目不走誇大療效與恐嚇式行銷，而是希望幫助聽眾建立更穩定的健康判斷力。</p>
-    <p class="podcast-host">主持人：羅揚｜節目：喜聞樂健</p>
-    <div class="platform-buttons">
-      <a href={links.firstory}>Firstory</a>
-      <a href={links.spotify}>Spotify</a>
-      <a href={links.kkbox}>KKBOX</a>
-      <a href={links.pocket}>Pocket Casts</a>
-      <a href={links.all}>全平台收聽</a>
+    <p class="podcast-eyebrow">喜聞樂健</p>
+    <h2>每一集，從一個健康問題開始。</h2>
+    <p>我在《喜聞樂健》不只想分享知識。我更想把我怎麼看這些健康問題、我會怎麼判斷，慢慢講給你聽。每集大約 15 分鐘左右，陪你把健康觀念和養生方向，一點一點建立起來。</p>
+    <div class="hero-actions">
+      {latest && <a href={`/podcasts/${stripExt(latest.id)}/`}>收聽最新一集</a>}
+      <a href="#all-episodes">查看所有集數</a>
     </div>
   </section>
 
-  <section class="podcast-episodes">
-    <h2>已發布集數</h2>
-    <div class="episode-grid">
-      {podcasts.map((p) => (
-        <article class="episode-card">
-          <p class="episode-card__meta">EP{p.data.episodeNumber} · {p.data.duration}</p>
-          <h3><a href={`/podcasts/${stripExt(p.id)}/`}>{p.data.title}</a></h3>
-          <p class="episode-card__date">{p.data.publishDate.toLocaleDateString('zh-TW')}</p>
-          <p class="episode-card__desc">{p.data.description}</p>
-        </article>
-      ))}
-    </div>
+  <section class="position-cards">
+    <article><h3>健康知識</h3><p>不是把資訊堆起來，而是把重要的地方講出來。</p></article>
+    <article><h3>健康觀念</h3><p>保養不是一句口號，背後需要有自己的判斷。</p></article>
+    <article><h3>養生方向</h3><p>該治療時治療，該保健時保健，不把兩件事混在一起。</p></article>
   </section>
+
+  {latest && <section><h2>最新單集</h2><PodcastCard title={latest.data.title} description={latest.data.description} href={`/podcasts/${stripExt(latest.id)}/`} episodeNumber={latest.data.episodeNumber} duration={latest.data.duration} publishDate={latest.data.publishDate} /></section>}
+
+  <section id="all-episodes"><h2>所有集數</h2><div class="episode-grid">{podcasts.map((p) => <PodcastCard title={p.data.title} description={p.data.summary || p.data.description} href={`/podcasts/${stripExt(p.id)}/`} episodeNumber={p.data.episodeNumber} duration={p.data.duration} publishDate={p.data.publishDate} />)}</div></section>
 </List>
 
 <style>
-  .podcast-hero,
-  .podcast-episodes {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .podcast-host {
-    color: color-mix(in oklch, var(--color-ink) 70%, transparent);
-    font-size: var(--text-meta);
-  }
-
-  .platform-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-top: 0.25rem;
-  }
-
-  .platform-buttons a {
-    text-decoration: none;
-    border: 1px solid var(--color-fog);
-    border-radius: 999px;
-    padding: 0.4rem 0.85rem;
-    font-family: var(--font-ui);
-    font-size: var(--text-meta);
-    color: var(--color-ink);
-    background: white;
-  }
-
-  .platform-buttons a:hover {
-    background: var(--color-fog);
-  }
-
-  .episode-grid {
-    display: grid;
-    gap: 1rem;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .episode-card {
-    border: 1px solid var(--color-fog);
-    border-radius: var(--radius-card);
-    padding: 1rem;
-    background: white;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .episode-card__meta,
-  .episode-card__date {
-    font-size: var(--text-meta);
-    color: color-mix(in oklch, var(--color-ink) 60%, transparent);
-  }
-
-  .episode-card h3 a {
-    color: var(--color-ink);
-    text-decoration: none;
-  }
-
-  .episode-card__desc {
-    color: color-mix(in oklch, var(--color-ink) 72%, transparent);
-    line-height: 1.7;
-  }
-
-  @media (max-width: 768px) {
-    .episode-grid {
-      grid-template-columns: 1fr;
-    }
-  }
+  .podcast-hero,.position-cards,.episode-grid{display:flex;flex-direction:column;gap:.9rem}
+  .podcast-eyebrow{font-family:var(--font-ui);color:var(--color-cat-podcast);font-weight:700}
+  .hero-actions{display:flex;gap:.7rem;flex-wrap:wrap}
+  .hero-actions a{border:1px solid var(--color-fog);padding:.45rem .9rem;border-radius:999px;text-decoration:none}
+  .position-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
+  .position-cards article{border:1px solid var(--color-fog);background:white;border-radius:var(--radius-card);padding:1rem}
+  .episode-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+  @media (max-width: 768px){.position-cards,.episode-grid{grid-template-columns:1fr}}
 </style>
