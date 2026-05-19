@@ -2,24 +2,20 @@
 import List from '@/layouts/List.astro';
 import PodcastCard from '@/components/blocks/PodcastCard.astro';
 import { getCollection } from 'astro:content';
+import { getPublishedPodcasts, stripPodcastSlug } from '@/utils/podcasts';
 
-function stripExt(id: string) {
-  return id.replace(/\.[^.]+$/, '');
-}
-
-const podcasts = (await getCollection('podcasts', (e) => !e.data.draft && e.data.title && (e.data.audioUrl || e.data.embedUrl)))
-  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
+const podcasts = getPublishedPodcasts(await getCollection('podcasts'));
 
 const latest = podcasts[0];
 ---
 
-<List title="Podcast《喜聞樂健》" description="健康知識，不只知道，還要會判斷。" category="podcast" breadcrumbItems={[{ label: '首頁', href: '/' }, { label: 'Podcast' }]} totalItems={podcasts.length}>
+<List title="Podcast《喜聞樂健》" description="每一集約 15 分鐘，從一個健康問題開始。" category="podcast" breadcrumbItems={[{ label: '首頁', href: '/' }, { label: 'Podcast' }]} totalItems={podcasts.length}>
   <section class="podcast-hero">
     <p class="podcast-eyebrow">喜聞樂健</p>
     <h2>每一集，從一個健康問題開始。</h2>
     <p>我在《喜聞樂健》不只想分享知識。我更想把我怎麼看這些健康問題、我會怎麼判斷，慢慢講給你聽。每集大約 15 分鐘左右，陪你把健康觀念和養生方向，一點一點建立起來。</p>
     <div class="hero-actions">
-      {latest && <a href={`/podcasts/${stripExt(latest.id)}/`}>收聽最新一集</a>}
+      {latest && <a href={`/podcasts/${stripPodcastSlug(latest.id)}/`}>收聽最新一集</a>}
       <a href="#all-episodes">查看所有集數</a>
     </div>
   </section>
@@ -30,9 +26,9 @@ const latest = podcasts[0];
     <article><h3>養生方向</h3><p>該治療時治療，該保健時保健，不把兩件事混在一起。</p></article>
   </section>
 
-  {latest && <section><h2>最新單集</h2><PodcastCard title={latest.data.title} description={latest.data.description} href={`/podcasts/${stripExt(latest.id)}/`} episodeNumber={latest.data.episodeNumber} duration={latest.data.duration} publishDate={latest.data.publishDate} /></section>}
+  {latest && <section><h2>最新單集</h2><PodcastCard title={latest.data.title} description={latest.data.description} href={`/podcasts/${stripPodcastSlug(latest.id)}/`} episodeNumber={latest.data.episodeNumber} duration={latest.data.duration} publishDate={latest.data.publishDate} /></section>}
 
-  <section id="all-episodes"><h2>所有集數</h2><div class="episode-grid">{podcasts.map((p) => <PodcastCard title={p.data.title} description={p.data.summary || p.data.description} href={`/podcasts/${stripExt(p.id)}/`} episodeNumber={p.data.episodeNumber} duration={p.data.duration} publishDate={p.data.publishDate} />)}</div></section>
+  <section id="all-episodes"><h2>所有集數</h2><div class="episode-grid">{podcasts.map((p) => <PodcastCard title={p.data.title} description={p.data.summary || p.data.description} href={`/podcasts/${stripPodcastSlug(p.id)}/`} episodeNumber={p.data.episodeNumber} duration={p.data.duration} publishDate={p.data.publishDate} />)}</div></section>
 </List>
 
 <style>

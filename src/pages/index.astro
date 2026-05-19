@@ -12,6 +12,7 @@ import TrendBubbles from '@/components/charts/TrendBubbles.svelte';
 import { getTopTags } from '@/utils/tag-stats';
 import { getCollection } from 'astro:content';
 import { fmtDate } from '@/utils/date';
+import { getPublishedPodcasts, stripPodcastSlug } from '@/utils/podcasts';
 import { getPublishedArticles } from '@/utils/articles';
 import shortsData from '@/data/youtube-shorts.json';
 import { videoItemsSchema } from '@/lib/youtube';
@@ -31,8 +32,7 @@ const allMyths = (await getCollection('myths', (e) => !e.data.draft))
 const allIngredients = (await getCollection('ingredients', (e) => !e.data.draft))
   .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
 
-const allPodcasts = (await getCollection('podcasts', (e) => !e.data.draft))
-  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
+const allPodcasts = getPublishedPodcasts(await getCollection('podcasts'));
 
 const allVideos = videoItemsSchema.safeParse(shortsData).success ? videoItemsSchema.parse(shortsData) : [];
 
@@ -85,7 +85,7 @@ const featuredItems: FeaturedItem[] = [
     title: p.data.title,
     description: p.data.description,
     date: p.data.publishDate,
-    href: `/podcasts/${stripExt(p.id)}/`,
+    href: `/podcasts/${stripPodcastSlug(p.id)}/`,
     extra: { episodeNumber: p.data.episodeNumber, duration: p.data.duration },
   })),
 ].sort((a, b) => b.date.getTime() - a.date.getTime()).slice(0, 3);
@@ -113,7 +113,7 @@ const latestAll: LatestItem[] = [
 /* ------------------------------------------------------------------ */
 const latestMyths = allMyths.slice(0, 3);
 const latestIngredients = allIngredients.slice(0, 4);
-const latestPodcasts = allPodcasts.slice(0, 3);
+const latestPodcasts = allPodcasts.slice(0, 2);
 const latestNews = allNews.slice(0, 5);
 
 /* ------------------------------------------------------------------ */
@@ -364,11 +364,11 @@ const categories = [
     <div class="container">
       <div class="podcast-layout">
         <div class="podcast-layout__left">
-          <h2 class="podcast-layout__title">把健康知識，變成我們日常能用的養生觀。</h2>
+          <h2 class="podcast-layout__title">把健康知識，變成日常能用的養生觀。</h2>
           <p class="podcast-layout__desc">
             每集約 15 分鐘，從一個健康問題開始。我不只講知識，也會分享我怎麼看、怎麼判斷，為什麼會這樣想。希望陪你在保養、營養和治療之間，慢慢建立自己的判斷能力。
           </p>
-          <Button variant="cta" href={latestPodcasts.length > 0 ? `/podcasts/${stripExt(latestPodcasts[0].id)}/` : '/podcasts/'}>
+          <Button variant="cta" href={latestPodcasts.length > 0 ? `/podcasts/${stripPodcastSlug(latestPodcasts[0].id)}/` : '/podcasts/'}>
             播放最新單集
           </Button>
           <div class="podcast-layout__tags">
@@ -383,7 +383,7 @@ const categories = [
             <PodcastCard
               title={p.data.title}
               description={p.data.description}
-              href={`/podcasts/${stripExt(p.id)}/`}
+              href={`/podcasts/${stripPodcastSlug(p.id)}/`}
               episodeNumber={p.data.episodeNumber}
               duration={p.data.duration}
             />
