@@ -44,6 +44,10 @@ function qualityScore(entry: PodcastEntry): number {
   ].reduce((acc, val) => acc + val, 0);
 }
 
+export function getPodcastSortDate(entry: PodcastEntry): Date {
+  return entry.data.updatedDate ?? entry.data.publishDate;
+}
+
 export function getPublishedPodcasts(entries: PodcastEntry[]): PodcastEntry[] {
   const visible = entries.filter((entry) => !entry.data.draft && entry.data.title && (entry.data.audioUrl || entry.data.embedUrl));
   const byEpisode = new Map<string, PodcastEntry>();
@@ -52,10 +56,10 @@ export function getPublishedPodcasts(entries: PodcastEntry[]): PodcastEntry[] {
     const key = entry.data.episodeNumber ? `ep-${entry.data.episodeNumber}` : `slug-${stripPodcastSlug(entry.id)}`;
     const existing = byEpisode.get(key);
 
-    if (!existing || qualityScore(entry) > qualityScore(existing) || entry.data.publishDate > existing.data.publishDate) {
+    if (!existing || qualityScore(entry) > qualityScore(existing) || getPodcastSortDate(entry) > getPodcastSortDate(existing)) {
       byEpisode.set(key, entry);
     }
   }
 
-  return [...byEpisode.values()].sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
+  return [...byEpisode.values()].sort((a, b) => getPodcastSortDate(b).getTime() - getPodcastSortDate(a).getTime());
 }

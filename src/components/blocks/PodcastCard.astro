@@ -39,12 +39,12 @@ const dateLabel = publishDate ? publishDate.toLocaleDateString('zh-TW') : '';
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
   .podcast-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-card-hover); }
-  .podcast-card__body { padding: 1.1rem; display: flex; flex-direction: column; gap: 0.6rem; }
+  .podcast-card__body { padding: clamp(1.15rem, 1.05rem + 0.4vw, 1.4rem); display: flex; flex-direction: column; gap: 0.72rem; }
   .podcast-card__top { display: flex; justify-content: space-between; align-items: center; }
   .podcast-card__tag { font-size: var(--text-badge); color: var(--color-on-dark-meta); font-family: var(--font-ui); }
-  .podcast-card__ep { font-size: var(--text-badge); color: var(--color-cat-podcast); font-weight: 700; font-family: var(--font-ui); }
-  .podcast-card__title { color: var(--color-on-dark-heading); font-size: var(--text-h3); line-height: 1.35; }
-  .podcast-card__desc { color: var(--color-on-dark-body); font-size: var(--text-meta); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-  .podcast-card__meta { display: flex; gap: 0.8rem; color: var(--color-on-dark-meta); font-family: var(--font-ui); font-size: var(--text-meta); }
-  .podcast-card__cta { color: var(--color-cat-podcast); font-family: var(--font-ui); font-size: var(--text-meta); font-weight: 700; }
+  .podcast-card__ep { font-size: var(--text-badge); color: color-mix(in oklch, var(--color-cat-podcast) 88%, white); font-weight: 600; font-family: var(--font-ui); }
+  .podcast-card__title { color: var(--color-on-dark-heading); font-size: var(--text-h3); line-height: 1.42; }
+  .podcast-card__desc { color: var(--color-on-dark-body); font-size: var(--text-meta); line-height: 1.68; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .podcast-card__meta { display: flex; gap: 0.8rem; color: var(--color-on-dark-meta); font-family: var(--font-ui); font-size: var(--text-meta); margin-top: 0.2rem; }
+  .podcast-card__cta { color: var(--color-cat-podcast); font-family: var(--font-ui); font-size: var(--text-meta); font-weight: 700; margin-top: 0.45rem; }
 </style>
