@@ -50,6 +50,13 @@
 | transition | `background-color .15s ease, color .15s ease` |
 | `.is-active` | `color: var(--color-teal)` |
 
+
+## 可維護性格式規範（TopNav.astro）
+
+- `TopNav.astro` 的 HTML / `<script>` / `<style>` 必須保持可讀的多行縮排格式。
+- 禁止把整段 template、script 或 style 壓成單行，避免 diff 難以審查。
+- 純格式化 PR 不得夾帶 TopNav 視覺或互動調整；視覺調整請另開 PR。
+
 ## 修改流程
 
 1. **啟動 dev server**：`pnpm dev`
