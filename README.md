@@ -45,6 +45,7 @@
 | 改 design tokens（顏色 / 字體 / 間距） | [docs/playbooks/design-tokens.md](./docs/playbooks/design-tokens.md) |
 | 改文章 / 闢謠 / 原料排版（Article.astro variant） | [docs/playbooks/article-layout.md](./docs/playbooks/article-layout.md) |
 | 闢謠單篇頁（`src/pages/myths/[slug].astro`）色彩調整 | 沿用 CI tokens（`--color-paper/ink/fog/teal/navy/coral/cat-myth`）與 `color-mix`，禁止新增 pastel hex；僅調整視覺，不改內容結構。 |
+| 闢謠判讀標籤（`VerdictBadge` / `MythCard`） | `VerdictBadge` 僅能使用 CI token + `color-mix`（禁止硬寫 pastel hex）；`MythCard` 的 `verdict` 型別必須引用 `@/utils/myths/schema` 的 `MythVerdict`。 |
 | 改首頁 / Hero | [docs/playbooks/home-hero.md](./docs/playbooks/home-hero.md) |
 | 改 / 新增 d3 圖表 | [docs/playbooks/d3-charts.md](./docs/playbooks/d3-charts.md) |
 | 通用 CSS / RWD 規範 | 本檔下方「CSS / RWD 通用規範」 |

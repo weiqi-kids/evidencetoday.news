@@ -1,11 +1,12 @@
 ---
 import VerdictBadge from '../ui/VerdictBadge.astro';
+import type { MythVerdict } from '@/utils/myths/schema';
 
 interface Props {
   title: string;
   verdictSummary: string;
   href: string;
-  verdict: 'true' | 'false' | 'insufficient' | 'contextual';
+  verdict: MythVerdict;
   date: string;
 }
 
