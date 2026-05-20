@@ -5,4 +5,52 @@ const { verdict, size='sm', class: className } = Astro.props;
 const meta = VERDICT_META[verdict];
 ---
 <span class={`verdict verdict--${meta.tone} verdict--${size}${className ? ` ${className}` : ''}`} aria-label={`判讀結果：${verdict}，${meta.description}`}><span aria-hidden="true">{meta.icon}</span>{size==='sm'?meta.shortLabel:verdict}</span>
-<style>.verdict{display:inline-flex;gap:.35rem;align-items:center;border-radius:999px;font-weight:700}.verdict--sm{padding:.2rem .6rem;font-size:var(--text-badge)}.verdict--lg{padding:.45rem .9rem}.verdict--positive{background:#dff6e8;color:#165a35}.verdict--negative{background:#fde8ea;color:#8a1f2d}.verdict--neutral{background:#eef1f6;color:#364152}.verdict--context{background:#e6f0ff;color:#18427d}.verdict--caution{background:#fff2dc;color:#7a4b08}.verdict--warning{background:#fff1e8;color:#7a2e0f}</style>
+<style>
+.verdict {
+  display: inline-flex;
+  gap: .35rem;
+  align-items: center;
+  border-radius: 999px;
+  font-weight: 700;
+  border: 1px solid transparent;
+}
+
+.verdict--sm { padding: .2rem .6rem; font-size: var(--text-badge); }
+.verdict--lg { padding: .45rem .9rem; }
+
+.verdict--positive {
+  background: color-mix(in oklch, var(--color-verdict-true) 14%, var(--color-paper));
+  color: color-mix(in oklch, var(--color-verdict-true) 80%, var(--color-ink));
+  border-color: color-mix(in oklch, var(--color-verdict-true) 26%, var(--color-fog));
+}
+
+.verdict--negative {
+  background: color-mix(in oklch, var(--color-verdict-false) 12%, var(--color-paper));
+  color: color-mix(in oklch, var(--color-verdict-false) 82%, var(--color-ink));
+  border-color: color-mix(in oklch, var(--color-verdict-false) 26%, var(--color-fog));
+}
+
+.verdict--neutral {
+  background: color-mix(in oklch, var(--color-verdict-insufficient) 12%, var(--color-paper));
+  color: color-mix(in oklch, var(--color-verdict-insufficient) 76%, var(--color-ink));
+  border-color: color-mix(in oklch, var(--color-verdict-insufficient) 24%, var(--color-fog));
+}
+
+.verdict--context {
+  background: color-mix(in oklch, var(--color-verdict-contextual) 14%, var(--color-paper));
+  color: color-mix(in oklch, var(--color-verdict-contextual) 78%, var(--color-ink));
+  border-color: color-mix(in oklch, var(--color-verdict-contextual) 26%, var(--color-fog));
+}
+
+.verdict--caution {
+  background: color-mix(in oklch, var(--color-cat-myth) 10%, var(--color-paper));
+  color: color-mix(in oklch, var(--color-cat-myth) 78%, var(--color-ink));
+  border-color: color-mix(in oklch, var(--color-cat-myth) 24%, var(--color-fog));
+}
+
+.verdict--warning {
+  background: color-mix(in oklch, var(--color-coral) 10%, var(--color-paper));
+  color: color-mix(in oklch, var(--color-coral) 80%, var(--color-ink));
+  border-color: color-mix(in oklch, var(--color-coral) 24%, var(--color-fog));
+}
+</style>
