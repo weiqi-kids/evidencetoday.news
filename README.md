@@ -225,6 +225,12 @@ GitHub Actions 自動執行：build → Pagefind 索引 → 連結檢查 → 部
 Podcast 單集建議使用 `embedUrl` 指向 Firstory 內嵌播放器（`https://open.firstory.me/embed/story/...`）。
 若暫時沒有 `embedUrl`，可用 `externalUrl` 作為外部收聽連結；單集頁不應再使用不可互動的假播放器區塊。
 
+### 原料頁中立知識庫維護重點
+
+- 原料單頁 JSON-LD 應使用 `Article` / `WebPage` 等中立內容型別，不可使用 `MedicalWebPage`、`DietarySupplement`、`Product` 等商品導向 schema。
+- 原料頁需固定呈現中立提示，明確說明「研究常討論的用途／可能機制／安全性」與「不作為個別療效宣稱」。
+- 若 content 有 `safety` 欄位，頁面模板需固定輸出「安全性與交互作用」區塊（一般安全性、可能交互作用、族群注意）。
+
 ### 短影音列表卡片顯示規則
 
 `/videos/` 的短影音卡片僅保留：

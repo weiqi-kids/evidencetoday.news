@@ -10,6 +10,7 @@ import MythCard from '@/components/blocks/MythCard.astro';
 import VideoCard from '@/components/blocks/VideoCard.astro';
 import PodcastCard from '@/components/blocks/PodcastCard.astro';
 import { fmtDate } from '@/utils/date';
+import { stripPodcastSlug } from '@/utils/podcasts';
 
 function stripExt(id: string): string {
   return id.replace(/\.[^.]+$/, '');
@@ -45,14 +46,27 @@ const hasRelated = relatedArticles.length > 0 || relatedMyths.length > 0 || rela
 
 /* JSON-LD structured data */
 const slug = entry.id.replace(/\.[^.]+$/, '');
-const medicalWebPageSchema = {
+const ingredientArticleSchema = {
   '@context': 'https://schema.org',
-  '@type': 'MedicalWebPage',
-  name: data.title,
+  '@type': 'Article',
+  headline: data.title,
   description: data.description,
   datePublished: data.publishDate.toISOString(),
   dateModified: data.updatedDate.toISOString(),
-  about: { '@type': 'DietarySupplement', name: data.title },
+  author: {
+    '@type': 'Organization',
+    name: '本日有據',
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: '本日有據',
+  },
+  about: {
+    '@type': 'Thing',
+    name: data.title,
+  },
+  articleSection: '原料知識庫',
+  mainEntityOfPage: `https://evidencetoday.news/ingredients/${slug}/`,
 };
 
 const ingredientBreadcrumbSchema = {
@@ -84,26 +98,62 @@ const ingredientBreadcrumbSchema = {
   tldr={data.introduction}
 >
   <Fragment slot="head">
-    <JsonLd data={medicalWebPageSchema} />
+    <JsonLd data={ingredientArticleSchema} />
     <JsonLd data={ingredientBreadcrumbSchema} />
   </Fragment>
+
+  <section class="ingredient-scope-note" aria-label="原料頁閱讀提醒">
+    <h2 class="ingredient-scope-note__title">閱讀這頁前，先說清楚</h2>
+    <ul class="ingredient-scope-note__list">
+      <li>這頁整理的是研究中常被討論的用途、可能機制與安全性，不是產品推薦。</li>
+      <li>文中提到的作用路徑或研究結果，不代表對個人一定有效，也不代表療效宣稱。</li>
+      <li>若正在治療疾病、懷孕、哺乳、服藥或有慢性病，請先和醫療專業人員討論。</li>
+    </ul>
+  </section>
 
   {data.pathwaySteps && data.pathwaySteps.length > 0 ? (
     <>
       <PathwayDiagram steps={data.pathwaySteps} client:visible aria-hidden="true" />
       <section class="mechanism-text">
-        <h3>機制重點摘要（純文字）</h3>
+        <h3>可能機制摘要</h3>
         <p>{data.pathwaySteps.map((step) => `${step.name}：${step.description}`).join('；')}</p>
       </section>
     </>
   ) : data.mechanism ? (
     <section class="mechanism-text">
-      <h3>作用機制</h3>
+      <h3>研究常討論的可能機制</h3>
       <p>{data.mechanism}</p>
     </section>
   ) : null}
 
   <EvidenceScale uses={data.uses} client:visible />
+
+  {data.safety && (
+    <section class="ingredient-safety">
+      <h2>安全性與交互作用</h2>
+      {data.safety.general && <p>{data.safety.general}</p>}
+      {data.safety.interactions && data.safety.interactions.length > 0 && (
+        <>
+          <h3>可能交互作用</h3>
+          <ul>
+            {data.safety.interactions.map((item) => (
+              <li><strong>{item.substance}</strong>：{item.description}</li>
+            ))}
+          </ul>
+        </>
+      )}
+      {data.safety.populations && data.safety.populations.length > 0 && (
+        <>
+          <h3>族群注意</h3>
+          <ul>
+            {data.safety.populations.map((item) => (
+              <li><strong>{item.group}</strong>：{item.note}</li>
+            ))}
+          </ul>
+        </>
+      )}
+    </section>
+  )}
 
   <Content />
 
@@ -150,7 +200,7 @@ const ingredientBreadcrumbSchema = {
             <PodcastCard
               title={p.data.title}
               description={p.data.description}
-              href={`/podcasts/${stripExt(p.id)}/`}
+              href={`/podcasts/${stripPodcastSlug(p.id)}/`}
               episodeNumber={p.data.episodeNumber}
               duration={p.data.duration}
             />
@@ -206,5 +256,56 @@ const ingredientBreadcrumbSchema = {
     font-size: var(--text-body);
     color: var(--color-ink);
     line-height: 1.8;
+  }
+
+
+  .ingredient-scope-note,
+  .ingredient-safety {
+    padding: clamp(1rem, 0.8rem + 0.8vw, 1.5rem);
+    border-radius: var(--radius-card);
+    border: 1px solid var(--color-fog);
+    background: color-mix(in oklch, var(--color-paper) 70%, white);
+  }
+
+  .ingredient-scope-note {
+    border-inline-start: 4px solid var(--color-cat-ingredient);
+  }
+
+  .ingredient-scope-note__title,
+  .ingredient-safety h2,
+  .ingredient-safety h3 {
+    font-family: var(--font-sans);
+    color: var(--color-ink);
+  }
+
+  .ingredient-scope-note__title {
+    font-size: var(--text-h3);
+    margin-bottom: 0.75rem;
+  }
+
+  .ingredient-scope-note__list,
+  .ingredient-safety ul {
+    margin: 0;
+    padding-inline-start: 1.25rem;
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .ingredient-scope-note__list li,
+  .ingredient-safety li,
+  .ingredient-safety p {
+    color: var(--color-ink);
+    line-height: 1.8;
+    font-size: var(--text-body);
+  }
+
+  .ingredient-safety h2 {
+    font-size: var(--text-h3);
+    margin-bottom: 0.75rem;
+  }
+
+  .ingredient-safety h3 {
+    font-size: var(--text-h4);
+    margin: 1rem 0 0.5rem;
   }
 </style>
