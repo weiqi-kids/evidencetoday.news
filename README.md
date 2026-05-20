@@ -254,6 +254,8 @@ Podcast 單集建議使用 `embedUrl` 指向 Firstory 內嵌播放器（`https:/
 
 - 首頁 Podcast 區塊版型需避免欄位擠壓：`section-podcast` / `podcast-layout` / 左右欄都要可縮（`min-width: 0`），CTA 不可覆蓋卡片點擊區。
 - Podcast 卡片連結必須使用父層傳入 `href`，不可在卡片元件內推導或覆蓋。
+- 任何指向 Podcast 單集頁的連結都要用 `stripPodcastSlug()` 產生 slug，不可用 `stripExt()`。
+- `stripExt()` 僅保留給 articles / myths / ingredients / videos / news 等非 Podcast 內容路由。
 - Podcast 卡片 footer 建議使用左側 duration/date、右側 `收聽本集 →` 的配置；`收聽本集 →` 需有足夠對比、可見 underline 與 focus/hover 狀態。
 - 右上角 EP 標籤需維持可讀對比，可使用小型 pill badge，但不要讓 EP 標籤搶過標題層級。
 

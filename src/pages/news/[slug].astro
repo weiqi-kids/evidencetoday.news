@@ -10,6 +10,7 @@ import VideoCard from '@/components/blocks/VideoCard.astro';
 import PodcastCard from '@/components/blocks/PodcastCard.astro';
 import { fmtDate } from '@/utils/date';
 import { getDisplayTitle, getNewsCategory, getNewsHeroImage } from '@/utils/news';
+import { stripPodcastSlug } from '@/utils/podcasts';
 
 function stripExt(id: string): string {
   return id.replace(/\.[^.]+$/, '');
@@ -221,7 +222,7 @@ const breadcrumbSchema = {
             <PodcastCard
               title={p.data.title}
               description={p.data.description}
-              href={`/podcasts/${stripExt(p.id)}/`}
+              href={`/podcasts/${stripPodcastSlug(p.id)}/`}
               episodeNumber={p.data.episodeNumber}
               duration={p.data.duration}
             />

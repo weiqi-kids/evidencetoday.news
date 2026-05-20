@@ -358,7 +358,7 @@ const categories = [
               <PodcastCard
                 title={d.title as string}
                 description={d.description as string}
-                href={`/podcasts/${stripExt(item.id)}/`}
+                href={`/podcasts/${stripPodcastSlug(item.id)}/`}
                 episodeNumber={d.episodeNumber as number}
                 duration={d.duration as string}
               />
