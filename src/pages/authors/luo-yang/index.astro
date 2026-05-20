@@ -10,13 +10,13 @@ const articles = (await getCollection('articles', (e) => !e.data.draft && e.data
   .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
 ---
 
-<Base title="羅揚｜本日有據主編" description="本日有據主編羅揚簡介、Podcast 與文章列表。">
+<Base title="羅揚｜本日有據主編" description="本日有據主編如何整理健康資訊、分層證據與轉譯為可理解內容。">
   <main class="container editor-page">
     <header class="editor-header">
       <h1>羅揚｜本日有據主編</h1>
     </header>
 
-    <section class="editor-hero">
+    <section class="editor-hero card">
       <picture class="editor-portrait">
         <source srcset="/images/authors/luo-yang.jpg" type="image/jpeg" />
         <img
@@ -26,55 +26,106 @@ const articles = (await getCollection('articles', (e) => !e.data.draft && e.data
           decoding="async"
         />
       </picture>
-      <div class="editor-meta card">
-        <p><strong>姓名：</strong>羅揚</p>
-        <p><strong>身分：</strong>本日有據主編</p>
-        <p><strong>學科背景：</strong>牙醫學、口腔衛生材料研究</p>
-        <p><strong>Podcast：</strong>《喜聞樂健》主持人</p>
-        <p><strong>關注主題：</strong>保健食品觀念、營養與預防醫學、健康識讀</p>
-        <p><strong>聯絡：</strong><a href="mailto:evidencetodaynews@gmail.com">evidencetodaynews@gmail.com</a></p>
+      <div class="editor-meta">
+        <p class="hero-summary">我在本日有據做的，是把健康研究、公共資訊、常見說法與日常生活問題整理在一起，讓一般人不只知道健康知識，也能慢慢建立自己的判斷力。</p>
+        <ul>
+          <li><strong>身分：</strong>本日有據主編</li>
+          <li><strong>學科背景：</strong>牙醫學、口腔衛生材料研究</li>
+          <li><strong>Podcast：</strong>《喜聞樂健》主持人</li>
+          <li><strong>關注主題：</strong>健康識讀、營養科學、預防醫學、公共健康、熟齡健康溝通、保健食品觀念</li>
+          <li><strong>聯絡：</strong><a href="mailto:evidencetodaynews@gmail.com">evidencetodaynews@gmail.com</a></li>
+        </ul>
       </div>
     </section>
 
     <section class="card section-block">
-      <h2>專業背景與內容理念</h2>
-      <p>羅揚是《本日有據 Evidence Today》主編，具牙醫學與口腔衛生材料研究背景，長期關注營養科學、保健食品、預防醫學與健康資訊傳播。他的內容工作重點，是把複雜的研究資料、醫學名詞與保健食品議題，轉化成一般人能理解、能判斷、能應用的知識。</p>
-      <p>羅揚同時主持 Podcast《喜聞樂健》，持續以白話方式討論健康、營養與保健食品觀念。他相信健康資訊不應只是艱深名詞的堆疊，也不應淪為恐嚇式行銷；真正有價值的健康內容，應該讓讀者知道「證據到哪裡為止」、「哪些說法過度延伸」、「一般人在生活中可以怎麼判斷」。</p>
-      <p>本日有據的編輯原則，是不販售恐懼、不誇大療效、不接受廠商業配，並盡可能讓每一篇內容都保留研究脈絡、限制說明與實際生活判斷。</p>
+      <h2>為什麼做本日有據</h2>
+      <p>健康資訊越來越多，但一般人真正困難的地方，常常不是完全沒有知識，而是不知道該怎麼判斷。一則研究、一段短影音、一篇網路文章，可能都只說了事情的一部分。有人看完更安心，也有人看完更焦慮；有人因此開始保養，也有人因此拒絕治療。</p>
+      <p>本日有據的目的，是希望把健康知識放回證據、情境與生活判斷裡。不是只告訴讀者一個答案，而是幫助讀者理解：這個說法根據什麼？限制在哪裡？和我有沒有關係？現在我應該怎麼判斷？</p>
     </section>
 
     <section class="card section-block">
-      <h2>核心信念</h2>
-      <p>保健食品是補充，不是取代；健康是長期累積，不是短時間衝出來的；吃得精準比吃得很多更重要；判斷力比跟風更重要；教育價值不靠恐嚇與誇大建立。</p>
+      <h2>我如何處理健康資訊</h2>
+      <ol class="number-list">
+        <li>
+          <h3>先釐清問題</h3>
+          <p>同一個健康問題，可能是在談疾病治療、日常保養、營養攝取、生活習慣或公共衛生。問題不同，能給的答案也不同。</p>
+        </li>
+        <li>
+          <h3>再看證據來源</h3>
+          <p>研究論文、官方資料、公共衛生建議、臨床經驗與個人觀察，能支持的結論強度不同，不能放在同一個層級使用。</p>
+        </li>
+        <li>
+          <h3>說清楚限制</h3>
+          <p>健康研究常有族群、劑量、時間、研究設計與適用情境的限制。若證據還不能支持明確結論，就不應該把話說得太滿。</p>
+        </li>
+        <li>
+          <h3>轉成一般人能理解的語言</h3>
+          <p>健康知識如果只停留在術語裡，就很難進入生活。本日有據希望把複雜資訊轉成一般人聽得懂、看得懂、能拿來判斷的內容。</p>
+        </li>
+      </ol>
     </section>
 
     <section class="card section-block">
-      <h2>內容紅線</h2>
-      <p>不把保健食品講成藥物，不暗示能直接治療疾病，不把單一成分講成萬用解方，不用恐懼訴求威逼讀者，個人經驗不寫成普遍結果，並以教育觀點取代「診間」與「臨床觀察」式敘事。</p>
+      <h2>證據與觀點如何分層</h2>
+      <p>本日有據會盡量區分「研究證據」與「主編觀點」。主編觀點可以幫助讀者理解與判斷，但不應被包裝成研究結論。</p>
+      <ol class="number-list evidence-list">
+        <li><strong>系統性回顧、統合分析、臨床指引：</strong>通常是較高層級的證據，但仍需看研究品質與適用族群。</li>
+        <li><strong>隨機對照試驗與臨床研究：</strong>能提供較直接的人體資料，但仍需看樣本數、研究設計與研究對象。</li>
+        <li><strong>觀察研究與公共資料：</strong>可以提供趨勢與關聯，但不能直接等同因果。</li>
+        <li><strong>機制研究、動物研究、體外研究：</strong>可以幫助理解可能路徑，但不能直接推論到一般人的實際效果。</li>
+        <li><strong>主編觀點與個人判讀：</strong>屬於經驗、理解與整理後的判斷，用來幫助讀者思考，不等同研究證據，也不能取代個別醫療建議。</li>
+      </ol>
     </section>
 
     <section class="card section-block">
-      <h2>專業領域</h2>
-      <p>保健食品觀念教育、營養補充定位與使用時機、食療與日常營養整合、常見迷思拆解、熟齡族群健康溝通。</p>
+      <h2>內容製作流程</h2>
+      <ol class="number-list">
+        <li><strong>選題：</strong>從讀者常見疑問、健康新聞、研究新知、網路流傳說法與日常健康困惑中選題。</li>
+        <li><strong>查找資料：</strong>優先整理研究文獻、官方資料、公共衛生資料與可追溯來源。</li>
+        <li><strong>判斷證據層級：</strong>區分研究結論、機制推測、觀察資料與主編觀點，避免把不同層級的資訊混在一起。</li>
+        <li><strong>白話改寫：</strong>把艱深術語轉成一般人能理解的語言，同時保留必要限制。</li>
+        <li><strong>發布後修正：</strong>健康資訊會更新。若資料有新進展、內容有錯誤或讀者提出合理疑問，本站會視情況修正或補充。</li>
+      </ol>
     </section>
 
     <section class="card section-block">
-      <h2>Podcast</h2>
-      <p><a class="cta-link" href="/podcasts/">前往《喜聞樂健》Podcast 專區</a></p>
+      <h2>我希望讀者得到什麼</h2>
+      <p>本日有據不是要讓讀者記住更多零碎知識，而是希望讀者慢慢建立健康判斷力。面對一個健康說法時，可以先問：它根據什麼？證據到哪裡？適不適合我？現在是需要就醫、需要調整生活，還是只需要先觀察？</p>
+      <p>健康觀念建立起來後，人才比較不容易被單一句話帶走，也比較能在資訊很多、說法互相衝突的環境中，做出更穩定的選擇。</p>
     </section>
 
     <section class="card section-block">
-      <h2>文章列表</h2>
-      <ul class="editor-article-list">
-        {articles.map((a) => (
-          <li><a href={`/articles/${stripExt(a.id)}/`}>{a.data.title}</a></li>
-        ))}
+      <h2>Podcast 與代表內容</h2>
+      <div class="podcast-card">
+        <h3>《喜聞樂健》</h3>
+        <p>每集從一個健康問題開始，分享健康知識、觀念與判斷方式。</p>
+        <p><a class="cta-link" href="/podcasts/">前往 Podcast 專區</a></p>
+      </div>
+      <div>
+        <h3>主編文章</h3>
+        {
+          articles.length > 0 ? (
+            <ul class="editor-article-list">
+              {articles.map((a) => (
+                <li><a href={`/articles/${stripExt(a.id)}/`}>{a.data.title}</a></li>
+              ))}
+            </ul>
+          ) : (
+            <p>目前尚無公開文章，內容陸續整理中。</p>
+          )
+        }
+      </div>
+    </section>
+
+    <section class="card section-block">
+      <h2>專業背景</h2>
+      <ul class="plain-list">
+        <li>牙醫學背景</li>
+        <li>口腔衛生材料研究背景</li>
+        <li>長期關注健康識讀、營養科學、預防醫學、公共健康與熟齡健康溝通</li>
+        <li>Podcast《喜聞樂健》主持人</li>
       </ul>
-    </section>
-
-    <section class="card section-block">
-      <h2>醫療聲明</h2>
-      <p>本站內容僅供一般健康資訊參考，不構成醫療建議。請依個人狀況諮詢專業醫療人員。</p>
     </section>
   </main>
 </Base>
@@ -92,9 +143,16 @@ const articles = (await getCollection('articles', (e) => !e.data.draft && e.data
     margin: 0;
   }
 
+  .card {
+    border: 1px solid var(--color-fog);
+    border-radius: var(--radius-card);
+    background: white;
+    padding: clamp(1rem, 0.85rem + 0.5vw, 1.25rem);
+  }
+
   .editor-hero {
     display: grid;
-    grid-template-columns: minmax(180px, 220px) 1fr;
+    grid-template-columns: 1fr;
     gap: 1rem;
     align-items: stretch;
   }
@@ -104,8 +162,7 @@ const articles = (await getCollection('articles', (e) => !e.data.draft && e.data
     width: 100%;
   }
 
-  .editor-hero img,
-  .editor-photo-fallback {
+  .editor-hero img {
     width: 100%;
     border-radius: var(--radius-card);
     aspect-ratio: 2 / 3;
@@ -114,29 +171,24 @@ const articles = (await getCollection('articles', (e) => !e.data.draft && e.data
     background: white;
   }
 
-  .editor-photo-fallback {
-    display: grid;
-    place-items: center;
-    align-content: center;
-    gap: 0.35rem;
-    background: linear-gradient(160deg, color-mix(in oklch, var(--color-cat-article) 14%, white), var(--color-fog));
-    color: color-mix(in oklch, var(--color-ink) 70%, transparent);
-    font-family: var(--font-ui);
-  }
-
   .editor-meta {
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 0.75rem;
-    padding: 1rem;
   }
 
-  .card {
-    border: 1px solid var(--color-fog);
-    border-radius: var(--radius-card);
-    background: white;
-    padding: 1rem 1.25rem;
+  .editor-meta ul,
+  .plain-list {
+    margin: 0;
+    padding-left: 1.1rem;
+    display: grid;
+    gap: 0.3rem;
+  }
+
+  .hero-summary {
+    margin: 0;
+    line-height: 1.8;
   }
 
   .section-block {
@@ -144,6 +196,29 @@ const articles = (await getCollection('articles', (e) => !e.data.draft && e.data
     flex-direction: column;
     gap: 0.7rem;
     line-height: 1.8;
+  }
+
+  .section-block h2,
+  .section-block h3 {
+    margin: 0;
+  }
+
+  .number-list {
+    margin: 0;
+    padding-left: 1.2rem;
+    display: grid;
+    gap: 0.65rem;
+  }
+
+  .evidence-list li {
+    margin-bottom: 0.3rem;
+  }
+
+  .podcast-card {
+    border: 1px solid var(--color-fog);
+    border-radius: var(--radius-card);
+    padding: 0.9rem;
+    background: color-mix(in oklch, white 88%, var(--color-fog));
   }
 
   .cta-link {
@@ -163,9 +238,9 @@ const articles = (await getCollection('articles', (e) => !e.data.draft && e.data
     gap: 0.35rem;
   }
 
-  @media (max-width: 720px) {
+  @media (min-width: 768px) {
     .editor-hero {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(180px, 220px) 1fr;
     }
   }
 </style>
