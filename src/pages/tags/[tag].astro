@@ -8,6 +8,7 @@ import VideoCard from '@/components/blocks/VideoCard.astro';
 import NewsItem from '@/components/blocks/NewsItem.astro';
 import { getCollection } from 'astro:content';
 import { fmtDate } from '@/utils/date';
+import { stripPodcastSlug } from '@/utils/podcasts';
 
 function stripExt(id: string): string {
   return id.replace(/\.[^.]+$/, '');
@@ -115,7 +116,7 @@ const { tag, entries } = Astro.props;
           <PodcastCard
             title={d.title as string}
             description={d.description as string}
-            href={`/podcasts/${stripExt(item.id)}/`}
+            href={`/podcasts/${stripPodcastSlug(item.id)}/`}
             episodeNumber={d.episodeNumber as number}
             duration={d.duration as string}
           />

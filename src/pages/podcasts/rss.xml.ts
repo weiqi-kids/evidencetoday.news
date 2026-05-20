@@ -1,6 +1,7 @@
 import rss from '@astrojs/rss';
 import type { APIContext } from 'astro';
 import { getCollection } from 'astro:content';
+import { stripPodcastSlug } from '@/utils/podcasts';
 
 function stripExt(id: string): string {
   return id.replace(/\.[^.]+$/, '');
@@ -20,7 +21,7 @@ export async function GET(context: APIContext) {
         title: entry.data.title,
         description: entry.data.description,
         pubDate: entry.data.publishDate,
-        link: `/podcasts/${stripExt(entry.id)}/`,
+        link: `/podcasts/${stripPodcastSlug(entry.id)}/`,
       })),
   });
 }

@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
+import { stripPodcastSlug } from '@/utils/podcasts';
 
 function stripExt(id: string): string {
   return id.replace(/\.[^.]+$/, '');
@@ -54,7 +55,7 @@ export const GET: APIRoute = async () => {
   // Podcasts
   lines.push('## Podcast');
   for (const entry of sortByDate(podcasts)) {
-    lines.push(`- ${entry.data.title} | /podcasts/${stripExt(entry.id)}/ | ${fmtDate(entry.data.publishDate)}`);
+    lines.push(`- ${entry.data.title} | /podcasts/${stripPodcastSlug(entry.id)}/ | ${fmtDate(entry.data.publishDate)}`);
     lines.push(`  ${entry.data.description}`);
   }
   lines.push('');
