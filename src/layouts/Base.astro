@@ -1,6 +1,7 @@
 ---
 import TopNav from '@/components/blocks/TopNav.astro';
 import Footer from '@/components/blocks/Footer.astro';
+import JsonLd from '@/components/seo/JsonLd.astro';
 import '@/styles/global.css';
 
 /* Self-hosted fonts via fontsource */
@@ -31,6 +32,25 @@ const {
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImageURL = new URL(ogImage, Astro.site);
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: '本日有據',
+  alternateName: 'Evidence Today',
+  url: 'https://evidencetoday.news/',
+  inLanguage: 'zh-TW',
+  publisher: {
+    '@type': 'Organization',
+    name: '本日有據',
+    url: 'https://evidencetoday.news/',
+  },
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: 'https://evidencetoday.news/search/?q={search_term_string}',
+    'query-input': 'required name=search_term_string',
+  },
+};
 ---
 
 <!doctype html>
@@ -38,6 +58,7 @@ const ogImageURL = new URL(ogImage, Astro.site);
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#103B44" />
 
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -66,6 +87,7 @@ const ogImageURL = new URL(ogImage, Astro.site);
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="alternate" type="application/rss+xml" title="本日有據 RSS" href="/rss.xml" />
 
+    <JsonLd data={websiteSchema} />
     <slot name="head" />
   </head>
   <body>

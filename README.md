@@ -58,6 +58,16 @@
 | CI/CD 與 deploy.yml 維護 | [docs/playbooks/ci-cd.md](./docs/playbooks/ci-cd.md) |
 | 看架構 / SEO / AEO / 無障礙總覽 | [docs/architecture.md](./docs/architecture.md) |
 
+## Base SEO meta 與 WebSite schema
+
+- Base.astro 統一輸出 `theme-color`（`#103B44`）。
+- Base.astro 輸出 RSS alternate link `/rss.xml`。
+- Base.astro 輸出 WebSite JSON-LD。
+- WebSite schema 的 SearchAction 使用 `/search/?q={search_term_string}`。
+- `src/pages/search.astro` 必須支援 URL query `q`，否則不可啟用 SearchAction。
+- `query` 可作為備用 query string，但 schema target 使用 `q`。
+- 不得加入不存在的社群、Logo、Product、Rating 或商業 schema。
+
 ## RSS feed
 
 - `/rss.xml` 由 `src/pages/rss.xml.ts` 產生。
