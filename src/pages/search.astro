@@ -2,6 +2,9 @@
 import Base from '@/layouts/Base.astro';
 import Breadcrumb from '@/components/ui/Breadcrumb.astro';
 import Button from '@/components/ui/Button.astro';
+import { getTopTags } from '@/utils/tag-stats';
+
+const topTags = await getTopTags(12);
 ---
 
 <Base title="搜尋 | 本日有據" noindex={true}>
@@ -27,16 +30,17 @@ import Button from '@/components/ui/Button.astro';
       </div>
     </nav>
 
-    <section class="search-hot-tags" aria-label="熱門標籤">
-      <h2 class="search-fallback__title">熱門標籤</h2>
-      <div class="search-hot-tags__list">
-        <a href="/tags/魚油/">魚油</a>
-        <a href="/tags/Omega-3/">Omega-3</a>
-        <a href="/tags/薑黃素/">薑黃素</a>
-        <a href="/tags/保健食品/">保健食品</a>
-      </div>
-      <p class="search-note">若找不到結果，請嘗試同義詞（例如：魚油 / Omega-3）或改用較短關鍵字。</p>
-    </section>
+    {topTags.length > 0 && (
+      <section class="search-hot-tags" aria-label="熱門標籤">
+        <h2 class="search-fallback__title">熱門標籤</h2>
+        <div class="search-hot-tags__list">
+          {topTags.map(({ tag }) => (
+            <a href={`/tags/${encodeURIComponent(tag)}/`}>{tag}</a>
+          ))}
+        </div>
+        <p class="search-note">若找不到結果，請嘗試同義詞或改用較短關鍵字。</p>
+      </section>
+    )}
   </div>
 </Base>
 

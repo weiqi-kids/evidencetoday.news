@@ -3,8 +3,28 @@ import List from '@/layouts/List.astro';
 import shortsData from '@/data/youtube-shorts.json';
 import { videoItemsSchema, YOUTUBE_CHANNEL_URL } from '@/lib/youtube';
 import { fmtDate } from '@/utils/date';
+import { VIDEO_CATEGORIES, categorizeVideos, type VideoCategorySlug } from '@/utils/videos';
 
-const videos = videoItemsSchema.safeParse(shortsData).success ? videoItemsSchema.parse(shortsData) : [];
+const parsedVideos = videoItemsSchema.safeParse(shortsData);
+const videos = parsedVideos.success ? parsedVideos.data : [];
+const categorizedVideos = categorizeVideos(videos);
+const videoCounts = VIDEO_CATEGORIES.reduce<Record<VideoCategorySlug, number>>(
+  (acc, category) => {
+    acc[category.slug] = categorizedVideos.filter((video) => video.categorySlug === category.slug).length;
+    return acc;
+  },
+  {
+    nutrition: 0,
+    supplements: 0,
+    myths: 0,
+    chronic: 0,
+    food: 0,
+    lifestyle: 0,
+    research: 0,
+    other: 0,
+  }
+);
+const visibleCategories = VIDEO_CATEGORIES.filter((category) => videoCounts[category.slug] > 0);
 ---
 
 <List
@@ -13,23 +33,234 @@ const videos = videoItemsSchema.safeParse(shortsData).success ? videoItemsSchema
   seoTitle="短影音｜本日有據 Evidence Today"
   category="video"
   breadcrumbItems={[{ label: '首頁', href: '/' }, { label: '短影音' }]}
-  totalItems={videos.length}
+  totalItems={categorizedVideos.length}
 >
   <p class="subtitle">用 60 秒掌握一個健康觀念，所有影片同步自本日有據 YouTube Shorts。</p>
-  {videos.length === 0 ? (
+
+  {categorizedVideos.length === 0 ? (
     <p class="fallback">目前短影音資料暫時無法載入，請稍後再試，或前往<a href={YOUTUBE_CHANNEL_URL} target="_blank" rel="noopener noreferrer">本日有據 YouTube 頻道</a>觀看。</p>
   ) : (
-    <div class="videos-grid">
-      {videos.map((v) => (
-        <article class="video-card">
-          <div class="video-frame"><iframe src={v.embedUrl} title={v.title} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
-          <h3>{v.title}</h3>
-          <p>{v.publishedAt ? fmtDate(new Date(v.publishedAt)) : '日期待補'}</p>
-        </article>
-      ))}
-    </div>
+    <>
+      <nav class="video-tabs" aria-label="短影音分類">
+        <a class="video-tab" href="/videos/" data-category="all" aria-selected="true">
+          全部 <span>{categorizedVideos.length}</span>
+        </a>
+        {visibleCategories.map((category) => (
+          <a class="video-tab" href={`/videos/?category=${category.slug}`} data-category={category.slug} aria-selected="false">
+            {category.label} <span>{videoCounts[category.slug]}</span>
+          </a>
+        ))}
+      </nav>
+
+      <p id="video-category-description" class="video-category-description">顯示全部短影音。</p>
+
+      <div class="videos-grid" id="videos-grid">
+        {categorizedVideos.map((v) => (
+          <article class="video-card" data-category={v.categorySlug}>
+            <div class="video-frame">
+              <iframe src={v.embedUrl} title={v.title} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+            <div class="video-card__meta">
+              <span class="video-card__category">{v.categoryLabel}</span>
+              <p>{v.publishedAt ? fmtDate(new Date(v.publishedAt)) : '日期待補'}</p>
+            </div>
+            <h3>{v.title}</h3>
+          </article>
+        ))}
+      </div>
+
+      <p id="video-empty" class="video-empty" hidden>目前此分類沒有短影音，請改看其他分類。</p>
+    </>
   )}
 </List>
+
+<script is:inline define:vars={{ visibleCategories }}>
+  const categoryMap = new Map(visibleCategories.map((category) => [category.slug, category]));
+  const tabs = Array.from(document.querySelectorAll('.video-tab'));
+  const cards = Array.from(document.querySelectorAll('.video-card'));
+  const emptyState = document.getElementById('video-empty');
+  const description = document.getElementById('video-category-description');
+
+  const getCategoryFromUrl = () => {
+    const params = new URLSearchParams(window.location.search);
+    const selected = params.get('category');
+
+    if (!selected || !categoryMap.has(selected)) {
+      return 'all';
+    }
+
+    return selected;
+  };
+
+  const applyCategory = (category) => {
+    let visibleCount = 0;
+
+    for (const tab of tabs) {
+      const isSelected = tab.dataset.category === category;
+      tab.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+    }
+
+    for (const card of cards) {
+      const shouldShow = category === 'all' || card.dataset.category === category;
+      card.hidden = !shouldShow;
+      if (shouldShow) visibleCount += 1;
+    }
+
+    if (description) {
+      if (category === 'all') {
+        description.textContent = '顯示全部短影音。';
+      } else {
+        const item = categoryMap.get(category);
+        description.textContent = item ? item.description : '顯示全部短影音。';
+      }
+    }
+
+    if (emptyState) {
+      emptyState.hidden = visibleCount > 0;
+    }
+  };
+
+  const setCategory = (category) => {
+    const normalized = category === 'all' || categoryMap.has(category) ? category : 'all';
+    const nextUrl = new URL(window.location.href);
+
+    if (normalized === 'all') {
+      nextUrl.searchParams.delete('category');
+    } else {
+      nextUrl.searchParams.set('category', normalized);
+    }
+
+    window.history.replaceState({}, '', nextUrl);
+    applyCategory(normalized);
+  };
+
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', (event) => {
+      event.preventDefault();
+      setCategory(tab.dataset.category || 'all');
+    });
+  });
+
+  applyCategory(getCategoryFromUrl());
+</script>
+
 <style>
-.subtitle{margin-bottom:1rem}.videos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-card-gap)}.video-card{border:1px solid var(--color-fog);border-radius:var(--radius-card);padding:1rem;background:#fff}.video-frame{aspect-ratio:9/16;width:100%;overflow:hidden;border-radius:var(--radius-sm);background:var(--color-fog)}.video-frame iframe{width:100%;height:100%;border:0}.fallback a{margin-left:.25rem}@media (max-width:1024px){.videos-grid{grid-template-columns:repeat(2,1fr)}}@media (max-width:640px){.videos-grid{grid-template-columns:1fr}}
+  .subtitle {
+    margin-bottom: 1rem;
+  }
+
+  .video-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+  }
+
+  .video-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    border: 1px solid var(--color-fog);
+    border-radius: 999px;
+    padding: 0.4rem 0.85rem;
+    color: var(--color-ink);
+    text-decoration: none;
+    font-size: var(--text-meta);
+    background: #fff;
+  }
+
+  .video-tab span {
+    color: color-mix(in oklch, var(--color-ink) 65%, transparent);
+  }
+
+  .video-tab[aria-selected='true'] {
+    border-color: var(--color-teal);
+    background: color-mix(in oklch, var(--color-teal) 10%, white);
+  }
+
+  .video-category-description {
+    margin-bottom: 1rem;
+    color: color-mix(in oklch, var(--color-ink) 72%, transparent);
+  }
+
+  .videos-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-card-gap);
+  }
+
+  .video-card {
+    border: 1px solid var(--color-fog);
+    border-radius: var(--radius-card);
+    padding: 1rem;
+    background: #fff;
+  }
+
+  .video-frame {
+    aspect-ratio: 9 / 16;
+    width: 100%;
+    overflow: hidden;
+    border-radius: var(--radius-sm);
+    background: var(--color-fog);
+    margin-bottom: 0.8rem;
+  }
+
+  .video-frame iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .video-card__meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .video-card__meta p {
+    margin: 0;
+    font-size: var(--text-meta);
+    color: color-mix(in oklch, var(--color-ink) 68%, transparent);
+  }
+
+  .video-card__category {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: 0.15rem 0.55rem;
+    font-size: 0.76rem;
+    color: color-mix(in oklch, var(--color-ink) 86%, transparent);
+    background: color-mix(in oklch, var(--color-fog) 92%, white);
+  }
+
+  .video-card h3 {
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .video-empty {
+    margin-top: 1rem;
+    padding: 0.85rem 1rem;
+    border: 1px dashed var(--color-fog);
+    border-radius: var(--radius-card);
+    color: color-mix(in oklch, var(--color-ink) 70%, transparent);
+  }
+
+  .fallback a {
+    margin-left: 0.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .videos-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .videos-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
 </style>
