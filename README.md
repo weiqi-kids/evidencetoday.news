@@ -245,6 +245,18 @@ GitHub Actions 自動執行：build → Pagefind 索引 → 連結檢查 → 部
 Podcast 單集建議使用 `embedUrl` 指向 Firstory 內嵌播放器（`https://open.firstory.me/embed/story/...`）。
 若暫時沒有 `embedUrl`，可用 `externalUrl` 作為外部收聽連結；單集頁不應再使用不可互動的假播放器區塊。
 
+## Podcast JSON-LD
+
+- Podcast 單集頁使用 `PodcastEpisode` schema。
+- `author` / `creator` 為「羅揚」。
+- `partOfSeries` 為「喜聞樂健」。
+- `publisher` 為「本日有據」。
+- `AudioObject` 若有 MP3 direct URL，使用 frontmatter 的 `audioUrl` 輸出 `contentUrl`。
+- Firstory `embedUrl` 只作為播放器 `embedUrl`，不可誤填成 `contentUrl`。
+- Firstory `externalUrl` 作為外部收聽頁，可用於 `AudioObject.url` / `sameAs`。
+- `duration` 使用 `parseDurationToIso()` 轉成 ISO 8601 duration。
+- 不得填不存在或無法公開存取的 MP3 URL。
+
 ### 原料頁中立知識庫維護重點
 
 - 原料單頁 JSON-LD 應使用 `Article` / `WebPage` 等中立內容型別，不可使用 `MedicalWebPage`、`DietarySupplement`、`Product` 等商品導向 schema。
