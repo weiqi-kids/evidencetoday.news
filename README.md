@@ -58,6 +58,14 @@
 | CI/CD 與 deploy.yml 維護 | [docs/playbooks/ci-cd.md](./docs/playbooks/ci-cd.md) |
 | 看架構 / SEO / AEO / 無障礙總覽 | [docs/architecture.md](./docs/architecture.md) |
 
+## RSS feed
+
+- `/rss.xml` 由 `src/pages/rss.xml.ts` 產生。
+- 收錄公開 articles / myths / ingredients / podcasts / news。
+- Podcast slug 必須使用 `stripPodcastSlug()`。
+- feed item 以 `updatedDate ?? publishDate` 排序，最多輸出 50 筆。
+- Footer RSS 入口與 Base alternate link 都指向 `/rss.xml`。
+
 ---
 
 ## 快速開始
