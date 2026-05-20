@@ -154,10 +154,10 @@ const breadcrumbSchema = {
         </aside>
       )}
 
-      {/* ---- 我的觀點與行動建議 ---- */}
+      {/* ---- 主編判讀 ---- */}
       {data.editorComment && (
         <aside class="editor-action">
-          <h2 class="editor-action__heading">我的觀點與行動建議</h2>
+          <h2 class="editor-action__heading">主編判讀</h2>
           <div class="editor-action__content">
             {data.editorComment.split('\n\n').map((para) => (
               <p>{para}</p>
@@ -407,7 +407,7 @@ const breadcrumbSchema = {
     color: var(--color-teal);
   }
 
-  /* ---- 我的觀點與行動建議 ---- */
+  /* ---- 主編判讀 ---- */
   .editor-action {
     margin: 0 0 2.5rem;
     padding: clamp(1.25rem, 0.75rem + 1.5vw, 1.75rem);

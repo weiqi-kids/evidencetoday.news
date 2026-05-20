@@ -24,6 +24,17 @@
 
 ---
 
+## 短影音分類與搜尋頁維護
+
+- `/videos/` 使用 YouTube API 產生的 `youtube-shorts.json`。
+- 短影音分類由 `src/utils/videos.ts` 根據標題自動判斷。
+- 自動分類不準時，使用 `VIDEO_CATEGORY_OVERRIDES` 以 YouTube video id 手動指定分類。
+- 本階段只做短影音分類導覽，尚未建立單支影片內容頁（短影音分類為第一步；單支影片內容頁將於後續建立）。
+- 搜尋頁熱門標籤使用 `getTopTags()` 動態產生，不應硬寫固定標籤。
+- 趨勢頁 `editorComment` 前台標題使用「主編判讀」，避免過度個人部落格語氣。
+
+---
+
 ## 我要做什麼？（任務索引）
 
 > 改任何東西**先找到對應 playbook**，再動手。每個 playbook 列出「鎖定參數、修改流程、常見陷阱、驗證清單」。
