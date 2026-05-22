@@ -5,7 +5,7 @@ const mod = await import('../data/policies/about.md');
 const Content = mod.Content;
 ---
 
-<Policy title="關於本日有據" updatedDate={new Date('2026-05-07')}>
+<Policy title="關於本日有據" updatedDate={new Date('2026-05-20')}>
   <Content />
 </Policy>
 
@@ -19,5 +19,19 @@ const Content = mod.Content;
     :global(.principles-subitems) {
       margin-left: 1rem;
     }
+  }
+
+  :global(.editor-profile a) {
+    text-decoration: underline;
+    text-underline-offset: 0.14em;
+  }
+
+  :global(ol) {
+    margin-block: 1rem 1.5rem;
+    padding-left: 1.5rem;
+  }
+
+  :global(.prose ul) {
+    margin-block: 0.75rem 1.25rem;
   }
 </style>
