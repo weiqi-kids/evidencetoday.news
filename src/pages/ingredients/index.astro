@@ -12,10 +12,10 @@ const ingredients = (await getCollection('ingredients', (e) => !e.data.draft))
 ---
 
 <List
-  title="原料知識庫"
-  description="營養素與保健成分的實證資料庫，用研究證據說話。"
+  title="成分解析"
+  description="整理營養素、食物成分與研究常討論的用途、可能機制與安全性。"
   category="ingredient"
-  breadcrumbItems={[{ label: '首頁', href: '/' }, { label: '原料知識庫' }]}
+  breadcrumbItems={[{ label: '首頁', href: '/' }, { label: '成分解析' }]}
   totalItems={ingredients.length}
 >
   <div class="ingredients-grid">
