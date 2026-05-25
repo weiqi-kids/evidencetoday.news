@@ -1,13 +1,6 @@
 ---
 import Base from '@/layouts/Base.astro';
-import { getCollection } from 'astro:content';
 
-function stripExt(id: string) {
-  return id.replace(/\.[^.]+$/, '');
-}
-
-const articles = (await getCollection('articles', (e) => !e.data.draft && e.data.author === '羅揚'))
-  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
 ---
 
 <Base title="羅揚｜本日有據主編" description="本日有據主編如何整理健康資訊、分層證據與轉譯為可理解內容。">
@@ -27,7 +20,7 @@ const articles = (await getCollection('articles', (e) => !e.data.draft && e.data
         />
       </picture>
       <div class="editor-meta">
-        <p class="hero-summary">我在本日有據做的，是把健康研究、公共資訊、常見說法與日常生活問題整理在一起，讓一般人不只知道健康知識，也能慢慢建立自己的判斷力。</p>
+        <p class="hero-summary">主要負責健康議題的選題、研究資料整理與內容判讀，並把艱深的健康資訊整理成一般人看得懂、也用得上的內容。</p>
         <ul>
           <li><strong>身分：</strong>本日有據主編</li>
           <li><strong>學科背景：</strong>牙醫學、口腔衛生材料研究</li>
@@ -41,81 +34,62 @@ const articles = (await getCollection('articles', (e) => !e.data.draft && e.data
     <section class="card section-block">
       <h2>為什麼做本日有據</h2>
       <p>健康資訊越來越多，但一般人真正困難的地方，常常不是完全沒有知識，而是不知道該怎麼判斷。一則研究、一段短影音、一篇網路文章，可能都只說了事情的一部分。有人看完更安心，也有人看完更焦慮；有人因此開始保養，也有人因此拒絕治療。</p>
-      <p>本日有據的目的，是希望把健康知識放回證據、情境與生活判斷裡。不是只告訴讀者一個答案，而是幫助讀者理解：這個說法根據什麼？限制在哪裡？和我有沒有關係？現在我應該怎麼判斷？</p>
+      <p>本日有據想做的，是把坊間常見的健康說法拿出來看清楚。哪些說法有研究根據，哪些只是行銷話術，哪些只適合特定情況，不能直接套用在每個人身上，都應該說明白。
+很多健康資訊會被講得很兩極：不是很好，就是很不好；不是一定要吃，就是完全不能碰。但真實情況往往沒那麼簡單。本日有據希望做的，是幫助讀者慢慢建立判斷能力，而不是只跟著一句廣告詞、一支短影音或一個聳動標題走。</p>
     </section>
 
     <section class="card section-block">
-      <h2>我如何處理健康資訊</h2>
-      <ol class="number-list">
+      <h2>本日有據如何判讀健康資訊</h2>
+      <ol class="number-list compact-cards">
         <li>
-          <h3>先釐清問題</h3>
-          <p>同一個健康問題，可能是在談疾病治療、日常保養、營養攝取、生活習慣或公共衛生。問題不同，能給的答案也不同。</p>
+          <h3>從常見問題開始</h3>
+          <p>選題多半來自民眾常聽到、常搜尋、常購買，或已經習以為常的健康說法。像是保健食品的效果、網路流傳的偏方、新聞中的研究結果，或市場上很常見但不一定說得清楚的健康主張。</p>
         </li>
         <li>
-          <h3>再看證據來源</h3>
-          <p>研究論文、官方資料、公共衛生建議、臨床經驗與個人觀察，能支持的結論強度不同，不能放在同一個層級使用。</p>
+          <h3>查找可追溯的資料</h3>
+          <p>內容會盡量回到研究論文、官方資料、公共衛生資訊、臨床經驗與可查證來源。不同資料能支持的結論強度不同，不會全部放在同一個層級來講。</p>
         </li>
         <li>
-          <h3>說清楚限制</h3>
-          <p>健康研究常有族群、劑量、時間、研究設計與適用情境的限制。若證據還不能支持明確結論，就不應該把話說得太滿。</p>
-        </li>
-        <li>
-          <h3>轉成一般人能理解的語言</h3>
-          <p>健康知識如果只停留在術語裡，就很難進入生活。本日有據希望把複雜資訊轉成一般人聽得懂、看得懂、能拿來判斷的內容。</p>
+          <h3>整理成可理解的內容</h3>
+          <p>健康資訊不能只停留在專有名詞，也不能把話說得太滿。本日有據會盡量把資料整理成讀者看得懂、能判斷，也知道限制在哪裡的內容。</p>
         </li>
       </ol>
+      <p>研究論文、官方資料、臨床經驗與個人觀察，能支持的結論強度不同；本日有據會盡量說清楚哪些是研究證據，哪些只是合理推論或觀察。</p>
     </section>
 
-    <section class="card section-block">
-      <h2>證據與觀點如何分層</h2>
-      <p>本日有據會盡量區分「研究證據」與「主編觀點」。主編觀點可以幫助讀者理解與判斷，但不應被包裝成研究結論。</p>
-      <ol class="number-list evidence-list">
-        <li><strong>系統性回顧、統合分析、臨床指引：</strong>通常是較高層級的證據，但仍需看研究品質與適用族群。</li>
-        <li><strong>隨機對照試驗與臨床研究：</strong>能提供較直接的人體資料，但仍需看樣本數、研究設計與研究對象。</li>
-        <li><strong>觀察研究與公共資料：</strong>可以提供趨勢與關聯，但不能直接等同因果。</li>
-        <li><strong>機制研究、動物研究、體外研究：</strong>可以幫助理解可能路徑，但不能直接推論到一般人的實際效果。</li>
-        <li><strong>主編觀點與個人判讀：</strong>屬於經驗、理解與整理後的判斷，用來幫助讀者思考，不等同研究證據，也不能取代個別醫療建議。</li>
-      </ol>
-    </section>
-
-    <section class="card section-block">
-      <h2>內容製作流程</h2>
-      <ol class="number-list">
-        <li><strong>選題：</strong>從讀者常見疑問、健康新聞、研究新知、網路流傳說法與日常健康困惑中選題。</li>
-        <li><strong>查找資料：</strong>優先整理研究文獻、官方資料、公共衛生資料與可追溯來源。</li>
-        <li><strong>判斷證據層級：</strong>區分研究結論、機制推測、觀察資料與主編觀點，避免把不同層級的資訊混在一起。</li>
-        <li><strong>白話改寫：</strong>把艱深術語轉成一般人能理解的語言，同時保留必要限制。</li>
-        <li><strong>發布後修正：</strong>健康資訊會更新。若資料有新進展、內容有錯誤或讀者提出合理疑問，本站會視情況修正或補充。</li>
-      </ol>
-    </section>
-
-    <section class="card section-block">
-      <h2>我希望讀者得到什麼</h2>
-      <p>本日有據不是要讓讀者記住更多零碎知識，而是希望讀者慢慢建立健康判斷力。面對一個健康說法時，可以先問：它根據什麼？證據到哪裡？適不適合我？現在是需要就醫、需要調整生活，還是只需要先觀察？</p>
-      <p>健康觀念建立起來後，人才比較不容易被單一句話帶走，也比較能在資訊很多、說法互相衝突的環境中，做出更穩定的選擇。</p>
-    </section>
-
-    <section class="card section-block">
-      <h2>Podcast 與代表內容</h2>
+        <section class="card section-block">
+      <h2>Podcast 與精選代表內容</h2>
       <div class="podcast-card">
-        <h3>《喜聞樂健》</h3>
-        <p>每集從一個健康問題開始，分享健康知識、觀念與判斷方式。</p>
+        <h3>Podcast《喜聞樂健》</h3>
+        <p>Podcast《喜聞樂健》延伸本日有據的核心方向，用更接近聊天的方式談健康觀念、保健食品與日常判斷。</p>
         <p><a class="cta-link" href="/podcasts/">前往 Podcast 專區</a></p>
       </div>
-      <div>
-        <h3>主編文章</h3>
-        {
-          articles.length > 0 ? (
-            <ul class="editor-article-list">
-              {articles.map((a) => (
-                <li><a href={`/articles/${stripExt(a.id)}/`}>{a.data.title}</a></li>
-              ))}
-            </ul>
-          ) : (
-            <p>目前尚無公開文章，內容陸續整理中。</p>
-          )
-        }
+      <div class="featured-groups">
+        <article>
+          <h3>保健食品與市場判讀</h3>
+          <ul class="editor-article-list">
+            <li><a href="/articles/melatonin-prescription-taiwan-gray-market/">褪黑激素在台灣是處方藥，但你可能已經從代購買了好幾瓶</a></li>
+            <li><a href="/articles/lodes-33/">南極磷蝦油vs魚油：價格貴三倍，效果有比較好嗎？</a></li>
+            <li><a href="/articles/lodes-28/">幹細胞保健品：台灣市場上最大膽的偽科學行銷</a></li>
+          </ul>
+        </article>
+        <article>
+          <h3>熟齡健康與營養</h3>
+          <ul class="editor-article-list">
+            <li><a href="/articles/iron-deficiency-anemia-women-supplements/">補了好幾年的鐵，血色素還是不足？你可能從來沒補到對的地方</a></li>
+            <li><a href="/articles/menopause-supplement-stages-guide/">更年期保健品的最大盲點：前期、中期、後期的補充需求根本不一樣，但市場都賣你同一瓶</a></li>
+            <li><a href="/articles/lodes-24/">輔酶Q10不是心臟病患才要吃，40歲後你也該了解它</a></li>
+          </ul>
+        </article>
+        <article>
+          <h3>迷思查證與健康觀念</h3>
+          <ul class="editor-article-list">
+            <li><a href="/articles/lodes-27/">保健食品的「體感」到底是什麼？為什麼你的感覺不等於功效</a></li>
+            <li><a href="/articles/lodes-30/">咖啡到底健不健康？我覺得這個問題本身就問錯了</a></li>
+          </ul>
+        </article>
       </div>
+      <p><a class="cta-link" href="/articles/?author=%E7%BE%85%E6%8F%9A">查看全部文章</a></p>
     </section>
 
     <section class="card section-block">
@@ -210,9 +184,17 @@ const articles = (await getCollection('articles', (e) => !e.data.draft && e.data
     gap: 0.65rem;
   }
 
-  .evidence-list li {
-    margin-bottom: 0.3rem;
+  .compact-cards li {
+    border: 1px solid var(--color-fog);
+    border-radius: var(--radius-card);
+    padding: 0.85rem 0.95rem;
+    background: color-mix(in oklch, white 92%, var(--color-fog));
   }
+
+  .compact-cards h3 {
+    margin-bottom: 0.35rem;
+  }
+
 
   .podcast-card {
     border: 1px solid var(--color-fog);
@@ -231,6 +213,22 @@ const articles = (await getCollection('articles', (e) => !e.data.draft && e.data
     display: inline-block;
   }
 
+  .featured-groups {
+    display: grid;
+    gap: 0.8rem;
+  }
+
+  .featured-groups article {
+    border: 1px solid var(--color-fog);
+    border-radius: var(--radius-card);
+    padding: 0.85rem 0.95rem;
+    background: color-mix(in oklch, white 94%, var(--color-fog));
+  }
+
+  .featured-groups h3 {
+    margin-bottom: 0.4rem;
+  }
+
   .editor-article-list {
     padding-left: 1.1rem;
     margin: 0;
@@ -241,6 +239,16 @@ const articles = (await getCollection('articles', (e) => !e.data.draft && e.data
   @media (min-width: 768px) {
     .editor-hero {
       grid-template-columns: minmax(180px, 220px) 1fr;
+    }
+
+    .featured-groups {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .featured-groups {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
 </style>
