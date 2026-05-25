@@ -88,3 +88,15 @@
 - 內容新增：[../content-guide.md](../content-guide.md)
 - design tokens：[design-tokens.md](./design-tokens.md)
 - CSS / RWD 通用規範：[../../README.md](../../README.md)
+
+## AEO 查詢情境標籤（2026-05）
+
+- 文章 AEO 類型使用 `queryPattern` 欄位（單選）：
+  - `ingredient-explainer`（成分解析）
+  - `myth-check`（迷思查證）
+  - `taiwan-regulation-market`（臺灣法規）
+  - `audience-stage-guide`（熟齡族群）
+  - `comparison`（成分比較）
+- 中文標籤由 `src/utils/article-query-patterns.ts` 對照，不要新增 `qualityPair` 欄位。
+- `ArticleCard` 與文章頁 header 可同時顯示「主題分類 + AEO 類型」，但不可取代既有主題分類。
+- 手機版優先確保標題可讀；標籤需可換行，不要壓縮標題區塊。

@@ -12,9 +12,10 @@ interface Props {
   editorReviewed?: boolean;
   coverImage?: string;
   topicLabel?: string;
+  aeoLabel?: string;
 }
 
-const { title, description, href, category, author, date, coverImage, topicLabel } = Astro.props;
+const { title, description, href, category, author, date, coverImage, topicLabel, aeoLabel } = Astro.props;
 const safeCoverImage =
   typeof coverImage === 'string' &&
   (coverImage.startsWith('http://') ||
@@ -35,6 +36,7 @@ const safeCoverImage =
     <div class="article-card__top">
       <CategoryTag category={category} />
       {topicLabel && <span class="article-card__topic">{topicLabel}</span>}
+      {aeoLabel && <span class="article-card__topic article-card__topic--aeo">{aeoLabel}</span>}
     </div>
     <h3 class="article-card__title">{title}</h3>
     <p class="article-card__desc">{description}</p>
@@ -110,6 +112,12 @@ const safeCoverImage =
     font-size: 0.76rem;
     color: color-mix(in oklch, var(--color-ink) 86%, transparent);
     background: color-mix(in oklch, var(--color-fog) 92%, white);
+  }
+
+  .article-card__topic--aeo {
+    color: color-mix(in oklch, var(--color-teal) 65%, var(--color-ink));
+    background: color-mix(in oklch, var(--color-teal) 14%, white);
+    border: 1px solid color-mix(in oklch, var(--color-teal) 22%, white);
   }
 
   .article-card__title {

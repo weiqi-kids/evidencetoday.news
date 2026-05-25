@@ -10,6 +10,7 @@ import VideoCard from '@/components/blocks/VideoCard.astro';
 import PodcastCard from '@/components/blocks/PodcastCard.astro';
 import { fmtDate } from '@/utils/date';
 import { stripPodcastSlug } from '@/utils/podcasts';
+import { getArticleQueryPatternLabel } from '@/utils/article-query-patterns';
 
 function stripExt(id: string): string {
   return id.replace(/\.[^.]+$/, '');
@@ -26,6 +27,7 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content, headings } = await entry.render();
 const data = entry.data;
+const queryPatternLabel = getArticleQueryPatternLabel(data.queryPattern);
 
 const citationAnswer = {
   question: (data.question || `「${data.title}」是什麼？`) as string,
@@ -67,6 +69,7 @@ const articleSchema = {
     name: '本日有據',
     url: 'https://evidencetoday.news',
   },
+  keywords: [...(data.tags ?? []), ...(queryPatternLabel ? [queryPatternLabel] : [])],
 };
 
 const faqSchema = data.faq && data.faq.length > 0
@@ -113,6 +116,7 @@ const breadcrumbSchema = {
   faq={data.faq}
   references={data.references}
   citationAnswer={citationAnswer}
+  queryPatternLabel={queryPatternLabel}
 >
   <Fragment slot="head">
     <JsonLd data={articleSchema} />

@@ -4,6 +4,7 @@ import ArticleCard from '@/components/blocks/ArticleCard.astro';
 import { fmtDate } from '@/utils/date';
 import { getPublishedArticles } from '@/utils/articles';
 import { ARTICLE_CATEGORIES, categorizeArticles, type ArticleCategorySlug } from '@/utils/article-categories';
+import { getArticleQueryPatternLabel } from '@/utils/article-query-patterns';
 
 function stripExt(id: string): string {
   return id.replace(/\.[^.]+$/, '');
@@ -17,13 +18,17 @@ const articleCounts = ARTICLE_CATEGORIES.reduce<Record<ArticleCategorySlug, numb
     return acc;
   },
   {
-    nutrition: 0,
-    supplements: 0,
-    myths: 0,
-    chronic: 0,
-    food: 0,
-    lifestyle: 0,
-    research: 0,
+    vitamins: 0,
+    minerals: 0,
+    'basic-nutrition': 0,
+    antioxidant: 0,
+    'health-concepts': 0,
+    'health-myths': 0,
+    'sleep-stress': 0,
+    menopause: 0,
+    'food-safety': 0,
+    'oral-hygiene': 0,
+    'mens-health': 0,
     other: 0,
   },
 );
@@ -65,6 +70,7 @@ const visibleCategories = ARTICLE_CATEGORIES.filter((category) => articleCounts[
           date={fmtDate(a.data.publishDate)}
           editorReviewed={a.data.editorReviewed}
           topicLabel={a.categoryLabel}
+          aeoLabel={getArticleQueryPatternLabel(a.data.queryPattern)}
         />
       </article>
     ))}
