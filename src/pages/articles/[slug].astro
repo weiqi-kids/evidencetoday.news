@@ -27,6 +27,15 @@ const { entry } = Astro.props;
 const { Content, headings } = await entry.render();
 const data = entry.data;
 
+const citationAnswer = {
+  question: (data.question || `「${data.title}」是什麼？`) as string,
+  answer: (data.aiAnswer || data.quickAnswer || data.citationAnswer || data.summary || data.tldr || data.description) as string,
+  audience: (data.targetAudience || '一般健康教育讀者；不取代個人醫療診斷與治療。') as string,
+  evidenceBasis: (data.evidenceBasis || '依據本文引用文獻、官方資料與編輯部證據分級整理。') as string,
+  lastUpdated: (data.updatedDate || data.publishDate).toISOString().slice(0, 10),
+};
+
+
 /* Resolve related content */
 const relatedMyths = data.relatedMyths
   ? (await Promise.all(data.relatedMyths.map((id) => getEntry('myths', id)))).filter(Boolean)
@@ -103,7 +112,7 @@ const breadcrumbSchema = {
   ]}
   faq={data.faq}
   references={data.references}
-  tldr={data.tldr}
+  citationAnswer={citationAnswer}
 >
   <Fragment slot="head">
     <JsonLd data={articleSchema} />

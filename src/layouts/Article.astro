@@ -7,7 +7,7 @@ import DisclosureBanner from '@/components/blocks/DisclosureBanner.astro';
 import AuthorMeta from '@/components/blocks/AuthorMeta.astro';
 import EditorInfo from '@/components/blocks/EditorInfo.astro';
 import TldrBox from '@/components/blocks/TldrBox.astro';
-import FaqAccordion from '@/components/blocks/FaqAccordion.svelte';
+import FaqAccordion from '@/components/blocks/FaqAccordion.astro';
 import ReferenceList from '@/components/blocks/ReferenceList.astro';
 import MedicalDisclaimer from '@/components/blocks/MedicalDisclaimer.astro';
 
@@ -28,7 +28,7 @@ interface Props {
   breadcrumbItems: Array<{ label: string; href?: string }>;
   faq?: Array<{ question: string; answer: string }>;
   references?: Array<{ title: string; url?: string; type: string }>;
-  tldr?: string;
+  citationAnswer?: { question: string; answer: string; audience: string; evidenceBasis: string; lastUpdated: string };
 }
 
 const {
@@ -48,7 +48,7 @@ const {
   breadcrumbItems,
   faq,
   references,
-  tldr,
+  citationAnswer,
 } = Astro.props;
 ---
 
@@ -76,14 +76,14 @@ const {
 
     <div class:list={['article-grid', `article-grid--${variant}`]}>
       <div class="article-content">
-        {tldr && <TldrBox>{tldr}</TldrBox>}
+        {citationAnswer && <TldrBox data={citationAnswer} />}
         <div class="prose">
           <slot />
         </div>
         {faq && faq.length > 0 && (
           <section class="article-faq">
             <h2>常見問題</h2>
-            <FaqAccordion items={faq} client:visible />
+            <FaqAccordion items={faq} />
           </section>
         )}
         {references && references.length > 0 && (

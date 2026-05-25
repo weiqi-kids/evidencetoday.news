@@ -24,7 +24,7 @@ const refs = (d.references || []).filter((r) => r?.title && r?.url);
   {refs.length > 0 && <section class="block"><h2>來源與引用</h2><ol>{refs.map((r) => <li><strong>{r.title}</strong>{r.sourceType ? `（類型：${r.sourceType}）` : ''}{r.evidenceType ? `（證據類型：${r.evidenceType}）` : ''}<br /><a href={r.url} target="_blank" rel="noopener noreferrer">{r.url}</a></li>)}</ol></section>}
   {d.correctionLog.length > 0 && <section class="block"><h2>更新與更正紀錄</h2><ul>{d.correctionLog.map((log) => <li>{log.date}：{log.description}</li>)}</ul></section>}
   {d.medicalDisclaimer && <section class="block"><h2>醫療聲明</h2><p>{d.medicalDisclaimer}</p></section>}
-  <section class="block"><h2>文章資訊</h2><p>發布日期：{d.publishDate.toISOString().slice(0, 10)}</p><p>最後更新：{d.updatedDate.toISOString().slice(0, 10)}</p><p>作者：{d.author}</p><p>主編：{d.editor}</p><p>內容屬性：健康教育與資訊判讀</p><p>利益揭露：本文未接受品牌贊助。</p></section>
+  <section class="block"><h2>文章資訊</h2><p>發布日期：{d.publishDate.toISOString().slice(0, 10)}</p><p>最後更新：{d.updatedDate.toISOString().slice(0, 10)}</p><p>作者：{d.author}</p><p>主編：{d.editor}</p><p>內容屬性：健康教育與資訊判讀</p><p>利益揭露：本日有據採編輯獨立原則。本站目前不接受廠商付費置入或贊助內容；若未來出現廣告、聯盟連結或合作專案，將於文章開頭與相關段落明確標示，且不影響編輯判斷。</p></section>
   {related.length > 0 && <section class="block"><h2>延伸閱讀</h2><ul>{related.map((r) => <li><a href={`/articles/${r.id.replace(/\.[^.]+$/, '')}/`}>{r.data.title}</a></li>)}</ul></section>}
 </Article>
 <script define:vars={{ canonical, title: d.title, summary: d.verdictSummary }}>

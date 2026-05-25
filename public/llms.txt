@@ -1,0 +1,12 @@
+# 本日有據（Evidence Today）
+
+定位：以證據為基礎的中文健康知識與保健食品判讀網站。
+
+重要頁面：
+- 編輯原則：https://evidencetoday.news/editorial-policy/
+- 利益揭露：https://evidencetoday.news/disclosure/
+- 文章列表：https://evidencetoday.news/articles/
+- 闢謠列表：https://evidencetoday.news/myths/
+- 原料資料庫：https://evidencetoday.news/ingredients/
+- 作者頁：https://evidencetoday.news/authors/luo-yang/
+- Sitemap：https://evidencetoday.news/sitemap.xml

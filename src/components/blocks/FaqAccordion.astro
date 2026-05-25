@@ -1,0 +1,21 @@
+---
+interface Props {
+  items: Array<{ question: string; answer: string }>;
+}
+const { items } = Astro.props;
+const defaultExpandedCount = items.length > 8 ? 5 : items.length;
+---
+
+<div class="faq-accordion">
+  {items.map((item, i) => (
+    <details class="faq-accordion__item" open={i < defaultExpandedCount}>
+      <summary class="faq-accordion__question">{item.question}</summary>
+      <div class="faq-accordion__answer"><p>{item.answer}</p></div>
+    </details>
+  ))}
+</div>
+<style>
+  .faq-accordion__item {border-bottom: 1px solid var(--color-fog); padding: .4rem 0;} 
+  .faq-accordion__question {font-size: var(--text-body); font-weight: 700; cursor: pointer;} 
+  .faq-accordion__answer p {font-size: var(--text-body); line-height: 1.8; margin: .5rem 0 0;} 
+</style>
