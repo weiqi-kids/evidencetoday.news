@@ -16,6 +16,7 @@ import { getPublishedPodcasts, stripPodcastSlug } from '@/utils/podcasts';
 import { getPublishedArticles } from '@/utils/articles';
 import shortsData from '@/data/youtube-shorts.json';
 import { videoItemsSchema } from '@/lib/youtube';
+import type { MythVerdict } from '@/utils/myths/schema';
 
 function stripExt(id: string): string {
   return id.replace(/\.[^.]+$/, '');
@@ -128,7 +129,7 @@ const categories = [
     key: 'article',
     en: 'Article',
     zh: '文章',
-    desc: '深度解析健康議題，以系統性回顧與隨機對照試驗為根據。',
+    desc: '整理健康議題、研究脈絡與日常判斷，依主題標示可查證來源。',
     count: allArticles.length,
     href: '/articles/',
     color: 'var(--color-cat-article)',
@@ -147,8 +148,8 @@ const categories = [
   {
     key: 'ingredient',
     en: 'Ingredient',
-    zh: '原料',
-    desc: '營養素與保健成分的實證資料庫。',
+    zh: '成分解析',
+    desc: '整理營養素、食物成分與研究常討論的用途、可能機制與安全性。',
     count: allIngredients.length,
     href: '/ingredients/',
     color: 'var(--color-cat-ingredient)',
@@ -240,7 +241,7 @@ const categories = [
               <span class="hero__focus-type">{
                 primaryFeatured.type === 'article' ? '文章' :
                 primaryFeatured.type === 'myth' ? '闢謠' :
-                primaryFeatured.type === 'ingredient' ? '原料' :
+                primaryFeatured.type === 'ingredient' ? '成分解析' :
                 primaryFeatured.type === 'podcast' ? 'Podcast' : '短影音'
               }</span>
               <span class="hero__focus-title">{primaryFeatured.title}</span>
@@ -268,7 +269,7 @@ const categories = [
                   <span class="hero__focus-type">{
                     item.type === 'article' ? '文章' :
                     item.type === 'myth' ? '闢謠' :
-                    item.type === 'ingredient' ? '原料' :
+                    item.type === 'ingredient' ? '成分解析' :
                     item.type === 'podcast' ? 'Podcast' : '短影音'
                   }</span>
                   <span class="hero__focus-secondary-title">{item.title}</span>
@@ -338,7 +339,7 @@ const categories = [
                 title={d.title as string}
                 verdictSummary={d.verdictSummary as string}
                 href={`/myths/${stripExt(item.id)}/`}
-                verdict={d.verdict as 'true' | 'false' | 'insufficient' | 'contextual'}
+                verdict={d.verdict as MythVerdict}
                 date={fmtDate(item.date)}
               />
             );
@@ -457,8 +458,8 @@ const categories = [
   <!-- ============================================================== -->
   <section id="ingredients" class="section-ingredients">
     <div class="container">
-      <h2 class="section-title">原料知識庫</h2>
-      <p class="section-subtitle">用研究證據說話，不用行銷話術</p>
+      <h2 class="section-title">成分解析</h2>
+      <p class="section-subtitle">整理研究常討論的用途、可能機制與安全性。</p>
       <div class="ingredients-grid">
         {latestIngredients.map((i) => (
           <IngredientCard

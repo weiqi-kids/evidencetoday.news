@@ -9,6 +9,7 @@ import NewsItem from '@/components/blocks/NewsItem.astro';
 import { getCollection } from 'astro:content';
 import { fmtDate } from '@/utils/date';
 import { stripPodcastSlug } from '@/utils/podcasts';
+import type { MythVerdict } from '@/utils/myths/schema';
 
 function stripExt(id: string): string {
   return id.replace(/\.[^.]+$/, '');
@@ -96,7 +97,7 @@ const { tag, entries } = Astro.props;
             title={d.title as string}
             verdictSummary={d.verdictSummary as string}
             href={`/myths/${stripExt(item.id)}/`}
-            verdict={d.verdict as 'true' | 'false' | 'insufficient' | 'contextual'}
+            verdict={d.verdict as MythVerdict}
             date={fmtDate(item.date)}
           />
         );
