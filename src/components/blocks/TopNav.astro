@@ -4,7 +4,7 @@ const navLinks = [
   { label: 'Podcast', href: '/podcasts/' },
   { label: '短影音', href: '/videos/' },
   { label: '闢謠', href: '/myths/' },
-  { label: '原料', href: '/ingredients/' },
+  { label: '成分解析', href: '/ingredients/' },
   { label: '趨勢', href: '/news/' },
   { label: '關於我們', href: '/about/' },
 ];
@@ -258,13 +258,14 @@ const currentPath = Astro.url.pathname;
     display: block;
     padding: 0.7rem 0.8rem;
     font-size: 1.02rem;
-    font-weight: 600;
     color: var(--color-ink);
     text-decoration: none;
     border-radius: var(--radius-sm);
   }
 
+  .topnav__mobile-link:hover,
   .topnav__mobile-link.is-active {
+    background-color: var(--color-teal-subtle);
     color: var(--color-teal);
   }
 </style>
