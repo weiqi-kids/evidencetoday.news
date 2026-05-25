@@ -29,6 +29,7 @@ interface Props {
   faq?: Array<{ question: string; answer: string }>;
   references?: Array<{ title: string; url?: string; type: string }>;
   citationAnswer?: { question: string; answer: string; audience: string; evidenceBasis: string; lastUpdated: string };
+  queryPatternLabel?: string;
 }
 
 const {
@@ -49,6 +50,7 @@ const {
   faq,
   references,
   citationAnswer,
+  queryPatternLabel,
 } = Astro.props;
 ---
 
@@ -60,6 +62,7 @@ const {
     <header class="article-header">
       <div class="article-header__meta">
         <CategoryTag category={category} />
+        {queryPatternLabel && <span class="article-header__aeo">{queryPatternLabel}</span>}
         {editorReviewed && <Badge variant="editor">主編把關</Badge>}
       </div>
       {disclosure && <DisclosureBanner disclosure={disclosure} />}
@@ -118,6 +121,17 @@ const {
     align-items: center;
     gap: 0.5rem;
     flex-wrap: wrap;
+  }
+
+  .article-header__aeo {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: 0.15rem 0.55rem;
+    font-size: 0.76rem;
+    color: color-mix(in oklch, var(--color-teal) 65%, var(--color-ink));
+    background: color-mix(in oklch, var(--color-teal) 14%, white);
+    border: 1px solid color-mix(in oklch, var(--color-teal) 22%, white);
   }
 
   .article-header h1 {
