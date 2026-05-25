@@ -1,34 +1,35 @@
 ---
-/* 重點摘要區塊 — uses slot for content */
+interface CitationAnswer {
+  question: string;
+  answer: string;
+  audience: string;
+  evidenceBasis: string;
+  lastUpdated: string;
+}
+
+interface Props {
+  data: CitationAnswer;
+}
+
+const { data } = Astro.props;
 ---
 
-<aside class="tldr">
-  <span class="tldr__label">重點摘要</span>
-  <div class="tldr__content">
-    <slot />
-  </div>
+<aside class="citation-answer" aria-label="本篇可引用結論">
+  <h2 class="citation-answer__title">本篇可引用結論</h2>
+  <dl class="citation-answer__list">
+    <div class="citation-answer__item"><dt>問題</dt><dd>{data.question}</dd></div>
+    <div class="citation-answer__item"><dt>答案</dt><dd>{data.answer}</dd></div>
+    <div class="citation-answer__item"><dt>適用對象</dt><dd>{data.audience}</dd></div>
+    <div class="citation-answer__item"><dt>證據基礎</dt><dd>{data.evidenceBasis}</dd></div>
+    <div class="citation-answer__item"><dt>最後更新</dt><dd>{data.lastUpdated}</dd></div>
+  </dl>
 </aside>
 
 <style>
-  .tldr {
-    background-color: var(--color-teal-subtle);
-    border-radius: 1.5rem;
-    padding: 1.5rem;
-  }
-
-  .tldr__label {
-    display: block;
-    color: var(--color-teal);
-    font-size: var(--text-badge);
-    font-family: var(--font-ui);
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    margin-bottom: 0.5rem;
-  }
-
-  .tldr__content {
-    color: var(--color-ink);
-    font-size: var(--text-body);
-    line-height: 1.8;
-  }
+  .citation-answer {background-color: var(--color-teal-subtle); border-radius: 1rem; padding: clamp(1rem, 0.8rem + 1vw, 1.5rem); border: 1px solid color-mix(in oklch, var(--color-teal) 18%, white);} 
+  .citation-answer__title {font-family: var(--font-sans); font-size: var(--text-h3); margin: 0 0 0.75rem; color: var(--color-ink);} 
+  .citation-answer__list {display: grid; gap: .75rem; margin: 0;} 
+  .citation-answer__item {display: grid; gap: .25rem;} 
+  .citation-answer__item dt {font-size: var(--text-meta); font-weight: 700; color: var(--color-teal);} 
+  .citation-answer__item dd {margin: 0; font-size: var(--text-body); line-height: 1.8; color: var(--color-ink);} 
 </style>

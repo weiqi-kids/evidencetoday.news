@@ -327,3 +327,11 @@ Podcast 單集建議使用 `embedUrl` 指向 Firstory 內嵌播放器（`https:/
 - 單集 JSON-LD 時長請使用 `parseDurationToIso()`，同時支援 `MM:SS` 與 `HH:MM:SS`。
 - Podcast 列表與首頁最新單集排序使用 `updatedDate ?? publishDate`，確保更新後能自動成為最新單集。
 - Podcast 單集頁後段以「內容摘要」「本集重點」為主，Show Notes / 本集段落不在前台渲染。
+
+
+## AEO / GEO 設定（2026-05）
+
+- 文章頁重點摘要已改為「本篇可引用結論」，支援 question/aiAnswer/quickAnswer/citationAnswer 與 fallback。
+- FAQ 改為伺服器端渲染，答案內容存在初始 HTML；題數超過 8 題時僅前 5 題預設展開。
+- 新增 `queryPattern` 內容欄位（內部 metadata 用）。
+- 新增 `public/llms.txt`，並更新 `public/robots.txt` 為 AI crawler 友善規則。
