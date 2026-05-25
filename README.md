@@ -26,6 +26,18 @@
 
 
 
+
+## 成分解析命名規則
+
+- 前台顯示統一使用「成分解析」。
+- 不再使用「原料」「原料頁」「原料知識庫」作為使用者可見名稱。
+- 目前為避免大型路由遷移，URL 與 collection 暫時保留 `/ingredients/` 與 `ingredients`。
+- `IngredientCard`、`category="ingredient"`、`.ingredient-*` class 屬於內部命名，可暫時保留。
+- 若未來要將 URL 從 `/ingredients/` 遷移為新路徑，需另開 migration PR，處理 redirect、sitemap、RSS、內部連結、canonical 與 Search Console。
+- 短影音單支內容頁與 AEO 介紹頁將另案處理。
+
+---
+
 ## 關於我們頁維護規則
 
 - `/about/` 定位為本日有據的網站理念與健康知識處理方法介紹頁。

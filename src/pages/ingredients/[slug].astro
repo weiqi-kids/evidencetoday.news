@@ -65,7 +65,7 @@ const ingredientArticleSchema = {
     '@type': 'Thing',
     name: data.title,
   },
-  articleSection: '原料知識庫',
+  articleSection: '成分解析',
   mainEntityOfPage: `https://evidencetoday.news/ingredients/${slug}/`,
 };
 
@@ -74,7 +74,7 @@ const ingredientBreadcrumbSchema = {
   '@type': 'BreadcrumbList',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: '首頁', item: 'https://evidencetoday.news/' },
-    { '@type': 'ListItem', position: 2, name: '原料知識庫', item: 'https://evidencetoday.news/ingredients/' },
+    { '@type': 'ListItem', position: 2, name: '成分解析', item: 'https://evidencetoday.news/ingredients/' },
     { '@type': 'ListItem', position: 3, name: data.title, item: `https://evidencetoday.news/ingredients/${slug}/` },
   ],
 };
@@ -91,7 +91,7 @@ const ingredientBreadcrumbSchema = {
   tags={data.tags}
   breadcrumbItems={[
     { label: '首頁', href: '/' },
-    { label: '原料知識庫', href: '/ingredients/' },
+    { label: '成分解析', href: '/ingredients/' },
     { label: data.title },
   ]}
   references={data.references}
@@ -102,7 +102,7 @@ const ingredientBreadcrumbSchema = {
     <JsonLd data={ingredientBreadcrumbSchema} />
   </Fragment>
 
-  <section class="ingredient-scope-note" aria-label="原料頁閱讀提醒">
+  <section class="ingredient-scope-note" aria-label="成分解析閱讀提醒">
     <h2 class="ingredient-scope-note__title">閱讀這頁前，先說清楚</h2>
     <ul class="ingredient-scope-note__list">
       <li>這頁整理的是研究中常被討論的用途、可能機制與安全性，不是產品推薦。</li>
