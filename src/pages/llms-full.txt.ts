@@ -28,7 +28,6 @@ export const GET: APIRoute = async () => {
     '',
   ];
 
-  // Articles
   lines.push('## 文章');
   for (const entry of sortByDate(articles)) {
     lines.push(`- ${entry.data.title} | /articles/${stripExt(entry.id)}/ | ${fmtDate(entry.data.publishDate)}`);
@@ -36,7 +35,6 @@ export const GET: APIRoute = async () => {
   }
   lines.push('');
 
-  // Myths
   lines.push('## 闢謠');
   for (const entry of sortByDate(myths)) {
     lines.push(`- ${entry.data.title} | /myths/${stripExt(entry.id)}/ | ${fmtDate(entry.data.publishDate)}`);
@@ -44,15 +42,13 @@ export const GET: APIRoute = async () => {
   }
   lines.push('');
 
-  // Ingredients
-  lines.push('## 原料');
+  lines.push('## 成分解析');
   for (const entry of sortByDate(ingredients)) {
     lines.push(`- ${entry.data.title} | /ingredients/${stripExt(entry.id)}/ | ${fmtDate(entry.data.publishDate)}`);
     lines.push(`  ${entry.data.description}`);
   }
   lines.push('');
 
-  // Podcasts
   lines.push('## Podcast');
   for (const entry of sortByDate(podcasts)) {
     lines.push(`- ${entry.data.title} | /podcasts/${stripPodcastSlug(entry.id)}/ | ${fmtDate(entry.data.publishDate)}`);
@@ -60,7 +56,6 @@ export const GET: APIRoute = async () => {
   }
   lines.push('');
 
-  // Videos
   lines.push('## 短影音');
   for (const entry of sortByDate(videos)) {
     lines.push(`- ${entry.data.title} | /videos/${stripExt(entry.id)}/ | ${fmtDate(entry.data.publishDate)}`);
