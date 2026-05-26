@@ -74,20 +74,20 @@ relatedIngredients: ["ingredient-slug"]
 
 ---
 
-## 新增原料
+## 新增成分解析
 
 在 `src/content/ingredients/` 建立 `.mdx` 檔案：
 
 ```yaml
 ---
-title: "原料中文名"
+title: "成分中文名"
 titleEn: "English Name"
 sortKey: "ㄨ"                            # 注音首字母，用於索引排序
 description: "155 字以內摘要"
 publishDate: 2026-05-08
 updatedDate: 2026-05-08
 tags: ["標籤"]
-introduction: "白話介紹這個原料是什麼"
+introduction: "白話介紹這個成分是什麼"
 featured: false
 draft: false
 uses:                                    # 研究常討論的用途
@@ -208,7 +208,7 @@ relatedIngredients: ["ingredient-slug"]
 1. 找到要修改的檔案：
    - 文章：`src/content/articles/{slug}.mdx`
    - 闢謠：`src/content/myths/{slug}.mdx`
-   - 原料：`src/content/ingredients/{slug}.mdx`
+   - 成分解析：`src/content/ingredients/{slug}.mdx`
    - Podcast：`src/content/podcasts/{slug}.mdx`
    - 短影音：`src/content/videos/{slug}.mdx`
    - 趨勢新聞：`src/content/news/{slug}.md`
@@ -257,7 +257,7 @@ relatedIngredients: ["ingredient-slug"]
 |------|---------|---------|
 | 文章封面 / OG 分享圖 | `public/images/articles/` | `{slug}.jpg`（1200x630） |
 | 闢謠封面 | `public/images/myths/` | `{slug}.jpg` |
-| 原料封面 | `public/images/ingredients/` | `{slug}.jpg` |
+| 成分解析封面 | `public/images/ingredients/` | `{slug}.jpg` |
 | 趨勢新聞 fallback | `public/images/news/` | 分類 SVG（已建立 9 張） |
 | 全站預設 OG | `public/og-default.jpg` | 固定檔名 |
 
@@ -311,7 +311,7 @@ relatedVideos: ["sprouted-potato"]       # 連到 src/content/videos/sprouted-po
 |---------|------|---------|
 | `Required at "title"` | 必填欄位缺失 | 補上該欄位 |
 | `Expected string, received number` | 型別錯誤 | 檢查值的格式（如日期要用 `2026-05-08` 不是 `20260508`） |
-| `Invalid enum value` | 列舉值不在允許範圍 | 檢查 `src/content.config.ts` 中允許的值（如 verdict 只接受 true/false/insufficient/contextual） |
+| `Invalid enum value` | 列舉值不在允許範圍 | 檢查 `src/content.config.ts` 中允許的值 |
 | `Array must contain at least 1 element(s)` | 必填陣列為空 | myths 的 `evidence` 和 `references` 至少要有一筆 |
 | `String must contain at most 155 character(s)` | description 超過 155 字 | 縮短 description |
 
