@@ -64,7 +64,7 @@ export async function GET() {
       .map((entry) => {
         const path = `/ingredients/${stripExt(entry.id)}/`;
         const pubDate = entry.data.updatedDate ?? entry.data.publishDate;
-        return { title: entry.data.title, description: ensureDescription(entry.data.description), link: `${SITE_URL}${path}`, guid: `${SITE_URL}${path}`, pubDate, category: '原料' };
+        return { title: entry.data.title, description: ensureDescription(entry.data.description), link: `${SITE_URL}${path}`, guid: `${SITE_URL}${path}`, pubDate, category: '成分解析' };
       }),
     ...podcasts
       .filter((entry) => !entry.data.draft && entry.data.title && isValidDate(entry.data.publishDate))
@@ -87,7 +87,7 @@ export async function GET() {
   <channel>
     <title>${escapeXml('本日有據 Evidence Today')}</title>
     <link>${SITE_URL}/</link>
-    <description>${escapeXml('本日有據整理健康研究、闢謠、原料知識、Podcast 與健康議題趨勢，提供有根據、看得懂的健康資訊。')}</description>
+    <description>${escapeXml('本日有據整理健康研究、闢謠、成分解析、Podcast 與健康議題趨勢，提供有根據、看得懂的健康資訊。')}</description>
     <language>zh-TW</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
     <atom:link href="${FEED_URL}" rel="self" type="application/rss+xml" />
