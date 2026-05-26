@@ -24,13 +24,10 @@
 
 ---
 
-
-
-
 ## 成分解析命名規則
 
 - 前台顯示統一使用「成分解析」。
-- 不再使用「原料」「原料頁」「原料知識庫」作為使用者可見名稱。
+- 舊有稱呼不再作為使用者可見名稱。
 - 目前為避免大型路由遷移，URL 與 collection 暫時保留 `/ingredients/` 與 `ingredients`。
 - `IngredientCard`、`category="ingredient"`、`.ingredient-*` class 屬於內部命名，可暫時保留。
 - 若未來要將 URL 從 `/ingredients/` 遷移為新路徑，需另開 migration PR，處理 redirect、sitemap、RSS、內部連結、canonical 與 Search Console。
@@ -47,6 +44,7 @@
 - 主編個人方法的詳細說明應連到 `/authors/luo-yang/`。
 
 ---
+
 ## 主編頁維護規則
 
 - 主編頁定位為「健康知識處理方法與信任頁」，不是個人履歷頁，也不是保健食品說明頁。
@@ -79,7 +77,7 @@
 
 | 任務 | 看哪份 |
 |---|---|
-| 新增文章 / 闢謠 / 原料 / Podcast / 短影音 / 趨勢新聞 | [docs/content-guide.md](./docs/content-guide.md) |
+| 新增文章 / 闢謠 / 成分解析 / Podcast / 短影音 / 趨勢新聞 | [docs/content-guide.md](./docs/content-guide.md) |
 | 修改、刪除既有內容 | [docs/content-guide.md](./docs/content-guide.md) |
 | 撰寫趨勢新聞 SOP（自動化排程） | [docs/news_sop.md](./docs/news_sop.md) |
 | 新增 Content Collection 類型 | [docs/playbooks/new-content-type.md](./docs/playbooks/new-content-type.md) |
@@ -90,7 +88,7 @@
 |---|---|
 | 改導覽列 TopNav | [docs/playbooks/topnav.md](./docs/playbooks/topnav.md) |
 | 改 design tokens（顏色 / 字體 / 間距） | [docs/playbooks/design-tokens.md](./docs/playbooks/design-tokens.md) |
-| 改文章 / 闢謠 / 原料排版（Article.astro variant） | [docs/playbooks/article-layout.md](./docs/playbooks/article-layout.md) |
+| 改文章 / 闢謠 / 成分解析排版（Article.astro variant） | [docs/playbooks/article-layout.md](./docs/playbooks/article-layout.md) |
 | 闢謠單篇頁（`src/pages/myths/[slug].astro`）色彩調整 | 沿用 CI tokens（`--color-paper/ink/fog/teal/navy/coral/cat-myth`）與 `color-mix`，禁止新增 pastel hex；僅調整視覺，不改內容結構。 |
 | 闢謠判讀標籤（`VerdictBadge` / `MythCard`） | `VerdictBadge` 僅能使用 CI token + `color-mix`（禁止硬寫 pastel hex）；`MythCard` 的 `verdict` 型別必須引用 `@/utils/myths/schema` 的 `MythVerdict`。 |
 | 改首頁 / Hero | [docs/playbooks/home-hero.md](./docs/playbooks/home-hero.md) |
@@ -211,7 +209,7 @@ src/
     seo/                     # JsonLd 結構化資料
   layouts/
     Base.astro               # HTML shell（meta/OG/fonts/skip-to-content）
-    Article.astro            # 文章/闢謠/原料（prose vs cards variant）
+    Article.astro            # 文章 / 闢謠 / 成分解析（prose vs cards variant）
     Media.astro              # Podcast/短影音
     List.astro               # 列表頁
     Policy.astro             # 政策頁
@@ -263,7 +261,7 @@ GitHub Actions 自動執行：build → Pagefind 索引 → 連結檢查 → 部
 
 ### 上線後可迭代
 
-- [ ] 原料頁補齊更多 pathwaySteps 資料
+- [ ] 成分解析頁補齊更多 pathwaySteps 資料
 - [ ] Pagefind 搜尋頁動態載入
 
 ---
@@ -304,10 +302,10 @@ Podcast 單集建議使用 `embedUrl` 指向 Firstory 內嵌播放器（`https:/
 - `duration` 使用 `parseDurationToIso()` 轉成 ISO 8601 duration。
 - 不得填不存在或無法公開存取的 MP3 URL。
 
-### 原料頁中立知識庫維護重點
+### 成分解析頁中立知識庫維護重點
 
-- 原料單頁 JSON-LD 應使用 `Article` / `WebPage` 等中立內容型別，不可使用 `MedicalWebPage`、`DietarySupplement`、`Product` 等商品導向 schema。
-- 原料頁需固定呈現中立提示，明確說明「研究常討論的用途／可能機制／安全性」與「不作為個別療效宣稱」。
+- 成分解析單頁 JSON-LD 應使用 `Article` / `WebPage` 等中立內容型別，不可使用 `MedicalWebPage`、`DietarySupplement`、`Product` 等商品導向 schema。
+- 成分解析頁需固定呈現中立提示，明確說明「研究常討論的用途／可能機制／安全性」與「不作為個別療效宣稱」。
 - 若 content 有 `safety` 欄位，頁面模板需固定輸出「安全性與交互作用」區塊（一般安全性、可能交互作用、族群注意）。
 
 ### 短影音列表卡片顯示規則
