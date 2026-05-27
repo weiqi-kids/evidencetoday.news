@@ -1,35 +1,137 @@
 ---
-interface CitationAnswer {
-  question: string;
-  answer: string;
-  audience: string;
-  evidenceBasis: string;
-  lastUpdated: string;
-}
-
 interface Props {
-  data: CitationAnswer;
+  summary: string;
 }
 
-const { data } = Astro.props;
+type SummaryRender =
+  | { type: 'paragraphs'; items: string[] }
+  | { type: 'ul' | 'ol'; items: string[] };
+
+const { summary } = Astro.props;
+
+function normalize(text: string): string {
+  return text.replace(/\r\n/g, '\n').trim();
+}
+
+function parseMarkdownList(lines: string[]): SummaryRender | null {
+  const bulletLines = lines.filter((line) => /^\s*[-*]\s+/.test(line));
+  if (bulletLines.length >= 2 && bulletLines.length === lines.length) {
+    return { type: 'ul', items: bulletLines.map((line) => line.replace(/^\s*[-*]\s+/, '').trim()).filter(Boolean) };
+  }
+
+  const numberLines = lines.filter((line) => /^\s*\d+[.)]\s+/.test(line));
+  if (numberLines.length >= 2 && numberLines.length === lines.length) {
+    return { type: 'ol', items: numberLines.map((line) => line.replace(/^\s*\d+[.)]\s+/, '').trim()).filter(Boolean) };
+  }
+
+  return null;
+}
+
+function splitToBulletItems(text: string): string[] {
+  const sentenceParts = text
+    .split(/(?<=[。！？；;.!?])\s*/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+
+  if (sentenceParts.length < 2 || sentenceParts.length > 6) {
+    return [];
+  }
+
+  const validLengthItems = sentenceParts.filter((item) => item.length >= 12);
+  if (validLengthItems.length !== sentenceParts.length) {
+    return [];
+  }
+
+  return sentenceParts;
+}
+
+function formatSummary(input: string): SummaryRender {
+  const cleanSummary = normalize(input);
+  const rawLines = cleanSummary.split('\n').map((line) => line.trim());
+  const lines = rawLines.filter(Boolean);
+
+  if (lines.length === 0) {
+    return { type: 'paragraphs', items: [] };
+  }
+
+  const markdownList = parseMarkdownList(lines);
+  if (markdownList) {
+    return markdownList;
+  }
+
+  if (lines.length > 1) {
+    const listishLines = lines.filter((line) => line.length >= 8);
+    if (listishLines.length >= 2 && listishLines.length <= 6) {
+      return { type: 'ul', items: listishLines };
+    }
+    return { type: 'paragraphs', items: lines };
+  }
+
+  const autoBulletItems = splitToBulletItems(lines[0]);
+  if (autoBulletItems.length >= 2) {
+    return { type: 'ul', items: autoBulletItems };
+  }
+
+  return { type: 'paragraphs', items: lines };
+}
+
+const formattedSummary = formatSummary(summary);
 ---
 
-<aside class="citation-answer" aria-label="本篇可引用結論">
-  <h2 class="citation-answer__title">本篇可引用結論</h2>
-  <dl class="citation-answer__list">
-    <div class="citation-answer__item"><dt>問題</dt><dd>{data.question}</dd></div>
-    <div class="citation-answer__item"><dt>答案</dt><dd>{data.answer}</dd></div>
-    <div class="citation-answer__item"><dt>適用對象</dt><dd>{data.audience}</dd></div>
-    <div class="citation-answer__item"><dt>證據基礎</dt><dd>{data.evidenceBasis}</dd></div>
-    <div class="citation-answer__item"><dt>最後更新</dt><dd>{data.lastUpdated}</dd></div>
-  </dl>
+<aside class="summary-box" aria-label="重點摘要">
+  <h2 class="summary-box__title">重點摘要</h2>
+  <div class="summary-box__content">
+    {formattedSummary.type === 'paragraphs' ? (
+      formattedSummary.items.map((item) => <p>{item}</p>)
+    ) : formattedSummary.type === 'ol' ? (
+      <ol class="summary-box__list">
+        {formattedSummary.items.map((item) => <li class="summary-box__item">{item}</li>)}
+      </ol>
+    ) : (
+      <ul class="summary-box__list">
+        {formattedSummary.items.map((item) => <li class="summary-box__item">{item}</li>)}
+      </ul>
+    )}
+  </div>
 </aside>
 
 <style>
-  .citation-answer {background-color: var(--color-teal-subtle); border-radius: 1rem; padding: clamp(1rem, 0.8rem + 1vw, 1.5rem); border: 1px solid color-mix(in oklch, var(--color-teal) 18%, white);} 
-  .citation-answer__title {font-family: var(--font-sans); font-size: var(--text-h3); margin: 0 0 0.75rem; color: var(--color-ink);} 
-  .citation-answer__list {display: grid; gap: .75rem; margin: 0;} 
-  .citation-answer__item {display: grid; gap: .25rem;} 
-  .citation-answer__item dt {font-size: var(--text-meta); font-weight: 700; color: var(--color-teal);} 
-  .citation-answer__item dd {margin: 0; font-size: var(--text-body); line-height: 1.8; color: var(--color-ink);} 
+  .summary-box {
+    background-color: var(--color-teal-subtle);
+    border-radius: 1rem;
+    padding: clamp(1rem, 0.8rem + 1vw, 1.5rem);
+    border: 1px solid color-mix(in oklch, var(--color-teal) 18%, white);
+  }
+
+  .summary-box__title {
+    margin: 0 0 0.75rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-h3);
+    color: var(--color-ink);
+  }
+
+  .summary-box__content {
+    display: grid;
+    gap: 0.75rem;
+    color: var(--color-ink);
+  }
+
+  .summary-box__content p {
+    margin: 0;
+    font-size: var(--text-body);
+    line-height: 1.8;
+  }
+
+  .summary-box__list {
+    margin: 0;
+    padding-inline-start: 1.35rem;
+    display: grid;
+    gap: 0.45rem;
+  }
+
+  .summary-box__item {
+    font-size: var(--text-body);
+    line-height: 1.75;
+    color: var(--color-fog);
+  }
 </style>
