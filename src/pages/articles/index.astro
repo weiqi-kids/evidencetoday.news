@@ -28,8 +28,6 @@ const articleCounts = ARTICLE_CATEGORIES.reduce<Record<ArticleCategorySlug, numb
     menopause: 0,
     'food-safety': 0,
     'oral-hygiene': 0,
-    'mens-health': 0,
-    other: 0,
   },
 );
 const visibleCategories = ARTICLE_CATEGORIES.filter((category) => articleCounts[category.slug] > 0);
@@ -42,8 +40,6 @@ const visibleCategories = ARTICLE_CATEGORIES.filter((category) => articleCounts[
   breadcrumbItems={[{ label: '首頁', href: '/' }, { label: '文章' }]}
   totalItems={categorizedArticles.length}
 >
-  <p class="subtitle">依主題快速找到你想看的文章。分類只是閱讀入口；完整標籤仍保留在文章頁中。</p>
-
   <nav class="article-tabs" aria-label="文章分類">
     <a class="article-tab" href="/articles/" data-category="all" aria-selected="true">
       全部 <span>{categorizedArticles.length}</span>
@@ -150,10 +146,6 @@ const visibleCategories = ARTICLE_CATEGORIES.filter((category) => articleCounts[
 </script>
 
 <style>
-  .subtitle {
-    margin-bottom: 1rem;
-  }
-
   .article-tabs {
     display: flex;
     flex-wrap: wrap;
