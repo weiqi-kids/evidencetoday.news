@@ -67,6 +67,20 @@
 
 ---
 
+
+## 短影音單頁維護規則
+
+- `/videos/` 是短影音列表與分類頁。
+- `/videos/[slug]/` 是精選短影音站內整理頁。
+- 不需要所有 YouTube Shorts 都有站內頁；只有精選或需要 AEO 的影片建立內容頁。
+- 有站內頁的短影音需包含 YouTube 影片、重點摘要、30 秒重點、文字摘要、逐字稿與延伸閱讀。
+- 前台摘要標題使用「重點摘要」，不要使用「可引用答案」作為視覺標題。
+- `transcript` 可放完整逐字稿，前台以 details 預設收合。
+- references 不可憑空新增；沒有可靠來源時可以省略。
+- relatedArticles / relatedMyths / relatedIngredients / relatedPodcasts 必須連到實際存在內容。
+- YouTube 影片列表仍可顯示全部影片；站內頁優先服務 SEO / AEO 與精選內容整理。
+
+---
 ## 短影音分類與搜尋頁維護
 
 - `/videos/` 使用 YouTube API 產生的 `youtube-shorts.json`。
