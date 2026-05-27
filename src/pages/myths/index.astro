@@ -61,16 +61,17 @@ const themeFor = (slug:string)=> slug.includes('lemon') ? 'lemon' : slug.include
       });
 
     cards.forEach((card) => {
-      card.hidden = true;
+      card.style.display = 'none';
     });
 
     filteredCards.forEach((card) => {
-      card.hidden = false;
+      card.style.display = '';
       list.appendChild(card);
     });
 
-    list.hidden = filteredCards.length === 0;
-    empty.hidden = filteredCards.length !== 0;
+    const hasResults = filteredCards.length > 0;
+    list.style.display = hasResults ? 'grid' : 'none';
+    empty.style.display = hasResults ? 'none' : 'block';
   };
 
   [qInput, verdictSelect, topicSelect, evidenceSelect, sortSelect].forEach((control) => {

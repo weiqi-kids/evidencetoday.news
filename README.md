@@ -120,6 +120,10 @@
 - 排序順序：對篩選後結果依 `updatedDate` 排序（`new` 新到舊、`old` 舊到新），日期解析失敗 fallback 為 `0`。
 - 搜尋欄位：`title`、`mythClaim`、`verdictSummary`、`summary`、`topicTags`、`tldr`（大小寫不敏感，先 `trim`）。
 - 空狀態：當結果為 `0` 時僅顯示「目前沒有符合條件的闢謠文章，請調整搜尋或篩選條件。」且不渲染卡片。
+<<<<<<< codex/fix-filtering-and-sorting-on-/myths-page-7vkx9e
+- 顯示切換使用 `style.display`（避免 `hidden` 屬性被頁面樣式覆寫），確保空狀態與卡片列表互斥。
+=======
+>>>>>>> main
 
 ## Corporate Identity 維護規則
 
