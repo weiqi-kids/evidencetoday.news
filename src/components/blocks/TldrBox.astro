@@ -21,6 +21,10 @@ function sanitizeItems(items: string[]): string[] {
   return items.map((item) => trimEndingPunctuation(item)).filter(Boolean);
 }
 
+function splitBySemicolon(text: string): string[] {
+  return sanitizeItems(text.split(/[；;]/).map((item) => item.trim()));
+}
+
 function parseMarkdownList(lines: string[]): SummaryRender | null {
   const bulletLines = lines.filter((line) => /^\s*[-*]\s+/.test(line));
   if (bulletLines.length >= 2 && bulletLines.length === lines.length) {
@@ -36,21 +40,27 @@ function parseMarkdownList(lines: string[]): SummaryRender | null {
 }
 
 function splitToBulletItems(text: string): string[] {
+  const semicolonParts = splitBySemicolon(text);
+  if (semicolonParts.length >= 2 && semicolonParts.length <= 12) {
+    return semicolonParts;
+  }
+
   const sentenceParts = text
     .split(/(?<=[。！？；;.!?])\s*/)
-    .map((item) => item.trim())
-    .filter(Boolean);
+    .map((item) => item.trim());
 
-  if (sentenceParts.length < 2 || sentenceParts.length > 6) {
+  const sanitizedSentenceParts = sanitizeItems(sentenceParts);
+
+  if (sanitizedSentenceParts.length < 2 || sanitizedSentenceParts.length > 6) {
     return [];
   }
 
-  const validLengthItems = sentenceParts.filter((item) => item.length >= 12);
-  if (validLengthItems.length !== sentenceParts.length) {
+  const validLengthItems = sanitizedSentenceParts.filter((item) => item.length >= 12);
+  if (validLengthItems.length !== sanitizedSentenceParts.length) {
     return [];
   }
 
-  return sentenceParts;
+  return sanitizedSentenceParts;
 }
 
 function formatSummary(input: string): SummaryRender {
