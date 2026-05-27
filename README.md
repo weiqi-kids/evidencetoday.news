@@ -135,6 +135,18 @@ pnpm content:audit  # 掃描內容的 AI 感句型與模糊引用
 
 ---
 
+
+## 內容語氣稽核
+
+- `pnpm content:audit` 會掃描 `src/content/**/*.mdx` 與 `src/content/**/*.md`。
+- 稽核項目包含 AI 感句型、模糊引用與 raw enum 外露風險。
+- GitHub Actions 的 Content audit workflow 會在內容 PR、main push 與每週排程執行。
+- 預設為 warning mode，不阻擋 PR。
+- 若未來要改為 blocking，可設定 `CONTENT_AUDIT_STRICT=1`。
+- audit warning 代表需要人工檢查，不代表該句一定錯。
+
+---
+
 ## CSS / RWD 通用規範
 
 > **AI 修改版面前必須遵守以下規則。違反任何一條都會導致手機或電腦版崩壞。**
