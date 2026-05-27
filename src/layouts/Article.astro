@@ -28,7 +28,7 @@ interface Props {
   breadcrumbItems: Array<{ label: string; href?: string }>;
   faq?: Array<{ question: string; answer: string }>;
   references?: Array<{ title: string; url?: string; type: string }>;
-  citationAnswer?: { question: string; answer: string; audience: string; evidenceBasis: string; lastUpdated: string };
+  citationAnswer?: string;
   queryPatternLabel?: string;
 }
 
@@ -79,7 +79,7 @@ const {
 
     <div class:list={['article-grid', `article-grid--${variant}`]}>
       <div class="article-content">
-        {citationAnswer && <TldrBox data={citationAnswer} />}
+        {citationAnswer && <TldrBox summary={citationAnswer} />}
         <div class="prose">
           <slot />
         </div>
