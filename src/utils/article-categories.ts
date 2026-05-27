@@ -10,9 +10,7 @@ export type ArticleCategorySlug =
   | 'sleep-stress'
   | 'menopause'
   | 'food-safety'
-  | 'oral-hygiene'
-  | 'mens-health'
-  | 'other';
+  | 'oral-hygiene';
 
 export interface ArticleCategory {
   slug: ArticleCategorySlug;
@@ -49,7 +47,7 @@ export const ARTICLE_CATEGORIES: ArticleCategory[] = [
   {
     slug: 'health-concepts',
     label: '保健觀念',
-    description: '補充週期、體感、劑量、安全上限與健康判斷框架。',
+    description: '補充週期、體感、劑量、安全上限、劑型選擇與健康判斷框架。',
   },
   {
     slug: 'health-myths',
@@ -69,22 +67,12 @@ export const ARTICLE_CATEGORIES: ArticleCategory[] = [
   {
     slug: 'food-safety',
     label: '食品安全',
-    description: '食安、保存、交叉污染、餐飲風險與居家飲食安全。',
+    description: '食安、食品中毒、保存、交叉污染、餐飲風險與居家飲食安全。',
   },
   {
     slug: 'oral-hygiene',
     label: '口腔衛生',
-    description: '牙周、咀嚼力、護牙、假牙與熟齡口腔照護。',
-  },
-  {
-    slug: 'mens-health',
-    label: '男性健康',
-    description: '男性健康需求、攝護腺、肌肉骨骼與市場刻板印象。',
-  },
-  {
-    slug: 'other',
-    label: '其他',
-    description: '暫時無法明確分類的文章。',
+    description: '牙周、咀嚼力、吞嚥、護牙、假牙與熟齡口腔照護。',
   },
 ];
 
@@ -136,6 +124,8 @@ const CATEGORY_KEYWORDS: Record<ArticleCategorySlug, string[]> = {
     '蝦紅素',
     'astaxanthin',
     '植化素',
+    '多酚',
+    '槲皮素',
     '氧化壓力',
   ],
   'health-concepts': [
@@ -152,6 +142,14 @@ const CATEGORY_KEYWORDS: Record<ArticleCategorySlug, string[]> = {
     '飲食模式',
     '劑型',
     '軟糖',
+    '膠囊',
+    '吞服',
+    '好吞',
+    '益生菌',
+    '優酪乳',
+    '藥物交互作用',
+    '慢性病用藥',
+    '問過才吃',
     '判斷',
   ],
   'health-myths': [
@@ -171,6 +169,8 @@ const CATEGORY_KEYWORDS: Record<ArticleCategorySlug, string[]> = {
     '磷蝦油',
     '燕窩酸',
     '唾液酸',
+    '排毒',
+    '瘦瘦針',
     '行銷',
   ],
   'sleep-stress': [
@@ -199,31 +199,27 @@ const CATEGORY_KEYWORDS: Record<ArticleCategorySlug, string[]> = {
   'food-safety': [
     '食品安全',
     '食安',
+    '食品中毒',
     '餐飲風險',
     '冰箱',
     '交叉污染',
     '剩菜',
-    '保存',
-    '料理',
+    '冷藏',
+    '冷凍',
+    '室溫',
   ],
   'oral-hygiene': [
     '口腔',
     '牙齒',
     '牙周',
     '咀嚼',
+    '吞嚥',
+    '吞嚥困難',
     '假牙',
     '護牙',
     '洗牙',
     '口腔衛生',
   ],
-  'mens-health': [
-    '男性健康',
-    '男性保健',
-    '攝護腺',
-    '男人',
-    '性別刻板印象',
-  ],
-  other: [],
 };
 
 // 文章頁分類採「人工指定優先」，避免關鍵字把保健觀念、保健迷思、成分文誤歸為同一類。
@@ -231,7 +227,7 @@ const ARTICLE_CATEGORY_OVERRIDES: Record<string, ArticleCategorySlug> = {
   'iron-deficiency-anemia-women-supplements.mdx': 'minerals',
   'melatonin-prescription-taiwan-gray-market.mdx': 'sleep-stress',
   'supplement-course-myth-continuous-supplementation.mdx': 'health-concepts',
-  'men-health-stereotypes-beyond-performance.mdx': 'mens-health',
+  'men-health-stereotypes-beyond-performance.mdx': 'menopause',
   'menopause-supplement-stages-guide.mdx': 'menopause',
   'omega-3-guide.mdx': 'basic-nutrition',
   'lodes-4.mdx': 'food-safety',
@@ -277,31 +273,40 @@ function getSearchText(article: CollectionEntry<'articles'>): string {
     .toLowerCase();
 }
 
+function classifyExplicitArticlePattern(text: string): ArticleCategorySlug | null {
+  if (text.includes('洋蔥') && text.includes('植化素')) return 'antioxidant';
+  if (text.includes('益生菌') && (text.includes('優酪乳') || text.includes('膠囊') || text.includes('劑型') || text.includes('好吞'))) return 'health-concepts';
+  if (text.includes('吞嚥困難') || text.includes('長者吞嚥')) return 'oral-hygiene';
+
+  return null;
+}
+
 export function classifyArticle(article: CollectionEntry<'articles'>): ArticleCategorySlug {
   const override = ARTICLE_CATEGORY_OVERRIDES[article.id];
   if (override) return override;
 
   const text = getSearchText(article);
+  const explicitPattern = classifyExplicitArticlePattern(text);
+  if (explicitPattern) return explicitPattern;
 
   if (containsKeyword(text, CATEGORY_KEYWORDS['health-myths'])) return 'health-myths';
   if (containsKeyword(text, CATEGORY_KEYWORDS['sleep-stress'])) return 'sleep-stress';
   if (containsKeyword(text, CATEGORY_KEYWORDS.menopause)) return 'menopause';
-  if (containsKeyword(text, CATEGORY_KEYWORDS['food-safety'])) return 'food-safety';
   if (containsKeyword(text, CATEGORY_KEYWORDS['oral-hygiene'])) return 'oral-hygiene';
-  if (containsKeyword(text, CATEGORY_KEYWORDS['mens-health'])) return 'mens-health';
+  if (containsKeyword(text, CATEGORY_KEYWORDS['food-safety'])) return 'food-safety';
+  if (containsKeyword(text, CATEGORY_KEYWORDS['health-concepts'])) return 'health-concepts';
   if (containsKeyword(text, CATEGORY_KEYWORDS.vitamins)) return 'vitamins';
   if (containsKeyword(text, CATEGORY_KEYWORDS.minerals)) return 'minerals';
   if (containsKeyword(text, CATEGORY_KEYWORDS.antioxidant)) return 'antioxidant';
   if (containsKeyword(text, CATEGORY_KEYWORDS['basic-nutrition'])) return 'basic-nutrition';
-  if (containsKeyword(text, CATEGORY_KEYWORDS['health-concepts'])) return 'health-concepts';
 
-  return 'other';
+  return 'health-concepts';
 }
 
 export function categorizeArticles(articles: CollectionEntry<'articles'>[]): CategorizedArticle[] {
   return articles.map((article) => {
     const categorySlug = classifyArticle(article);
-    const categoryLabel = CATEGORY_LABEL_MAP.get(categorySlug) ?? '其他';
+    const categoryLabel = CATEGORY_LABEL_MAP.get(categorySlug) ?? '保健觀念';
 
     return {
       ...article,
