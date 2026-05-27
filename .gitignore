@@ -39,3 +39,6 @@ src/data/youtube-shorts.json
 .claude/settings.local.json
 .claude/worktrees/
 .claude/scheduled_tasks.lock
+
+# Generated OG images (build-time output)
+public/og/**/*.png
