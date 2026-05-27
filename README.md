@@ -123,6 +123,20 @@
 
 ---
 
+
+## OG 圖生成
+
+- OG 圖由 `pnpm og:generate` 生成到 `public/og/`。
+- `pnpm build` 會在 `prebuild` 透過 `pnpm run sync:youtube && pnpm run og:generate` 自動生成 OG 圖。
+- OG 圖尺寸固定為 1200x630。
+- 生成範圍包含公開 articles / myths / ingredients / podcasts / videos / news。
+- draft 內容不生成。
+- 前台名稱使用「成分解析」，但路徑仍為 `/ingredients/`。
+- generated PNG 不提交到 repo，`public/og/**/*.png` 已由 `.gitignore` 排除。
+- GitHub Pages 部署時會在 build 階段生成 OG 圖並輸出到 `dist`。
+- 不得提交或分享字型檔。
+- OG 圖應遵守 Corporate Identity 規範，不得呈現商品銷售感、醫療恐懼感或十字架元素。
+
 ## 快速開始
 
 ```bash
