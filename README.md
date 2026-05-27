@@ -103,6 +103,16 @@
 | CI/CD 與 deploy.yml 維護 | [docs/playbooks/ci-cd.md](./docs/playbooks/ci-cd.md) |
 | 看架構 / SEO / AEO / 無障礙總覽 | [docs/architecture.md](./docs/architecture.md) |
 
+
+## Corporate Identity 維護規則
+
+- 本階段只記錄與檢查既有品牌語言，不調整字體與配色。
+- 修改頁面視覺前，應先參考 `docs/brand-guidelines.md`。
+- 視覺修改完成後，應用 `docs/ci-audit-checklist.md` 自查。
+- 不得把網站改成商城、診所、產品頁、政府宣導頁或 AI 模板站。
+- 圖像設計不得自動加入十字架元素，除非使用者明確要求。
+
+---
 ## Base SEO meta 與 WebSite schema
 
 - Base.astro 統一輸出 `theme-color`（`#103B44`）。
@@ -281,6 +291,8 @@ GitHub Actions 自動執行：build → Pagefind 索引 → 連結檢查 → 部
 | [`docs/playbooks/external-apis.md`](docs/playbooks/external-apis.md) | 串接外部 API |
 | [`docs/playbooks/new-content-type.md`](docs/playbooks/new-content-type.md) | 新增 Content Collection 類型 |
 | [`docs/playbooks/ci-cd.md`](docs/playbooks/ci-cd.md) | CI/CD 與 deploy.yml 維護 |
+| [`docs/brand-guidelines.md`](docs/brand-guidelines.md) | Corporate Identity 使用規範 |
+| [`docs/ci-audit-checklist.md`](docs/ci-audit-checklist.md) | 視覺一致性檢查清單 |
 | [`docs/superpowers/specs/2026-05-07-evidencetoday-design.md`](docs/superpowers/specs/2026-05-07-evidencetoday-design.md) | 完整設計規格（品牌 / 色彩 / 字體 / 頁面 / 元件） |
 | [`docs/superpowers/specs/2026-05-08-news-automation-design.md`](docs/superpowers/specs/2026-05-08-news-automation-design.md) | 趨勢新聞自動化技術設計規格 |
 
