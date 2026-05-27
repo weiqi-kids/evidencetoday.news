@@ -256,6 +256,7 @@ const videos = defineCollection({
     evidenceBasis: z.string().optional(),
     queryPattern: z.enum(['ingredient-explainer','myth-check','taiwan-regulation-market','audience-stage-guide','comparison']).optional(),
     transcript: z.string().optional(),
+    keyPoints: z.array(z.string()).optional(),
     coverImage: z.string().optional(),
     featured: z.boolean().default(false),
     references: z.array(referenceSchema).optional(),
@@ -263,6 +264,7 @@ const videos = defineCollection({
     relatedMyths: z.array(z.string()).optional(),
     relatedIngredients: z.array(z.string()).optional(),
     relatedPodcasts: z.array(z.string()).optional(),
+    relatedVideos: z.array(z.string()).optional(),
     draft: z.boolean().default(false),
   }),
 });

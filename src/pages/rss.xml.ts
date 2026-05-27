@@ -36,12 +36,13 @@ function ensureDescription(value: string | undefined): string {
 }
 
 export async function GET() {
-  const [articles, myths, ingredients, podcasts, news] = await Promise.all([
+  const [articles, myths, ingredients, podcasts, news, videos] = await Promise.all([
     getCollection('articles'),
     getCollection('myths'),
     getCollection('ingredients'),
     getCollection('podcasts'),
     getCollection('news'),
+    getCollection('videos'),
   ]);
 
   const items: FeedItem[] = [
@@ -80,6 +81,14 @@ export async function GET() {
         const pubDate = entry.data.publishDate;
         return { title: entry.data.title, description: ensureDescription(entry.data.summary), link: `${SITE_URL}${path}`, guid: `${SITE_URL}${path}`, pubDate, category: '趨勢' };
       }),
+    ...videos
+      .filter((entry) => !entry.data.draft && entry.data.title && isValidDate(entry.data.publishDate))
+      .map((entry) => {
+        const path = `/videos/${stripExt(entry.id)}/`;
+        const pubDate = entry.data.updatedDate ?? entry.data.publishDate;
+        return { title: entry.data.title, description: ensureDescription(entry.data.description), link: `${SITE_URL}${path}`, guid: `${SITE_URL}${path}`, pubDate, category: '短影音' };
+      }),
+
   ].sort((a, b) => b.pubDate.getTime() - a.pubDate.getTime()).slice(0, MAX_ITEMS);
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
