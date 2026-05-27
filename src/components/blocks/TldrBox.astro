@@ -13,36 +13,54 @@ function normalize(text: string): string {
   return text.replace(/\r\n/g, '\n').trim();
 }
 
+function trimEndingPunctuation(text: string): string {
+  return text.replace(/[；;，,。！？!?、：:\s]+$/u, '').trim();
+}
+
+function sanitizeItems(items: string[]): string[] {
+  return items.map((item) => trimEndingPunctuation(item)).filter(Boolean);
+}
+
+function splitBySemicolon(text: string): string[] {
+  return sanitizeItems(text.split(/[；;]/).map((item) => item.trim()));
+}
+
 function parseMarkdownList(lines: string[]): SummaryRender | null {
   const bulletLines = lines.filter((line) => /^\s*[-*]\s+/.test(line));
   if (bulletLines.length >= 2 && bulletLines.length === lines.length) {
-    return { type: 'ul', items: bulletLines.map((line) => line.replace(/^\s*[-*]\s+/, '').trim()).filter(Boolean) };
+    return { type: 'ul', items: sanitizeItems(bulletLines.map((line) => line.replace(/^\s*[-*]\s+/, '').trim())) };
   }
 
   const numberLines = lines.filter((line) => /^\s*\d+[.)]\s+/.test(line));
   if (numberLines.length >= 2 && numberLines.length === lines.length) {
-    return { type: 'ol', items: numberLines.map((line) => line.replace(/^\s*\d+[.)]\s+/, '').trim()).filter(Boolean) };
+    return { type: 'ol', items: sanitizeItems(numberLines.map((line) => line.replace(/^\s*\d+[.)]\s+/, '').trim())) };
   }
 
   return null;
 }
 
 function splitToBulletItems(text: string): string[] {
+  const semicolonParts = splitBySemicolon(text);
+  if (semicolonParts.length >= 2 && semicolonParts.length <= 12) {
+    return semicolonParts;
+  }
+
   const sentenceParts = text
     .split(/(?<=[。！？；;.!?])\s*/)
-    .map((item) => item.trim())
-    .filter(Boolean);
+    .map((item) => item.trim());
 
-  if (sentenceParts.length < 2 || sentenceParts.length > 6) {
+  const sanitizedSentenceParts = sanitizeItems(sentenceParts);
+
+  if (sanitizedSentenceParts.length < 2 || sanitizedSentenceParts.length > 6) {
     return [];
   }
 
-  const validLengthItems = sentenceParts.filter((item) => item.length >= 12);
-  if (validLengthItems.length !== sentenceParts.length) {
+  const validLengthItems = sanitizedSentenceParts.filter((item) => item.length >= 12);
+  if (validLengthItems.length !== sanitizedSentenceParts.length) {
     return [];
   }
 
-  return sentenceParts;
+  return sanitizedSentenceParts;
 }
 
 function formatSummary(input: string): SummaryRender {
@@ -62,17 +80,17 @@ function formatSummary(input: string): SummaryRender {
   if (lines.length > 1) {
     const listishLines = lines.filter((line) => line.length >= 8);
     if (listishLines.length >= 2 && listishLines.length <= 6) {
-      return { type: 'ul', items: listishLines };
+      return { type: 'ul', items: sanitizeItems(listishLines) };
     }
-    return { type: 'paragraphs', items: lines };
+    return { type: 'paragraphs', items: sanitizeItems(lines) };
   }
 
   const autoBulletItems = splitToBulletItems(lines[0]);
   if (autoBulletItems.length >= 2) {
-    return { type: 'ul', items: autoBulletItems };
+    return { type: 'ul', items: sanitizeItems(autoBulletItems) };
   }
 
-  return { type: 'paragraphs', items: lines };
+  return { type: 'paragraphs', items: sanitizeItems(lines) };
 }
 
 const formattedSummary = formatSummary(summary);
@@ -127,11 +145,16 @@ const formattedSummary = formatSummary(summary);
     padding-inline-start: 1.35rem;
     display: grid;
     gap: 0.45rem;
+    color: var(--color-ink);
+  }
+
+  .summary-box__list li::marker {
+    color: color-mix(in oklch, var(--color-ink) 86%, black 14%);
   }
 
   .summary-box__item {
     font-size: var(--text-body);
     line-height: 1.75;
-    color: var(--color-fog);
+    color: var(--color-ink);
   }
 </style>

@@ -62,6 +62,10 @@
 
 ## 常見陷阱
 
+- **「重點摘要」字色過淡**：`src/components/blocks/TldrBox.astro` 的 `.summary-box__item` 若誤用 `--color-fog`，在淺底卡片上會導致摘要文字與 bullet 幾乎不可讀；請維持深色文字（`--color-ink`）並同步指定 `li::marker` 顏色。
+- **「重點摘要」句尾標點殘留**：TL;DR 若由 `；`、`，` 或 `。` 分句產生 bullet，渲染前要先去除每個項目的結尾標點，避免出現「每點結尾都是符號」的視覺雜訊。
+- **分號型 TL;DR 被錯判成整段**：`TldrBox` 需優先判斷 `；` / `;` 分點；只要可拆成 2–12 點就應渲染為清單，避免因點數較多（>6）退回整段 paragraph。
+
 - **新 variant 漏設 max-width: none**：blocks 被預設 `68ch` 限制 → 加新 variant 一定要明確設定 `.article-content` 與 `.prose` 的 max-width
 - **在 Article.astro 加視覺樣式**：違反 layout vs page 分工，未來改 variant 會誤傷別處 → 視覺樣式放 page 檔案
 - **用 `:global()` 覆蓋 Article.astro 的 class**：scoped style 會被破壞，無法追蹤 → 改用 variant prop 控制
