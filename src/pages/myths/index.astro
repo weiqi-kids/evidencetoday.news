@@ -3,7 +3,7 @@ import List from '@/layouts/List.astro';
 import { getCollection } from 'astro:content';
 import MythSquareCardVisual from '@/components/myths/MythSquareCardVisual.astro';
 
-const myths = (await getCollection('myths', (e) => !e.data.draft)).sort((a, b) => b.data.updatedDate.getTime() - a.data.updatedDate.getTime());
+const myths = (await getCollection('myths', (e) => !e.data.draft && e.data.status !== 'under-review')).sort((a, b) => b.data.updatedDate.getTime() - a.data.updatedDate.getTime());
 const topicOptions = [...new Set(myths.flatMap((m) => m.data.topicTags))].sort();
 const themeFor = (slug:string)=> slug.includes('lemon') ? 'lemon' : slug.includes('vitamin') ? 'vitamin' : 'default';
 ---

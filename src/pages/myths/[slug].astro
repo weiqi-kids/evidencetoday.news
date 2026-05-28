@@ -5,7 +5,7 @@ import JsonLd from '@/components/seo/JsonLd.astro';
 import VerdictBadge from '@/components/ui/VerdictBadge.astro';
 import MythSquareCardVisual from '@/components/myths/MythSquareCardVisual.astro';
 import { validateMythArticle } from '@/utils/myths/validate';
-export async function getStaticPaths() { const entries = await getCollection('myths', ({ data }) => !data.draft); return entries.map((entry) => ({ params: { slug: entry.id.replace(/\.[^.]+$/, '') }, props: { entry } })); }
+export async function getStaticPaths() { const entries = await getCollection('myths', ({ data }) => !data.draft && data.status !== 'under-review'); return entries.map((entry) => ({ params: { slug: entry.id.replace(/\.[^.]+$/, '') }, props: { entry } })); }
 const { entry } = Astro.props; const d = entry.data; const errors = validateMythArticle(entry); if (errors.length > 0) throw new Error(`[myth:${entry.id}] ${errors.join(' | ')}`);
 const canonical = `https://evidencetoday.news/myths/${entry.id.replace(/\.[^.]+$/, '')}/`; const related = d.relatedArticles ? (await Promise.all(d.relatedArticles.map((id) => getEntry('articles', id)))).filter(Boolean) : [];
 const refs = (d.references || []).filter((r) => r?.title && r?.url);

@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "check:myths": "node scripts/check-myth-quality.mjs",
     "postbuild": "pagefind --site dist",
     "preview": "astro preview",
     "sync:youtube": "node scripts/sync-youtube-shorts.mjs",
