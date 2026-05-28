@@ -213,3 +213,33 @@
   1) schema/前端欄位擴充盤點，
   2) 文獻蒐集與逐篇重寫，
   3) 品質檢查腳本與 CI 驗證。
+
+# Phase 3 總結
+
+本輪完成狀態校準與上線風險控管：23 篇皆維持 `under-review` / `deleteCandidate`，避免在缺乏可核對文獻細節時誤上線。下一輪需逐篇補齊可驗證文獻欄位後再恢復 `published`。
+
+| 標題 | slug | status | references 數量 | 最高證據等級 | verdict | 是否需人工審核 | 備註 |
+|---|---|---:|---|---|---|---|---|
+| 鹼性水、鹼性體質真的能抗癌嗎？ | alkaline-water-cancer-myth | under-review | 2 | 中 | 過度簡化 | 是 | 既有 references 為占位，需重建 |
+| 蘋果醋可以降血糖、減肥嗎？ | apple-cider-vinegar-myth | under-review | 2 | 中 | 過度簡化 | 是 | 需補 SR/MA 與安全性 |
+| 蔓越莓可以治療泌尿道感染嗎？ | cranberry-treat-uti-myth | under-review | 2 | 中 | 過度簡化 | 是 | 需區分預防與治療 |
+| 排毒保健品真的能把毒排出來嗎？ | detox-supplements-myth | under-review | 2 | 中 | 過度簡化 | 是 | 需補監管與安全資料 |
+| 糖尿病患者不能吃水果嗎？ | diabetes-no-fruit-myth | under-review | 2 | 中 | 過度簡化 | 是 | 需補 ADA/CDC 指引 |
+| 魚油是不是人人都該吃？ | fish-oil-for-everyone-myth | under-review | 2 | 中 | 過度簡化 | 是 | 需補族群分層證據 |
+| 瘦瘦針停藥後就不會復胖嗎？ | glp1-stop-no-regain-myth | under-review | 2 | 中 | 過度簡化 | 是 | 需補 STEP 延伸數據 |
+| 葡萄糖胺可以讓退化性關節炎逆轉嗎？ | glucosamine-oa-reversal-myth | under-review | 2 | 中 | 過度簡化 | 是 | 需補 OA SR/MA |
+| 感冒後狂吃維生素 C 會好得比較快嗎？ | high-dose-vitamin-c-cold-myth | under-review | 2 | 中 | 過度簡化 | 是 | 需補 Cochrane + 安全性 |
+| 高血壓沒有症狀，就不用吃藥嗎？ | hypertension-no-symptom-no-meds-myth | under-review | 2 | 中 | 過度簡化 | 是 | 需補指引與風險資料 |
+| 晚上吃東西一定會變胖嗎？ | late-eating-always-gain-myth | under-review | 2 | 中 | 過度簡化 | 是 | 需補 meal timing SR |
+| 喝檸檬水真的可以排毒嗎？ | lemon-water-detox | under-review | 2 | 中 | 過度簡化 | 是 | 需補生理機制與監管資料 |
+| 葉黃素可以治近視、老花、白內障嗎？ | lutein-cure-vision-myth | under-review | 2 | 中 | 過度簡化 | 是 | 需補 AREDS2 與分流 |
+| 感冒不能喝牛奶，因為會生痰嗎？ | milk-mucus-cold-myth | under-review | 2 | 中 | 過度簡化 | 是 | 需補人體試驗 |
+| 薑黃、南非醉茄等天然草本一定安全嗎？ | natural-herbal-safe-myth | under-review | 2 | 中 | 過度簡化 | 是 | 需補 LiverTox/NCCIH |
+| 膠原蛋白喝了會直接變成皮膚膠原蛋白嗎？ | oral-collagen-skin-myth | under-review | 2 | 中 | 過度簡化 | 是 | 需補偏倚評估 |
+| 骨質疏鬆只要補鈣就好了嗎？ | osteoporosis-calcium-only-myth | under-review | 2 | 中 | 過度簡化 | 是 | 需補整合治療證據 |
+| 益生菌是不是人人都有效？ | probiotics-work-for-all-myth | under-review | 2 | 中 | 過度簡化 | 是 | 需補菌株特異性 |
+| 無糖飲料是不是就可以放心喝？ | sugar-free-drink-safe-myth | under-review | 2 | 中 | 過度簡化 | 是 | 需補長期結局 |
+| 擦防曬會造成維生素 D 缺乏嗎？ | sunscreen-vitamin-d-deficiency-myth | under-review | 2 | 中 | 過度簡化 | 是 | 需補 SR/皮膚科指引 |
+| 鎂油、鎂噴霧比口服鎂更好吸收嗎？ | topical-magnesium-better-myth | under-review | 2 | 中 | 過度簡化 | 是 | 需補經皮吸收證據 |
+| B 群是提神藥嗎？疲勞就吃 B 群對嗎？ | vitamin-b-fatigue-myth | under-review | 2 | 中 | 過度簡化 | 是 | 需補缺乏族群分層 |
+| 維他命 C 能預防感冒嗎？ | vitamin-c-cold | under-review | 2 | 中 | 過度簡化 | 是 | 與 high-dose 題需拆分 |
