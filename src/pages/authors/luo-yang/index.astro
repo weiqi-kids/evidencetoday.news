@@ -1,9 +1,12 @@
 ---
 import Base from '@/layouts/Base.astro';
+import { getCollection } from 'astro:content';
 
+const curatedVideos = await getCollection('videos', ({ data }) => !data.draft);
+const featuredVideos = curatedVideos.slice(0, 5);
 ---
 
-<Base title="羅揚｜本日有據主編" description="本日有據主編如何整理健康資訊、分層證據與轉譯為可理解內容。">
+<Base title="羅揚｜本日有據主編" description="認識本日有據主編羅揚，以及他整理健康資訊、Podcast、文章與短影音內容的背景與方向。">
   <main class="container editor-page">
     <header class="editor-header">
       <h1>羅揚｜本日有據主編</h1>
@@ -25,7 +28,7 @@ import Base from '@/layouts/Base.astro';
           <li><strong>身分：</strong>本日有據主編</li>
           <li><strong>學科背景：</strong>牙醫學、口腔衛生材料研究</li>
           <li><strong>Podcast：</strong>《喜聞樂健》主持人</li>
-          <li><strong>關注主題：</strong>健康識讀、營養科學、預防醫學、公共健康、熟齡健康溝通、保健食品觀念</li>
+          <li><strong>關注主題：</strong>健康識讀、營養科學、預防醫學、公共衛生、熟齡健康溝通、保健食品觀念</li>
           <li><strong>聯絡：</strong><a href="mailto:evidencetodaynews@gmail.com">evidencetodaynews@gmail.com</a></li>
         </ul>
       </div>
@@ -39,30 +42,13 @@ import Base from '@/layouts/Base.astro';
       <p>我希望這個平台提供給讀者的，不只是更多健康知識，而是比較正確、比較可靠，也比較能用在生活中的健康判斷。</p>
     </section>
 
-    <section class="card section-block">
-      <h2>本日有據如何判讀健康資訊</h2>
-      <ol class="number-list compact-cards">
-        <li>
-          <h3>從常見問題開始</h3>
-          <p>選題多半來自民眾常聽到、常搜尋、常購買，或已經習以為常的健康說法。像是保健食品的效果、網路流傳的偏方、新聞中的研究結果，或市場上很常見但不一定說得清楚的健康主張。</p>
-        </li>
-        <li>
-          <h3>查找可追溯的資料</h3>
-          <p>內容會盡量回到研究論文、官方資料、公共衛生資訊、臨床經驗與可查證來源。不同資料能支持的結論強度不同，不會全部放在同一個層級來講。</p>
-        </li>
-        <li>
-          <h3>整理成可理解的內容</h3>
-          <p>健康資訊不能只停留在專有名詞，也不能把話說得太滿。本日有據會盡量把資料整理成讀者看得懂、能判斷，也知道限制在哪裡的內容。</p>
-        </li>
-      </ol>
-      <p>研究論文、官方資料、臨床經驗與個人觀察，能支持的結論強度不同；本日有據會盡量說清楚哪些是研究證據，哪些只是合理推論或觀察。</p>
-    </section>
+    
 
         <section class="card section-block">
-      <h2>Podcast 與精選代表內容</h2>
+      <h2>代表內容</h2>
       <div class="podcast-card">
         <h3>Podcast《喜聞樂健》</h3>
-        <p>Podcast《喜聞樂健》延伸本日有據的核心方向，用更接近聊天的方式談健康觀念、保健食品與日常判斷。</p>
+        <p>Podcast《喜聞樂健》從日常健康問題出發，用比較接近聊天的方式，討論健康知識、保健觀念與判斷方式。</p>
         <p><a class="cta-link" href="/podcasts/">前往 Podcast 專區</a></p>
       </div>
       <div class="featured-groups">
@@ -89,6 +75,22 @@ import Base from '@/layouts/Base.astro';
             <li><a href="/articles/lodes-30/">咖啡到底健不健康？我覺得這個問題本身就問錯了</a></li>
           </ul>
         </article>
+
+      {featuredVideos.length > 0 && (
+        <article>
+          <h3>精選短影音</h3>
+          <ul class="editor-article-list">
+            {featuredVideos.map((entry) => (
+              <li>
+                <a href={`/videos/${entry.id.replace(/\.[^.]+$/, '')}/`}>
+                  {entry.data.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+          <p><a class="cta-link" href="/videos/">查看全部短影音</a></p>
+        </article>
+      )}
       </div>
       <p><a class="cta-link" href="/articles/?author=%E7%BE%85%E6%8F%9A">查看全部文章</a></p>
     </section>
@@ -98,7 +100,7 @@ import Base from '@/layouts/Base.astro';
       <ul class="plain-list">
         <li>牙醫學背景</li>
         <li>口腔衛生材料研究背景</li>
-        <li>長期關注健康識讀、營養科學、預防醫學、公共健康與熟齡健康溝通</li>
+        <li>長期關注健康識讀、營養科學、預防醫學、公共衛生與熟齡健康溝通</li>
         <li>Podcast《喜聞樂健》主持人</li>
       </ul>
     </section>
