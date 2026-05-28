@@ -421,3 +421,8 @@ Podcast 單集建議使用 `embedUrl` 指向 Firstory 內嵌播放器（`https:/
 - FAQ 改為伺服器端渲染，答案內容存在初始 HTML；題數超過 8 題時僅前 5 題預設展開。
 - 新增 `queryPattern` 內容欄位（內部 metadata 用）。
 - 新增 `public/llms.txt`，並更新 `public/robots.txt` 為 AI crawler 友善規則。
+
+## Myths quality gate (Phase 2)
+
+- Run `pnpm run check:myths` before publishing myths content.
+- Articles marked `status: "under-review"` are excluded from `/myths` public listing and route generation.
