@@ -19,8 +19,7 @@
     width = container.clientWidth;
     height = container.clientHeight;
 
-    // clientHeight comes from the explicit CSS calc(50vh - 5.5rem)
-    // If it's 0 (e.g. not in news page), fall back to a sensible default
+    // clientHeight comes from the CSS clamp(); if it's 0 fall back to a sensible default
     if (height <= 0) height = 280;
 
     // Scale radii relative to the shorter dimension so bubbles fill the space
@@ -36,6 +35,10 @@
       y: height / 2 + (Math.random() - 0.5) * 100,
     }));
 
+    const reduceMotion = typeof window !== 'undefined'
+      && window.matchMedia
+      && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     const sim = forceSimulation(nodes)
       .force('center', forceCenter(width / 2, height / 2))
       .force('collide', forceCollide((d) => d.r + 3).strength(0.8))
@@ -44,6 +47,13 @@
       .on('tick', () => {
         nodes = [...nodes];
       });
+
+    if (reduceMotion) {
+      // Resolve layout instantly without animating ticks
+      for (let i = 0; i < 200; i += 1) sim.tick();
+      sim.stop();
+      nodes = [...nodes];
+    }
 
     return () => sim.stop();
   });

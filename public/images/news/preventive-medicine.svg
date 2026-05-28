@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none">
+  <rect width="800" height="450" rx="8" fill="#ECF3F2"/>
+  <!-- radar circles -->
+  <circle cx="400" cy="225" r="160" fill="none" stroke="#5A9A8C" stroke-width="2" opacity="0.3"/>
+  <circle cx="400" cy="225" r="110" fill="none" stroke="#5A9A8C" stroke-width="2" opacity="0.4"/>
+  <circle cx="400" cy="225" r="60" fill="none" stroke="#5A9A8C" stroke-width="2" opacity="0.5"/>
+  <line x1="240" y1="225" x2="560" y2="225" stroke="#5A9A8C" stroke-width="1.5" opacity="0.3"/>
+  <line x1="400" y1="65" x2="400" y2="385" stroke="#5A9A8C" stroke-width="1.5" opacity="0.3"/>
+  <!-- radar sweep -->
+  <path d="M400 225 L520 145 A140 140 0 0 0 400 85 Z" fill="#5A9A8C" opacity="0.18"/>
+  <!-- pulse points (risk markers) -->
+  <circle cx="340" cy="180" r="6" fill="#3C7A6C" opacity="0.85"/>
+  <circle cx="340" cy="180" r="12" fill="none" stroke="#3C7A6C" stroke-width="2" opacity="0.4"/>
+  <circle cx="470" cy="270" r="5" fill="#3C7A6C" opacity="0.7"/>
+  <circle cx="450" cy="160" r="4" fill="#3C7A6C" opacity="0.6"/>
+  <!-- shield outline overlay (prevention) -->
+  <path d="M400 95 L450 115 L450 220 Q450 270 400 295 Q350 270 350 220 L350 115 Z" fill="none" stroke="#3C7A6C" stroke-width="2" opacity="0.45"/>
+  <path d="M380 205 L395 220 L425 185" stroke="#3C7A6C" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.55"/>
+  <text x="400" y="420" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#3C7A6C" opacity="0.85">PREVENTIVE</text>
+</svg>

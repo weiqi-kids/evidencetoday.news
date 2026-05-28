@@ -33,7 +33,26 @@ const displayTitle = getDisplayTitle(data.titleDisplay, data.title);
 const category = getNewsCategory(data.tags, data.category);
 const heroImage = getNewsHeroImage(data.heroImage, data.thumbnail, data.tags, data.category);
 
-/* Resolve related content */
+/* ---- Normalize editor judgment to a list of points ---- */
+function normalizeEditorPoints(): string[] {
+  if (Array.isArray(data.editorPoints) && data.editorPoints.length > 0) {
+    return data.editorPoints;
+  }
+  const ec = data.editorComment;
+  if (!ec) return [];
+  if (Array.isArray(ec)) return ec;
+  // string fallback: split on double newlines or lines starting with "- "
+  const lines = ec.split('\n').map((l) => l.trim()).filter(Boolean);
+  const bulletLines = lines.filter((l) => l.startsWith('- ')).map((l) => l.slice(2).trim());
+  if (bulletLines.length >= 2) return bulletLines;
+  return ec.split('\n\n').map((p) => p.trim()).filter(Boolean);
+}
+const editorPoints = normalizeEditorPoints();
+
+/* ---- Caution note (please注意) ---- */
+const cautionText = data.cautionNote?.trim() || data.evidenceNote?.trim() || '';
+
+/* ---- Resolve related content ---- */
 const relatedArticles = data.relatedArticles
   ? (await Promise.all(data.relatedArticles.map((id) => getEntry('articles', id)))).filter(Boolean)
   : [];
@@ -52,10 +71,10 @@ const relatedPodcasts = data.relatedPodcasts
 
 const hasRelated = relatedArticles.length > 0 || relatedMyths.length > 0 || relatedIngredients.length > 0 || relatedVideos.length > 0 || relatedPodcasts.length > 0;
 
-/* Meta description */
+/* ---- Meta description ---- */
 const metaDesc = (data.subtitle || data.summary || '').slice(0, 140);
 
-/* JSON-LD */
+/* ---- JSON-LD ---- */
 const articleSchema = {
   '@context': 'https://schema.org',
   '@type': 'NewsArticle',
@@ -96,7 +115,7 @@ const breadcrumbSchema = {
     ]} />
 
     <article class="news-article">
-      {/* ---- Hero ---- */}
+      {/* ---- 1. Title block ---- */}
       <header class="news-article__header">
         <span class="news-article__cat">{category}</span>
         <h1 class="news-article__title">{displayTitle}</h1>
@@ -105,28 +124,34 @@ const breadcrumbSchema = {
         )}
         <div class="news-article__meta">
           <time>{fmtDate(data.publishDate)}</time>
-          {data.sourceUrl && (
-            <>
-              <span aria-hidden="true">&middot;</span>
-              <a href={data.sourceUrl} target="_blank" rel="noopener noreferrer" class="news-article__source-link">原始來源</a>
-            </>
-          )}
         </div>
       </header>
 
-      {/* ---- Hero image ---- */}
+      {/* ---- 2. Hero image / 分類情境圖 ---- */}
       <div class="news-article__hero-img">
         <img src={heroImage} alt={displayTitle} loading="eager" />
       </div>
 
-      {/* ---- Intro ---- */}
+      {/* ---- Intro (optional, lead-in paragraph) ---- */}
       {data.intro && (
         <div class="news-article__intro">
           <p>{data.intro}</p>
         </div>
       )}
 
-      {/* ---- 先看懂這個詞 ---- */}
+      {/* ---- 3. 重點摘要 ---- */}
+      {data.keyPoints && data.keyPoints.length > 0 && (
+        <section class="key-points" aria-labelledby="key-points-heading">
+          <h2 id="key-points-heading" class="key-points__heading">重點摘要</h2>
+          <ul class="key-points__list">
+            {data.keyPoints.map((kp) => (
+              <li class="key-points__item">{kp}</li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {/* ---- 4. 先看懂這個詞（empty 陣列或 undefined 都隱藏） ---- */}
       {data.termBox && data.termBox.length > 0 && (
         <aside class="term-box">
           <h2 class="term-box__heading">先看懂這個詞</h2>
@@ -141,40 +166,62 @@ const breadcrumbSchema = {
         </aside>
       )}
 
-      {/* ---- Body (Markdown content) ---- */}
+      {/* ---- 5. 研究內容（Markdown body） ---- */}
       <div class="news-article__body prose">
         <Content />
       </div>
 
-      {/* ---- 證據提醒 ---- */}
-      {data.evidenceNote && (
-        <aside class="evidence-note">
-          <h2 class="evidence-note__heading">證據提醒</h2>
-          <p class="evidence-note__text">{data.evidenceNote}</p>
+      {/* ---- 6. 請注意 ---- */}
+      {cautionText && (
+        <aside class="caution-note">
+          <h2 class="caution-note__heading">請注意</h2>
+          <p class="caution-note__text">{cautionText}</p>
         </aside>
       )}
 
-      {/* ---- 主編判讀 ---- */}
-      {data.editorComment && (
+      {/* ---- 7. 主編判讀（列點） ---- */}
+      {editorPoints.length > 0 && (
         <aside class="editor-action">
           <h2 class="editor-action__heading">主編判讀</h2>
-          <div class="editor-action__content">
-            {data.editorComment.split('\n\n').map((para) => (
-              <p>{para}</p>
+          <ul class="editor-action__list">
+            {editorPoints.map((pt) => (
+              <li class="editor-action__item">{pt}</li>
             ))}
-          </div>
+          </ul>
         </aside>
       )}
 
-      {/* ---- 資料來源 ---- */}
-      {data.pmid && (
-        <footer class="source-ref">
-          <h2 class="source-ref__heading">資料來源</h2>
+      {/* ---- 8. 來源 ---- */}
+      <footer class="source-ref">
+        <h2 class="source-ref__heading">來源</h2>
+        {data.references && data.references.length > 0 ? (
+          <ol class="source-ref__list">
+            {data.references.map((ref) => (
+              <li class="source-ref__item">
+                {ref.url ? (
+                  <a href={ref.url} target="_blank" rel="noopener noreferrer">{ref.title}</a>
+                ) : (
+                  <span>{ref.title}</span>
+                )}
+                {ref.note && <span class="source-ref__note">　{ref.note}</span>}
+              </li>
+            ))}
+          </ol>
+        ) : data.pmid ? (
           <p class="source-ref__link">
             PubMed PMID：<a href={`https://pubmed.ncbi.nlm.nih.gov/${data.pmid}/`} target="_blank" rel="noopener noreferrer">{data.pmid}</a>
           </p>
-        </footer>
-      )}
+        ) : data.sourceUrl ? (
+          <p class="source-ref__link">
+            <a href={data.sourceUrl} target="_blank" rel="noopener noreferrer">原始來源連結</a>
+          </p>
+        ) : (
+          <p class="source-ref__pending">原始來源連結尚未補上，編輯室會持續追蹤更新。</p>
+        )}
+        {data.sourcePending && data.sourcePendingReason && (
+          <p class="source-ref__pending">註：{data.sourcePendingReason}</p>
+        )}
+      </footer>
     </article>
 
     {/* ---- Related ---- */}
@@ -243,7 +290,7 @@ const breadcrumbSchema = {
     margin: 0 auto;
   }
 
-  /* ---- Header / Hero ---- */
+  /* ---- Header ---- */
   .news-article__header {
     padding-block: 1.5rem 1rem;
     display: flex;
@@ -254,10 +301,10 @@ const breadcrumbSchema = {
   .news-article__cat {
     display: inline-flex;
     align-self: flex-start;
-    padding: 0.2rem 0.65rem;
+    padding: 0.25rem 0.7rem;
     border-radius: var(--radius-pill);
     font-family: var(--font-ui);
-    font-size: 0.75rem;
+    font-size: 0.85rem;
     font-weight: 600;
     color: white;
     background: color-mix(in oklch, var(--color-cat-news) 90%, black);
@@ -265,7 +312,7 @@ const breadcrumbSchema = {
 
   .news-article__title {
     font-family: var(--font-serif);
-    font-size: 1.4rem;
+    font-size: clamp(1.5rem, 1.2rem + 1.5vw, 2.25rem);
     font-weight: 700;
     color: var(--color-ink);
     line-height: 1.35;
@@ -284,11 +331,6 @@ const breadcrumbSchema = {
     font-family: var(--font-ui);
     font-size: var(--text-meta);
     color: color-mix(in oklch, var(--color-ink) 50%, transparent);
-  }
-
-  .news-article__source-link {
-    color: var(--color-teal);
-    font-weight: 500;
   }
 
   /* ---- Hero image ---- */
@@ -315,6 +357,37 @@ const breadcrumbSchema = {
     font-size: 1.05rem;
     color: color-mix(in oklch, var(--color-ink) 80%, transparent);
     line-height: 1.85;
+  }
+
+  /* ---- 重點摘要 ---- */
+  .key-points {
+    margin-bottom: 2rem;
+    padding: clamp(1.25rem, 0.75rem + 1.5vw, 1.75rem);
+    background: color-mix(in oklch, var(--color-teal) 5%, var(--color-paper));
+    border-left: 4px solid var(--color-teal);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+
+  .key-points__heading {
+    font-family: var(--font-sans);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--color-teal);
+    margin-bottom: 0.75rem;
+  }
+
+  .key-points__list {
+    list-style: disc;
+    padding-left: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .key-points__item {
+    font-size: var(--text-body);
+    line-height: 1.75;
+    color: color-mix(in oklch, var(--color-ink) 85%, transparent);
   }
 
   /* ---- 先看懂這個詞 ---- */
@@ -360,16 +433,16 @@ const breadcrumbSchema = {
     padding-block: 0 2rem;
   }
 
-  /* ---- 證據提醒 ---- */
-  .evidence-note {
+  /* ---- 請注意 ---- */
+  .caution-note {
     margin-bottom: 2rem;
     padding: 1.25rem 1.5rem;
     background: color-mix(in oklch, var(--color-fog) 50%, white);
     border-radius: var(--radius-sm);
-    border-left: 3px solid var(--color-fog);
+    border-left: 3px solid color-mix(in oklch, var(--color-ink) 30%, var(--color-fog));
   }
 
-  .evidence-note__heading {
+  .caution-note__heading {
     font-family: var(--font-sans);
     font-size: 0.95rem;
     font-weight: 700;
@@ -377,37 +450,13 @@ const breadcrumbSchema = {
     margin-bottom: 0.5rem;
   }
 
-  .evidence-note__text {
+  .caution-note__text {
     font-size: var(--text-meta);
-    color: color-mix(in oklch, var(--color-ink) 65%, transparent);
+    color: color-mix(in oklch, var(--color-ink) 75%, transparent);
     line-height: 1.75;
   }
 
-  /* ---- 資料來源 ---- */
-  .source-ref {
-    margin-bottom: 2.5rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--color-fog);
-  }
-
-  .source-ref__heading {
-    font-family: var(--font-sans);
-    font-size: 0.9rem;
-    font-weight: 700;
-    color: color-mix(in oklch, var(--color-ink) 55%, transparent);
-    margin-bottom: 0.5rem;
-  }
-
-  .source-ref__link {
-    font-size: var(--text-meta);
-    color: color-mix(in oklch, var(--color-ink) 60%, transparent);
-  }
-
-  .source-ref__link a {
-    color: var(--color-teal);
-  }
-
-  /* ---- 主編判讀 ---- */
+  /* ---- 主編判讀（列點） ---- */
   .editor-action {
     margin: 0 0 2.5rem;
     padding: clamp(1.25rem, 0.75rem + 1.5vw, 1.75rem);
@@ -424,15 +473,72 @@ const breadcrumbSchema = {
     margin-bottom: 0.75rem;
   }
 
-  .editor-action__content p {
+  .editor-action__list {
+    list-style: disc;
+    padding-left: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .editor-action__item {
     font-size: var(--text-body);
     color: color-mix(in oklch, var(--color-ink) 80%, transparent);
     line-height: 1.8;
+  }
+
+  /* ---- 來源 ---- */
+  .source-ref {
+    margin-bottom: 2.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-fog);
+  }
+
+  .source-ref__heading {
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: color-mix(in oklch, var(--color-ink) 65%, transparent);
     margin-bottom: 0.75rem;
   }
 
-  .editor-action__content p:last-child {
-    margin-bottom: 0;
+  .source-ref__list {
+    list-style: decimal;
+    padding-left: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .source-ref__item {
+    font-size: var(--text-meta);
+    color: color-mix(in oklch, var(--color-ink) 70%, transparent);
+    line-height: 1.6;
+  }
+
+  .source-ref__item a {
+    color: var(--color-teal);
+    word-break: break-word;
+  }
+
+  .source-ref__note {
+    color: color-mix(in oklch, var(--color-ink) 55%, transparent);
+  }
+
+  .source-ref__link {
+    font-size: var(--text-meta);
+    color: color-mix(in oklch, var(--color-ink) 60%, transparent);
+  }
+
+  .source-ref__link a {
+    color: var(--color-teal);
+  }
+
+  .source-ref__pending {
+    font-size: var(--text-meta);
+    color: color-mix(in oklch, var(--color-ink) 55%, transparent);
+    line-height: 1.6;
+    margin-top: 0.5rem;
   }
 
   /* ---- Related ---- */
@@ -458,10 +564,6 @@ const breadcrumbSchema = {
   }
 
   @media (min-width: 640px) {
-    .news-article__title {
-      font-size: clamp(1.5rem, 1.2rem + 1.5vw, 2.25rem);
-    }
-
     .related-grid {
       grid-template-columns: repeat(2, 1fr);
     }

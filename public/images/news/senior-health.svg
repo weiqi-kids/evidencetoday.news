@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none">
+  <rect width="800" height="450" rx="8" fill="#F2EFEC"/>
+  <!-- two figures (companions) -->
+  <circle cx="340" cy="170" r="28" fill="#B5A496" opacity="0.85"/>
+  <path d="M312 200 Q312 250 340 260 Q368 250 368 200 L368 320 Q340 340 312 320 Z" fill="#B5A496" opacity="0.7"/>
+  <path d="M312 240 L290 320" stroke="#B5A496" stroke-width="8" stroke-linecap="round" opacity="0.7"/>
+  <circle cx="460" cy="180" r="26" fill="#C8B8A8" opacity="0.85"/>
+  <path d="M434 208 Q434 250 460 258 Q486 250 486 208 L486 320 Q460 338 434 320 Z" fill="#C8B8A8" opacity="0.7"/>
+  <!-- heart on chest -->
+  <path d="M395 250 Q400 240 410 245 Q420 240 425 250 Q425 260 410 275 Q395 260 395 250Z" fill="#D87A6A" opacity="0.7"/>
+  <!-- ECG line -->
+  <path d="M120 380 L240 380 L260 350 L280 410 L300 380 L500 380 L520 360 L540 400 L560 380 L680 380" stroke="#5A8A7A" stroke-width="3" fill="none" opacity="0.6"/>
+  <text x="400" y="425" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#7A5A4A" opacity="0.8">SENIOR HEALTH</text>
+</svg>
