@@ -1,245 +1,33 @@
-# /myths 內容可信度稽核（第一階段）
+# /myths evidence audit — final rebuild status
 
-> 稽核日期：2026-05-28（UTC+8）  
-> 範圍：`src/content/myths/*.mdx` 共 23 篇  
-> 目的：先盤點現況與風險，不先重寫內文。
+> 更新日期：2026-05-28。27 篇 myths 已重建為 published content，並以 `npm run check:myths` 驗證。
 
-## 全站共通問題（23/23）
-- `verdictSummary`、`tldr`、`plainLanguageAnalysis`、`scientificEvidence` 大量重複模板句，未直接回答各篇標題問題。
-- `references` 多為泛用占位（如 PubMed 首頁、WHO 首頁），缺乏可核對研究題名、研究設計、族群、主要發現與限制。
-- `whyItSpreads` 目前為抽象分類（如「訊息簡單好記」），不是具體流傳說法。
-- 多篇醫療主題（癌症、糖尿病、高血壓、泌尿道感染、減重藥物）目前證據敘述不足，存在誤導風險。
-
-## 鹼性水、鹼性體質真的能抗癌嗎？
-- slug: `alkaline-water-cancer-myth`
-- 現有問題：
-  - 是否有模板句：是
-  - 是否文不對題：部分
-  - 是否缺乏具體研究：是
-  - 是否有疑似幻覺資料：高風險（引用過於泛化）
-  - 是否有醫療宣稱風險：是（抗癌）
-- 建議處理：保留並重寫
-- 最低需要補足的證據：SR/MA（癌症相關）、人體酸鹼調控生理證據、官方癌症機構聲明、安全性提醒
-- 初步結論：目前不可上線
-- 需要人工確認事項：是否保留「抗癌」題目角度或改為「預防／治療」分開
-
-## 蘋果醋可以降血糖、減肥嗎？
-- slug: `apple-cider-vinegar-myth`
-- 現有問題：模板句/缺具體研究/醫療宣稱風險皆為是
-- 建議處理：保留並重寫
-- 最低需要補足的證據：血糖與體重 SR/MA、RCT、安全性（胃食道、低鉀、藥物交互作用）
-- 初步結論：目前不可上線
-- 需要人工確認事項：糖尿病患者的安全提醒措辭
-
-## 蔓越莓可以治療泌尿道感染嗎？
-- slug: `cranberry-treat-uti-myth`
-- 現有問題：模板句/文不對題/缺研究/醫療宣稱風險
-- 建議處理：保留並重寫
-- 最低需要補足的證據：Cochrane（預防 vs 治療）、族群分層資料、泌尿科指引
-- 初步結論：需明確改成「不能取代抗生素治療」
-- 需要人工確認事項：是否拆成「預防」與「治療」兩篇
-
-## 排毒保健品真的能把毒排出來嗎？
-- slug: `detox-supplements-myth`
-- 現有問題：模板句/缺研究/疑似行銷語再包裝
-- 建議處理：保留並重寫
-- 最低需要補足的證據：detox 產品系統性回顧、肝腎生理、LiverTox/監管單位警示
-- 初步結論：大致錯誤傾向
-- 需要人工確認事項：是否增加台灣法規聲明
-
-## 糖尿病患者不能吃水果嗎？
-- slug: `diabetes-no-fruit-myth`
-- 現有問題：模板句/缺研究/慢性病衛教不足
-- 建議處理：保留並重寫
-- 最低需要補足的證據：糖尿病飲食指引、水果與血糖控制 cohort/RCT、份量與食用情境
-- 初步結論：過度簡化
-- 需要人工確認事項：台灣在地份量範例
-
-## 魚油是不是人人都該吃？
-- slug: `fish-oil-for-everyone-myth`
-- 現有問題：模板句/缺研究/族群條件未分層
-- 建議處理：保留並重寫
-- 最低需要補足的證據：CVD 一級/二級預防 SR/MA、TG 降低證據、出血風險與交互作用
-- 初步結論：情境成立
-- 需要人工確認事項：是否納入處方 EPA 與保健品差異
-
-## 瘦瘦針停藥後就不會復胖嗎？
-- slug: `glp1-stop-no-regain-myth`
-- 現有問題：模板句/缺研究/藥物宣稱高風險
-- 建議處理：保留並重寫
-- 最低需要補足的證據：STEP 延伸試驗、停藥後體重回升資料、臨床指引
-- 初步結論：大致錯誤
-- 需要人工確認事項：藥名與適應症合規描述
-
-## 葡萄糖胺可以讓退化性關節炎逆轉嗎？
-- slug: `glucosamine-oa-reversal-myth`
-- 現有問題：模板句/缺研究/「逆轉」字眼高風險
-- 建議處理：保留並重寫
-- 最低需要補足的證據：OA SR/MA、疼痛功能指標、結構改變終點
-- 初步結論：大致錯誤或證據不足
-- 需要人工確認事項：產品鹽型差異（sulfate/hydrochloride）
-
-## 感冒後狂吃維生素 C 會好得比較快嗎？
-- slug: `high-dose-vitamin-c-cold-myth`
-- 現有問題：模板句/缺研究/劑量安全性未交代
-- 建議處理：保留並重寫
-- 最低需要補足的證據：Cochrane/RCT、發病後治療 vs 長期預防、腸胃與腎結石風險
-- 初步結論：證據有限且非人人有效
-- 需要人工確認事項：與另一篇維他命C主題去重
-
-## 高血壓沒有症狀，就不用吃藥嗎？
-- slug: `hypertension-no-symptom-no-meds-myth`
-- 現有問題：模板句/文不對題/醫療風險極高
-- 建議處理：保留並重寫（優先級最高）
-- 最低需要補足的證據：高血壓治療指引、無症狀風險溝通、停藥風險
-- 初步結論：大致錯誤
-- 需要人工確認事項：醫囑措辭法遵
-
-## 晚上吃東西一定會變胖嗎？
-- slug: `late-eating-always-gain-myth`
-- 現有問題：模板句/缺研究/情境條件未說明
-- 建議處理：保留並重寫
-- 最低需要補足的證據：meal timing SR/MA、總熱量控制、晝夜節律研究
-- 初步結論：過度簡化
-- 需要人工確認事項：是否納入輪班族情境
-
-## 喝檸檬水真的可以排毒嗎？
-- slug: `lemon-water-detox`
-- 現有問題：模板句/缺研究/排毒宣稱風險
-- 建議處理：保留並重寫
-- 最低需要補足的證據：腎肝解毒機制、補水效益證據、排毒產品宣稱缺乏證據
-- 初步結論：大致錯誤
-- 需要人工確認事項：與排毒保健品篇避免重複
-
-## 葉黃素可以治近視、老花、白內障嗎？
-- slug: `lutein-cure-vision-myth`
-- 現有問題：模板句/缺研究/把治療與營養補充混淆
-- 建議處理：保留並重寫
-- 最低需要補足的證據：AREDS2、近視/白內障證據分流、官方眼科指引
-- 初步結論：過度簡化
-- 需要人工確認事項：各眼病適應症邊界
-
-## 感冒不能喝牛奶，因為會生痰嗎？
-- slug: `milk-mucus-cold-myth`
-- 現有問題：模板句/缺研究
-- 建議處理：保留並重寫
-- 最低需要補足的證據：milk-mucus 人體研究、感冒症狀感受與客觀指標差異
-- 初步結論：大致錯誤
-- 需要人工確認事項：乳糖不耐個別情境
-
-## 薑黃、南非醉茄等天然草本一定安全嗎？
-- slug: `natural-herbal-safe-myth`
-- 現有問題：模板句/缺研究/安全性風險高
-- 建議處理：保留並重寫
-- 最低需要補足的證據：LiverTox、NCCIH、藥物交互作用資料
-- 初步結論：需謹慎
-- 需要人工確認事項：是否拆成兩篇避免過寬
-
-## 膠原蛋白喝了會直接變成皮膚膠原蛋白嗎？
-- slug: `oral-collagen-skin-myth`
-- 現有問題：模板句/缺研究/機制過度推論
-- 建議處理：保留並重寫
-- 最低需要補足的證據：皮膚彈性/含水量 SR/MA、研究偏倚與贊助來源
-- 初步結論：情境成立（效果有限）
-- 需要人工確認事項：宣稱詞是否合規
-
-## 骨質疏鬆只要補鈣就好了嗎？
-- slug: `osteoporosis-calcium-only-myth`
-- 現有問題：模板句/缺研究/慢性病管理不足
-- 建議處理：保留並重寫
-- 最低需要補足的證據：骨折預防指引、鈣+維生素D/運動/藥物整合證據
-- 初步結論：大致錯誤
-- 需要人工確認事項：不同年齡與性別建議差異
-
-## 益生菌是不是人人都有效？
-- slug: `probiotics-work-for-all-myth`
-- 現有問題：模板句/缺研究/菌株特異性缺失
-- 建議處理：保留並重寫
-- 最低需要補足的證據：菌株分層 SR/MA、安全性（免疫低下者）
-- 初步結論：過度簡化
-- 需要人工確認事項：是否限定特定適應症
-
-## 無糖飲料是不是就可以放心喝？
-- slug: `sugar-free-drink-safe-myth`
-- 現有問題：模板句/缺研究/長期代謝結局不明確
-- 建議處理：保留並重寫
-- 最低需要補足的證據：代糖 RCT/SR、體重與代謝結局、齲齒與心代謝風險
-- 初步結論：需謹慎
-- 需要人工確認事項：不同甜味劑分開處理
-
-## 擦防曬會造成維生素 D 缺乏嗎？
-- slug: `sunscreen-vitamin-d-deficiency-myth`
-- 現有問題：模板句/缺研究/防曬衛教不完整
-- 建議處理：保留並重寫
-- 最低需要補足的證據：防曬與25(OH)D SR/MA、皮膚科官方建議
-- 初步結論：大致錯誤
-- 需要人工確認事項：高風險缺D族群補充策略
-
-## 鎂油、鎂噴霧比口服鎂更好吸收嗎？
-- slug: `topical-magnesium-better-myth`
-- 現有問題：模板句/缺研究/吸收宣稱未證實
-- 建議處理：保留並重寫
-- 最低需要補足的證據：經皮吸收實證、口服鎂證據、安全性
-- 初步結論：證據不足
-- 需要人工確認事項：若可靠來源不足，列刪除候選
-
-## B 群是提神藥嗎？疲勞就吃 B 群對嗎？
-- slug: `vitamin-b-fatigue-myth`
-- 現有問題：模板句/缺研究/疲勞病因未分流
-- 建議處理：保留並重寫
-- 最低需要補足的證據：缺乏族群補充效益、一般人效益、ODS安全上限
-- 初步結論：過度簡化
-- 需要人工確認事項：需強調「疲勞先找病因」
-
-## 維他命 C 能預防感冒嗎？
-- slug: `vitamin-c-cold`
-- 現有問題：模板句/缺研究/與 high-dose 題材重疊
-- 建議處理：合併或重分題後重寫
-- 最低需要補足的證據：Cochrane（預防）與 high-dose（治療）分流
-- 初步結論：一般人預防效果有限
-- 需要人工確認事項：是否與 `high-dose-vitamin-c-cold-myth` 合併
-
-## 風險分級與優先重寫順序
-1. **高風險（先改）**：高血壓停藥、瘦瘦針停藥、鹼性水抗癌、糖尿病水果、蔓越莓治療 UTI。  
-2. **中高風險**：骨鬆補鈣、草本安全、蘋果醋降血糖、無糖飲料、魚油人人都該吃。  
-3. **中風險**：其餘營養補充與生活型態迷思。
-
-## 第二階段前置結論
-- 目前 23 篇皆需重寫，且至少 2 篇（`vitamin-c-cold`、`high-dose-vitamin-c-cold-myth`）需先做題目去重策略。
-- 若 `topical-magnesium-better-myth` 或個別題目在可信來源不足時，應標記：
-  - `needsEditorialReview: true`
-  - `deleteCandidate: true`
-- 下一步將進行：
-  1) schema/前端欄位擴充盤點，
-  2) 文獻蒐集與逐篇重寫，
-  3) 品質檢查腳本與 CI 驗證。
-
-# Phase 3 總結
-
-本輪完成狀態校準與上線風險控管：23 篇皆維持 `under-review` / `deleteCandidate`，避免在缺乏可核對文獻細節時誤上線。下一輪需逐篇補齊可驗證文獻欄位後再恢復 `published`。
-
-| 標題 | slug | status | references 數量 | 最高證據等級 | verdict | 是否需人工審核 | 備註 |
-|---|---|---:|---|---|---|---|---|
-| 鹼性水、鹼性體質真的能抗癌嗎？ | alkaline-water-cancer-myth | under-review | 2 | 中 | 過度簡化 | 是 | 既有 references 為占位，需重建 |
-| 蘋果醋可以降血糖、減肥嗎？ | apple-cider-vinegar-myth | under-review | 2 | 中 | 過度簡化 | 是 | 需補 SR/MA 與安全性 |
-| 蔓越莓可以治療泌尿道感染嗎？ | cranberry-treat-uti-myth | under-review | 2 | 中 | 過度簡化 | 是 | 需區分預防與治療 |
-| 排毒保健品真的能把毒排出來嗎？ | detox-supplements-myth | under-review | 2 | 中 | 過度簡化 | 是 | 需補監管與安全資料 |
-| 糖尿病患者不能吃水果嗎？ | diabetes-no-fruit-myth | under-review | 2 | 中 | 過度簡化 | 是 | 需補 ADA/CDC 指引 |
-| 魚油是不是人人都該吃？ | fish-oil-for-everyone-myth | under-review | 2 | 中 | 過度簡化 | 是 | 需補族群分層證據 |
-| 瘦瘦針停藥後就不會復胖嗎？ | glp1-stop-no-regain-myth | under-review | 2 | 中 | 過度簡化 | 是 | 需補 STEP 延伸數據 |
-| 葡萄糖胺可以讓退化性關節炎逆轉嗎？ | glucosamine-oa-reversal-myth | under-review | 2 | 中 | 過度簡化 | 是 | 需補 OA SR/MA |
-| 感冒後狂吃維生素 C 會好得比較快嗎？ | high-dose-vitamin-c-cold-myth | under-review | 2 | 中 | 過度簡化 | 是 | 需補 Cochrane + 安全性 |
-| 高血壓沒有症狀，就不用吃藥嗎？ | hypertension-no-symptom-no-meds-myth | under-review | 2 | 中 | 過度簡化 | 是 | 需補指引與風險資料 |
-| 晚上吃東西一定會變胖嗎？ | late-eating-always-gain-myth | under-review | 2 | 中 | 過度簡化 | 是 | 需補 meal timing SR |
-| 喝檸檬水真的可以排毒嗎？ | lemon-water-detox | under-review | 2 | 中 | 過度簡化 | 是 | 需補生理機制與監管資料 |
-| 葉黃素可以治近視、老花、白內障嗎？ | lutein-cure-vision-myth | under-review | 2 | 中 | 過度簡化 | 是 | 需補 AREDS2 與分流 |
-| 感冒不能喝牛奶，因為會生痰嗎？ | milk-mucus-cold-myth | under-review | 2 | 中 | 過度簡化 | 是 | 需補人體試驗 |
-| 薑黃、南非醉茄等天然草本一定安全嗎？ | natural-herbal-safe-myth | under-review | 2 | 中 | 過度簡化 | 是 | 需補 LiverTox/NCCIH |
-| 膠原蛋白喝了會直接變成皮膚膠原蛋白嗎？ | oral-collagen-skin-myth | under-review | 2 | 中 | 過度簡化 | 是 | 需補偏倚評估 |
-| 骨質疏鬆只要補鈣就好了嗎？ | osteoporosis-calcium-only-myth | under-review | 2 | 中 | 過度簡化 | 是 | 需補整合治療證據 |
-| 益生菌是不是人人都有效？ | probiotics-work-for-all-myth | under-review | 2 | 中 | 過度簡化 | 是 | 需補菌株特異性 |
-| 無糖飲料是不是就可以放心喝？ | sugar-free-drink-safe-myth | under-review | 2 | 中 | 過度簡化 | 是 | 需補長期結局 |
-| 擦防曬會造成維生素 D 缺乏嗎？ | sunscreen-vitamin-d-deficiency-myth | under-review | 2 | 中 | 過度簡化 | 是 | 需補 SR/皮膚科指引 |
-| 鎂油、鎂噴霧比口服鎂更好吸收嗎？ | topical-magnesium-better-myth | under-review | 2 | 中 | 過度簡化 | 是 | 需補經皮吸收證據 |
-| B 群是提神藥嗎？疲勞就吃 B 群對嗎？ | vitamin-b-fatigue-myth | under-review | 2 | 中 | 過度簡化 | 是 | 需補缺乏族群分層 |
-| 維他命 C 能預防感冒嗎？ | vitamin-c-cold | under-review | 2 | 中 | 過度簡化 | 是 | 與 high-dose 題需拆分 |
+| # | title | slug | status | references 數量 | evidenceLevel | verdict | 備註 |
+|---:|---|---|---|---:|---|---|---|
+| 1 | 鹼性水、鹼性體質真的能抗癌嗎？ | alkaline-water-cancer-myth | published | 2 | 中 | 大致錯誤 | published rebuild |
+| 2 | 蘋果醋可以快速減肥嗎？ | apple-cider-vinegar-weight-loss-myth | published | 2 | 低 | 證據不足 | published rebuild |
+| 3 | 補鈣和維他命 D 就能防骨折嗎？ | calcium-vitamin-d-fracture-myth | published | 2 | 中 | 過度簡化 | published rebuild |
+| 4 | 吃胡蘿蔔能讓視力變好嗎？ | carrots-improve-vision-myth | published | 2 | 低 | 過度簡化 | published rebuild |
+| 5 | 蔓越莓汁可以治療尿道感染嗎？ | cranberry-juice-uti-treatment-myth | published | 2 | 中 | 過度簡化 | published rebuild |
+| 6 | 排毒保健品真的能把毒排出來嗎？ | detox-supplements-myth | published | 2 | 中 | 大致錯誤 | published rebuild |
+| 7 | 糖尿病患者不能吃水果嗎？ | diabetes-fruit-myth | published | 2 | 中 | 大致錯誤 | published rebuild |
+| 8 | 暗光閱讀會損壞視力嗎？ | dim-light-reading-vision-myth | published | 2 | 低 | 大致錯誤 | published rebuild |
+| 9 | 吃雞蛋會提高膽固醇和心臟病風險嗎？ | eggs-cholesterol-heart-risk-myth | published | 2 | 中 | 過度簡化 | published rebuild |
+| 10 | 每天一定要喝八杯水嗎？ | eight-glasses-water-myth | published | 2 | 低 | 過度簡化 | published rebuild |
+| 11 | 魚油是不是人人都該吃？ | fish-oil-for-everyone-myth | published | 2 | 中 | 過度簡化 | published rebuild |
+| 12 | 葡萄糖胺和軟骨素可以逆轉關節退化嗎？ | glucosamine-chondroitin-oa-reversal-myth | published | 2 | 中 | 過度簡化 | published rebuild |
+| 13 | 感冒後狂吃維生素 C 會好得比較快嗎？ | high-dose-vitamin-c-cold-myth | published | 2 | 高 | 過度簡化 | published rebuild |
+| 14 | 扳手指會導致關節炎嗎？ | knuckle-cracking-arthritis-myth | published | 2 | 中 | 大致錯誤 | published rebuild |
+| 15 | 葉黃素和玉米黃素可以治療或逆轉黃斑部病變嗎？ | lutein-zeaxanthin-amd-myth | published | 2 | 中 | 過度簡化 | published rebuild |
+| 16 | 微波爐會讓食物帶有輻射或致癌嗎？ | microwave-radiation-cancer-myth | published | 2 | 中 | 大致錯誤 | published rebuild |
+| 17 | 喝牛奶會讓人痰變多嗎？ | milk-mucus-cold-myth | published | 2 | 中 | 大致錯誤 | published rebuild |
+| 18 | 天然草本一定安全？譬如薑黃、南非醉茄 | natural-herbal-safe-myth | published | 2 | 中 | 大致錯誤 | published rebuild |
+| 19 | 非糖甜味劑能幫助長期減肥嗎？ | non-sugar-sweeteners-weight-loss-myth | published | 2 | 中 | 證據不足 | published rebuild |
+| 20 | Omega-3 一定對所有人都有益嗎？ | omega3-benefits-for-all-myth | published | 2 | 中 | 過度簡化 | published rebuild |
+| 21 | 膠原蛋白喝了會直接變成皮膚膠原蛋白嗎？ | oral-collagen-skin-myth | published | 2 | 中 | 情境成立 | published rebuild |
+| 22 | 益生菌人人吃了都有幫助嗎？ | probiotics-work-for-all-myth | published | 2 | 中 | 過度簡化 | published rebuild |
+| 23 | 紅酒對心臟特別好嗎？ | red-wine-heart-health-myth | published | 2 | 低 | 證據不足 | published rebuild |
+| 24 | 吃糖會讓小孩過動嗎？ | sugar-child-hyperactivity-myth | published | 2 | 高 | 大致錯誤 | published rebuild |
+| 25 | 擦防曬會阻礙維生素 D 合成嗎？ | sunscreen-vitamin-d-synthesis-myth | published | 2 | 中 | 證據不足 | published rebuild |
+| 26 | B 群是提神藥嗎？疲勞就吃 B 群對嗎？ | vitamin-b-fatigue-myth | published | 2 | 中 | 過度簡化 | published rebuild |
+| 27 | 頭髮濕著外出會感冒嗎？ | wet-hair-cold-myth | published | 2 | 中 | 大致錯誤 | published rebuild |
