@@ -21,7 +21,7 @@ const topTags = await getTopTags(12);
     </header>
 
     {topTags.length > 0 && (
-      <section class="trend-section">
+      <section class="trend-section" aria-label="熱門健康話題">
         <h2 class="trend-section__title">熱門健康話題</h2>
         <div class="trend-section__chart">
           <TrendBubbles tags={topTags} client:visible />
@@ -98,13 +98,12 @@ const topTags = await getTopTags(12);
 
   /* ---- Trend bubbles ---- */
   .trend-section {
-    margin-bottom: 2rem;
-    padding: 1.5rem;
+    margin-bottom: 2.5rem;
+    padding: clamp(1rem, 0.75rem + 1vw, 1.75rem);
     background: white;
     border: 1px solid color-mix(in oklch, var(--color-fog) 80%, transparent);
     border-radius: var(--radius-card);
-    max-height: 50vh;
-    overflow: hidden;
+    /* 不再用 max-height + overflow:hidden 裁切。改用 chart 自己控制高度。 */
   }
 
   .trend-section__title {
@@ -115,10 +114,10 @@ const topTags = await getTopTags(12);
     margin-bottom: 1rem;
   }
 
-  /* 50vh - padding 3rem - title ~1.5rem - title margin 1rem = calc(50vh - 5.5rem) */
+  /* 圖表高度用 clamp，手機 280px、桌機可達 380px；不用 vh 避免被 header 裁切。 */
   .trend-section__chart {
-    height: calc(50vh - 5.5rem);
-    overflow: hidden;
+    height: clamp(260px, 32vw, 380px);
+    overflow: visible;
   }
 
   .trend-section__chart > :global(astro-island) {
@@ -168,10 +167,10 @@ const topTags = await getTopTags(12);
     left: 0.75rem;
     display: inline-flex;
     align-items: center;
-    padding: 0.2rem 0.6rem;
+    padding: 0.25rem 0.7rem;
     border-radius: var(--radius-pill);
     font-family: var(--font-ui);
-    font-size: 0.7rem;
+    font-size: 0.85rem;
     font-weight: 600;
     letter-spacing: 0.02em;
     color: white;
@@ -183,44 +182,44 @@ const topTags = await getTopTags(12);
     display: flex;
     flex-direction: column;
     flex: 1;
-    padding: 1rem 1.25rem 1.25rem;
+    padding: 1.1rem 1.35rem 1.35rem;
   }
 
   .news-card__title {
     font-family: var(--font-sans);
-    font-size: 1rem;
+    font-size: 1.15rem;
     font-weight: 700;
     color: var(--color-ink);
-    line-height: 1.45;
-    margin-bottom: 0.5rem;
+    line-height: 1.5;
+    margin-bottom: 0.6rem;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
 
   .news-card__summary {
-    font-size: var(--text-meta);
-    color: color-mix(in oklch, var(--color-ink) 60%, transparent);
-    line-height: 1.6;
+    font-size: 0.975rem;
+    color: color-mix(in oklch, var(--color-ink) 70%, transparent);
+    line-height: 1.7;
     margin-bottom: auto;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
 
   .news-card__date {
     display: block;
-    margin-top: 0.75rem;
+    margin-top: 0.85rem;
     font-family: var(--font-ui);
-    font-size: 0.75rem;
-    color: color-mix(in oklch, var(--color-ink) 40%, transparent);
+    font-size: 0.85rem;
+    color: color-mix(in oklch, var(--color-ink) 50%, transparent);
   }
 
-  @media (min-width: 640px) {
+  @media (min-width: 1024px) {
     .news-card__title {
-      -webkit-line-clamp: 3;
+      font-size: 1.2rem;
     }
   }
 </style>
