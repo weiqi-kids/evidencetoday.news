@@ -15,14 +15,16 @@ const videoCounts = VIDEO_CATEGORIES.reduce<Record<VideoCategorySlug, number>>(
     return acc;
   },
   {
-    nutrition: 0,
-    supplements: 0,
-    myths: 0,
-    chronic: 0,
-    food: 0,
-    lifestyle: 0,
-    research: 0,
-    other: 0,
+    vitamins: 0,
+    minerals: 0,
+    'basic-nutrition': 0,
+    antioxidant: 0,
+    'health-concepts': 0,
+    'health-myths': 0,
+    'sleep-stress': 0,
+    menopause: 0,
+    'food-safety': 0,
+    'oral-hygiene': 0,
   }
 );
 const visibleCategories = VIDEO_CATEGORIES.filter((category) => videoCounts[category.slug] > 0);
