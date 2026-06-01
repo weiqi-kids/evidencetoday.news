@@ -16,10 +16,22 @@ function stripExt(id: string): string {
   return id.replace(/\.[^.]+$/, '');
 }
 
+function cleanPoint(value: string): string {
+  return value.trim().replace(/^-+\s*/u, '').replace(/[；。]$/u, '');
+}
+
+function splitSummary(summary: string): string[] {
+  return summary
+    .split('。')
+    .map(cleanPoint)
+    .filter(Boolean)
+    .slice(0, 6);
+}
+
 export async function getStaticPaths() {
   const entries = await getCollection('news', ({ data }) => !data.draft);
   return entries.map((entry) => ({
-    params: { slug: entry.id.replace(/\.[^.]+$/, '') },
+    params: { slug: stripExt(entry.id) },
     props: { entry },
   }));
 }
@@ -27,33 +39,42 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await entry.render();
 const data = entry.data;
-const slug = entry.id.replace(/\.[^.]+$/, '');
+const slug = stripExt(entry.id);
 
 const displayTitle = getDisplayTitle(data.titleDisplay, data.title);
 const category = getNewsCategory(data.tags, data.category);
 const heroImage = getNewsHeroImage(data.heroImage, data.thumbnail, data.tags, data.category);
-const filteredTermBox = (data.termBox ?? []).filter((item) => !['統合分析', '系統性回顧', 'RCT', '健康使用者偏誤', '觀察性研究', '世代研究', '橫斷面研究'].includes(item.term.trim()));
+const filteredTermBox = (data.termBox ?? []).filter(
+  (item) => !['統合分析', '系統性回顧', 'RCT', '健康使用者偏誤', '觀察性研究', '世代研究', '橫斷面研究'].includes(item.term.trim()),
+);
 
-/* ---- Normalize editor judgment to a list of points ---- */
 function normalizeEditorPoints(): string[] {
   if (Array.isArray(data.editorPoints) && data.editorPoints.length > 0) {
-    return data.editorPoints;
+    return data.editorPoints.map(cleanPoint).filter(Boolean);
   }
-  const ec = data.editorComment;
-  if (!ec) return [];
-  if (Array.isArray(ec)) return ec;
-  // string fallback: split on double newlines or lines starting with "- "
-  const lines = ec.split('\n').map((l) => l.trim()).filter(Boolean);
-  const bulletLines = lines.filter((l) => l.startsWith('- ')).map((l) => l.slice(2).trim());
-  if (bulletLines.length >= 2) return bulletLines;
-  return ec.split('\n\n').map((p) => p.trim()).filter(Boolean);
+
+  const editorComment = data.editorComment;
+  if (!editorComment) return [];
+
+  if (Array.isArray(editorComment)) {
+    return editorComment.map(cleanPoint).filter(Boolean);
+  }
+
+  const lines = editorComment.split('\n').map(cleanPoint).filter(Boolean);
+  if (lines.length >= 2) return lines;
+
+  return editorComment.split('\n\n').map(cleanPoint).filter(Boolean);
 }
+
+const keyPoints = Array.isArray(data.keyPoints) && data.keyPoints.length > 0
+  ? data.keyPoints.map(cleanPoint).filter(Boolean)
+  : splitSummary(data.summary);
 const editorPoints = normalizeEditorPoints();
-
-/* ---- Caution note (please注意) ---- */
 const cautionText = data.cautionNote?.trim() || data.evidenceNote?.trim() || '';
+const references = data.references ?? [];
+const hasStructuredReferences = references.length > 0;
+const hasSimpleSource = Boolean(data.pmid || data.sourceUrl);
 
-/* ---- Resolve related content ---- */
 const relatedArticles = data.relatedArticles
   ? (await Promise.all(data.relatedArticles.map((id) => getEntry('articles', id)))).filter(Boolean)
   : [];
@@ -71,11 +92,8 @@ const relatedPodcasts = data.relatedPodcasts
   : [];
 
 const hasRelated = relatedArticles.length > 0 || relatedMyths.length > 0 || relatedIngredients.length > 0 || relatedVideos.length > 0 || relatedPodcasts.length > 0;
-
-/* ---- Meta description ---- */
 const metaDesc = (data.subtitle || data.summary || '').slice(0, 140);
 
-/* ---- JSON-LD ---- */
 const articleSchema = {
   '@context': 'https://schema.org',
   '@type': 'NewsArticle',
@@ -116,98 +134,103 @@ const breadcrumbSchema = {
     ]} />
 
     <article class="news-article">
-      {/* ---- 1. Title block ---- */}
       <header class="news-article__header">
         <span class="news-article__cat">{category}</span>
         <h1 class="news-article__title">{displayTitle}</h1>
-        {data.subtitle && (
-          <p class="news-article__subtitle">{data.subtitle}</p>
-        )}
+        {data.subtitle && <p class="news-article__subtitle">{data.subtitle}</p>}
         <div class="news-article__meta">
           <time>{fmtDate(data.publishDate)}</time>
         </div>
       </header>
 
-      {/* ---- 2. Hero image / 分類情境圖 ---- */}
       <div class="news-article__hero-img">
         <img src={heroImage} alt={displayTitle} loading="eager" />
       </div>
 
-      {/* ---- Intro (optional, lead-in paragraph) ---- */}
       {data.intro && (
         <div class="news-article__intro">
           <p>{data.intro}</p>
         </div>
       )}
 
-      <section class="keypoints">
-        <h2 class="keypoints__heading">重點摘要</h2>
-        <ul class="keypoints__list">
-          {data.summary.split('。').map((item) => item.trim()).filter(Boolean).slice(0, 6).map((item) => (
-            <li>{item.replace(/[；。]$/u, '')}</li>
-          ))}
-        </ul>
-      </section>
+      {keyPoints.length > 0 && (
+        <section class="keypoints">
+          <h2 class="keypoints__heading">重點摘要</h2>
+          <ul class="keypoints__list">
+            {keyPoints.map((item) => <li>{item}</li>)}
+          </ul>
+        </section>
+      )}
 
-      {/* ---- 4. 詞條提示（empty 陣列或 undefined 都隱藏） ---- */}
-      {data.termBox && data.termBox.length > 0 && (
-        <aside class="term-box" aria-label="詞條提示">
+      {filteredTermBox.length > 0 && (
+        <aside class="term-box">
+          <h2 class="term-box__heading">先看懂這個詞</h2>
           <dl class="term-box__list">
-            {data.termBox.map((item) => (
-              <div class="term-box__item">
-                <dt class="term-box__term">{item.term}：</dt>
+            {filteredTermBox.map((item) => (
+              <>
+                <dt class="term-box__term">{item.term}</dt>
                 <dd class="term-box__def">{item.definition}</dd>
-              </div>
+              </>
             ))}
           </dl>
         </aside>
       )}
 
-      {/* ---- 5. 研究內容（Markdown body） ---- */}
       <div class="news-article__body prose">
         <Content />
       </div>
 
-      {/* ---- 證據提醒 ---- */}
-      {data.evidenceNote && (
+      {cautionText && (
         <aside class="evidence-note">
           <h2 class="evidence-note__heading">請注意</h2>
-          <p class="evidence-note__text">{data.evidenceNote}</p>
+          <p class="evidence-note__text">{cautionText}</p>
         </aside>
       )}
 
-      {/* ---- 7. 主編判讀（列點） ---- */}
       {editorPoints.length > 0 && (
         <aside class="editor-action">
           <h2 class="editor-action__heading">主編判讀</h2>
           <ul class="editor-action__content">
-            {data.editorComment.split('\n').map((item) => item.trim()).filter(Boolean).map((item) => (
-              <li>{item.replace(/^-+\s*/u, '').replace(/[；。]$/u, '')}</li>
-            ))}
+            {editorPoints.map((item) => <li>{item}</li>)}
           </ul>
         </aside>
       )}
 
-      {/* ---- 資料來源 ---- */}
       <footer class="source-ref">
         <h2 class="source-ref__heading">來源</h2>
-        {data.pmid && (
+        {hasStructuredReferences && (
+          <ol class="source-ref__list">
+            {references.map((reference) => (
+              <li class="source-ref__item">
+                {reference.url ? (
+                  <a href={reference.url} target="_blank" rel="noopener noreferrer">{reference.title}</a>
+                ) : (
+                  <span>{reference.title}</span>
+                )}
+                {reference.journal && <span>｜{reference.journal}</span>}
+                {reference.year && <span>｜{reference.year}</span>}
+                {reference.pmid && <span>｜PMID：{reference.pmid}</span>}
+                {reference.doi && <span>｜DOI：{reference.doi}</span>}
+              </li>
+            ))}
+          </ol>
+        )}
+        {!hasStructuredReferences && data.pmid && (
           <p class="source-ref__link">
             PubMed PMID：<a href={`https://pubmed.ncbi.nlm.nih.gov/${data.pmid}/`} target="_blank" rel="noopener noreferrer">{data.pmid}</a>
           </p>
         )}
-        {data.sourceUrl && (
+        {!hasStructuredReferences && data.sourceUrl && (
           <p class="source-ref__link">
             原文連結：<a href={data.sourceUrl} target="_blank" rel="noopener noreferrer">{data.sourceUrl}</a>
           </p>
         )}
-        {!data.pmid && !data.sourceUrl && (
-          <p class="source-ref__link">TODO: source needed</p>
+        {!hasStructuredReferences && !hasSimpleSource && (
+          <p class="source-ref__link">{data.sourcePendingReason || '原始來源連結尚未補上'}</p>
         )}
       </footer>
     </article>
 
-    {/* ---- Related ---- */}
     {hasRelated && (
       <section class="related-section">
         <h2 class="related-section__title">你可能想看</h2>
@@ -268,12 +291,12 @@ const breadcrumbSchema = {
     padding-block: var(--space-page-y);
   }
 
-  .news-article {
+  .news-article,
+  .related-section {
     max-width: 52rem;
     margin: 0 auto;
   }
 
-  /* ---- Header ---- */
   .news-article__header {
     padding-block: 1.5rem 1rem;
     display: flex;
@@ -301,10 +324,11 @@ const breadcrumbSchema = {
     line-height: 1.35;
   }
 
-  .news-article__subtitle {
+  .news-article__subtitle,
+  .news-article__intro p {
     font-size: var(--text-body);
-    color: color-mix(in oklch, var(--color-ink) 65%, transparent);
-    line-height: 1.7;
+    color: color-mix(in oklch, var(--color-ink) 72%, transparent);
+    line-height: 1.75;
   }
 
   .news-article__meta {
@@ -316,7 +340,6 @@ const breadcrumbSchema = {
     color: color-mix(in oklch, var(--color-ink) 50%, transparent);
   }
 
-  /* ---- Hero image ---- */
   .news-article__hero-img {
     aspect-ratio: 16 / 9;
     border-radius: var(--radius-card);
@@ -331,232 +354,117 @@ const breadcrumbSchema = {
     object-fit: cover;
   }
 
-  /* ---- Intro ---- */
-  .news-article__intro {
-    margin-bottom: 1.75rem;
+  .news-article__intro,
+  .keypoints,
+  .term-box,
+  .evidence-note,
+  .editor-action,
+  .source-ref {
+    margin-bottom: 2rem;
   }
 
-  .news-article__intro p {
-    font-size: 1.05rem;
-    color: color-mix(in oklch, var(--color-ink) 80%, transparent);
-    line-height: 1.85;
-  }
-  .keypoints {
-    margin-bottom: 1.75rem;
-    padding: 1.25rem 1.5rem;
-    background: color-mix(in oklch, var(--color-teal) 6%, var(--color-paper));
-    border: 1px solid color-mix(in oklch, var(--color-teal) 15%, transparent);
+  .keypoints,
+  .term-box,
+  .evidence-note,
+  .editor-action {
+    padding: clamp(1.25rem, 0.75rem + 1.5vw, 1.75rem);
     border-radius: var(--radius-sm);
   }
-  .keypoints__heading { font-size: 1.05rem; margin-bottom: 0.75rem; color: var(--color-ink); }
-  .keypoints__list { margin: 0; padding-left: 1.2rem; display: grid; gap: 0.45rem; }
-  .keypoints__list li { font-size: 1rem; line-height: 1.75; }
 
-  /* ---- 重點摘要 ---- */
-  .key-points {
-    margin-bottom: 2rem;
-    padding: clamp(1.25rem, 0.75rem + 1.5vw, 1.75rem);
-    background: color-mix(in oklch, var(--color-teal) 5%, var(--color-paper));
-    border-left: 4px solid var(--color-teal);
-    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  .keypoints,
+  .editor-action {
+    background: color-mix(in oklch, var(--color-teal) 6%, var(--color-paper));
+    border: 1px solid color-mix(in oklch, var(--color-teal) 22%, transparent);
   }
 
-  .key-points__heading {
+  .term-box {
+    background: color-mix(in oklch, var(--color-cat-news) 6%, var(--color-paper));
+    border: 1px solid color-mix(in oklch, var(--color-cat-news) 15%, transparent);
+  }
+
+  .evidence-note {
+    background: color-mix(in oklch, var(--color-fog) 50%, white);
+    border-left: 3px solid color-mix(in oklch, var(--color-ink) 30%, var(--color-fog));
+  }
+
+  .keypoints__heading,
+  .term-box__heading,
+  .evidence-note__heading,
+  .editor-action__heading,
+  .source-ref__heading,
+  .related-section__title {
     font-family: var(--font-sans);
-    font-size: 1.05rem;
     font-weight: 700;
-    color: var(--color-teal);
+    color: var(--color-ink);
     margin-bottom: 0.75rem;
   }
 
-  .key-points__list {
-    list-style: disc;
+  .keypoints__heading,
+  .editor-action__heading,
+  .related-section__title {
+    color: var(--color-teal);
+  }
+
+  .term-box__heading {
+    color: var(--color-cat-news);
+  }
+
+  .keypoints__list,
+  .editor-action__content,
+  .source-ref__list {
+    margin: 0;
     padding-left: 1.25rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+    display: grid;
+    gap: 0.55rem;
   }
 
-  .key-points__item {
+  .keypoints__list li,
+  .editor-action__content li,
+  .evidence-note__text,
+  .source-ref__item,
+  .source-ref__link {
     font-size: var(--text-body);
+    color: color-mix(in oklch, var(--color-ink) 80%, transparent);
     line-height: 1.75;
-    color: color-mix(in oklch, var(--color-ink) 85%, transparent);
-  }
-
-  /* ---- 詞條提示 ---- */
-  .term-box {
-    margin-bottom: 2rem;
-    padding: 1rem 1.25rem;
-    background: color-mix(in oklch, var(--color-cat-news) 5%, var(--color-paper));
-    border-radius: var(--radius-sm);
-    border: 1px solid color-mix(in oklch, var(--color-cat-news) 12%, transparent);
   }
 
   .term-box__list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+    display: grid;
+    gap: 0.45rem;
     margin: 0;
-  }
-
-  .term-box__item {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
   }
 
   .term-box__term {
-    margin: 0;
     font-family: var(--font-sans);
-    font-size: var(--text-body);
     font-weight: 700;
     color: var(--color-ink);
   }
 
   .term-box__def {
-    flex: 1 1 16rem;
-    margin: 0;
-    min-width: 0;
-    font-size: var(--text-body);
-    color: color-mix(in oklch, var(--color-ink) 78%, transparent);
-    line-height: 1.75;
+    margin: 0 0 0.35rem;
+    font-size: 0.95rem;
+    color: color-mix(in oklch, var(--color-ink) 70%, transparent);
+    line-height: 1.7;
   }
 
-  /* ---- Body ---- */
   .news-article__body {
     max-width: 52rem;
     padding-block: 0 2rem;
   }
 
-  /* ---- 請注意 ---- */
-  .caution-note {
-    margin-bottom: 2rem;
-    padding: 1.25rem 1.5rem;
-    background: color-mix(in oklch, var(--color-fog) 50%, white);
-    border-radius: var(--radius-sm);
-    border-left: 3px solid color-mix(in oklch, var(--color-ink) 30%, var(--color-fog));
-  }
-
-  .caution-note__heading {
-    font-family: var(--font-sans);
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: color-mix(in oklch, var(--color-ink) 65%, transparent);
-    margin-bottom: 0.5rem;
-  }
-
-  .caution-note__text {
-    font-size: var(--text-meta);
-    color: color-mix(in oklch, var(--color-ink) 75%, transparent);
-    line-height: 1.75;
-  }
-
-  /* ---- 主編判讀（列點） ---- */
-  .editor-action {
-    margin: 0 0 2.5rem;
-    padding: clamp(1.25rem, 0.75rem + 1.5vw, 1.75rem);
-    background: color-mix(in oklch, var(--color-teal) 6%, var(--color-paper));
-    border-left: 4px solid var(--color-teal);
-    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-  }
-
-  .editor-action__heading {
-    font-family: var(--font-sans);
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--color-teal);
-    margin-bottom: 0.75rem;
-  }
-
-  .editor-action__list {
-    list-style: disc;
-    padding-left: 1.25rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-  }
-
-  .editor-action__item {
-    font-size: var(--text-body);
-    color: color-mix(in oklch, var(--color-ink) 80%, transparent);
-    line-height: 1.8;
-  }
-
-  /* ---- 來源 ---- */
   .source-ref {
-    margin-bottom: 2.5rem;
     padding-top: 1rem;
     border-top: 1px solid var(--color-fog);
   }
 
-  .source-ref__heading {
-    font-family: var(--font-sans);
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: color-mix(in oklch, var(--color-ink) 65%, transparent);
-    margin-bottom: 0.75rem;
-  }
-
-  .source-ref__list {
-    list-style: decimal;
-    padding-left: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .source-ref__item {
-    font-size: var(--text-meta);
-    color: color-mix(in oklch, var(--color-ink) 70%, transparent);
-    line-height: 1.6;
-  }
-
-  .source-ref__item a {
+  .source-ref a {
     color: var(--color-teal);
     word-break: break-word;
   }
 
-  /* ---- 主編判讀 ---- */
-  .editor-action {
-    margin: 0 0 2.5rem;
-    padding: clamp(1.25rem, 0.75rem + 1.5vw, 1.75rem);
-    background: color-mix(in oklch, var(--color-teal) 6%, var(--color-paper));
-    border: 1px solid color-mix(in oklch, var(--color-teal) 22%, transparent);
-    border-radius: var(--radius-sm);
-  }
-
-  .source-ref__link {
-    font-size: var(--text-meta);
-    color: color-mix(in oklch, var(--color-ink) 60%, transparent);
-  }
-
-  .editor-action__content {
-    margin: 0;
-    padding-left: 1.2rem;
-    display: grid;
-    gap: 0.5rem;
-  }
-
-  .editor-action__content li {
-    font-size: var(--text-body);
-    color: color-mix(in oklch, var(--color-ink) 80%, transparent);
-    line-height: 1.8;
-  }
-
-  /* ---- Related ---- */
   .related-section {
-    max-width: 52rem;
-    margin: 0 auto;
     padding-block: 2rem 0;
     border-top: 2px solid var(--color-fog);
-  }
-
-  .related-section__title {
-    font-family: var(--font-sans);
-    font-size: var(--text-h3);
-    font-weight: 700;
-    color: var(--color-ink);
-    margin-bottom: 1.25rem;
   }
 
   .related-grid {
