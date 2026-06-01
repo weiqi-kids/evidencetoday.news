@@ -1,0 +1,191 @@
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+body,
+main,
+section,
+article,
+header,
+footer,
+nav,
+div {
+  min-width: 0;
+}
+
+#main-content {
+  overflow-x: clip;
+}
+
+img,
+picture,
+video,
+canvas,
+svg,
+iframe,
+embed,
+object {
+  max-width: 100%;
+}
+
+iframe,
+embed,
+object {
+  width: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+li,
+a {
+  overflow-wrap: break-word;
+}
+
+.container {
+  width: min(100%, 80rem);
+  max-width: 80rem;
+  min-width: 0;
+}
+
+.topnav__brand .topnav__brand-zh {
+  font-size: clamp(1.05rem, 1.8vw, 1.45rem) !important;
+}
+
+@media (max-width: 1120px) {
+  .topnav__nav {
+    display: none !important;
+  }
+
+  .topnav__hamburger {
+    display: flex !important;
+  }
+}
+
+.hero {
+  overflow-x: clip !important;
+}
+
+.hero__inner,
+.hero__left,
+.hero__right,
+.hero__focus,
+.hero__focus-primary,
+.hero__focus-secondary,
+.hero__focus-secondary-list,
+.podcast-layout,
+.podcast-layout__left,
+.podcast-layout__right,
+.trends-layout,
+.trends-layout__left,
+.trends-layout__right,
+.category-card,
+.latest-grid > *,
+.myths-grid > *,
+.ingredients-grid > * {
+  min-width: 0 !important;
+}
+
+.hero__badge {
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: break-word;
+  font-size: clamp(1rem, 0.9rem + 0.55vw, 1.25rem) !important;
+  line-height: 1.45;
+}
+
+.hero__title {
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+
+.hero__title-line {
+  display: block;
+}
+
+.hero__buttons,
+.podcast-layout__tags,
+.section-header,
+.video-tabs,
+.article-tabs {
+  max-width: 100%;
+  flex-wrap: wrap;
+}
+
+.hero__buttons a,
+.hero__buttons button,
+.podcast-layout__cta,
+.trends-link {
+  max-width: 100%;
+  white-space: normal;
+}
+
+.hero__focus-title,
+.hero__focus-secondary-title,
+.category-card__title,
+.video-card h3,
+.article-card h3,
+.news-item h3,
+.podcast-layout__title {
+  overflow-wrap: anywhere;
+}
+
+.prose,
+.prose table,
+.prose pre {
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+  .hero__inner {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .hero__badge {
+    padding: 0.45rem 0.9rem;
+    font-size: clamp(1.05rem, 4vw, 1.25rem) !important;
+    letter-spacing: 0.03em;
+  }
+
+  .hero__title {
+    font-size: clamp(2.05rem, 8.8vw, 3rem) !important;
+    line-height: 1.25 !important;
+  }
+
+  .hero__subtitle {
+    max-width: 100%;
+  }
+
+  .hero__buttons {
+    width: 100%;
+  }
+
+  .hero__buttons > * {
+    min-width: min(100%, 8.5rem);
+  }
+
+  .hero__trust {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 0.75rem;
+    max-width: 100%;
+    overflow: visible !important;
+    flex-wrap: initial !important;
+    padding-bottom: 0 !important;
+  }
+
+  .hero__trust-card {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0 !important;
+    flex-shrink: 1 !important;
+  }
+}
