@@ -56,6 +56,8 @@
   .toc {
     font-family: var(--font-ui);
     font-size: var(--text-meta);
+    min-width: 0;
+    max-width: 100%;
   }
 
   .toc__title {
@@ -69,6 +71,7 @@
   .toc__list {
     list-style: none;
     padding: 0;
+    min-width: 0;
     margin: 0;
     display: flex;
     flex-direction: column;
@@ -78,6 +81,7 @@
   .toc__item {
     border-left: 3px solid transparent;
     transition: border-color 0.15s ease;
+    min-width: 0;
   }
 
   .toc__item--active {
@@ -94,6 +98,7 @@
     padding: 0.35rem 0.75rem;
     color: color-mix(in oklch, var(--color-ink) 65%, transparent);
     text-decoration: none;
+    overflow-wrap: anywhere;
     line-height: 1.5;
     transition: color 0.15s ease;
   }
@@ -101,5 +106,6 @@
   .toc__link:hover {
     color: var(--color-teal);
     text-decoration: none;
+    overflow-wrap: anywhere;
   }
 </style>

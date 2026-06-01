@@ -104,3 +104,10 @@
 - 中文標籤由 `src/utils/article-query-patterns.ts` 對照，不要新增 `qualityPair` 欄位。
 - `ArticleCard` 與文章頁 header 可同時顯示「主題分類 + AEO 類型」，但不可取代既有主題分類。
 - 手機版優先確保標題可讀；標籤需可換行，不要壓縮標題區塊。
+
+## Ingredients 成分解析版型補充（2026-06）
+
+- `src/pages/ingredients/[slug].astro` 的單篇頁首不再傳入 `disclosure`，避免在標題區重複顯示「一般健康教育／診斷」類提醒；正式醫療聲明仍由 `Article.astro` 底部的 `MedicalDisclaimer` 統一呈現。
+- Ingredients 內文應直接從 MDX 的 `## 30 秒認識` 開始，不再在 page template 注入「閱讀這頁前，先說清楚」提醒卡，也不在正文前插入機制圖、證據圖或安全性卡片。
+- 所有 `src/content/ingredients/*.mdx` 的二級標題維持一致順序：`30 秒認識`、`基本介紹`、`這是什麼？`、`在身體裡做什麼？／主要作用機制`、`食物來源／常見來源`、`建議攝取量／常見攝取建議／研究中常見使用方式`、`缺乏風險或攝取不足問題`、`補充品常見形式`、`安全性與注意事項`、`常見迷思`、`參考資料`。不要新增會干擾 TOC 的開頭提醒區塊。
+- Ingredients RWD 防護：列表卡片 grid 使用 `minmax(0, 1fr)`，單篇 `Article.astro` 的 content/sidebar grid item 需要 `min-width: 0`；TOC 與卡片文字需允許 `overflow-wrap`，避免 360–430px 手機寬度出現整頁水平捲軸。

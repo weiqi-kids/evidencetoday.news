@@ -145,6 +145,8 @@ img {
 
 .prose {
   max-width: 68ch;
+  min-width: 0;
+  overflow-wrap: anywhere;
   font-size: var(--text-body);
   line-height: 1.75;
 }
@@ -232,7 +234,9 @@ img {
 
 .prose table {
   width: 100%;
+  max-width: 100%;
   border-collapse: collapse;
+  overflow-wrap: anywhere;
   font-size: var(--text-meta);
 }
 
