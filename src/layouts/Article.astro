@@ -140,6 +140,7 @@ const {
 
   .article-grid {
     display: grid;
+    min-width: 0;
     grid-template-columns: 1fr;
     gap: 2rem;
     padding-block: 2rem;
@@ -166,6 +167,8 @@ const {
 
   .article-content {
     max-width: 68ch;
+    min-width: 0;
+    overflow-wrap: anywhere;
     display: flex;
     flex-direction: column;
     gap: 2rem;
@@ -183,11 +186,12 @@ const {
 
   .article-sidebar {
     display: none;
+    min-width: 0;
   }
 
   @media (min-width: 1024px) {
     .article-grid--prose {
-      grid-template-columns: 0.7fr 0.3fr;
+      grid-template-columns: minmax(0, 0.7fr) minmax(14rem, 0.3fr);
     }
 
     .article-sidebar {
