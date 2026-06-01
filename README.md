@@ -88,50 +88,10 @@
 - 自動分類不準時，使用 `VIDEO_CATEGORY_OVERRIDES` 以 YouTube video id 手動指定分類。
 - 本階段只做短影音分類導覽，尚未建立單支影片內容頁（短影音分類為第一步；單支影片內容頁將於後續建立）。
 - 搜尋頁熱門標籤使用 `getTopTags()` 動態產生，不應硬寫固定標籤。
-
----
-
-## 趨勢文章維護規則（/news）
-
-完整守則見 [`docs/playbooks/news-article.md`](docs/playbooks/news-article.md)。重點：
-
-### 結構（每篇都套用，前台呈現必須一致）
-1. 標題
-2. Hero 圖或分類情境圖
-3. 重點摘要（`keyPoints`，4-6 點列點，白話、不加句點分號）
-4. 先看懂這個詞（`termBox`，**只放領域核心詞**；統合分析、RCT、健康使用者偏誤等方法詞請勿放）
-5. 研究內容（Markdown body 的 `## 研究內容`，**不要用「研究看見什麼」**）
-6. 請注意（`cautionNote` 或 `evidenceNote`，講研究限制與不能過度推論的地方）
-7. 主編判讀（`editorPoints`，3-6 點列點，**不要寫成段落**）
-8. 來源（`references` 陣列為主；fallback 到 pmid / sourceUrl；缺源顯示「原始來源連結尚未補上」）
-
-### 詳情頁區塊優先順序（`src/pages/news/[slug].astro`）
-- 主編判讀：優先讀 `editorPoints`，否則嘗試從 `editorComment` 字串拆出列點
-- 請注意：優先讀 `cautionNote`，fallback 到 `evidenceNote`
-- 來源：優先讀 `references` 陣列，fallback 到 `pmid`，再 fallback 到 `sourceUrl`
-
-### Schema 欄位（`src/content.config.ts` news collection）
-- `keyPoints: z.array(z.string()).min(3).max(8).optional()`
-- `editorPoints: z.array(z.string()).min(2).max(8).optional()`
-- `references: z.array(referenceSchema).optional()`
-- `cautionNote: z.string().optional()`
-- `sourcePending: z.boolean().default(false)`
-- `sourcePendingReason: z.string().optional()`
-- `editorComment` 改為 `z.union([z.string(), z.array(z.string())]).optional()`（向下相容）
-
-### AI 句型禁用清單（寫完 grep 確認 0 hit）
-研究看見什麼 / 這些結果對公共衛生有什麼意義 / 又有哪些地方需要謹慎解讀 / 這些發現提醒我們 / 提供了重要參考 / 值得進一步關注 / 本研究具有啟示意義 / 如何把這些發現用在生活中 / 對公共衛生具有重要意義 / 提供了新的視角 / 有助於我們理解 / 值得未來研究進一步探討
-
-### 來源完整性
-- 不要假造 DOI、PMID、論文標題
-- 缺源時 `sourcePending: true` + `sourcePendingReason: "<原因>"`
-- 列點數據要可追溯至來源
-
-### 列表頁與分類 fallback
-- 卡片字級下限：badge 13px / title 18px / summary 15px / date 13px
-- 分類 fallback SVG 在 `public/images/news/`，必須是完整情境圖（不是小 icon）
-- 新增分類：同步改 `src/utils/news.ts` 的 `CATEGORY_KEYWORDS` 與 `CATEGORY_IMAGES`
-- TrendBubbles 已支援 `prefers-reduced-motion`
+- 趨勢頁 `editorComment` 前台標題使用「主編判讀」，避免過度個人部落格語氣。
+- 趨勢頁 `TrendBubbles` 需保留較寬鬆的上下留白，避免圖形被裁切；手機版高度需降到約 17rem，並支援 `prefers-reduced-motion`。
+- 趨勢卡片字級下限：分類標籤 13px、標題 18px、摘要 15px、日期 13px，維持一般讀者可讀性。
+- 趨勢單篇頁固定段落順序：重點摘要 → 先看懂這個詞（可選）→ 研究內容 → 主編判讀（列點）→ 來源。
 
 ---
 
@@ -178,10 +138,7 @@
 - 排序順序：對篩選後結果依 `updatedDate` 排序（`new` 新到舊、`old` 舊到新），日期解析失敗 fallback 為 `0`。
 - 搜尋欄位：`title`、`mythClaim`、`verdictSummary`、`summary`、`topicTags`、`tldr`（大小寫不敏感，先 `trim`）。
 - 空狀態：當結果為 `0` 時僅顯示「目前沒有符合條件的闢謠文章，請調整搜尋或篩選條件。」且不渲染卡片。
-<<<<<<< codex/fix-filtering-and-sorting-on-/myths-page-7vkx9e
 - 顯示切換使用 `style.display`（避免 `hidden` 屬性被頁面樣式覆寫），確保空狀態與卡片列表互斥。
-=======
->>>>>>> main
 
 ## Corporate Identity 維護規則
 

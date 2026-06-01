@@ -18,11 +18,10 @@
     const container = svgEl.parentElement;
     width = container.clientWidth;
     height = container.clientHeight;
+    const reduceMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // clientHeight comes from the CSS clamp(); if it's 0 fall back to a sensible default
     if (height <= 0) height = 280;
 
-    // Scale radii relative to the shorter dimension so bubbles fill the space
     const minDim = Math.min(width, height);
     const radiusScale = scaleSqrt()
       .domain([1, Math.max(...tags.map((t) => t.count), 1)])
@@ -41,20 +40,14 @@
 
     const sim = forceSimulation(nodes)
       .force('center', forceCenter(width / 2, height / 2))
-      .force('collide', forceCollide((d) => d.r + 3).strength(0.8))
-      .force('x', forceX(width / 2).strength(0.05))
-      .force('y', forceY(height / 2).strength(0.05))
+      .force('collide', forceCollide((d) => d.r + 6).strength(0.95))
+      .force('x', forceX(width / 2).strength(0.035))
+      .force('y', forceY(height / 2).strength(0.035))
       .on('tick', () => {
         nodes = [...nodes];
       });
 
-    if (reduceMotion) {
-      // Resolve layout instantly without animating ticks
-      for (let i = 0; i < 200; i += 1) sim.tick();
-      sim.stop();
-      nodes = [...nodes];
-    }
-
+    if (reduceMotion) sim.alpha(0.3).stop();
     return () => sim.stop();
   });
 
@@ -90,12 +83,8 @@
         role="listitem"
       >
         <circle r={node.r} />
-        {#if node.r >= 25}
-          <text
-            text-anchor="middle"
-            dominant-baseline="central"
-            class="bubble-label"
-          >{node.tag}</text>
+        {#if node.r >= 24}
+          <text text-anchor="middle" dominant-baseline="central" class="bubble-label">{node.tag}</text>
         {/if}
       </g>
     {/each}
@@ -114,68 +103,14 @@
 </noscript>
 
 <style>
-  .trend-bubbles {
-    position: relative;
-    border-radius: var(--radius-card);
-    border: 1px solid var(--color-fog);
-    background-color: white;
-    height: 100%;
-    overflow: hidden;
-  }
-
-  svg {
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
-
-  .bubble-group circle {
-    transition: transform 0.2s ease;
-    cursor: default;
-  }
-
-  .bubble--high circle {
-    fill: var(--color-teal);
-  }
-
-  .bubble--mid circle {
-    fill: color-mix(in oklch, var(--color-teal) 60%, white);
-  }
-
-  .bubble--low circle {
-    fill: color-mix(in oklch, var(--color-teal) 30%, white);
-  }
-
-  .bubble-group--hovered circle {
-    transform: scale(1.1);
-  }
-
-  .bubble-label {
-    font-family: var(--font-ui);
-    font-size: var(--text-badge);
-    font-weight: 600;
-    fill: white;
-    pointer-events: none;
-  }
-
-  .bubble--low .bubble-label {
-    fill: var(--color-ink);
-  }
-
-  .tooltip {
-    position: absolute;
-    transform: translate(-50%, -100%);
-    padding: 0.375rem 0.75rem;
-    border-radius: var(--radius-sm);
-    background-color: var(--color-ink);
-    color: white;
-    font-family: var(--font-ui);
-    font-size: var(--text-badge);
-    white-space: nowrap;
-    pointer-events: none;
-    z-index: 10;
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-  }
+  .trend-bubbles { position: relative; border-radius: var(--radius-card); border: 1px solid color-mix(in oklch, var(--color-fog) 75%, white); background: radial-gradient(circle at 50% 50%, color-mix(in oklch, var(--color-paper) 88%, white), white 72%); height: 100%; overflow: hidden; }
+  svg { display: block; width: 100%; height: 100%; }
+  .bubble-group circle { transition: transform 0.4s ease, opacity 0.4s ease; cursor: default; }
+  .bubble--high circle { fill: color-mix(in oklch, var(--color-teal) 88%, var(--color-ink)); }
+  .bubble--mid circle { fill: color-mix(in oklch, var(--color-teal) 52%, var(--color-fog)); }
+  .bubble--low circle { fill: color-mix(in oklch, var(--color-teal) 34%, var(--color-fog)); }
+  .bubble-group--hovered circle { transform: scale(1.1); }
+  .bubble-label { font-family: var(--font-ui); font-size: 0.875rem; font-weight: 600; fill: white; pointer-events: none; }
+  .bubble--low .bubble-label { fill: var(--color-ink); }
+  .tooltip { position: absolute; transform: translate(-50%, -100%); padding: 0.375rem 0.75rem; border-radius: var(--radius-sm); background-color: var(--color-ink); color: white; font-family: var(--font-ui); font-size: var(--text-badge); white-space: nowrap; pointer-events: none; z-index: 10; display: flex; gap: 0.5rem; align-items: center; }
 </style>
