@@ -106,6 +106,7 @@
 | 新增文章 / 闢謠 / 成分解析 / Podcast / 短影音 / 趨勢新聞 | [docs/content-guide.md](./docs/content-guide.md) |
 | 修改、刪除既有內容 | [docs/content-guide.md](./docs/content-guide.md) |
 | 撰寫趨勢新聞 SOP（自動化排程） | [docs/news_sop.md](./docs/news_sop.md) |
+| 維護趨勢文章結構與前台（/news） | [docs/playbooks/news-article.md](./docs/playbooks/news-article.md) |
 | 新增 Content Collection 類型 | [docs/playbooks/new-content-type.md](./docs/playbooks/new-content-type.md) |
 
 ### 排版 / 視覺類
@@ -137,10 +138,7 @@
 - 排序順序：對篩選後結果依 `updatedDate` 排序（`new` 新到舊、`old` 舊到新），日期解析失敗 fallback 為 `0`。
 - 搜尋欄位：`title`、`mythClaim`、`verdictSummary`、`summary`、`topicTags`、`tldr`（大小寫不敏感，先 `trim`）。
 - 空狀態：當結果為 `0` 時僅顯示「目前沒有符合條件的闢謠文章，請調整搜尋或篩選條件。」且不渲染卡片。
-<<<<<<< codex/fix-filtering-and-sorting-on-/myths-page-7vkx9e
 - 顯示切換使用 `style.display`（避免 `hidden` 屬性被頁面樣式覆寫），確保空狀態與卡片列表互斥。
-=======
->>>>>>> main
 
 ## Corporate Identity 維護規則
 
@@ -424,3 +422,8 @@ Podcast 單集建議使用 `embedUrl` 指向 Firstory 內嵌播放器（`https:/
 - FAQ 改為伺服器端渲染，答案內容存在初始 HTML；題數超過 8 題時僅前 5 題預設展開。
 - 新增 `queryPattern` 內容欄位（內部 metadata 用）。
 - 新增 `public/llms.txt`，並更新 `public/robots.txt` 為 AI crawler 友善規則。
+
+## Myths quality gate (Phase 2)
+
+- Run `pnpm run check:myths` before publishing myths content.
+- Articles marked `status: "under-review"` are excluded from `/myths` public listing and route generation.

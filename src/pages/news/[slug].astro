@@ -34,7 +34,26 @@ const category = getNewsCategory(data.tags, data.category);
 const heroImage = getNewsHeroImage(data.heroImage, data.thumbnail, data.tags, data.category);
 const filteredTermBox = (data.termBox ?? []).filter((item) => !['統合分析', '系統性回顧', 'RCT', '健康使用者偏誤', '觀察性研究', '世代研究', '橫斷面研究'].includes(item.term.trim()));
 
-/* Resolve related content */
+/* ---- Normalize editor judgment to a list of points ---- */
+function normalizeEditorPoints(): string[] {
+  if (Array.isArray(data.editorPoints) && data.editorPoints.length > 0) {
+    return data.editorPoints;
+  }
+  const ec = data.editorComment;
+  if (!ec) return [];
+  if (Array.isArray(ec)) return ec;
+  // string fallback: split on double newlines or lines starting with "- "
+  const lines = ec.split('\n').map((l) => l.trim()).filter(Boolean);
+  const bulletLines = lines.filter((l) => l.startsWith('- ')).map((l) => l.slice(2).trim());
+  if (bulletLines.length >= 2) return bulletLines;
+  return ec.split('\n\n').map((p) => p.trim()).filter(Boolean);
+}
+const editorPoints = normalizeEditorPoints();
+
+/* ---- Caution note (please注意) ---- */
+const cautionText = data.cautionNote?.trim() || data.evidenceNote?.trim() || '';
+
+/* ---- Resolve related content ---- */
 const relatedArticles = data.relatedArticles
   ? (await Promise.all(data.relatedArticles.map((id) => getEntry('articles', id)))).filter(Boolean)
   : [];
@@ -53,10 +72,10 @@ const relatedPodcasts = data.relatedPodcasts
 
 const hasRelated = relatedArticles.length > 0 || relatedMyths.length > 0 || relatedIngredients.length > 0 || relatedVideos.length > 0 || relatedPodcasts.length > 0;
 
-/* Meta description */
+/* ---- Meta description ---- */
 const metaDesc = (data.subtitle || data.summary || '').slice(0, 140);
 
-/* JSON-LD */
+/* ---- JSON-LD ---- */
 const articleSchema = {
   '@context': 'https://schema.org',
   '@type': 'NewsArticle',
@@ -97,7 +116,7 @@ const breadcrumbSchema = {
     ]} />
 
     <article class="news-article">
-      {/* ---- Hero ---- */}
+      {/* ---- 1. Title block ---- */}
       <header class="news-article__header">
         <span class="news-article__cat">{category}</span>
         <h1 class="news-article__title">{displayTitle}</h1>
@@ -106,21 +125,15 @@ const breadcrumbSchema = {
         )}
         <div class="news-article__meta">
           <time>{fmtDate(data.publishDate)}</time>
-          {data.sourceUrl && (
-            <>
-              <span aria-hidden="true">&middot;</span>
-              <a href={data.sourceUrl} target="_blank" rel="noopener noreferrer" class="news-article__source-link">原始來源</a>
-            </>
-          )}
         </div>
       </header>
 
-      {/* ---- Hero image ---- */}
+      {/* ---- 2. Hero image / 分類情境圖 ---- */}
       <div class="news-article__hero-img">
         <img src={heroImage} alt={displayTitle} loading="eager" />
       </div>
 
-      {/* ---- Intro ---- */}
+      {/* ---- Intro (optional, lead-in paragraph) ---- */}
       {data.intro && (
         <div class="news-article__intro">
           <p>{data.intro}</p>
@@ -151,7 +164,7 @@ const breadcrumbSchema = {
         </aside>
       )}
 
-      {/* ---- Body (Markdown content) ---- */}
+      {/* ---- 5. 研究內容（Markdown body） ---- */}
       <div class="news-article__body prose">
         <Content />
       </div>
@@ -164,8 +177,8 @@ const breadcrumbSchema = {
         </aside>
       )}
 
-      {/* ---- 主編判讀 ---- */}
-      {data.editorComment && (
+      {/* ---- 7. 主編判讀（列點） ---- */}
+      {editorPoints.length > 0 && (
         <aside class="editor-action">
           <h2 class="editor-action__heading">主編判讀</h2>
           <ul class="editor-action__content">
@@ -261,7 +274,7 @@ const breadcrumbSchema = {
     margin: 0 auto;
   }
 
-  /* ---- Header / Hero ---- */
+  /* ---- Header ---- */
   .news-article__header {
     padding-block: 1.5rem 1rem;
     display: flex;
@@ -272,10 +285,10 @@ const breadcrumbSchema = {
   .news-article__cat {
     display: inline-flex;
     align-self: flex-start;
-    padding: 0.2rem 0.65rem;
+    padding: 0.25rem 0.7rem;
     border-radius: var(--radius-pill);
     font-family: var(--font-ui);
-    font-size: 0.75rem;
+    font-size: 0.85rem;
     font-weight: 600;
     color: white;
     background: color-mix(in oklch, var(--color-cat-news) 90%, black);
@@ -283,7 +296,7 @@ const breadcrumbSchema = {
 
   .news-article__title {
     font-family: var(--font-serif);
-    font-size: 1.4rem;
+    font-size: clamp(1.5rem, 1.2rem + 1.5vw, 2.25rem);
     font-weight: 700;
     color: var(--color-ink);
     line-height: 1.35;
@@ -302,11 +315,6 @@ const breadcrumbSchema = {
     font-family: var(--font-ui);
     font-size: var(--text-meta);
     color: color-mix(in oklch, var(--color-ink) 50%, transparent);
-  }
-
-  .news-article__source-link {
-    color: var(--color-teal);
-    font-weight: 500;
   }
 
   /* ---- Hero image ---- */
@@ -344,6 +352,37 @@ const breadcrumbSchema = {
   .keypoints__heading { font-size: 1.05rem; margin-bottom: 0.75rem; color: var(--color-ink); }
   .keypoints__list { margin: 0; padding-left: 1.2rem; display: grid; gap: 0.45rem; }
   .keypoints__list li { font-size: 1rem; line-height: 1.75; }
+
+  /* ---- 重點摘要 ---- */
+  .key-points {
+    margin-bottom: 2rem;
+    padding: clamp(1.25rem, 0.75rem + 1.5vw, 1.75rem);
+    background: color-mix(in oklch, var(--color-teal) 5%, var(--color-paper));
+    border-left: 4px solid var(--color-teal);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+
+  .key-points__heading {
+    font-family: var(--font-sans);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--color-teal);
+    margin-bottom: 0.75rem;
+  }
+
+  .key-points__list {
+    list-style: disc;
+    padding-left: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .key-points__item {
+    font-size: var(--text-body);
+    line-height: 1.75;
+    color: color-mix(in oklch, var(--color-ink) 85%, transparent);
+  }
 
   /* ---- 先看懂這個詞 ---- */
   .term-box {
@@ -388,16 +427,16 @@ const breadcrumbSchema = {
     padding-block: 0 2rem;
   }
 
-  /* ---- 證據提醒 ---- */
-  .evidence-note {
+  /* ---- 請注意 ---- */
+  .caution-note {
     margin-bottom: 2rem;
     padding: 1.25rem 1.5rem;
     background: color-mix(in oklch, var(--color-fog) 50%, white);
     border-radius: var(--radius-sm);
-    border-left: 3px solid var(--color-fog);
+    border-left: 3px solid color-mix(in oklch, var(--color-ink) 30%, var(--color-fog));
   }
 
-  .evidence-note__heading {
+  .caution-note__heading {
     font-family: var(--font-sans);
     font-size: 0.95rem;
     font-weight: 700;
@@ -405,13 +444,44 @@ const breadcrumbSchema = {
     margin-bottom: 0.5rem;
   }
 
-  .evidence-note__text {
+  .caution-note__text {
     font-size: var(--text-meta);
-    color: color-mix(in oklch, var(--color-ink) 65%, transparent);
+    color: color-mix(in oklch, var(--color-ink) 75%, transparent);
     line-height: 1.75;
   }
 
-  /* ---- 資料來源 ---- */
+  /* ---- 主編判讀（列點） ---- */
+  .editor-action {
+    margin: 0 0 2.5rem;
+    padding: clamp(1.25rem, 0.75rem + 1.5vw, 1.75rem);
+    background: color-mix(in oklch, var(--color-teal) 6%, var(--color-paper));
+    border-left: 4px solid var(--color-teal);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+
+  .editor-action__heading {
+    font-family: var(--font-sans);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-teal);
+    margin-bottom: 0.75rem;
+  }
+
+  .editor-action__list {
+    list-style: disc;
+    padding-left: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .editor-action__item {
+    font-size: var(--text-body);
+    color: color-mix(in oklch, var(--color-ink) 80%, transparent);
+    line-height: 1.8;
+  }
+
+  /* ---- 來源 ---- */
   .source-ref {
     margin-bottom: 2.5rem;
     padding-top: 1rem;
@@ -420,19 +490,29 @@ const breadcrumbSchema = {
 
   .source-ref__heading {
     font-family: var(--font-sans);
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     font-weight: 700;
-    color: color-mix(in oklch, var(--color-ink) 55%, transparent);
-    margin-bottom: 0.5rem;
+    color: color-mix(in oklch, var(--color-ink) 65%, transparent);
+    margin-bottom: 0.75rem;
   }
 
-  .source-ref__link {
+  .source-ref__list {
+    list-style: decimal;
+    padding-left: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .source-ref__item {
     font-size: var(--text-meta);
-    color: color-mix(in oklch, var(--color-ink) 60%, transparent);
+    color: color-mix(in oklch, var(--color-ink) 70%, transparent);
+    line-height: 1.6;
   }
 
-  .source-ref__link a {
+  .source-ref__item a {
     color: var(--color-teal);
+    word-break: break-word;
   }
 
   /* ---- 主編判讀 ---- */
@@ -444,12 +524,9 @@ const breadcrumbSchema = {
     border-radius: var(--radius-sm);
   }
 
-  .editor-action__heading {
-    font-family: var(--font-sans);
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--color-teal);
-    margin-bottom: 0.75rem;
+  .source-ref__link {
+    font-size: var(--text-meta);
+    color: color-mix(in oklch, var(--color-ink) 60%, transparent);
   }
 
   .editor-action__content {
@@ -488,10 +565,6 @@ const breadcrumbSchema = {
   }
 
   @media (min-width: 640px) {
-    .news-article__title {
-      font-size: clamp(1.5rem, 1.2rem + 1.5vw, 2.25rem);
-    }
-
     .related-grid {
       grid-template-columns: repeat(2, 1fr);
     }

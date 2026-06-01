@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none">
+  <rect width="800" height="450" rx="8" fill="#F0EFF6"/>
+  <!-- bone silhouette -->
+  <path d="M280 200 Q260 180 280 160 Q300 150 320 170 L460 170 Q480 150 500 160 Q520 180 500 200 Q520 220 500 240 Q480 250 460 230 L320 230 Q300 250 280 240 Q260 220 280 200Z" fill="#A7B1C8" opacity="0.7"/>
+  <!-- mineral nodes -->
+  <circle cx="180" cy="320" r="22" fill="#7D88A8" opacity="0.6"/>
+  <text x="180" y="326" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.9">Ca</text>
+  <circle cx="240" cy="350" r="20" fill="#7D88A8" opacity="0.55"/>
+  <text x="240" y="356" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#fff" opacity="0.9">Mg</text>
+  <circle cx="560" cy="350" r="20" fill="#7D88A8" opacity="0.55"/>
+  <text x="560" y="356" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#fff" opacity="0.9">Zn</text>
+  <circle cx="620" cy="320" r="22" fill="#7D88A8" opacity="0.6"/>
+  <text x="620" y="326" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.9">Fe</text>
+  <text x="400" y="350" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#5A6388" opacity="0.8">MINERAL</text>
+</svg>

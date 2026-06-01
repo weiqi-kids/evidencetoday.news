@@ -34,6 +34,10 @@
       y: height / 2 + (Math.random() - 0.5) * 100,
     }));
 
+    const reduceMotion = typeof window !== 'undefined'
+      && window.matchMedia
+      && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     const sim = forceSimulation(nodes)
       .force('center', forceCenter(width / 2, height / 2))
       .force('collide', forceCollide((d) => d.r + 6).strength(0.95))
