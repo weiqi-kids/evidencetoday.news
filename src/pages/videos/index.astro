@@ -38,9 +38,47 @@ const curatedMap = new Map(curatedVideos.map((entry) => [entry.data.youtubeId, e
   breadcrumbItems={[{ label: '首頁', href: '/' }, { label: '短影音' }]}
   totalItems={categorizedVideos.length}
 >
-  <p class="subtitle">用 60 秒掌握一個健康觀念，所有影片同步自本日有據 YouTube Shorts。</p>
+  <section class="videos-hero" aria-labelledby="videos-hero-title">
+    <div class="videos-hero__content">
+      <p class="eyebrow">本日有據 Shorts</p>
+      <h2 id="videos-hero-title">30 秒先抓住健康重點，再決定要不要深入閱讀。</h2>
+      <p class="subtitle">用 30 秒掌握一個健康觀念，所有影片同步自本日有據 YouTube Shorts。</p>
+      <a class="videos-hero__link" href={YOUTUBE_CHANNEL_URL} target="_blank" rel="noopener noreferrer">前往 YouTube 頻道</a>
+    </div>
+    <dl class="videos-hero__stats" aria-label="短影音內容統計">
+      <div>
+        <dt>{categorizedVideos.length}</dt>
+        <dd>支短影音</dd>
+      </div>
+      <div>
+        <dt>{visibleCategories.length}</dt>
+        <dd>主題分類</dd>
+      </div>
+      <div>
+        <dt>{curatedVideos.length}</dt>
+        <dd>精選整理</dd>
+      </div>
+    </dl>
+  </section>
 
-  {curatedVideos.length > 0 && <section class="curated"><h2>精選短影音整理</h2><ul>{curatedVideos.slice(0, 5).map((entry) => <li><a href={`/videos/${entry.id.replace(/\.[^.]+$/, '')}/`}>{entry.data.title}</a></li>)}</ul></section>}
+  {curatedVideos.length > 0 && (
+    <section class="curated" aria-labelledby="curated-videos-title">
+      <div class="curated__header">
+        <p class="eyebrow">Editor's Picks</p>
+        <h2 id="curated-videos-title">精選短影音整理</h2>
+        <p>已補上重點整理的影片，適合從這幾支先看，再延伸到同類主題。</p>
+      </div>
+      <div class="curated__list">
+        {curatedVideos.slice(0, 5).map((entry, index) => (
+          <a class="curated__item" href={`/videos/${entry.id.replace(/\.[^.]+$/, '')}/`}>
+            <span class="curated__number">{String(index + 1).padStart(2, '0')}</span>
+            <span class="curated__title">{entry.data.title}</span>
+            <span class="curated__arrow" aria-hidden="true">→</span>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
 
   {categorizedVideos.length === 0 ? (
     <p class="fallback">目前短影音資料暫時無法載入，請稍後再試，或前往<a href={YOUTUBE_CHANNEL_URL} target="_blank" rel="noopener noreferrer">本日有據 YouTube 頻道</a>觀看。</p>
@@ -65,12 +103,14 @@ const curatedMap = new Map(curatedVideos.map((entry) => [entry.data.youtubeId, e
             <div class="video-frame">
               <iframe src={v.embedUrl} title={v.title} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
             </div>
-            <div class="video-card__meta">
-              <span class="video-card__category">{v.categoryLabel}</span>
-              <p>{v.publishedAt ? fmtDate(new Date(v.publishedAt)) : '日期待補'}</p>
+            <div class="video-card__body">
+              <div class="video-card__meta">
+                <span class="video-card__category">{v.categoryLabel}</span>
+                <p>{v.publishedAt ? fmtDate(new Date(v.publishedAt)) : '日期待補'}</p>
+              </div>
+              <h3>{v.title}</h3>
+              {curatedMap.has(v.videoId) && <p class="curated-link"><span class="curated-badge">已整理</span><a href={`/videos/${curatedMap.get(v.videoId)?.id.replace(/\.[^.]+$/, '')}/`}>看重點整理 →</a></p>}
             </div>
-            <h3>{v.title}</h3>
-            {curatedMap.has(v.videoId) && <p class="curated-link"><span class="curated-badge">已整理</span><a href={`/videos/${curatedMap.get(v.videoId)?.id.replace(/\.[^.]+$/, '')}/`}>看重點整理 →</a></p>}
           </article>
         ))}
       </div>
@@ -151,8 +191,194 @@ const curatedMap = new Map(curatedVideos.map((entry) => [entry.data.youtubeId, e
 </script>
 
 <style>
+  .videos-hero,
+  .curated,
+  .video-card,
+  .video-empty {
+    box-shadow: var(--shadow-card);
+  }
+
+  .videos-hero {
+    position: relative;
+    display: grid;
+    gap: clamp(1.5rem, 3vw, 3rem);
+    grid-template-columns: minmax(0, 1.35fr) minmax(16rem, 0.65fr);
+    align-items: stretch;
+    margin-bottom: 1.5rem;
+    padding: clamp(1.25rem, 3vw, 2.25rem);
+    overflow: hidden;
+    border: 1px solid color-mix(in oklch, var(--color-cat-video) 24%, var(--color-fog));
+    border-radius: calc(var(--radius-card) + 0.35rem);
+    background:
+      radial-gradient(circle at top left, color-mix(in oklch, var(--color-cat-video) 20%, transparent), transparent 34%),
+      linear-gradient(135deg, #fff 0%, color-mix(in oklch, var(--color-cat-video) 8%, var(--color-paper)) 100%);
+  }
+
+  .videos-hero::after {
+    content: '';
+    position: absolute;
+    right: -5rem;
+    bottom: -7rem;
+    width: 18rem;
+    height: 18rem;
+    border-radius: 999px;
+    background: color-mix(in oklch, var(--color-coral) 14%, transparent);
+    pointer-events: none;
+  }
+
+  .videos-hero__content,
+  .videos-hero__stats {
+    position: relative;
+    z-index: 1;
+  }
+
+  .eyebrow {
+    margin-bottom: 0.45rem;
+    font-family: var(--font-ui);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: color-mix(in oklch, var(--color-cat-video) 76%, var(--color-ink));
+    text-transform: uppercase;
+  }
+
+  .videos-hero h2 {
+    max-width: 17em;
+    margin: 0;
+    font-size: clamp(1.75rem, 3vw, 3rem);
+    line-height: 1.18;
+    letter-spacing: -0.03em;
+  }
+
   .subtitle {
-    margin-bottom: 1rem;
+    max-width: 38rem;
+    margin-top: 0.85rem;
+    color: color-mix(in oklch, var(--color-ink) 76%, transparent);
+  }
+
+  .videos-hero__link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1.25rem;
+    border: 1px solid color-mix(in oklch, var(--color-cat-video) 42%, var(--color-ink));
+    border-radius: var(--radius-pill);
+    padding: 0.55rem 0.95rem;
+    color: var(--color-ink);
+    background: color-mix(in oklch, white 82%, var(--color-cat-video));
+    font-family: var(--font-ui);
+    font-size: var(--text-meta);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .videos-hero__link:hover {
+    color: var(--color-ink);
+    border-color: var(--color-cat-video);
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  .videos-hero__stats {
+    display: grid;
+    gap: 0.75rem;
+    align-self: stretch;
+  }
+
+  .videos-hero__stats div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 5.25rem;
+    border: 1px solid color-mix(in oklch, var(--color-cat-video) 18%, var(--color-fog));
+    border-radius: var(--radius-card);
+    padding: 1rem;
+    background: color-mix(in oklch, white 84%, transparent);
+    backdrop-filter: blur(8px);
+  }
+
+  .videos-hero__stats dt {
+    font-family: var(--font-serif);
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--color-cat-video);
+  }
+
+  .videos-hero__stats dd {
+    margin-top: 0.35rem;
+    font-family: var(--font-ui);
+    font-size: var(--text-meta);
+    color: color-mix(in oklch, var(--color-ink) 72%, transparent);
+  }
+
+  .curated {
+    display: grid;
+    gap: clamp(1rem, 2vw, 1.5rem);
+    grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr);
+    margin-bottom: 1.35rem;
+    border: 1px solid color-mix(in oklch, var(--color-teal) 22%, var(--color-fog));
+    border-radius: var(--radius-card);
+    padding: clamp(1rem, 2.5vw, 1.5rem);
+    background: linear-gradient(135deg, color-mix(in oklch, var(--color-teal) 8%, #fff), #fff 64%);
+  }
+
+  .curated__header h2 {
+    margin: 0;
+    color: var(--color-ink);
+  }
+
+  .curated__header p:last-child {
+    margin-top: 0.55rem;
+    color: color-mix(in oklch, var(--color-ink) 70%, transparent);
+  }
+
+  .curated__list {
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .curated__item {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.75rem;
+    border: 1px solid color-mix(in oklch, var(--color-fog) 84%, white);
+    border-radius: 1rem;
+    padding: 0.75rem 0.85rem;
+    color: var(--color-ink);
+    background: #fff;
+    text-decoration: none;
+  }
+
+  .curated__item:hover {
+    border-color: color-mix(in oklch, var(--color-teal) 38%, var(--color-fog));
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  .curated__number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 999px;
+    color: var(--color-paper);
+    background: var(--color-ink);
+    font-family: var(--font-ui);
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  .curated__title {
+    overflow: hidden;
+    font-weight: 650;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .curated__arrow {
+    color: var(--color-teal);
+    font-weight: 800;
   }
 
   .video-tabs {
@@ -166,17 +392,26 @@ const curatedMap = new Map(curatedVideos.map((entry) => [entry.data.youtubeId, e
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
-    border: 1px solid var(--color-fog);
+    border: 1px solid color-mix(in oklch, var(--color-fog) 88%, white);
     border-radius: 999px;
-    padding: 0.4rem 0.85rem;
+    padding: 0.48rem 0.9rem;
     color: var(--color-ink);
     text-decoration: none;
+    font-family: var(--font-ui);
     font-size: var(--text-meta);
+    font-weight: 650;
     background: #fff;
+    box-shadow: 0 1px 2px oklch(0 0 0 / 0.04);
   }
 
   .video-tab span {
     color: color-mix(in oklch, var(--color-ink) 65%, transparent);
+  }
+
+  .video-tab:hover {
+    border-color: color-mix(in oklch, var(--color-teal) 34%, var(--color-fog));
+    color: var(--color-ink);
+    box-shadow: var(--shadow-card);
   }
 
   .video-tab[aria-selected='true'] {
@@ -191,24 +426,34 @@ const curatedMap = new Map(curatedVideos.map((entry) => [entry.data.youtubeId, e
 
   .videos-grid {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-card-gap);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+    gap: clamp(1rem, 2vw, 1.35rem);
   }
 
   .video-card {
-    border: 1px solid var(--color-fog);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid color-mix(in oklch, var(--color-fog) 88%, white);
     border-radius: var(--radius-card);
-    padding: 1rem;
     background: #fff;
+    transition:
+      transform 0.16s ease,
+      box-shadow 0.16s ease,
+      border-color 0.16s ease;
+  }
+
+  .video-card:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in oklch, var(--color-cat-video) 36%, var(--color-fog));
+    box-shadow: var(--shadow-card-hover);
   }
 
   .video-frame {
     aspect-ratio: 9 / 16;
     width: 100%;
     overflow: hidden;
-    border-radius: var(--radius-sm);
     background: var(--color-fog);
-    margin-bottom: 0.8rem;
   }
 
   .video-frame iframe {
@@ -217,33 +462,69 @@ const curatedMap = new Map(curatedVideos.map((entry) => [entry.data.youtubeId, e
     border: 0;
   }
 
+  .video-card__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 0.95rem;
+  }
+
   .video-card__meta {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 0.75rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.55rem;
   }
 
   .video-card__meta p {
     margin: 0;
     font-size: var(--text-meta);
-    color: color-mix(in oklch, var(--color-ink) 68%, transparent);
+    color: color-mix(in oklch, var(--color-ink) 62%, transparent);
+    white-space: nowrap;
   }
 
   .video-card__category {
     display: inline-flex;
     align-items: center;
     border-radius: 999px;
-    padding: 0.15rem 0.55rem;
+    padding: 0.16rem 0.58rem;
     font-size: 0.76rem;
-    color: color-mix(in oklch, var(--color-ink) 86%, transparent);
-    background: color-mix(in oklch, var(--color-fog) 92%, white);
+    font-weight: 700;
+    color: color-mix(in oklch, var(--color-cat-video) 72%, var(--color-ink));
+    background: color-mix(in oklch, var(--color-cat-video) 12%, white);
   }
 
   .video-card h3 {
     margin: 0;
+    font-size: 1rem;
     line-height: 1.5;
+  }
+
+  .curated-link {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 0.55rem;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 0.85rem;
+    font-size: var(--text-meta);
+  }
+
+  .curated-link a {
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .curated-badge {
+    display: inline-flex;
+    align-items: center;
+    border-radius: var(--radius-pill);
+    padding: 0.16rem 0.5rem;
+    color: var(--color-paper);
+    background: var(--color-teal);
+    font-size: 0.72rem;
+    font-weight: 700;
   }
 
   .video-empty {
@@ -252,43 +533,37 @@ const curatedMap = new Map(curatedVideos.map((entry) => [entry.data.youtubeId, e
     border: 1px dashed var(--color-fog);
     border-radius: var(--radius-card);
     color: color-mix(in oklch, var(--color-ink) 70%, transparent);
+    background: #fff;
   }
 
   .fallback a {
     margin-left: 0.25rem;
   }
 
-  @media (min-width: 640px) {
-    .videos-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+  @media (max-width: 52rem) {
+    .videos-hero,
+    .curated {
+      grid-template-columns: 1fr;
     }
-  }
 
-  @media (min-width: 1024px) {
-    .videos-grid {
+    .videos-hero__stats {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
-  .curated {
-    margin: 0 0 1rem;
-    padding: 1rem;
-    border: 1px solid var(--color-fog);
-    border-radius: var(--radius-card);
-    background: var(--color-paper);
-  }
 
-  .curated-link {
-    display: flex;
-    gap: 0.6rem;
-    align-items: center;
-    margin-top: 0.4rem;
-  }
+  @media (max-width: 34rem) {
+    .videos-hero__stats {
+      grid-template-columns: 1fr;
+    }
 
-  .curated-badge {
-    background: var(--color-teal-subtle);
-    color: var(--color-teal);
-    padding: 0.15rem 0.45rem;
-    border-radius: 999px;
-    font-size: var(--text-meta);
+    .video-card__meta {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .curated__title {
+      white-space: normal;
+    }
   }
 </style>
