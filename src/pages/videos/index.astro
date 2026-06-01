@@ -65,11 +65,7 @@ const curatedMap = new Map(curatedVideos.map((entry) => [entry.data.youtubeId, e
 
   {curatedVideos.length > 0 && (
     <section class="curated" aria-labelledby="curated-videos-title">
-      <div class="curated__header">
-        <p class="eyebrow">Editor's Picks</p>
-        <h2 id="curated-videos-title">精選短影音整理</h2>
-        <p>已補上重點整理的影片，適合從這幾支先看，再延伸到同類主題。</p>
-      </div>
+      <h2 id="curated-videos-title">精選短影音整理</h2>
       <div class="curated__list">
         {curatedVideos.slice(0, 5).map((entry, index) => (
           <a class="curated__item" href={`/videos/${entry.id.replace(/\.[^.]+$/, '')}/`}>
@@ -111,7 +107,7 @@ const curatedMap = new Map(curatedVideos.map((entry) => [entry.data.youtubeId, e
                 <p>{v.publishedAt ? fmtDate(new Date(v.publishedAt)) : '日期待補'}</p>
               </div>
               <h3>{v.title}</h3>
-              {curatedMap.has(v.videoId) && <p class="curated-link"><span class="curated-badge">已整理</span><a href={`/videos/${curatedMap.get(v.videoId)?.id.replace(/\.[^.]+$/, '')}/`}>看重點整理 →</a></p>}
+              {curatedMap.has(v.id) && <p class="curated-link"><span class="curated-badge">已整理</span><a href={`/videos/${curatedMap.get(v.id)?.id.replace(/\.[^.]+$/, '')}/`}>看重點整理 →</a></p>}
             </div>
           </article>
         ))}
@@ -316,7 +312,6 @@ const curatedMap = new Map(curatedVideos.map((entry) => [entry.data.youtubeId, e
   .curated {
     display: grid;
     gap: clamp(1rem, 2vw, 1.5rem);
-    grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr);
     margin-bottom: 1.35rem;
     border: 1px solid color-mix(in oklch, var(--color-teal) 22%, var(--color-fog));
     border-radius: var(--radius-card);
@@ -324,14 +319,9 @@ const curatedMap = new Map(curatedVideos.map((entry) => [entry.data.youtubeId, e
     background: linear-gradient(135deg, color-mix(in oklch, var(--color-teal) 8%, #fff), #fff 64%);
   }
 
-  .curated__header h2 {
+  .curated h2 {
     margin: 0;
     color: var(--color-ink);
-  }
-
-  .curated__header p:last-child {
-    margin-top: 0.55rem;
-    color: color-mix(in oklch, var(--color-ink) 70%, transparent);
   }
 
   .curated__list {
@@ -445,6 +435,10 @@ const curatedMap = new Map(curatedVideos.map((entry) => [entry.data.youtubeId, e
       border-color 0.16s ease;
   }
 
+  .video-card[hidden] {
+    display: none;
+  }
+
   .video-card:hover {
     transform: translateY(-3px);
     border-color: color-mix(in oklch, var(--color-cat-video) 36%, var(--color-fog));
@@ -543,8 +537,7 @@ const curatedMap = new Map(curatedVideos.map((entry) => [entry.data.youtubeId, e
   }
 
   @media (max-width: 52rem) {
-    .videos-hero,
-    .curated {
+    .videos-hero {
       grid-template-columns: 1fr;
     }
 
