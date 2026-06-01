@@ -32,6 +32,7 @@ const slug = entry.id.replace(/\.[^.]+$/, '');
 const displayTitle = getDisplayTitle(data.titleDisplay, data.title);
 const category = getNewsCategory(data.tags, data.category);
 const heroImage = getNewsHeroImage(data.heroImage, data.thumbnail, data.tags, data.category);
+const filteredTermBox = (data.termBox ?? []).filter((item) => !['統合分析', '系統性回顧', 'RCT', '健康使用者偏誤', '觀察性研究', '世代研究', '橫斷面研究'].includes(item.term.trim()));
 
 /* ---- Normalize editor judgment to a list of points ---- */
 function normalizeEditorPoints(): string[] {
@@ -139,17 +140,14 @@ const breadcrumbSchema = {
         </div>
       )}
 
-      {/* ---- 3. 重點摘要 ---- */}
-      {data.keyPoints && data.keyPoints.length > 0 && (
-        <section class="key-points" aria-labelledby="key-points-heading">
-          <h2 id="key-points-heading" class="key-points__heading">重點摘要</h2>
-          <ul class="key-points__list">
-            {data.keyPoints.map((kp) => (
-              <li class="key-points__item">{kp}</li>
-            ))}
-          </ul>
-        </section>
-      )}
+      <section class="keypoints">
+        <h2 class="keypoints__heading">重點摘要</h2>
+        <ul class="keypoints__list">
+          {data.summary.split('。').map((item) => item.trim()).filter(Boolean).slice(0, 6).map((item) => (
+            <li>{item.replace(/[；。]$/u, '')}</li>
+          ))}
+        </ul>
+      </section>
 
       {/* ---- 4. 詞條提示（empty 陣列或 undefined 都隱藏） ---- */}
       {data.termBox && data.termBox.length > 0 && (
@@ -170,11 +168,11 @@ const breadcrumbSchema = {
         <Content />
       </div>
 
-      {/* ---- 6. 請注意 ---- */}
-      {cautionText && (
-        <aside class="caution-note">
-          <h2 class="caution-note__heading">請注意</h2>
-          <p class="caution-note__text">{cautionText}</p>
+      {/* ---- 證據提醒 ---- */}
+      {data.evidenceNote && (
+        <aside class="evidence-note">
+          <h2 class="evidence-note__heading">請注意</h2>
+          <p class="evidence-note__text">{data.evidenceNote}</p>
         </aside>
       )}
 
@@ -182,43 +180,29 @@ const breadcrumbSchema = {
       {editorPoints.length > 0 && (
         <aside class="editor-action">
           <h2 class="editor-action__heading">主編判讀</h2>
-          <ul class="editor-action__list">
-            {editorPoints.map((pt) => (
-              <li class="editor-action__item">{pt}</li>
+          <ul class="editor-action__content">
+            {data.editorComment.split('\n').map((item) => item.trim()).filter(Boolean).map((item) => (
+              <li>{item.replace(/^-+\s*/u, '').replace(/[；。]$/u, '')}</li>
             ))}
           </ul>
         </aside>
       )}
 
-      {/* ---- 8. 來源 ---- */}
+      {/* ---- 資料來源 ---- */}
       <footer class="source-ref">
         <h2 class="source-ref__heading">來源</h2>
-        {data.references && data.references.length > 0 ? (
-          <ol class="source-ref__list">
-            {data.references.map((ref) => (
-              <li class="source-ref__item">
-                {ref.url ? (
-                  <a href={ref.url} target="_blank" rel="noopener noreferrer">{ref.title}</a>
-                ) : (
-                  <span>{ref.title}</span>
-                )}
-                {ref.note && <span class="source-ref__note">　{ref.note}</span>}
-              </li>
-            ))}
-          </ol>
-        ) : data.pmid ? (
+        {data.pmid && (
           <p class="source-ref__link">
             PubMed PMID：<a href={`https://pubmed.ncbi.nlm.nih.gov/${data.pmid}/`} target="_blank" rel="noopener noreferrer">{data.pmid}</a>
           </p>
-        ) : data.sourceUrl ? (
-          <p class="source-ref__link">
-            <a href={data.sourceUrl} target="_blank" rel="noopener noreferrer">原始來源連結</a>
-          </p>
-        ) : (
-          <p class="source-ref__pending">原始來源連結尚未補上，編輯室會持續追蹤更新。</p>
         )}
-        {data.sourcePending && data.sourcePendingReason && (
-          <p class="source-ref__pending">註：{data.sourcePendingReason}</p>
+        {data.sourceUrl && (
+          <p class="source-ref__link">
+            原文連結：<a href={data.sourceUrl} target="_blank" rel="noopener noreferrer">{data.sourceUrl}</a>
+          </p>
+        )}
+        {!data.pmid && !data.sourceUrl && (
+          <p class="source-ref__link">TODO: source needed</p>
         )}
       </footer>
     </article>
@@ -357,6 +341,16 @@ const breadcrumbSchema = {
     color: color-mix(in oklch, var(--color-ink) 80%, transparent);
     line-height: 1.85;
   }
+  .keypoints {
+    margin-bottom: 1.75rem;
+    padding: 1.25rem 1.5rem;
+    background: color-mix(in oklch, var(--color-teal) 6%, var(--color-paper));
+    border: 1px solid color-mix(in oklch, var(--color-teal) 15%, transparent);
+    border-radius: var(--radius-sm);
+  }
+  .keypoints__heading { font-size: 1.05rem; margin-bottom: 0.75rem; color: var(--color-ink); }
+  .keypoints__list { margin: 0; padding-left: 1.2rem; display: grid; gap: 0.45rem; }
+  .keypoints__list li { font-size: 1rem; line-height: 1.75; }
 
   /* ---- 重點摘要 ---- */
   .key-points {
@@ -522,8 +516,13 @@ const breadcrumbSchema = {
     word-break: break-word;
   }
 
-  .source-ref__note {
-    color: color-mix(in oklch, var(--color-ink) 55%, transparent);
+  /* ---- 主編判讀 ---- */
+  .editor-action {
+    margin: 0 0 2.5rem;
+    padding: clamp(1.25rem, 0.75rem + 1.5vw, 1.75rem);
+    background: color-mix(in oklch, var(--color-teal) 6%, var(--color-paper));
+    border: 1px solid color-mix(in oklch, var(--color-teal) 22%, transparent);
+    border-radius: var(--radius-sm);
   }
 
   .source-ref__link {
@@ -531,15 +530,17 @@ const breadcrumbSchema = {
     color: color-mix(in oklch, var(--color-ink) 60%, transparent);
   }
 
-  .source-ref__link a {
-    color: var(--color-teal);
+  .editor-action__content {
+    margin: 0;
+    padding-left: 1.2rem;
+    display: grid;
+    gap: 0.5rem;
   }
 
-  .source-ref__pending {
-    font-size: var(--text-meta);
-    color: color-mix(in oklch, var(--color-ink) 55%, transparent);
-    line-height: 1.6;
-    margin-top: 0.5rem;
+  .editor-action__content li {
+    font-size: var(--text-body);
+    color: color-mix(in oklch, var(--color-ink) 80%, transparent);
+    line-height: 1.8;
   }
 
   /* ---- Related ---- */
