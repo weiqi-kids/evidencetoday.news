@@ -159,6 +159,15 @@ const myths = defineCollection({
     ]),
     plainLanguageReasoning: z.string().optional(),
     plainLanguageAnalysis: z.string(),
+    reasoningCards: z
+      .array(
+        z.object({
+          title: z.string(),
+          tone: z.enum(['blue', 'red']),
+          items: z.array(z.string()).min(1),
+        }),
+      )
+      .optional(),
     scientificEvidence: z.string(),
     evidenceSummary: z
       .object({
@@ -194,9 +203,9 @@ const myths = defineCollection({
             comparison: z.string().optional(),
             outcome: z.string().optional(),
             mainFinding: z.string(),
-            limitation: z.string(),
+            limitation: z.string().optional(),
             quotedExcerpt: z.string(),
-            relevanceToMyth: z.string(),
+            relevanceToMyth: z.string().optional(),
           }),
         ),
         evidenceGaps: z.string(),

@@ -111,3 +111,10 @@
 - Ingredients 內文應直接從 MDX 的 `## 30 秒認識` 開始，不再在 page template 注入「閱讀這頁前，先說清楚」提醒卡，也不在正文前插入機制圖、證據圖或安全性卡片。
 - 所有 `src/content/ingredients/*.mdx` 的二級標題維持一致順序：`30 秒認識`、`基本介紹`、`這是什麼？`、`在身體裡做什麼？／主要作用機制`、`食物來源／常見來源`、`建議攝取量／常見攝取建議／研究中常見使用方式`、`缺乏風險或攝取不足問題`、`補充品常見形式`、`安全性與注意事項`、`常見迷思`、`參考資料`。不要新增會干擾 TOC 的開頭提醒區塊。
 - Ingredients RWD 防護：列表卡片 grid 使用 `minmax(0, 1fr)`，單篇 `Article.astro` 的 content/sidebar grid item 需要 `min-width: 0`；TOC 與卡片文字需允許 `overflow-wrap`，避免 360–430px 手機寬度出現整頁水平捲軸。
+
+## Myth 單篇頁面內容卡片規則（2026-06-01 更新）
+
+- `src/pages/myths/[slug].astro` 的科學證據卡片只呈現來源名稱、研究類型與主要發現；不要把資料欄位式的額外解釋直接顯示在前台。
+- 若單篇 myth frontmatter 提供 `reasoningCards`，頁面會用藍色／紅色卡片呈現白話辯證；手機上下排列，桌面左右並排。未提供時才退回一般文字段落。
+- myth 底部只保留一個「健康資訊提醒」，因此 myth page 會以 `showMedicalDisclaimer={false}` 關閉 `Article.astro` 的預設聲明，不再另外輸出文章資訊卡片；更新內容應放在 `correctionLog` 並保持短句。
+- 分享區按鈕字級需維持至少 `1rem`，避免底部操作文字小於內文字級。
