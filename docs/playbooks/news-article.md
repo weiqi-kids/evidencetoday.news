@@ -10,7 +10,7 @@
 |---|---|---|
 | `keyPoints` 上限 8 點 / 下限 3 點 | `src/content.config.ts` news collection | 超過 8 點等於沒摘要 |
 | `editorPoints` 上限 8 點 / 下限 2 點 | 同上 | 與 keyPoints 區分；主編判讀至少 2 點才有列點意義 |
-| 詳情頁區塊順序 | `src/pages/news/[slug].astro` | 標題 → Hero 圖 → 重點摘要 → 先看懂這個詞 → Markdown body → 請注意 → 主編判讀（列點）→ 來源。順序不能亂改，會破壞閱讀節奏 |
+| 詳情頁區塊順序 | `src/pages/news/[slug].astro` | 標題 → Hero 圖 → 重點摘要 → 詞條提示（無 H2 標題）→ Markdown body → 請注意 → 主編判讀（列點）→ 來源。順序不能亂改，會破壞閱讀節奏 |
 | 「請注意」優先讀 `cautionNote`，fallback 到 `evidenceNote` | 同上 | 舊資料用 evidenceNote，新版用 cautionNote |
 | 「主編判讀」優先讀 `editorPoints`，fallback 拆 `editorComment` | 同上 | normalizeEditorPoints() 會嘗試從字串拆出列點 |
 | 來源優先用 `references` 陣列；fallback 到 `pmid` / `sourceUrl` | 同上 | references 是新版正規格式 |
@@ -33,11 +33,13 @@
   - 一般人可以先抓大方向：少含糖飲料、少加工食品、多原型食物
   - 這類研究多半只能說「有關」，不能直接證明照著做就能預防疾病
 
-### 2. 先看懂這個詞（termBox）
+### 2. 詞條提示（termBox）
 - 只保留真正會影響一般讀者理解的領域核心詞
 - 可保留：DRRD、腸腦軸、快速動眼期睡眠行為障礙、全因死亡率、超加工食品、食源性疾病、胰島素阻抗、發炎指標、睡眠呼吸中止症
 - **不要放研究方法詞**：統合分析、系統性回顧、RCT、健康使用者偏誤、觀察性研究、世代研究、橫斷面研究、網路統合分析
 - 沒有真正核心詞時，整個 termBox 留空或不填（前台會自動隱藏）
+- 前台不顯示「先看懂這個詞」章節標題，只以輕量提示框呈現「詞條：解釋」
+- termBox 字級需接近正文，避免看起來像註腳或正式章節
 
 ### 3. 研究內容（Markdown body）
 - markdown 標題用「## 研究內容」（**不要用「研究看見什麼」**）

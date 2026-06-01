@@ -151,16 +151,15 @@ const breadcrumbSchema = {
         </section>
       )}
 
-      {/* ---- 4. 先看懂這個詞（empty 陣列或 undefined 都隱藏） ---- */}
+      {/* ---- 4. 詞條提示（empty 陣列或 undefined 都隱藏） ---- */}
       {data.termBox && data.termBox.length > 0 && (
-        <aside class="term-box">
-          <h2 class="term-box__heading">先看懂這個詞</h2>
+        <aside class="term-box" aria-label="詞條提示">
           <dl class="term-box__list">
             {data.termBox.map((item) => (
-              <>
-                <dt class="term-box__term">{item.term}</dt>
+              <div class="term-box__item">
+                <dt class="term-box__term">{item.term}：</dt>
                 <dd class="term-box__def">{item.definition}</dd>
-              </>
+              </div>
             ))}
           </dl>
         </aside>
@@ -390,30 +389,30 @@ const breadcrumbSchema = {
     color: color-mix(in oklch, var(--color-ink) 85%, transparent);
   }
 
-  /* ---- 先看懂這個詞 ---- */
+  /* ---- 詞條提示 ---- */
   .term-box {
     margin-bottom: 2rem;
-    padding: 1.25rem 1.5rem;
-    background: color-mix(in oklch, var(--color-cat-news) 6%, var(--color-paper));
+    padding: 1rem 1.25rem;
+    background: color-mix(in oklch, var(--color-cat-news) 5%, var(--color-paper));
     border-radius: var(--radius-sm);
-    border: 1px solid color-mix(in oklch, var(--color-cat-news) 15%, transparent);
-  }
-
-  .term-box__heading {
-    font-family: var(--font-sans);
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: var(--color-cat-news);
-    margin-bottom: 0.75rem;
+    border: 1px solid color-mix(in oklch, var(--color-cat-news) 12%, transparent);
   }
 
   .term-box__list {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    margin: 0;
+  }
+
+  .term-box__item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
   }
 
   .term-box__term {
+    margin: 0;
     font-family: var(--font-sans);
     font-size: var(--text-body);
     font-weight: 700;
@@ -421,10 +420,12 @@ const breadcrumbSchema = {
   }
 
   .term-box__def {
-    font-size: var(--text-meta);
-    color: color-mix(in oklch, var(--color-ink) 70%, transparent);
-    line-height: 1.7;
-    margin-bottom: 0.25rem;
+    flex: 1 1 16rem;
+    margin: 0;
+    min-width: 0;
+    font-size: var(--text-body);
+    color: color-mix(in oklch, var(--color-ink) 78%, transparent);
+    line-height: 1.75;
   }
 
   /* ---- Body ---- */
