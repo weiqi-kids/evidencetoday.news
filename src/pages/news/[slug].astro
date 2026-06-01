@@ -164,14 +164,14 @@ const breadcrumbSchema = {
 
       {filteredTermBox.length > 0 && (
         <aside class="term-box" aria-label="詞條提示">
-          <dl class="term-box__list">
+          <div class="term-box__list">
             {filteredTermBox.map((item) => (
               <div class="term-box__item">
-                <dt class="term-box__term">{item.term}：</dt>
-                <dd class="term-box__def">{item.definition}</dd>
+                <span class="term-box__term">{item.term}：</span>
+                <span class="term-box__def">{item.definition}</span>
               </div>
             ))}
-          </dl>
+          </div>
         </aside>
       )}
 
