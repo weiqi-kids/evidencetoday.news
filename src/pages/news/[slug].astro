@@ -31,7 +31,7 @@ function splitSummary(summary: string): string[] {
 export async function getStaticPaths() {
   const entries = await getCollection('news', ({ data }) => !data.draft);
   return entries.map((entry) => ({
-    params: { slug: stripExt(entry.id) },
+    params: { slug: entry.id.replace(/\.[^.]+$/, '') },
     props: { entry },
   }));
 }
@@ -39,7 +39,7 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await entry.render();
 const data = entry.data;
-const slug = stripExt(entry.id);
+const slug = entry.id.replace(/\.[^.]+$/, '');
 
 const displayTitle = getDisplayTitle(data.titleDisplay, data.title);
 const category = getNewsCategory(data.tags, data.category);
