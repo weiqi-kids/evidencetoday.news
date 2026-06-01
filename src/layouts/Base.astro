@@ -24,7 +24,7 @@ interface Props {
 
 const {
   title,
-  description = '把健康議題，講得有根據，也講得讓人看得懂。',
+  description = '健康研究，白話解釋。把健康議題講得有根據，也講得讓人看得懂。',
   ogImage = '/og/index.png',
   ogType = 'website',
   noindex = false,
@@ -97,6 +97,36 @@ const websiteSchema = {
       <slot />
     </main>
     <Footer />
+    <script is:inline>
+      (() => {
+        const isHome = window.location.pathname === '/' || window.location.pathname === '/index.html';
+        if (!isHome) return;
+
+        const badge = document.querySelector('.hero__badge');
+        if (badge) badge.textContent = '健康研究，白話解釋';
+
+        const title = document.querySelector('.hero__title');
+        if (title) {
+          title.replaceChildren();
+          const firstLine = document.createElement('span');
+          firstLine.className = 'hero__title-line';
+          firstLine.textContent = '把健康議題講得有根據';
+
+          const secondLine = document.createElement('span');
+          secondLine.className = 'hero__title-line';
+          secondLine.textContent = '也講得讓人看得懂';
+
+          title.append(firstLine, secondLine);
+        }
+
+        document.title = '本日有據 — 健康研究，白話解釋';
+
+        const description = '健康研究，白話解釋。把健康議題講得有根據，也講得讓人看得懂。';
+        document.querySelector('meta[name="description"]')?.setAttribute('content', description);
+        document.querySelector('meta[property="og:description"]')?.setAttribute('content', description);
+        document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', description);
+      })();
+    </script>
     <slot name="scripts" />
   </body>
 </html>
