@@ -18,7 +18,6 @@
     const container = svgEl.parentElement;
     width = container.clientWidth;
     height = container.clientHeight;
-    const reduceMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     if (height <= 0) height = 280;
 
@@ -47,7 +46,12 @@
         nodes = [...nodes];
       });
 
-    if (reduceMotion) sim.alpha(0.3).stop();
+    if (reduceMotion) {
+      for (let i = 0; i < 200; i += 1) sim.tick();
+      sim.stop();
+      nodes = [...nodes];
+    }
+
     return () => sim.stop();
   });
 
