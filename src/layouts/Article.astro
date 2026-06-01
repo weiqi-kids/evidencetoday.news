@@ -30,6 +30,7 @@ interface Props {
   references?: Array<{ title: string; url?: string; type: string }>;
   citationAnswer?: string;
   queryPatternLabel?: string;
+  showMedicalDisclaimer?: boolean;
 }
 
 const {
@@ -51,6 +52,7 @@ const {
   references,
   citationAnswer,
   queryPatternLabel,
+  showMedicalDisclaimer = true,
 } = Astro.props;
 ---
 
@@ -94,7 +96,7 @@ const {
             <ReferenceList references={references} />
           </section>
         )}
-        <MedicalDisclaimer />
+        {showMedicalDisclaimer && <MedicalDisclaimer />}
         <slot name="after-content" />
       </div>
       <aside class="article-sidebar">
