@@ -2,7 +2,7 @@ html,
 body {
   width: 100%;
   max-width: 100%;
-  overflow-x: clip;
+  overflow-x: hidden;
 }
 
 body,
@@ -17,7 +17,7 @@ div {
 }
 
 #main-content {
-  overflow-x: clip;
+  overflow-x: hidden;
 }
 
 img,
@@ -55,6 +55,12 @@ a {
   min-width: 0;
 }
 
+.topnav__brand,
+.topnav__inner,
+.topnav__actions {
+  min-width: 0;
+}
+
 .topnav__brand .topnav__brand-zh {
   font-size: clamp(1.05rem, 1.8vw, 1.45rem) !important;
 }
@@ -70,7 +76,7 @@ a {
 }
 
 .hero {
-  overflow-x: clip !important;
+  overflow-x: hidden !important;
 }
 
 .hero__inner,
@@ -89,7 +95,9 @@ a {
 .category-card,
 .latest-grid > *,
 .myths-grid > *,
-.ingredients-grid > * {
+.ingredients-grid > *,
+.videos-grid > *,
+.articles-grid > * {
   min-width: 0 !important;
 }
 
@@ -97,7 +105,7 @@ a {
   max-width: 100%;
   white-space: normal;
   overflow-wrap: break-word;
-  font-size: clamp(1rem, 0.9rem + 0.55vw, 1.25rem) !important;
+  font-size: clamp(1rem, 0.9rem + 0.55vw, 1.28rem) !important;
   line-height: 1.45;
 }
 
@@ -143,8 +151,14 @@ a {
   max-width: 100%;
 }
 
+.prose table {
+  display: block;
+  overflow-x: auto;
+}
+
 @media (max-width: 768px) {
-  .hero__inner {
+  .hero__inner,
+  .hero__left {
     width: 100%;
     max-width: 100%;
   }
@@ -187,5 +201,16 @@ a {
     max-width: 100%;
     min-width: 0 !important;
     flex-shrink: 1 !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .category-grid,
+  .latest-grid,
+  .myths-grid,
+  .ingredients-grid,
+  .trends-layout,
+  .podcast-layout {
+    grid-template-columns: 1fr !important;
   }
 }
