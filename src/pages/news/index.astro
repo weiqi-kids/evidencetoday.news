@@ -98,13 +98,12 @@ const topTags = await getTopTags(12);
 
   /* ---- Trend bubbles ---- */
   .trend-section {
-    margin-bottom: 2rem;
-    padding: 1.5rem;
+    margin-bottom: 2.5rem;
+    padding: clamp(1.25rem, 1rem + 1.5vw, 2rem);
     background: white;
     border: 1px solid color-mix(in oklch, var(--color-fog) 80%, transparent);
     border-radius: var(--radius-card);
-    max-height: 50vh;
-    overflow: hidden;
+    min-height: 22rem;
   }
 
   .trend-section__title {
@@ -117,8 +116,8 @@ const topTags = await getTopTags(12);
 
   /* 50vh - padding 3rem - title ~1.5rem - title margin 1rem = calc(50vh - 5.5rem) */
   .trend-section__chart {
-    height: calc(50vh - 5.5rem);
-    overflow: hidden;
+    height: clamp(18rem, 38vh, 28rem);
+    padding-block: 0.25rem;
   }
 
   .trend-section__chart > :global(astro-island) {
@@ -168,11 +167,11 @@ const topTags = await getTopTags(12);
     left: 0.75rem;
     display: inline-flex;
     align-items: center;
-    padding: 0.2rem 0.6rem;
+    padding: 0.3rem 0.7rem;
     border-radius: var(--radius-pill);
     font-family: var(--font-ui);
-    font-size: 0.7rem;
-    font-weight: 600;
+    font-size: 0.85rem;
+    font-weight: 700;
     letter-spacing: 0.02em;
     color: white;
     background: color-mix(in oklch, var(--color-cat-news) 90%, black);
@@ -183,12 +182,12 @@ const topTags = await getTopTags(12);
     display: flex;
     flex-direction: column;
     flex: 1;
-    padding: 1rem 1.25rem 1.25rem;
+    padding: 1.15rem 1.35rem 1.35rem;
   }
 
   .news-card__title {
     font-family: var(--font-sans);
-    font-size: 1rem;
+    font-size: clamp(1.125rem, 1rem + 0.3vw, 1.25rem);
     font-weight: 700;
     color: var(--color-ink);
     line-height: 1.45;
@@ -200,9 +199,9 @@ const topTags = await getTopTags(12);
   }
 
   .news-card__summary {
-    font-size: var(--text-meta);
+    font-size: 0.98rem;
     color: color-mix(in oklch, var(--color-ink) 60%, transparent);
-    line-height: 1.6;
+    line-height: 1.7;
     margin-bottom: auto;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -214,7 +213,7 @@ const topTags = await getTopTags(12);
     display: block;
     margin-top: 0.75rem;
     font-family: var(--font-ui);
-    font-size: 0.75rem;
+    font-size: 0.86rem;
     color: color-mix(in oklch, var(--color-ink) 40%, transparent);
   }
 
@@ -222,5 +221,8 @@ const topTags = await getTopTags(12);
     .news-card__title {
       -webkit-line-clamp: 3;
     }
+  }
+  @media (max-width: 639px) {
+    .trend-section__chart { height: 17rem; }
   }
 </style>
