@@ -43,11 +43,10 @@ const CATEGORY_KEYWORDS: Record<VideoCategorySlug, string[]> = {
     '缺鐵',
     '鐵蛋白',
     '鈣',
+    '補鈣',
     '鎂',
     '鋅',
     '硒',
-    '鉀',
-    '鈉',
     '電解質',
   ],
   'basic-nutrition': [
@@ -65,12 +64,11 @@ const CATEGORY_KEYWORDS: Record<VideoCategorySlug, string[]> = {
     '必需脂肪酸',
     '膳食纖維',
     '纖維',
-    '營養',
-    '營養素',
-    '營養補充',
-    '基礎營養',
-    '攝取',
-    '缺乏',
+    '膠原蛋白',
+    '胜肽',
+    '卵磷脂',
+    '葉黃素',
+    '玉米黃素',
   ],
   antioxidant: [
     '抗氧化',
@@ -84,15 +82,17 @@ const CATEGORY_KEYWORDS: Record<VideoCategorySlug, string[]> = {
     '花青素',
     '葡萄籽',
     '氧化壓力',
-    '菠菜',
-    '蔬菜',
-    '水果',
+    '蒜',
+    '大蒜',
+    '蒜素',
+    '洋蔥',
   ],
   'health-concepts': [
     '觀念',
     '保健食品',
     '保健品',
     '補充品',
+    '營養補充',
     '膠囊',
     '劑量',
     '安全上限',
@@ -100,22 +100,6 @@ const CATEGORY_KEYWORDS: Record<VideoCategorySlug, string[]> = {
     '有效嗎',
     '多久',
     '三個月',
-    '慢性病',
-    '血糖',
-    '血脂',
-    '膽固醇',
-    '三酸甘油酯',
-    '血壓',
-    '肝',
-    '腎',
-    '尿酸',
-    '脂肪肝',
-    '糖尿病',
-    '心血管',
-    '檢查',
-    '報告',
-    '指數',
-    '指標',
     '咖啡',
     '飲食模式',
     '168',
@@ -124,6 +108,7 @@ const CATEGORY_KEYWORDS: Record<VideoCategorySlug, string[]> = {
     '優酪乳',
     '乳酸菌',
     '判斷',
+    '初衷',
   ],
   'health-myths': [
     '迷思',
@@ -195,9 +180,13 @@ const CATEGORY_KEYWORDS: Record<VideoCategorySlug, string[]> = {
     '黃麴毒素',
     '下鍋',
     '濕濕下鍋',
-    '永汆燙',
     '川燙',
     '汆燙',
+    '焯水',
+    '瀝水',
+    '切了才燙',
+    '秋葵',
+    '菠菜',
   ],
   'oral-hygiene': [
     '口腔',
@@ -222,8 +211,20 @@ function containsKeyword(title: string, keywords: string[]): boolean {
   return keywords.some((keyword) => title.includes(keyword));
 }
 
+function classifyExplicitVideoPattern(title: string): VideoCategorySlug | null {
+  if (title.includes('香菇') && title.includes('維生素d')) return 'vitamins';
+  if (title.includes('菠菜') && (title.includes('汆燙') || title.includes('瀝水') || title.includes('直接炒'))) return 'food-safety';
+  if (title.includes('秋葵') && (title.includes('切了才燙') || title.includes('濕濕下鍋'))) return 'food-safety';
+  if (title.includes('蒜') && (title.includes('拍碎') || title.includes('蒜素') || title.includes('效果'))) return 'antioxidant';
+  if (title.includes('健康短影音') || title.includes('初衷')) return 'health-concepts';
+
+  return null;
+}
+
 export function classifyVideoByTitle(title: string): VideoCategorySlug {
   const normalizedTitle = title.trim().toLowerCase();
+  const explicitPattern = classifyExplicitVideoPattern(normalizedTitle);
+  if (explicitPattern) return explicitPattern;
 
   if (containsKeyword(normalizedTitle, CATEGORY_KEYWORDS['health-myths'])) return 'health-myths';
   if (containsKeyword(normalizedTitle, CATEGORY_KEYWORDS['sleep-stress'])) return 'sleep-stress';
