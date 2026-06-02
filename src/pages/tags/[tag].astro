@@ -10,6 +10,7 @@ import { getCollection } from 'astro:content';
 import { fmtDate } from '@/utils/date';
 import { stripPodcastSlug } from '@/utils/podcasts';
 import type { MythVerdict } from '@/utils/myths/schema';
+import { tagSocial } from '@/utils/social-meta.mjs';
 
 function stripExt(id: string): string {
   return id.replace(/\.[^.]+$/, '');
@@ -67,11 +68,16 @@ export async function getStaticPaths() {
 }
 
 const { tag, entries } = Astro.props;
+const social = tagSocial(tag);
 ---
 
 <List
   title={`#${tag} 的所有內容`}
-  description={`所有標記為「${tag}」的內容`}
+  description={social.description}
+  seoTitle={social.title}
+  socialTitle={social.title}
+  socialDescription={social.description}
+  ogImage={social.image}
   breadcrumbItems={[{ label: '首頁', href: '/' }, { label: `#${tag}` }]}
   totalItems={entries.length}
 >

@@ -4,6 +4,7 @@ import Article from '@/layouts/Article.astro';
 import JsonLd from '@/components/seo/JsonLd.astro';
 import MythSquareCardVisual from '@/components/myths/MythSquareCardVisual.astro';
 import { validateMythArticle } from '@/utils/myths/validate';
+import { contentSocial } from '@/utils/social-meta.mjs';
 
 export async function getStaticPaths() {
   const entries = await getCollection('myths', ({ data }) => !data.draft && data.status !== 'under-review');
@@ -12,6 +13,7 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const d = entry.data;
+const social = contentSocial('myths', d, entry.id.replace(/\.[^.]+$/, ''));
 const errors = validateMythArticle(entry);
 if (errors.length > 0) throw new Error(`[myth:${entry.id}] ${errors.join(' | ')}`);
 
@@ -45,12 +47,12 @@ const sourceTypeLabels: Record<string, string> = {
 const healthReminder = '本文為健康資訊與迷思查證，不提供個人診斷或治療建議。若你已被診斷疾病、正在服藥、懷孕、哺乳，或症狀持續未改善，請諮詢醫師、藥師或營養師。';
 ---
 
-<Article title={d.title} description={d.ogDescription} ogImage={d.ogImage || d.shareCardImage} category="myth" variant="cards" showMedicalDisclaimer={false} publishDate={d.publishDate} updatedDate={d.updatedDate} tags={d.topicTags} breadcrumbItems={[{ label: '首頁', href: '/' }, { label: d.title }]}>
+<Article title={d.title} description={social.description} socialTitle={social.title} socialDescription={social.description} ogImage={social.image} category="myth" variant="cards" showMedicalDisclaimer={false} publishDate={d.publishDate} updatedDate={d.updatedDate} tags={d.topicTags} breadcrumbItems={[{ label: '首頁', href: '/' }, { label: d.title }]}>
   <Fragment slot="head">
     <meta property="article:published_time" content={d.publishDate.toISOString()} />
     <meta property="article:modified_time" content={d.updatedDate.toISOString()} />
     <meta property="article:author" content={d.author} />
-    <JsonLd data={{ '@context': 'https://schema.org', '@type': 'Article', headline: d.ogTitle, description: d.ogDescription, image: [d.ogImage || d.shareCardImage], datePublished: d.publishDate.toISOString(), dateModified: d.updatedDate.toISOString(), author: { '@type': 'Person', name: d.author }, publisher: { '@type': 'Organization', name: '本日有據' }, mainEntityOfPage: canonical }} />
+    <JsonLd data={{ '@context': 'https://schema.org', '@type': 'Article', headline: social.title, description: social.description, image: [social.image], datePublished: d.publishDate.toISOString(), dateModified: d.updatedDate.toISOString(), author: { '@type': 'Person', name: d.author }, publisher: { '@type': 'Organization', name: '本日有據' }, mainEntityOfPage: canonical }} />
   </Fragment>
 
   <section class="block quick">

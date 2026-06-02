@@ -1,12 +1,13 @@
 ---
 import Base from '@/layouts/Base.astro';
 import { getCollection } from 'astro:content';
+import { STATIC_SOCIAL } from '@/utils/social-meta.mjs';
 
 const curatedVideos = await getCollection('videos', ({ data }) => !data.draft);
 const featuredVideos = curatedVideos.slice(0, 5);
 ---
 
-<Base title="羅揚｜本日有據主編" description="認識本日有據主編羅揚，以及他整理健康資訊、Podcast、文章與短影音內容的背景與方向。">
+<Base title={STATIC_SOCIAL['author-luo-yang'].title} description={STATIC_SOCIAL['author-luo-yang'].description} ogTitle={STATIC_SOCIAL['author-luo-yang'].title} ogDescription={STATIC_SOCIAL['author-luo-yang'].description} ogImage={STATIC_SOCIAL['author-luo-yang'].ogPath}>
   <main class="container editor-page">
     <header class="editor-header">
       <h1>羅揚｜本日有據主編</h1>

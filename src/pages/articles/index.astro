@@ -5,6 +5,7 @@ import { fmtDate } from '@/utils/date';
 import { getPublishedArticles } from '@/utils/articles';
 import { ARTICLE_CATEGORIES, categorizeArticles, type ArticleCategorySlug } from '@/utils/article-categories';
 import { getArticleQueryPatternLabel } from '@/utils/article-query-patterns';
+import { listSocial } from '@/utils/social-meta.mjs';
 
 function stripExt(id: string): string {
   return id.replace(/\.[^.]+$/, '');
@@ -31,11 +32,16 @@ const articleCounts = ARTICLE_CATEGORIES.reduce<Record<ArticleCategorySlug, numb
   },
 );
 const visibleCategories = ARTICLE_CATEGORIES.filter((category) => articleCounts[category.slug] > 0);
+const social = listSocial('articles');
 ---
 
 <List
   title="文章"
-  description="深度解析健康議題，以系統性回顧、隨機對照試驗、公共資料與主編判讀，整理可以被查證的健康知識。"
+  description={social.description}
+  seoTitle={social.title}
+  socialTitle={social.title}
+  socialDescription={social.description}
+  ogImage={social.image}
   category="article"
   breadcrumbItems={[{ label: '首頁', href: '/' }, { label: '文章' }]}
   totalItems={categorizedArticles.length}

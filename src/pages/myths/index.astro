@@ -2,12 +2,14 @@
 import List from '@/layouts/List.astro';
 import { getCollection } from 'astro:content';
 import MythSquareCardVisual from '@/components/myths/MythSquareCardVisual.astro';
+import { listSocial } from '@/utils/social-meta.mjs';
 
 const myths = (await getCollection('myths', (e) => !e.data.draft && e.data.status !== 'under-review')).sort((a, b) => b.data.updatedDate.getTime() - a.data.updatedDate.getTime());
 const topicOptions = [...new Set(myths.flatMap((m) => m.data.topicTags))].sort();
 const themeFor = (slug:string)=> slug.includes('lemon') ? 'lemon' : slug.includes('vitamin') ? 'vitamin' : 'default';
+const social = listSocial('myths');
 ---
-<List title="健康迷思雷達" description="闢謠專區" category="myth" breadcrumbItems={[{ label: '首頁', href: '/' }, { label: '健康迷思雷達' }]} totalItems={myths.length}>
+<List title="健康迷思雷達" description={social.description} seoTitle={social.title} socialTitle={social.title} socialDescription={social.description} ogImage={social.image} category="myth" breadcrumbItems={[{ label: '首頁', href: '/' }, { label: '健康迷思雷達' }]} totalItems={myths.length}>
   <div class="filters"><input id="q" placeholder="搜尋標題、迷思原句、摘要、主題" /><select id="verdict"><option value="all">全部判讀</option><option value="大致正確">大致正確</option><option value="大致錯誤">大致錯誤</option><option value="證據不足">證據不足</option><option value="情境成立">情境成立</option><option value="過度簡化">過度簡化</option><option value="需謹慎">須謹慎</option></select><select id="topic"><option value="all">全部主題</option>{topicOptions.map((t) => <option value={t}>{t}</option>)}</select><select id="evidence"><option value="all">全部證據強度</option><option value="高">高</option><option value="中">中</option><option value="低">低</option><option value="資料不足">資料不足</option></select><select id="sort"><option value="new">最新更新</option><option value="old">最早更新</option></select></div>
   <div id="list" class="myths-grid">{myths.map((m) => <a href={`/myths/${m.id.replace(/\.[^.]+$/, '')}/`} class="myth-card" data-title={m.data.title} data-claim={m.data.mythClaim} data-summary={m.data.cardConclusion || m.data.verdictSummary} data-tldr={(m.data.thirtySecondConclusion || m.data.tldr).join(' ')} data-tags={m.data.topicTags.join(' ')} data-verdict={m.data.verdict} data-evidence={m.data.evidenceLevel} data-topic={m.data.topicTags.join('|')} data-updated={m.data.updatedDate.toISOString()}><MythSquareCardVisual title={m.data.title} verdict={m.data.verdict === '需謹慎' ? '須謹慎' : m.data.verdict} evidenceLevel={m.data.evidenceLevel} summary={m.data.cardConclusion || m.data.verdictSummary} theme={themeFor(m.id)} /></a>)}</div>
   <p id="empty" class="empty" hidden>目前沒有符合條件的闢謠文章，請調整搜尋或篩選條件。</p>

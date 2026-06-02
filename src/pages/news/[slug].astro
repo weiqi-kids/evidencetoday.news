@@ -11,6 +11,7 @@ import PodcastCard from '@/components/blocks/PodcastCard.astro';
 import { fmtDate } from '@/utils/date';
 import { getDisplayTitle, getNewsCategory, getNewsHeroImage } from '@/utils/news';
 import { stripPodcastSlug } from '@/utils/podcasts';
+import { contentSocial } from '@/utils/social-meta.mjs';
 
 function stripExt(id: string): string {
   return id.replace(/\.[^.]+$/, '');
@@ -39,6 +40,7 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await entry.render();
 const data = entry.data;
+const social = contentSocial('news', data, entry.id.replace(/\.[^.]+$/, ''));
 const slug = entry.id.replace(/\.[^.]+$/, '');
 
 const displayTitle = getDisplayTitle(data.titleDisplay, data.title);
@@ -120,7 +122,7 @@ const breadcrumbSchema = {
 };
 ---
 
-<Base title={`${displayTitle} | 本日有據`} description={metaDesc} ogImage={data.heroImage || data.thumbnail || `/og/index.png`} ogType="article">
+<Base title={social.title} description={social.description} ogTitle={social.title} ogDescription={social.description} ogImage={social.image} ogType="article">
   <Fragment slot="head">
     <JsonLd data={articleSchema} />
     <JsonLd data={breadcrumbSchema} />

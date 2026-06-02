@@ -1,11 +1,12 @@
 ---
 import Policy from '@/layouts/Policy.astro';
+import { STATIC_SOCIAL } from '@/utils/social-meta.mjs';
 
 const mod = await import('../data/policies/about.md');
 const Content = mod.Content;
 ---
 
-<Policy title="關於本日有據" updatedDate={new Date('2026-05-27')}>
+<Policy title="關於本日有據" description={STATIC_SOCIAL['about'].description} seoTitle={STATIC_SOCIAL['about'].title} socialTitle={STATIC_SOCIAL['about'].title} ogImage={STATIC_SOCIAL['about'].ogPath} updatedDate={new Date('2026-05-27')}>
   <Content />
 </Policy>
 

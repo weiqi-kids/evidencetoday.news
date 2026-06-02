@@ -4,6 +4,7 @@ import { getCollection } from 'astro:content';
 import { fmtDate } from '@/utils/date';
 import { getDisplayTitle, getNewsCategory, getNewsThumbnail } from '@/utils/news';
 import { getTopTags } from '@/utils/tag-stats';
+import { listSocial } from '@/utils/social-meta.mjs';
 import TrendBubbles from '@/components/charts/TrendBubbles.svelte';
 
 function stripExt(id: string) { return id.replace(/\.[^.]+$/, ''); }
@@ -11,9 +12,10 @@ function stripExt(id: string) { return id.replace(/\.[^.]+$/, ''); }
 const all = (await getCollection('news', (e) => !e.data.draft))
   .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
 const topTags = await getTopTags(12);
+const social = listSocial('news');
 ---
 
-<Base title="趨勢 | 本日有據" description="替你追蹤最新健康研究與公共衛生消息，用白話整理真正值得注意的重點。">
+<Base title={social.title} description={social.description} ogTitle={social.title} ogDescription={social.description} ogImage={social.image}>
   <main class="container news-list">
     <header class="news-list__header">
       <h1>趨勢</h1>

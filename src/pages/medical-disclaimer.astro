@@ -1,10 +1,11 @@
 ---
 import Policy from '@/layouts/Policy.astro';
+import { STATIC_SOCIAL } from '@/utils/social-meta.mjs';
 
 const mod = await import('../data/policies/medical-disclaimer.md');
 const Content = mod.Content;
 ---
 
-<Policy title="醫療聲明" updatedDate={new Date('2026-04-01')}>
+<Policy title="醫療聲明" description={STATIC_SOCIAL['medical-disclaimer'].description} seoTitle={STATIC_SOCIAL['medical-disclaimer'].title} socialTitle={STATIC_SOCIAL['medical-disclaimer'].title} ogImage={STATIC_SOCIAL['medical-disclaimer'].ogPath} updatedDate={new Date('2026-04-01')}>
   <Content />
 </Policy>
