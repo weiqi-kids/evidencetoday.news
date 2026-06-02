@@ -10,13 +10,23 @@ const ROOT = process.cwd();
 const CONTENT_ROOT = path.join(ROOT, 'src/content');
 const OUTPUT_ROOT = path.join(ROOT, 'public/og');
 
+// Hex approximations of src/styles/tokens.css. OG rendering runs through satori,
+// which cannot consume the site's oklch tokens directly.
 const COLOR_TOKENS = {
-  paper: '#f7f7f5',
-  neutral: '#e7ecec',
+  paper: '#f7f7f2',
+  paperWarm: '#fbfaf4',
+  fog: '#e6ebeb',
   teal: '#1f6f72',
-  navy: '#103b44',
-  brandText: '#0e2931',
-  dimText: '#42616a',
+  navy: '#253445',
+  ink: '#303136',
+  coral: '#b95b3b',
+  white: '#ffffff',
+};
+
+const BRAND = {
+  name: '本日有據',
+  latin: 'EVIDENCE TODAY',
+  descriptor: '健康議題編輯平台',
 };
 
 const COLLECTIONS = Object.keys(COLLECTION_SOCIAL);
@@ -76,26 +86,162 @@ async function ensureFonts() {
   return fontsCache;
 }
 
-function fitText(text = '', max = 22) {
+function fitText(text = '', max = 24) {
   const normalized = cleanText(text);
   return normalized.length > max ? `${normalized.slice(0, max - 1)}…` : normalized;
 }
 
-function splitTitle(title = '') {
-  const cleaned = fitText(title, 22);
-  if (cleaned.length <= 12) return [cleaned];
-  const breakAt = Math.min(12, Math.max(7, cleaned.indexOf('，') > 0 ? cleaned.indexOf('，') : 10));
-  return [cleaned.slice(0, breakAt), cleaned.slice(breakAt)].filter(Boolean);
+function splitTitle(title = '', template = 'content') {
+  const max = template === 'section' ? 8 : template === 'home' ? 10 : template === 'static' ? 12 : 18;
+  const cleaned = fitText(title, max);
+  if (cleaned.length <= (template === 'content' ? 9 : 6)) return [cleaned];
+
+  const preferredBreak = ['，', '：', ':', '？', '?', '｜', '—', '－', '-']
+    .map((mark) => cleaned.indexOf(mark))
+    .find((idx) => idx >= 4 && idx <= 10);
+  const breakAt = preferredBreak || (template === 'content' ? Math.min(9, Math.ceil(cleaned.length / 2)) : Math.ceil(cleaned.length / 2));
+  return [cleaned.slice(0, breakAt).replace(/[，：:？?｜—－-]$/, ''), cleaned.slice(breakAt).replace(/^[，：:？?｜—－-]/, '')].filter(Boolean);
 }
 
-function line(text, style = {}) {
-  return { type: 'span', props: { style: { display: 'flex', ...style }, children: text } };
+function titleSize(lines, template) {
+  const longest = Math.max(...lines.map((item) => item.length), 1);
+  if (template === 'section') return longest <= 4 ? 132 : 112;
+  if (template === 'home') return 116;
+  if (template === 'static') return longest <= 4 ? 112 : 92;
+  if (longest <= 5) return 98;
+  if (longest <= 7) return 88;
+  return 78;
+}
+
+function el(type, style, children) {
+  return { type, props: { style, children } };
+}
+
+function text(children, style = {}) {
+  return el('span', { display: 'flex', ...style }, children);
+}
+
+function heavyText(children, style = {}) {
+  const size = Number.parseInt(String(style.fontSize || '80'), 10);
+  const height = Math.ceil(size * Number(style.lineHeight || 1));
+  const offsets = [
+    ['0px', '0px'],
+    ['1px', '0px'],
+    ['0px', '1px'],
+    ['1px', '1px'],
+    ['-1px', '0px'],
+    ['0px', '-1px'],
+  ];
+  return el('div', {
+    display: 'flex',
+    position: 'relative',
+    height: `${height}px`,
+    width: '100%',
+  }, offsets.map(([left, top]) => text(children, {
+    ...style,
+    position: 'absolute',
+    left,
+    top,
+  })));
+}
+
+function brandPanel(accent, template) {
+  const isHome = template === 'home' || template === 'static';
+  return el('div', {
+    width: isHome ? '320px' : '275px',
+    height: '100%',
+    backgroundColor: COLOR_TOKENS.navy,
+    borderRadius: '34px',
+    display: 'flex',
+    flexDirection: 'column',
+    position: 'relative',
+    overflow: 'hidden',
+    padding: '34px 26px',
+  }, [
+    el('div', {
+      position: 'absolute',
+      left: '-70px',
+      top: '50px',
+      color: 'rgba(255,255,255,0.12)',
+      fontSize: isHome ? '196px' : '170px',
+      fontFamily: 'Noto Sans TC Bold',
+      fontWeight: 700,
+      letterSpacing: '-0.09em',
+      lineHeight: 1,
+    }, 'ET'),
+    el('div', { position: 'absolute', left: '0', bottom: '0', width: '100%', height: '18px', backgroundColor: accent }, ''),
+    el('div', { display: 'flex', flexDirection: 'column', gap: '14px', position: 'relative' }, [
+      text(BRAND.name, {
+        color: COLOR_TOKENS.white,
+        fontSize: '38px',
+        fontFamily: 'Noto Sans TC Bold',
+        fontWeight: 700,
+        letterSpacing: '0.04em',
+        lineHeight: 1.1,
+      }),
+      text(BRAND.latin, {
+        color: 'rgba(255,255,255,0.78)',
+        fontSize: '22px',
+        fontFamily: 'Noto Sans TC Bold',
+        fontWeight: 700,
+        letterSpacing: '0.12em',
+        lineHeight: 1,
+      }),
+    ]),
+    el('div', { display: 'flex', marginTop: 'auto', position: 'relative' }, [
+      text(BRAND.descriptor, {
+        color: 'rgba(255,255,255,0.9)',
+        fontSize: '22px',
+        fontFamily: 'Noto Sans TC Bold',
+        fontWeight: 700,
+        letterSpacing: '0.04em',
+      }),
+    ]),
+  ]);
+}
+
+function badgePill(label, accent) {
+  return el('div', {
+    display: 'flex',
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+    backgroundColor: accent,
+    color: COLOR_TOKENS.white,
+    borderRadius: '999px',
+    padding: '14px 28px',
+    fontSize: '34px',
+    fontFamily: 'Noto Sans TC Bold',
+    fontWeight: 700,
+    letterSpacing: '0.04em',
+    lineHeight: 1,
+  }, label);
+}
+
+function mainWordmark(accent) {
+  return el('div', {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '14px',
+    color: COLOR_TOKENS.navy,
+    fontSize: '30px',
+    fontFamily: 'Noto Sans TC Bold',
+    fontWeight: 700,
+    letterSpacing: '0.04em',
+  }, [
+    el('div', { width: '18px', height: '18px', borderRadius: '999px', backgroundColor: accent }, ''),
+    text(BRAND.name),
+  ]);
 }
 
 async function renderOg({ template = 'content', badge, title, subtitle, color = COLOR_TOKENS.teal }) {
   const fonts = await ensureFonts();
-  const titleLines = splitTitle(title);
-  const showSubtitle = subtitle && cleanText(subtitle).length <= 14;
+  const titleLines = splitTitle(title, template);
+  const fontSize = titleSize(titleLines, template);
+  const showSubtitle = subtitle && cleanText(subtitle).length <= (template === 'content' ? 12 : 16);
+  const isSection = template === 'section';
+  const isHomeLike = template === 'home' || template === 'static';
+  const mainMaxWidth = isSection ? '690px' : isHomeLike ? '640px' : '735px';
+
   const svg = await satori({
     type: 'div',
     props: {
@@ -104,29 +250,50 @@ async function renderOg({ template = 'content', badge, title, subtitle, color = 
         height: `${HEIGHT}px`,
         display: 'flex',
         backgroundColor: COLOR_TOKENS.paper,
-        padding: '54px 62px',
+        padding: '42px',
         position: 'relative',
         overflow: 'hidden',
         fontFamily: 'Noto Sans TC',
       },
       children: [
-        { type: 'div', props: { style: { position: 'absolute', top: '-115px', right: '-80px', width: '440px', height: '440px', borderRadius: '220px', backgroundColor: `${color}28` } } },
-        { type: 'div', props: { style: { position: 'absolute', right: '100px', bottom: '74px', width: '210px', height: '210px', border: `22px solid ${color}22`, borderRadius: '999px' } } },
-        { type: 'div', props: { style: { position: 'absolute', bottom: '-112px', left: '-36px', width: '480px', height: '270px', borderRadius: '46px', backgroundColor: 'rgba(16, 59, 68, 0.08)', transform: 'rotate(-12deg)' } } },
-        { type: 'div', props: { style: { display: 'flex', flexDirection: 'column', width: '100%', position: 'relative' }, children: [
-          { type: 'div', props: { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' }, children: [
-            { type: 'span', props: { style: { backgroundColor: color, color: '#fff', fontSize: template === 'home' ? '30px' : '28px', fontWeight: 700, padding: '10px 24px', borderRadius: '999px', letterSpacing: '0.02em' }, children: badge } },
-            { type: 'span', props: { style: { color: COLOR_TOKENS.navy, fontSize: '24px', fontWeight: 700, letterSpacing: '0.02em' }, children: '本日有據' } },
-          ] } },
-          { type: 'div', props: { style: { display: 'flex', flexDirection: 'column', justifyContent: 'center', minHeight: '370px', maxWidth: template === 'section' ? '760px' : '820px', gap: '12px' }, children: [
-            ...titleLines.map((part) => line(part, { color: COLOR_TOKENS.brandText, fontSize: template === 'section' ? '92px' : '72px', fontWeight: 700, lineHeight: 1.08, letterSpacing: '-0.025em' })),
-            ...(showSubtitle ? [line(fitText(subtitle, 14), { color: COLOR_TOKENS.dimText, fontSize: '34px', fontWeight: 700, marginTop: '12px' })] : []),
-          ] } },
-          { type: 'div', props: { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto', borderTop: `2px solid ${COLOR_TOKENS.neutral}`, paddingTop: '20px' }, children: [
-            { type: 'span', props: { style: { color: COLOR_TOKENS.navy, fontSize: '30px', fontWeight: 700 }, children: 'Evidence Today' } },
-            { type: 'span', props: { style: { color, fontSize: '26px', fontWeight: 700 }, children: '健康議題編輯平台' } },
-          ] } },
-        ] } },
+        el('div', { position: 'absolute', inset: '0', backgroundColor: COLOR_TOKENS.paperWarm }, ''),
+        el('div', { position: 'absolute', right: '-78px', top: '-72px', width: '310px', height: '310px', borderRadius: '999px', backgroundColor: `${color}22` }, ''),
+        el('div', { position: 'absolute', right: '64px', bottom: '56px', width: '132px', height: '132px', borderRadius: '999px', border: `18px solid ${color}2c` }, ''),
+        el('div', { position: 'absolute', left: '404px', bottom: '38px', width: '616px', height: '9px', borderRadius: '999px', backgroundColor: COLOR_TOKENS.fog }, ''),
+        el('div', { display: 'flex', width: '100%', height: '100%', gap: '34px', position: 'relative' }, [
+          brandPanel(color, template),
+          el('div', { flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', padding: '12px 6px 8px 0' }, [
+            el('div', { display: 'flex', justifyContent: 'space-between', alignItems: 'center', minHeight: '68px' }, [
+              badgePill(badge, color),
+              mainWordmark(color),
+            ]),
+            el('div', { display: 'flex', flexDirection: 'column', justifyContent: 'center', flex: 1, maxWidth: mainMaxWidth, gap: isSection ? '8px' : '6px' }, [
+              ...titleLines.map((part) => heavyText(part, {
+                color: COLOR_TOKENS.ink,
+                fontSize: `${fontSize}px`,
+                fontFamily: 'Noto Sans TC Bold',
+                fontWeight: 700,
+                lineHeight: 0.98,
+                letterSpacing: '-0.055em',
+              })),
+              ...(showSubtitle ? [text(fitText(subtitle, 12), {
+                color: COLOR_TOKENS.navy,
+                fontSize: isHomeLike ? '46px' : '38px',
+                fontFamily: 'Noto Sans TC Bold',
+                fontWeight: 700,
+                lineHeight: 1.1,
+                letterSpacing: '-0.01em',
+                marginTop: '18px',
+              })] : []),
+            ]),
+            el('div', { display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto', paddingTop: '16px' }, [
+              text('手機優先分享圖', { color: COLOR_TOKENS.navy, fontSize: '24px', fontFamily: 'Noto Sans TC Bold',
+                fontWeight: 700, letterSpacing: '0.04em' }),
+              text('evidencetoday.news', { color, fontSize: '28px', fontFamily: 'Noto Sans TC Bold',
+                fontWeight: 700, letterSpacing: '0.02em' }),
+            ]),
+          ]),
+        ]),
       ],
     },
   }, {
@@ -134,7 +301,7 @@ async function renderOg({ template = 'content', badge, title, subtitle, color = 
     height: HEIGHT,
     fonts: [
       { name: 'Noto Sans TC', data: fonts.regular, weight: 400, style: 'normal' },
-      { name: 'Noto Sans TC', data: fonts.bold, weight: 700, style: 'normal' },
+      { name: 'Noto Sans TC Bold', data: fonts.bold, weight: 700, style: 'normal' },
     ],
   });
 
