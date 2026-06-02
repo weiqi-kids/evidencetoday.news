@@ -44,7 +44,10 @@ const primaryFeaturedVideo = featuredVideos[0];
 const secondaryFeaturedVideos = featuredVideos.slice(1, 5);
 const getVideoHref = (id: string) => `/videos/${stripExt(id)}/`;
 const getVideoThumbnail = (youtubeId: string) => `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg`;
-const getVideoDescription = (description: string, tldr: string) => description || tldr;
+const getVideoSummary = (entry: { data: { keyPoints?: string[]; tldr: string; description: string } }) => {
+  const keyPointSummary = entry.data.keyPoints?.filter(Boolean).join(' ');
+  return keyPointSummary || entry.data.tldr || entry.data.description;
+};
 ---
 
 <List
@@ -83,7 +86,7 @@ const getVideoDescription = (description: string, tldr: string) => description |
       <div class="curated__header">
         <p class="curated__eyebrow">YouTube Shorts 精選</p>
         <h2 id="curated-videos-title">精選短影音整理</h2>
-        <p>先看主編親自拍攝的製作初衷，再接續四支高流量健康短影音重點。</p>
+        <p>先看主編親自拍攝的製作初衷，再接續四支健康短影音重點。</p>
       </div>
 
       <a class="curated-feature" href={getVideoHref(primaryFeaturedVideo.id)}>
@@ -94,13 +97,13 @@ const getVideoDescription = (description: string, tldr: string) => description |
         <div class="curated-feature__body">
           <span class="curated-feature__label">第一精選・主編本人實錄</span>
           <h3>{primaryFeaturedVideo.data.title}</h3>
-          <p>{getVideoDescription(primaryFeaturedVideo.data.description, primaryFeaturedVideo.data.tldr)}</p>
+          <p>{getVideoSummary(primaryFeaturedVideo)}</p>
           <span class="curated-cta">觀看重點整理 →</span>
         </div>
       </a>
 
       {secondaryFeaturedVideos.length > 0 && (
-        <div class="curated-grid" aria-label="高流量短影音精選">
+        <div class="curated-grid" aria-label="精選短影音整理">
           {secondaryFeaturedVideos.map((entry) => (
             <a class="curated-card" href={getVideoHref(entry.id)}>
               <div class="curated-card__thumb">
@@ -108,9 +111,8 @@ const getVideoDescription = (description: string, tldr: string) => description |
                 <span class="curated-play curated-play--small" aria-hidden="true">▶</span>
               </div>
               <div class="curated-card__body">
-                <span class="curated-card__label">高流量作品</span>
                 <h3>{entry.data.title}</h3>
-                <p>{getVideoDescription(entry.data.description, entry.data.tldr)}</p>
+                <p>{getVideoSummary(entry)}</p>
                 <span class="curated-cta">觀看整理 →</span>
               </div>
             </a>
@@ -380,8 +382,7 @@ const getVideoDescription = (description: string, tldr: string) => description |
   }
 
   .curated__eyebrow,
-  .curated-feature__label,
-  .curated-card__label {
+  .curated-feature__label {
     margin: 0 0 0.35rem;
     color: color-mix(in oklch, var(--color-teal) 72%, var(--color-ink));
     font-family: var(--font-ui);
