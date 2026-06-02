@@ -118,3 +118,12 @@
 - 若單篇 myth frontmatter 提供 `reasoningCards`，頁面會用藍色／紅色卡片呈現白話辯證；手機上下排列，桌面左右並排。未提供時才退回一般文字段落。
 - myth 底部只保留一個「健康資訊提醒」，因此 myth page 會以 `showMedicalDisclaimer={false}` 關閉 `Article.astro` 的預設聲明，不再另外輸出文章資訊卡片；更新內容應放在 `correctionLog` 並保持短句。
 - 分享區按鈕字級需維持至少 `1rem`，避免底部操作文字小於內文字級。
+
+## Myths 闢謠單篇結構補充（2026-06-01）
+
+- `/myths/[slug]` 單篇使用 `cards` variant，單篇頁面由 frontmatter 統一渲染：迷思原句與判讀 badge、AI 可引用答案、30 秒快速結論、迷思說法、判斷結論、先看懂這個詞、坊間流傳、科學證據、白話辯證、注意族群、FAQ、References、更新紀錄與健康資訊提醒。
+- 科學證據卡只顯示來源標題、研究類型與主要發現；`limitation`、`relevanceToMyth` 可保留於資料層，但不得在前台獨立輸出。
+- `safePractice` 與 `whenToSeekProfessionalAdvice` 可保留於 content schema / frontmatter，但 myths 單篇不得再獨立渲染「一般人最安全做法」或「什麼時候該尋求專業意見」；有價值內容應整併到白話辯證或「哪些人要特別小心？」。
+- 「白話辯證」需使用 `.myth-reasoning-grid` 搭配藍色「有道理的部分」與紅色「被誇大的部分」兩張卡；桌機雙欄、手機單欄。
+- myths 單篇底部只保留一個「健康資訊提醒」，固定文案由 page template 統一輸出；分享區字級維持 `1rem`。
+- `scripts/check-myth-quality.mjs` 需同步檢查 27 篇 published myths、快速結論至少 3 點、坊間流傳不可套版、evidenceSummary 至少 1 個 evidence item、References 至少 2 個 URL、FAQ 至少 3 題、注意族群至少 3 點，以及禁止套版句。

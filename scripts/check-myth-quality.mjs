@@ -9,7 +9,10 @@ const FORBIDDEN = [
   'references: 。',
   '【289截止**',
   '這個說法將複雜健康議題簡化成單一做法',
+  '本篇判讀為',
+  '證據強度為',
   '需依情境判讀',
+  '有疾病、用藥、特殊性',
   '先看證據等級再決定是否採用',
   '目前研究顯示可能有幫助',
   '主編把關',
@@ -42,6 +45,14 @@ function block(fm, key) {
 
 function referenceUrls(fm) {
   return [...block(fm, 'references').matchAll(/^\s*url:\s*"?([^"\n]+)"?/gm)].map((match) => match[1]);
+}
+
+function arrayItemCount(fm, key) {
+  return (block(fm, key).match(/^\s*-\s+/gm) || []).length;
+}
+
+function evidenceItemCount(fm) {
+  return (block(fm, 'evidenceSummary').match(/^\s*-\s*title:/gm) || []).length;
 }
 
 function validUrl(value) {
@@ -81,6 +92,21 @@ for (const file of files) {
     if (raw.includes('under-review')) errors.push(`${file}: published content contains under-review`);
     for (const key of ['title', 'mythClaim', 'verdict', 'evidenceLevel', 'cardConclusion']) {
       if (!scalar(fm, key)) errors.push(`${file}: missing ${key}`);
+    }
+    const quickCount = arrayItemCount(fm, 'thirtySecondConclusion') || arrayItemCount(fm, 'tldr');
+    if (quickCount < 3) errors.push(`${file}: thirtySecondConclusion must have at least 3 items`);
+    const whyText = block(fm, 'whyItSpreads');
+    if (!whyText.trim()) errors.push(`${file}: missing whyItSpreads`);
+    if (/短影音簡化說法|產品廣告文案|親友群組轉傳|這個說法常在社群、親友群組或產品文案中流傳/.test(whyText)) {
+      errors.push(`${file}: whyItSpreads appears templated`);
+    }
+    const evidenceCount = evidenceItemCount(fm);
+    if (evidenceCount < 1) errors.push(`${file}: evidenceSummary must include at least 1 evidenceItem`);
+    const whoCount = arrayItemCount(fm, 'whoShouldBeCareful');
+    if (whoCount < 3) errors.push(`${file}: whoShouldBeCareful must have at least 3 items`);
+    const reasoningText = block(fm, 'reasoningCards');
+    if (!reasoningText.includes('tone: blue') || !reasoningText.includes('tone: red')) {
+      errors.push(`${file}: reasoningCards must include blue and red cards`);
     }
     const urls = referenceUrls(fm);
     if (urls.length < 2) errors.push(`${file}: published article must have at least 2 reference URLs`);
