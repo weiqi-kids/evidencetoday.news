@@ -23,7 +23,7 @@ export const COLLECTION_SOCIAL = {
     label: '迷思查證',
     title: '迷思查證｜本日有據',
     description: '把常見健康說法拿回證據裡檢查：哪些情境成立、哪些被誇大，結論說清楚。',
-    color: '#b85a3a',
+    color: '#b95b3b',
   },
   ingredients: {
     route: '/ingredients/',
@@ -34,7 +34,7 @@ export const COLLECTION_SOCIAL = {
     label: '成分解析',
     title: '成分解析｜本日有據',
     description: '從營養素、食物成分到安全性，整理研究常談的重點與日常使用情境。',
-    color: '#3a8a4a',
+    color: '#3f7f55',
   },
   podcasts: {
     route: '/podcasts/',
@@ -45,7 +45,7 @@ export const COLLECTION_SOCIAL = {
     label: 'Podcast《喜聞樂健》',
     title: 'Podcast《喜聞樂健》｜本日有據',
     description: '每一集約 15 分鐘，從一個健康問題出發，把知識、觀念與判斷講清楚。',
-    color: '#6a5aad',
+    color: '#6657a6',
   },
   videos: {
     route: '/videos/',
@@ -56,7 +56,7 @@ export const COLLECTION_SOCIAL = {
     label: '短影音',
     title: '短影音｜本日有據',
     description: '用短時間抓住健康、營養與生活科普重點；每支影片都回到可查證的資料脈絡。',
-    color: '#8a7030',
+    color: '#9a7728',
   },
   news: {
     route: '/news/',
@@ -67,7 +67,7 @@ export const COLLECTION_SOCIAL = {
     label: '健康雷達',
     title: '健康雷達｜本日有據',
     description: '整理健康研究、公共資訊與最新趨勢，幫你更快看懂真正需要留意的消息。',
-    color: '#1f7c93',
+    color: '#326d8c',
   },
 };
 
@@ -101,7 +101,7 @@ export const STATIC_SOCIAL = {
     description: '查看本日有據如何選題、查證、引用來源與修正內容，理解每篇健康資訊背後的編輯流程。',
     ogBadge: '編輯透明',
     ogTitle: '編輯政策',
-    color: '#103b44',
+    color: '#253445',
   },
   disclosure: {
     path: '/disclosure/',
@@ -111,7 +111,7 @@ export const STATIC_SOCIAL = {
     description: '說明本站目前的合作、利益揭露與編輯獨立原則，讓讀者知道內容判斷如何與商業關係區隔。',
     ogBadge: '編輯透明',
     ogTitle: '利益揭露',
-    color: '#103b44',
+    color: '#253445',
   },
   'medical-disclaimer': {
     path: '/medical-disclaimer/',
@@ -121,7 +121,7 @@ export const STATIC_SOCIAL = {
     description: '本站內容提供一般健康教育與參考，不取代醫師、藥師、營養師等專業人員的個別建議。',
     ogBadge: '閱讀提醒',
     ogTitle: '醫療聲明',
-    color: '#b85a3a',
+    color: '#b95b3b',
   },
   privacy: {
     path: '/privacy/',
@@ -131,7 +131,7 @@ export const STATIC_SOCIAL = {
     description: '了解本日有據網站的資料蒐集、Cookie、第三方服務與聯絡方式。',
     ogBadge: '網站政策',
     ogTitle: '隱私權政策',
-    color: '#103b44',
+    color: '#253445',
   },
   terms: {
     path: '/terms/',
@@ -141,7 +141,7 @@ export const STATIC_SOCIAL = {
     description: '閱讀本站內容使用、外部連結、醫療免責與條款更新等基本規範。',
     ogBadge: '網站政策',
     ogTitle: '使用條款',
-    color: '#103b44',
+    color: '#253445',
   },
   contact: {
     path: '/contact/',

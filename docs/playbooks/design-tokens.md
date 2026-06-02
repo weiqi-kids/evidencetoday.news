@@ -104,3 +104,30 @@
 - 字體變數定義：`src/styles/typography.css`
 - CSS / RWD 通用規範：[../../README.md](../../README.md)
 - 全域 CSS 規則：`src/styles/global.css`
+
+## OG 圖品牌系統維護規則
+
+`scripts/generate-og.mjs` 是全站分享圖的生成來源，因 satori 不支援 `oklch()`，OG 圖可以使用 `src/styles/tokens.css` 的 hex 近似值，但不得自行發展脫離本站 CI 的新色系。
+
+### 版型與安全區
+
+| 模板 | 適用頁面 | 設計重點 |
+|---|---|---|
+| `section` | `/news/`、`/ingredients/`、`/podcasts/`、`/videos/`、`/articles/`、`/myths/` | 以專區主字為第一辨識元素，主題字需在手機縮圖中比副資訊更醒目。 |
+| `content` | 單篇文章、成分、Podcast、短影音、新聞、迷思查證 | 左側固定品牌識別，右側放分類 badge 與短標題；副標只保留很短的資訊。 |
+| `home` / `static` | 首頁、關於、政策、作者頁 | 品牌頁感優先，使用較大的品牌面板與主標。 |
+
+安全區採「手機優先」：左側深色品牌面板與右側主字都留在中央主要視覺區，不把關鍵資訊壓到四角。若改版型，必須用 `pnpm run og:preview` 檢查手機 240px、平板 480px、桌機 720px 三種尺寸。
+
+### 字級與重心
+
+- 主標：依模板與字數約 78–132px，並以加粗疊字提升縮圖辨識性。
+- Badge：34px、深色分類底，作為類型辨識但不搶主標。
+- 品牌：左側深 navy 品牌面板固定顯示「本日有據」與 ET 大識別；右上角小 wordmark 僅作輔助，不可取代左側品牌重心。
+- 裝飾：只保留低對比 CI 色圓形與底線，不加入影響小圖閱讀的淡灰大裝飾。
+
+### 預覽工具
+
+- 先執行 `pnpm run og:generate` 產生 `public/og/**`。
+- 再執行 `pnpm run og:preview [可選 OG 路徑...]`，會輸出 `public/og-preview/index.html` 與縮圖檔。
+- 預設代表頁包含首頁、`/videos/`、`/ingredients/`、`/news/`、`/podcasts/`、一篇短影音、一篇成分解析與一篇 Podcast 單集。

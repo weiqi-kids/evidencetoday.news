@@ -42,3 +42,7 @@ src/data/youtube-shorts.json
 
 # Generated OG images (build-time output)
 public/og/**/*.png
+
+# Generated OG preview images (local verification output)
+public/og-preview/*.png
+public/og-preview/**/*.png
