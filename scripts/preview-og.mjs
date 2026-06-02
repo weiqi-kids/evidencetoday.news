@@ -106,6 +106,7 @@ async function createPreview(targets) {
 
   await fs.writeFile(path.join(PREVIEW_ROOT, 'index.html'), html);
   console.log(`[og:preview] wrote ${path.relative(ROOT, path.join(PREVIEW_ROOT, 'index.html'))}`);
+  console.log('[og:preview] preview artifacts stay under public/og-preview/, which is ignored by git and not part of deployment source.');
 }
 
 createPreview(normalizeTargets(process.argv.slice(2))).catch((error) => {

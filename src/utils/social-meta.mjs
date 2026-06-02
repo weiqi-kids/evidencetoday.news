@@ -183,11 +183,20 @@ export function shortTitle(title = '', maxLen = 18) {
     .replace(/^EP\s*\d+\s*[｜|:：-]\s*喜聞樂健\s*[｜|:：-]\s*/i, '')
     .replace(/^喜聞樂健\s*[｜|:：-]\s*/i, '')
     .replace(/^健康雷達\s*\d{4}-\d{2}-\d{2}\s*\d{1,2}\s*[：:]\s*/, '')
-    .replace(/完整指南[：:]/g, '')
+    .replace(/^關於(.+?)，你所需要知道的/, '$1')
+    .replace(/^關於(.+?)，你該知道的/, '$1')
+    .replace(/完整指南[：:]/g, '：')
+    .replace(/你所需要知道的/g, '')
     .trim();
   const split = cleaned.split(/[：:？?｜|—－-]/).map((part) => part.trim()).filter(Boolean);
   const candidate = split.find((part) => part.length >= 4 && part.length <= maxLen + 4) || split[0] || cleaned;
-  return candidate.length > maxLen ? `${candidate.slice(0, maxLen - 1)}…` : candidate;
+  if (candidate.length <= maxLen) return candidate;
+  const punctuationCut = ['。', '；', '，', '、']
+    .map((mark) => candidate.lastIndexOf(mark, maxLen))
+    .filter((idx) => idx >= 6)
+    .sort((a, b) => b - a)[0];
+  if (punctuationCut) return `${candidate.slice(0, punctuationCut)}重點`;
+  return `${candidate.slice(0, Math.max(4, maxLen - 4)).replace(/[，；、。\s]+$/, '')}重點`;
 }
 
 export function normalizeDescription(...candidates) {
@@ -207,14 +216,14 @@ export function contentSocial(collection, data = {}, slug = '') {
 
   if (collection === 'podcasts') {
     const ep = data.episodeNumber ? `喜聞樂健 EP${data.episodeNumber}` : '喜聞樂健';
-    return { title: socialTitle(short, ep), description, image, ogBadge: data.episodeNumber ? `EP${data.episodeNumber}` : 'Podcast', ogTitle: short, ogSubtitle: shortTitle(data.summary || data.description || '', 10) };
+    return { title: socialTitle(short, ep), description, image, ogBadge: data.episodeNumber ? `Podcast EP${data.episodeNumber}` : 'Podcast', ogTitle: cleanText(data.ogShortTitle || title), ogSubtitle: shortTitle(data.summary || data.description || '', 10) };
   }
   return {
     title: socialTitle(short, cfg?.label || SITE_SUFFIX),
     description,
     image,
     ogBadge: cfg?.badge || SITE_SUFFIX,
-    ogTitle: short,
+    ogTitle: cleanText(data.ogShortTitle || title),
     ogSubtitle: collection === 'ingredients' && data.titleEn ? data.titleEn : undefined,
   };
 }

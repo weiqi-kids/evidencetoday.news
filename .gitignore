@@ -46,3 +46,12 @@ public/og/**/*.png
 # Generated OG preview images (local verification output)
 public/og-preview/*.png
 public/og-preview/**/*.png
+# Local OG preview workspace (HTML + derived image thumbnails)
+public/og-preview/
+# Generated OG media artifacts — keep PRs text-only
+public/og/**/*.jpg
+public/og/**/*.jpeg
+public/og/**/*.webp
+public/og/**/*.gif
+public/og/**/*.pdf
+public/og/**/*.zip
