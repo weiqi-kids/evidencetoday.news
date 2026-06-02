@@ -42,17 +42,24 @@ const featuredVideos = curatedVideos.slice(0, 5);
       <p>我希望這個平台提供給讀者的，不只是更多健康知識，而是比較正確、比較可靠，也比較能用在生活中的健康判斷。</p>
     </section>
 
-    
-
-        <section class="card section-block">
-      <h2>代表內容</h2>
-      <div class="podcast-card">
-        <h3>Podcast《喜聞樂健》</h3>
-        <p>Podcast《喜聞樂健》從日常健康問題出發，用比較接近聊天的方式，討論健康知識、保健觀念與判斷方式。</p>
-        <p><a class="cta-link" href="/podcasts/">前往 Podcast 專區</a></p>
+    <section class="card section-block featured-section">
+      <div class="section-heading">
+        <p class="section-eyebrow">Selected work</p>
+        <h2>代表內容</h2>
       </div>
+
+      <a class="podcast-card feature-link-card" href="/podcasts/">
+        <div>
+          <p class="card-kicker">Podcast</p>
+          <h3>《喜聞樂健》</h3>
+          <p>從日常健康問題出發，用比較接近聊天的方式，討論健康知識、保健觀念與判斷方式。</p>
+        </div>
+        <span class="cta-link">前往 Podcast 專區 →</span>
+      </a>
+
       <div class="featured-groups">
         <article>
+          <p class="card-kicker">Articles</p>
           <h3>保健食品與市場判讀</h3>
           <ul class="editor-article-list">
             <li><a href="/articles/melatonin-prescription-taiwan-gray-market/">褪黑激素在台灣是處方藥，但你可能已經從代購買了好幾瓶</a></li>
@@ -61,14 +68,16 @@ const featuredVideos = curatedVideos.slice(0, 5);
           </ul>
         </article>
         <article>
+          <p class="card-kicker">Articles</p>
           <h3>熟齡健康與營養</h3>
           <ul class="editor-article-list">
-            <li><a href="/articles/iron-deficiency-anemia-women-supplements/">補了好幾年的鐵，血色素還是不足？你可能從來沒補到對的地方</a></li>
-            <li><a href="/articles/menopause-supplement-stages-guide/">更年期保健品的最大盲點：前期、中期、後期的補充需求根本不一樣，但市場都賣你同一瓶</a></li>
+            <li><a href="/articles/iron-deficiency-anemia-women-supplements/">補了好幾年的鐵，血色素還是不是？你可能從來沒補到對的地方</a></li>
+            <li><a href="/articles/menopause-supplement-stages-guide/">更年期保健品的最大盲點：前期、中期、後期的補充需求根本不一樣</a></li>
             <li><a href="/articles/lodes-24/">輔酶Q10不是心臟病患才要吃，40歲後你也該了解它</a></li>
           </ul>
         </article>
         <article>
+          <p class="card-kicker">Articles</p>
           <h3>迷思查證與健康觀念</h3>
           <ul class="editor-article-list">
             <li><a href="/articles/lodes-27/">保健食品的「體感」到底是什麼？為什麼你的感覺不等於功效</a></li>
@@ -76,23 +85,27 @@ const featuredVideos = curatedVideos.slice(0, 5);
           </ul>
         </article>
 
-      {featuredVideos.length > 0 && (
-        <article>
-          <h3>精選短影音</h3>
-          <ul class="editor-article-list">
-            {featuredVideos.map((entry) => (
-              <li>
-                <a href={`/videos/${entry.id.replace(/\.[^.]+$/, '')}/`}>
-                  {entry.data.title}
-                </a>
-              </li>
-            ))}
-          </ul>
-          <p><a class="cta-link" href="/videos/">查看全部短影音</a></p>
-        </article>
-      )}
+        {featuredVideos.length > 0 && (
+          <article>
+            <p class="card-kicker">Shorts</p>
+            <h3>精選短影音</h3>
+            <ul class="editor-article-list compact-video-list">
+              {featuredVideos.map((entry) => (
+                <li>
+                  <a href={`/videos/${entry.id.replace(/\.[^.]+$/, '')}/`}>
+                    {entry.data.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </article>
+        )}
       </div>
-      <p><a class="cta-link" href="/articles/?author=%E7%BE%85%E6%8F%9A">查看全部文章</a></p>
+
+      <div class="content-actions">
+        <a class="cta-link" href="/articles/?author=%E7%BE%85%E6%8F%9A">查看全部文章 →</a>
+        <a class="cta-link" href="/videos/">查看全部短影音 →</a>
+      </div>
     </section>
 
     <section class="card section-block">
@@ -112,7 +125,7 @@ const featuredVideos = curatedVideos.slice(0, 5);
     padding-block: var(--space-page-y);
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: clamp(1.25rem, 1rem + 1vw, 2rem);
     max-width: 72rem;
   }
 
@@ -176,67 +189,133 @@ const featuredVideos = curatedVideos.slice(0, 5);
   }
 
   .section-block h2,
-  .section-block h3 {
+  .section-block h3,
+  .section-block p {
     margin: 0;
   }
 
-  .number-list {
-    margin: 0;
-    padding-left: 1.2rem;
-    display: grid;
-    gap: 0.65rem;
+  .featured-section {
+    gap: clamp(1rem, 0.8rem + 0.8vw, 1.5rem);
+    padding: clamp(1.15rem, 1rem + 1.25vw, 2rem);
+    background:
+      radial-gradient(circle at top left, color-mix(in oklch, var(--color-teal) 10%, transparent), transparent 34%),
+      #fff;
   }
 
-  .compact-cards li {
-    border: 1px solid var(--color-fog);
+  .section-heading {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .section-eyebrow,
+  .card-kicker {
+    font-family: var(--font-ui);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: color-mix(in oklch, var(--color-teal) 76%, var(--color-ink));
+  }
+
+  .podcast-card,
+  .featured-groups article {
+    border: 1px solid color-mix(in oklch, var(--color-fog) 86%, white);
     border-radius: var(--radius-card);
-    padding: 0.85rem 0.95rem;
-    background: color-mix(in oklch, white 92%, var(--color-fog));
+    background: color-mix(in oklch, white 94%, var(--color-fog));
+    transition:
+      border-color 0.16s ease,
+      box-shadow 0.16s ease,
+      transform 0.16s ease;
   }
-
-  .compact-cards h3 {
-    margin-bottom: 0.35rem;
-  }
-
 
   .podcast-card {
-    border: 1px solid var(--color-fog);
-    border-radius: var(--radius-card);
-    padding: 0.9rem;
-    background: color-mix(in oklch, white 88%, var(--color-fog));
+    display: grid;
+    gap: 0.85rem;
+    align-items: center;
+    padding: clamp(1rem, 0.85rem + 0.8vw, 1.35rem);
+  }
+
+  .feature-link-card {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .podcast-card:hover,
+  .featured-groups article:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in oklch, var(--color-teal) 32%, var(--color-fog));
+    box-shadow: var(--shadow-card);
+  }
+
+  .podcast-card h3 {
+    font-size: clamp(1.3rem, 1.1rem + 0.8vw, 1.8rem);
+    line-height: 1.25;
+  }
+
+  .podcast-card p:not(.card-kicker) {
+    max-width: 46rem;
+    color: color-mix(in oklch, var(--color-ink) 76%, transparent);
   }
 
   .cta-link {
+    width: fit-content;
     text-decoration: none;
     font-family: var(--font-ui);
+    font-weight: 700;
     color: var(--color-ink);
     border: 1px solid var(--color-fog);
     border-radius: 999px;
-    padding: 0.4rem 0.8rem;
-    display: inline-block;
+    padding: 0.42rem 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    background: white;
   }
 
   .featured-groups {
     display: grid;
-    gap: 0.8rem;
+    grid-template-columns: 1fr;
+    gap: clamp(0.85rem, 0.7rem + 0.7vw, 1.15rem);
   }
 
   .featured-groups article {
-    border: 1px solid var(--color-fog);
-    border-radius: var(--radius-card);
-    padding: 0.85rem 0.95rem;
-    background: color-mix(in oklch, white 94%, var(--color-fog));
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    min-width: 0;
+    padding: clamp(1rem, 0.9rem + 0.6vw, 1.25rem);
   }
 
   .featured-groups h3 {
-    margin-bottom: 0.4rem;
+    font-size: clamp(1.12rem, 1rem + 0.35vw, 1.35rem);
+    line-height: 1.35;
   }
 
   .editor-article-list {
     padding-left: 1.1rem;
-    margin: 0;
+    margin: 0.1rem 0 0;
     display: grid;
-    gap: 0.35rem;
+    gap: 0.55rem;
+  }
+
+  .editor-article-list li {
+    padding-left: 0.15rem;
+  }
+
+  .editor-article-list a {
+    display: inline;
+    line-height: 1.7;
+    text-underline-offset: 0.18em;
+  }
+
+  .compact-video-list {
+    gap: 0.45rem;
+  }
+
+  .content-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
   }
 
   @media (min-width: 768px) {
@@ -244,14 +323,35 @@ const featuredVideos = curatedVideos.slice(0, 5);
       grid-template-columns: minmax(180px, 220px) 1fr;
     }
 
+    .podcast-card {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+
     .featured-groups {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1080px) {
     .featured-groups {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      align-items: stretch;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .editor-page {
+      gap: 1rem;
+    }
+
+    .podcast-card,
+    .featured-groups article {
+      border-radius: calc(var(--radius-card) - 0.2rem);
+    }
+
+    .cta-link {
+      width: 100%;
+      justify-content: center;
     }
   }
 </style>
