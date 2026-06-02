@@ -107,27 +107,35 @@
 
 ## OG 圖品牌系統維護規則
 
-`scripts/generate-og.mjs` 是全站分享圖的生成來源，因 satori 不支援 `oklch()`，OG 圖可以使用 `src/styles/tokens.css` 的 hex 近似值，但不得自行發展脫離本站 CI 的新色系。
+`scripts/generate-og.mjs` 是全站分享圖的生成來源，因 satori 不支援 `oklch()`，OG 圖可以使用 `src/styles/tokens.css` 的 hex 近似值，但不得自行發展脫離本站 CI 的新色系。全站 OG 應視為品牌門面：乾淨、字大、字粗、清楚，優先讓手機聊天縮圖可讀。
 
 ### 版型與安全區
 
 | 模板 | 適用頁面 | 設計重點 |
 |---|---|---|
-| `section` | `/news/`、`/ingredients/`、`/podcasts/`、`/videos/`、`/articles/`、`/myths/` | 以專區主字為第一辨識元素，主題字需在手機縮圖中比副資訊更醒目。 |
-| `content` | 單篇文章、成分、Podcast、短影音、新聞、迷思查證 | 左側固定品牌識別，右側放分類 badge 與短標題；副標只保留很短的資訊。 |
-| `home` / `static` | 首頁、關於、政策、作者頁 | 品牌頁感優先，使用較大的品牌面板與主標。 |
+| `home` | `/` | 中央放最大「本日有據」，下方只放 `Evidence Today`；不放副標、說明字或裝置示意。 |
+| `section` | `/news/`、`/ingredients/`、`/podcasts/`、`/videos/`、`/articles/`、`/myths/`、標籤入口 | 左上角「本日有據」清楚可讀，中央放專區主字，右下角只放 `Evidence Today`。 |
+| `content` | 單篇文章、成分、Podcast、短影音、新聞、迷思查證 | 左上角品牌固定，中央以標題／主題為主，分類 pill 只做類型辨識，右下角只放 `Evidence Today`。 |
+| `static` | 關於、政策、作者頁、聯絡與條款頁 | 使用與 section 同家族的中央主字版型，避免把政策說明塞進圖卡。 |
 
-安全區採「手機優先」：左側深色品牌面板與右側主字都留在中央主要視覺區，不把關鍵資訊壓到四角。若改版型，必須用 `pnpm run og:preview` 檢查手機 240px、平板 480px、桌機 720px 三種尺寸。
+安全區採「手機優先」：主標置中且不貼邊，左上品牌與右下英文品牌都留在 1200×630 內框之內。若改版型，必須用 `pnpm run og:preview` 檢查手機 240px、平板 480px、桌機 720px 三種尺寸。
 
-### 字級與重心
+### 字級、字重與標題規則
 
-- 主標：依模板與字數約 78–132px，並以加粗疊字提升縮圖辨識性。
-- Badge：34px、深色分類底，作為類型辨識但不搶主標。
-- 品牌：左側深 navy 品牌面板固定顯示「本日有據」與 ET 大識別；右上角小 wordmark 僅作輔助，不可取代左側品牌重心。
-- 裝飾：只保留低對比 CI 色圓形與底線，不加入影響小圖閱讀的淡灰大裝飾。
+- 首頁主字約 150px；section 主字約 126–148px；static 主字約 108–126px；content 依行數約 68–106px。
+- 主字使用 `NotoSansTC-Bold-static.ttf` 並以 1px 多層疊字加重，確保小縮圖裡不會太細。
+- content 標題最多 3 行，先依標點換行；過長時先移除「關於／你所需要知道的／完整指南」等冗語，再改成「重點整理」式短題，避免留下半句殘標題。
+- metadata title 可用較短社群標題，但 OG image 的 `ogTitle` 預設使用完整標題，由產圖流程負責合理換行與精簡。
 
-### 預覽工具
+### 品牌與禁用元素
+
+- 色彩只能來自 `src/styles/tokens.css` 的品牌／分類色近似值：paper、paperWarm、white、ink、navy、teal 與各 category color。
+- 左上角固定「本日有據」，右下角固定 `Evidence Today`；正式 OG 不出現「健康議題編輯平台」、「手機優先分享圖」或任何內部設計說明文字。
+- 禁止在 OG 圖裡放手機、平板、裝置框、preview mockup、AI 海報式素材或無助於辨識的大型裝飾。只保留品牌外框與兩段 CI 色角線。
+
+### 預覽工具與 binary 防呆
 
 - 先執行 `pnpm run og:generate` 產生 `public/og/**`。
 - 再執行 `pnpm run og:preview [可選 OG 路徑...]`，會輸出 `public/og-preview/index.html` 與縮圖檔。
+- `public/og/**/*.png`、`public/og-preview/` 與其他 OG binary 副檔名均由 `.gitignore` 排除；PR 不應包含任何產生出的 PNG/JPG/WebP/GIF/PDF/ZIP 或 `dist/` 產物。
 - 預設代表頁包含首頁、`/videos/`、`/ingredients/`、`/news/`、`/podcasts/`、一篇短影音、一篇成分解析與一篇 Podcast 單集。

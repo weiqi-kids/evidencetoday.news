@@ -25,8 +25,6 @@ const COLOR_TOKENS = {
 
 const BRAND = {
   name: '本日有據',
-  latin: 'EVIDENCE TODAY',
-  descriptor: '健康議題編輯平台',
 };
 
 const COLLECTIONS = Object.keys(COLLECTION_SOCIAL);
@@ -86,130 +84,156 @@ async function ensureFonts() {
   return fontsCache;
 }
 
-function fitText(text = '', max = 24) {
+function fitText(text = '', max = 48, suffix = '') {
   const normalized = cleanText(text);
-  return normalized.length > max ? `${normalized.slice(0, max - 1)}…` : normalized;
+  if (normalized.length <= max) return normalized;
+  const punctuationCut = ['。', '；', '，', '：', ':', '？', '?', '｜', '—', '－', '-']
+    .map((mark) => normalized.lastIndexOf(mark, max))
+    .filter((idx) => idx >= Math.max(8, Math.floor(max * 0.52)))
+    .sort((a, b) => b - a)[0];
+  const base = punctuationCut ? normalized.slice(0, punctuationCut).trim() : normalized.slice(0, max).replace(/[，；、。:：？?｜|—－-]\S*$/, '').trim();
+  return `${base || normalized.slice(0, max).trim()}${suffix}`;
+}
+
+function normalizedOgTitle(title = '', template = 'content') {
+  const cleaned = cleanText(title)
+    .replace(/^EP\s*\d+\s*[｜|:：-]\s*喜聞樂健\s*[｜|:：-]\s*/i, '')
+    .replace(/^喜聞樂健\s*[｜|:：-]\s*/i, '')
+    .replace(/^關於(.+?)，你所需要知道的/, '$1')
+    .replace(/^關於(.+?)，你該知道的/, '$1')
+    .replace(/^(.+?)完整指南[：:]/, '$1：')
+    .replace(/你所需要知道的/g, '')
+    .trim();
+
+  if (template === 'section') return fitText(cleaned, 8);
+  if (template === 'home') return cleaned;
+  if (template === 'static') return fitText(cleaned, 16);
+  if (cleaned.length <= 42) return cleaned;
+
+  const phraseEnd = ['。', '；', '？', '?', '：', ':', '，', '｜', '—', '－', '-']
+    .map((mark) => cleaned.indexOf(mark))
+    .filter((idx) => idx >= 6 && idx <= 24)
+    .sort((a, b) => a - b)[0];
+  if (phraseEnd) return `${cleaned.slice(0, phraseEnd).replace(/[，；、。:：？?｜|—－-]+$/, '')}重點整理`;
+
+  return fitText(cleaned, 34, '重點整理');
+}
+
+function splitBalancedChars(text, maxLines, maxPerLine) {
+  const chars = Array.from(text);
+  if (chars.length <= maxPerLine) return [text];
+  const lines = [];
+  let remaining = text;
+  const breakMarks = ['。', '；', '，', '、', '：', ':', '？', '?', '｜', '—', '－', '-'];
+
+  while (Array.from(remaining).length > maxPerLine && lines.length < maxLines - 1) {
+    const current = Array.from(remaining);
+    const target = Math.min(maxPerLine, Math.ceil(current.length / (maxLines - lines.length)));
+    let breakAt = 0;
+    for (let i = Math.min(maxPerLine, current.length - 1); i >= Math.max(5, target - 4); i -= 1) {
+      if (breakMarks.includes(current[i])) { breakAt = i + 1; break; }
+    }
+    if (!breakAt) breakAt = Math.min(maxPerLine, Math.max(6, target));
+    const line = current.slice(0, breakAt).join('').replace(/[，；、。:：？?｜|—－-]+$/, '').trim();
+    if (line) lines.push(line);
+    remaining = current.slice(breakAt).join('').replace(/^[，；、。:：？?｜|—－-]+/, '').trim();
+  }
+  if (remaining) lines.push(remaining);
+  return lines.slice(0, maxLines);
 }
 
 function splitTitle(title = '', template = 'content') {
-  const max = template === 'section' ? 8 : template === 'home' ? 10 : template === 'static' ? 12 : 18;
-  const cleaned = fitText(title, max);
-  if (cleaned.length <= (template === 'content' ? 9 : 6)) return [cleaned];
-
-  const preferredBreak = ['，', '：', ':', '？', '?', '｜', '—', '－', '-']
-    .map((mark) => cleaned.indexOf(mark))
-    .find((idx) => idx >= 4 && idx <= 10);
-  const breakAt = preferredBreak || (template === 'content' ? Math.min(9, Math.ceil(cleaned.length / 2)) : Math.ceil(cleaned.length / 2));
-  return [cleaned.slice(0, breakAt).replace(/[，：:？?｜—－-]$/, ''), cleaned.slice(breakAt).replace(/^[，：:？?｜—－-]/, '')].filter(Boolean);
+  const cleaned = normalizedOgTitle(title, template);
+  if (template === 'home') return [cleaned];
+  if (template === 'section') return splitBalancedChars(cleaned, 1, 8);
+  if (template === 'static') return splitBalancedChars(cleaned, 2, 8);
+  return splitBalancedChars(cleaned, 3, 13);
 }
 
 function titleSize(lines, template) {
-  const longest = Math.max(...lines.map((item) => item.length), 1);
-  if (template === 'section') return longest <= 4 ? 132 : 112;
-  if (template === 'home') return 116;
-  if (template === 'static') return longest <= 4 ? 112 : 92;
-  if (longest <= 5) return 98;
-  if (longest <= 7) return 88;
-  return 78;
+  const longest = Math.max(...lines.map((item) => Array.from(item).length), 1);
+  if (template === 'home') return 150;
+  if (template === 'section') return longest <= 4 ? 148 : 126;
+  if (template === 'static') return longest <= 4 ? 126 : 108;
+  if (lines.length >= 3) return longest <= 11 ? 74 : 68;
+  if (longest <= 6) return 106;
+  if (longest <= 9) return 92;
+  return 82;
 }
 
 function el(type, style, children) {
-  return { type, props: { style, children } };
+  const resolvedStyle = type === 'div' && !('display' in style) ? { display: 'flex', ...style } : style;
+  return { type, props: { style: resolvedStyle, children } };
 }
 
 function text(children, style = {}) {
   return el('span', { display: 'flex', ...style }, children);
 }
 
-function heavyText(children, style = {}) {
+function strokedText(children, style = {}) {
   const size = Number.parseInt(String(style.fontSize || '80'), 10);
-  const height = Math.ceil(size * Number(style.lineHeight || 1));
+  const lineHeight = Number(style.lineHeight || 1);
+  const height = Math.ceil(size * lineHeight);
   const offsets = [
-    ['0px', '0px'],
-    ['1px', '0px'],
-    ['0px', '1px'],
-    ['1px', '1px'],
-    ['-1px', '0px'],
-    ['0px', '-1px'],
+    ['0px', '0px'], ['1px', '0px'], ['-1px', '0px'], ['0px', '1px'], ['0px', '-1px'],
+    ['1px', '1px'], ['-1px', '1px'], ['1px', '-1px'], ['-1px', '-1px'],
   ];
   return el('div', {
     display: 'flex',
     position: 'relative',
-    height: `${height}px`,
     width: '100%',
+    height: `${height}px`,
+    justifyContent: 'center',
   }, offsets.map(([left, top]) => text(children, {
     ...style,
     position: 'absolute',
     left,
     top,
+    width: '100%',
   })));
 }
 
-function brandPanel(accent, template) {
-  const isHome = template === 'home' || template === 'static';
+function brandMark(accent, variant = 'corner') {
+  const isHome = variant === 'home';
   return el('div', {
-    width: isHome ? '320px' : '275px',
-    height: '100%',
-    backgroundColor: COLOR_TOKENS.navy,
-    borderRadius: '34px',
     display: 'flex',
-    flexDirection: 'column',
-    position: 'relative',
-    overflow: 'hidden',
-    padding: '34px 26px',
+    alignItems: 'center',
+    gap: isHome ? '18px' : '12px',
+    color: COLOR_TOKENS.navy,
+    fontSize: isHome ? '42px' : '40px',
+    fontFamily: 'Noto Sans TC Bold',
+    fontWeight: 700,
+    letterSpacing: '0.04em',
+    lineHeight: 1,
   }, [
-    el('div', {
-      position: 'absolute',
-      left: '-70px',
-      top: '50px',
-      color: 'rgba(255,255,255,0.12)',
-      fontSize: isHome ? '196px' : '170px',
-      fontFamily: 'Noto Sans TC Bold',
-      fontWeight: 700,
-      letterSpacing: '-0.09em',
-      lineHeight: 1,
-    }, 'ET'),
-    el('div', { position: 'absolute', left: '0', bottom: '0', width: '100%', height: '18px', backgroundColor: accent }, ''),
-    el('div', { display: 'flex', flexDirection: 'column', gap: '14px', position: 'relative' }, [
-      text(BRAND.name, {
-        color: COLOR_TOKENS.white,
-        fontSize: '38px',
-        fontFamily: 'Noto Sans TC Bold',
-        fontWeight: 700,
-        letterSpacing: '0.04em',
-        lineHeight: 1.1,
-      }),
-      text(BRAND.latin, {
-        color: 'rgba(255,255,255,0.78)',
-        fontSize: '22px',
-        fontFamily: 'Noto Sans TC Bold',
-        fontWeight: 700,
-        letterSpacing: '0.12em',
-        lineHeight: 1,
-      }),
-    ]),
-    el('div', { display: 'flex', marginTop: 'auto', position: 'relative' }, [
-      text(BRAND.descriptor, {
-        color: 'rgba(255,255,255,0.9)',
-        fontSize: '22px',
-        fontFamily: 'Noto Sans TC Bold',
-        fontWeight: 700,
-        letterSpacing: '0.04em',
-      }),
-    ]),
+    el('div', { width: isHome ? '24px' : '22px', height: isHome ? '24px' : '22px', borderRadius: '999px', backgroundColor: accent }, ''),
+    text(BRAND.name),
   ]);
 }
 
-function badgePill(label, accent) {
+function latinMark(accent, size = 30) {
+  return text('Evidence Today', {
+    color: accent,
+    fontSize: `${size}px`,
+    fontFamily: 'Noto Sans TC Bold',
+    fontWeight: 700,
+    letterSpacing: '0.03em',
+    lineHeight: 1,
+  });
+}
+
+function categoryPill(label, accent) {
+  if (!label) return null;
   return el('div', {
     display: 'flex',
     alignItems: 'center',
     alignSelf: 'flex-start',
-    backgroundColor: accent,
-    color: COLOR_TOKENS.white,
+    backgroundColor: COLOR_TOKENS.paperWarm,
+    color: accent,
+    border: `3px solid ${accent}`,
     borderRadius: '999px',
-    padding: '14px 28px',
-    fontSize: '34px',
+    padding: '12px 24px',
+    fontSize: '30px',
     fontFamily: 'Noto Sans TC Bold',
     fontWeight: 700,
     letterSpacing: '0.04em',
@@ -217,30 +241,63 @@ function badgePill(label, accent) {
   }, label);
 }
 
-function mainWordmark(accent) {
+function titleStack(titleLines, template, color) {
+  const fontSize = titleSize(titleLines, template);
   return el('div', {
     display: 'flex',
+    flexDirection: 'column',
     alignItems: 'center',
-    gap: '14px',
-    color: COLOR_TOKENS.navy,
-    fontSize: '30px',
+    justifyContent: 'center',
+    gap: template === 'content' ? '8px' : '12px',
+    width: '100%',
+  }, titleLines.map((part) => strokedText(part, {
+    color: COLOR_TOKENS.ink,
+    fontSize: `${fontSize}px`,
     fontFamily: 'Noto Sans TC Bold',
     fontWeight: 700,
-    letterSpacing: '0.04em',
-  }, [
-    el('div', { width: '18px', height: '18px', borderRadius: '999px', backgroundColor: accent }, ''),
-    text(BRAND.name),
-  ]);
+    letterSpacing: template === 'home' ? '0.06em' : '-0.035em',
+    lineHeight: template === 'content' ? 1.04 : 1,
+    textAlign: 'center',
+    justifyContent: 'center',
+  })));
+}
+
+function accentFrame(accent) {
+  return [
+    el('div', { position: 'absolute', inset: '28px', border: `5px solid ${COLOR_TOKENS.navy}`, borderRadius: '34px' }, ''),
+    el('div', { position: 'absolute', left: '28px', top: '28px', width: '192px', height: '14px', backgroundColor: accent, borderTopLeftRadius: '30px' }, ''),
+    el('div', { position: 'absolute', right: '28px', bottom: '28px', width: '192px', height: '14px', backgroundColor: accent, borderBottomRightRadius: '30px' }, ''),
+  ];
 }
 
 async function renderOg({ template = 'content', badge, title, subtitle, color = COLOR_TOKENS.teal }) {
   const fonts = await ensureFonts();
   const titleLines = splitTitle(title, template);
-  const fontSize = titleSize(titleLines, template);
-  const showSubtitle = subtitle && cleanText(subtitle).length <= (template === 'content' ? 12 : 16);
-  const isSection = template === 'section';
-  const isHomeLike = template === 'home' || template === 'static';
-  const mainMaxWidth = isSection ? '690px' : isHomeLike ? '640px' : '735px';
+  const cleanSubtitle = cleanText(subtitle || '');
+  const showSubtitle = cleanSubtitle && cleanSubtitle.length <= (template === 'content' ? 18 : 20);
+  const isHome = template === 'home';
+  const isContent = template === 'content';
+
+  const mainChildren = isHome
+    ? [
+        titleStack(titleLines, template, color),
+        latinMark(color, 44),
+      ]
+    : [
+        ...(isContent ? [categoryPill(badge, color)] : []),
+        titleStack(titleLines, template, color),
+        ...(showSubtitle ? [text(fitText(cleanSubtitle, 20), {
+          color: COLOR_TOKENS.navy,
+          fontSize: isContent ? '36px' : '40px',
+          fontFamily: 'Noto Sans TC Bold',
+          fontWeight: 700,
+          lineHeight: 1.15,
+          letterSpacing: '-0.01em',
+          textAlign: 'center',
+          justifyContent: 'center',
+          marginTop: isContent ? '4px' : '8px',
+        })] : []),
+      ];
 
   const svg = await satori({
     type: 'div',
@@ -250,51 +307,29 @@ async function renderOg({ template = 'content', badge, title, subtitle, color = 
         height: `${HEIGHT}px`,
         display: 'flex',
         backgroundColor: COLOR_TOKENS.paper,
-        padding: '42px',
         position: 'relative',
         overflow: 'hidden',
         fontFamily: 'Noto Sans TC',
       },
       children: [
         el('div', { position: 'absolute', inset: '0', backgroundColor: COLOR_TOKENS.paperWarm }, ''),
-        el('div', { position: 'absolute', right: '-78px', top: '-72px', width: '310px', height: '310px', borderRadius: '999px', backgroundColor: `${color}22` }, ''),
-        el('div', { position: 'absolute', right: '64px', bottom: '56px', width: '132px', height: '132px', borderRadius: '999px', border: `18px solid ${color}2c` }, ''),
-        el('div', { position: 'absolute', left: '404px', bottom: '38px', width: '616px', height: '9px', borderRadius: '999px', backgroundColor: COLOR_TOKENS.fog }, ''),
-        el('div', { display: 'flex', width: '100%', height: '100%', gap: '34px', position: 'relative' }, [
-          brandPanel(color, template),
-          el('div', { flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', padding: '12px 6px 8px 0' }, [
-            el('div', { display: 'flex', justifyContent: 'space-between', alignItems: 'center', minHeight: '68px' }, [
-              badgePill(badge, color),
-              mainWordmark(color),
-            ]),
-            el('div', { display: 'flex', flexDirection: 'column', justifyContent: 'center', flex: 1, maxWidth: mainMaxWidth, gap: isSection ? '8px' : '6px' }, [
-              ...titleLines.map((part) => heavyText(part, {
-                color: COLOR_TOKENS.ink,
-                fontSize: `${fontSize}px`,
-                fontFamily: 'Noto Sans TC Bold',
-                fontWeight: 700,
-                lineHeight: 0.98,
-                letterSpacing: '-0.055em',
-              })),
-              ...(showSubtitle ? [text(fitText(subtitle, 12), {
-                color: COLOR_TOKENS.navy,
-                fontSize: isHomeLike ? '46px' : '38px',
-                fontFamily: 'Noto Sans TC Bold',
-                fontWeight: 700,
-                lineHeight: 1.1,
-                letterSpacing: '-0.01em',
-                marginTop: '18px',
-              })] : []),
-            ]),
-            el('div', { display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto', paddingTop: '16px' }, [
-              text('手機優先分享圖', { color: COLOR_TOKENS.navy, fontSize: '24px', fontFamily: 'Noto Sans TC Bold',
-                fontWeight: 700, letterSpacing: '0.04em' }),
-              text('evidencetoday.news', { color, fontSize: '28px', fontFamily: 'Noto Sans TC Bold',
-                fontWeight: 700, letterSpacing: '0.02em' }),
-            ]),
-          ]),
-        ]),
-      ],
+        el('div', { position: 'absolute', left: '28px', top: '28px', width: '1144px', height: '574px', borderRadius: '34px', backgroundColor: COLOR_TOKENS.white }, ''),
+        ...accentFrame(color),
+        el('div', { position: 'absolute', left: '76px', top: '72px' }, isHome ? brandMark(color, 'home') : brandMark(color)),
+        !isHome ? el('div', { position: 'absolute', right: '76px', bottom: '68px' }, latinMark(color, 32)) : null,
+        el('div', {
+          position: 'absolute',
+          left: isContent ? '96px' : '110px',
+          right: isContent ? '96px' : '110px',
+          top: isContent ? '146px' : '142px',
+          bottom: isContent ? '122px' : '122px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: isHome ? '30px' : isContent ? '22px' : '20px',
+        }, mainChildren.filter(Boolean)),
+      ].filter(Boolean),
     },
   }, {
     width: WIDTH,
