@@ -1,5 +1,5 @@
 ---
-import { getCollection, getEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
 import Article from '@/layouts/Article.astro';
 import JsonLd from '@/components/seo/JsonLd.astro';
 import MythSquareCardVisual from '@/components/myths/MythSquareCardVisual.astro';
@@ -16,9 +16,6 @@ const errors = validateMythArticle(entry);
 if (errors.length > 0) throw new Error(`[myth:${entry.id}] ${errors.join(' | ')}`);
 
 const canonical = `https://evidencetoday.news/myths/${entry.id.replace(/\.[^.]+$/, '')}/`;
-const related = d.relatedArticles
-  ? (await Promise.all(d.relatedArticles.map((id) => getEntry('articles', id)))).filter(Boolean)
-  : [];
 const refs = (d.references || []).filter((r) => r?.title && r?.url);
 const quickItems = d.thirtySecondConclusion?.length ? d.thirtySecondConclusion : d.tldr;
 const whyItems = Array.isArray(d.whyItSpreads)
@@ -46,7 +43,6 @@ const sourceTypeLabels: Record<string, string> = {
   'case-report': '個案報告',
 };
 const healthReminder = '本文為健康資訊與迷思查證，不提供個人診斷或治療建議。若你已被診斷疾病、正在服藥、懷孕、哺乳，或症狀持續未改善，請諮詢醫師、藥師或營養師。';
-const keyTermNote = d.confidenceNote || '這篇判讀會先分清「可能有一部分道理的機制」與「被延伸成保證效果的宣稱」，避免把單一營養、產品或經驗當成通用結論。';
 ---
 
 <Article title={d.title} description={d.ogDescription} ogImage={d.ogImage || d.shareCardImage} category="myth" variant="cards" showMedicalDisclaimer={false} publishDate={d.publishDate} updatedDate={d.updatedDate} tags={d.topicTags} breadcrumbItems={[{ label: '首頁', href: '/' }, { label: d.title }]}>
@@ -57,43 +53,13 @@ const keyTermNote = d.confidenceNote || '這篇判讀會先分清「可能有一
     <JsonLd data={{ '@context': 'https://schema.org', '@type': 'Article', headline: d.ogTitle, description: d.ogDescription, image: [d.ogImage || d.shareCardImage], datePublished: d.publishDate.toISOString(), dateModified: d.updatedDate.toISOString(), author: { '@type': 'Person', name: d.author }, publisher: { '@type': 'Organization', name: '本日有據' }, mainEntityOfPage: canonical }} />
   </Fragment>
 
-  <section class="block claim">
-    <h2>迷思原句</h2>
-    <p>{d.mythClaim}</p>
-    <div class="quick-badges">
-      <span class="pill verdict">判讀：{d.verdict === '需謹慎' ? '須謹慎' : d.verdict}</span>
-      <span class="pill evidence">證據強度：{d.evidenceLevel}</span>
-    </div>
-  </section>
-
-  <section class="block ai-answer">
-    <h2>AI 可引用答案</h2>
-    <p>{d.cardConclusion || d.verdictSummary}</p>
-  </section>
-
   <section class="block quick">
     <div>
       <h2>30 秒快速結論</h2>
     </div>
     <div>
-      <p class="quick-summary">{d.cardConclusion || d.verdictSummary}</p>
       <ul>{quickItems.map((item) => <li>{item}</li>)}</ul>
     </div>
-  </section>
-
-  <section class="block myth-saying">
-    <h2>迷思說法</h2>
-    <p>{d.mythClaim}</p>
-  </section>
-
-  <section class="block verdict-summary">
-    <h2>判斷結論</h2>
-    <p>{d.verdictSummary}</p>
-  </section>
-
-  <section class="block term-note">
-    <h2>先看懂這個詞</h2>
-    <p>{keyTermNote}</p>
   </section>
 
   <section class="block flow">
@@ -140,9 +106,7 @@ const keyTermNote = d.confidenceNote || '這篇判讀會先分清「可能有一
 
   <section class="block share-block"><MythSquareCardVisual title={d.title} verdict={d.verdict === '需謹慎' ? '須謹慎' : d.verdict} evidenceLevel={d.evidenceLevel} summary={d.cardConclusion || d.verdictSummary} theme={entry.id.includes('lemon') ? 'lemon' : 'vitamin'} showTitle={true} /><h2>分享這篇文章</h2><p>覺得這篇有幫助？歡迎分享給身邊也常遇到這類健康說法的人。</p><div class="share"><button id="share-btn" aria-label="分享這篇文章">分享這篇文章</button><button id="copy-btn" aria-label="複製連結">複製連結</button></div><p id="share-status" aria-live="polite"></p></section>
   {refs.length > 0 && <section class="block"><h2>References</h2><ol>{refs.map((r) => <li><strong>{r.title}</strong>{r.sourceType ? `（類型：${r.sourceType}）` : ''}{r.evidenceType ? `（證據類型：${r.evidenceType}）` : ''}<br /><a href={r.url} target="_blank" rel="noopener noreferrer">{r.url}</a></li>)}</ol></section>}
-  {d.correctionLog.length > 0 && <section class="block"><h2>更新與更正紀錄</h2><ul>{d.correctionLog.map((log) => <li>{log.date}：{log.description}</li>)}</ul></section>}
   <section class="block health-reminder"><h2>健康資訊提醒</h2><p>{healthReminder}</p></section>
-  {related.length > 0 && <section class="block"><h2>延伸閱讀</h2><ul>{related.map((r) => <li><a href={`/articles/${r.id.replace(/\.[^.]+$/, '')}/`}>{r.data.title}</a></li>)}</ul></section>}
 </Article>
 <script define:vars={{ canonical, title: d.title, summary: shareSummary }}>
 const status = document.getElementById('share-status');
