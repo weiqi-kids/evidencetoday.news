@@ -20,9 +20,9 @@ const latest = podcasts[0];
   </section>
 
   <section class="position-cards">
-    <article><h3>健康知識</h3><p>不是把資訊堆起來，而是把重要的地方講出來。</p></article>
-    <article><h3>健康觀念</h3><p>保養不是一句口號，背後需要有自己的判斷。</p></article>
-    <article><h3>養生方向</h3><p>該治療時治療，該保健時保健，不把兩件事混在一起。</p></article>
+    <article><h3>健康知識</h3><p>知識形成觀念，觀念改變行為。</p></article>
+    <article><h3>健康觀念</h3><p>不盲從健康資訊，養成正確的判斷。</p></article>
+    <article><h3>養生方向</h3><p>該治療時積極治療，該保養時認真保養。</p></article>
   </section>
 
   {latest && <section class="latest-episode"><h2>最新單集</h2><div class="latest-episode__card"><PodcastCard title={latest.data.title} description={latest.data.summary || latest.data.description} href={`/podcasts/${stripPodcastSlug(latest.id)}/`} episodeNumber={latest.data.episodeNumber} duration={latest.data.duration} publishDate={latest.data.updatedDate || latest.data.publishDate} /></div></section>}
