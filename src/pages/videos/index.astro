@@ -30,6 +30,21 @@ const videoCounts = VIDEO_CATEGORIES.reduce<Record<VideoCategorySlug, number>>(
 const visibleCategories = VIDEO_CATEGORIES.filter((category) => videoCounts[category.slug] > 0);
 const curatedVideos = await getCollection('videos', ({ data }) => !data.draft);
 const curatedMap = new Map(curatedVideos.map((entry) => [entry.data.youtubeId, entry]));
+const stripExt = (id: string) => id.replace(/\.[^.]+$/, '');
+const featuredVideoIds = [
+  'why-i-make-health-shorts',
+  'blanch-spinach-oxalate',
+  'garlic-crush-rest-10-min',
+  'okra-blanch-before-cutting',
+  'sun-dried-shiitake-vitamin-d',
+];
+const curatedEntryMap = new Map(curatedVideos.map((entry) => [stripExt(entry.id), entry]));
+const featuredVideos = featuredVideoIds.map((id) => curatedEntryMap.get(id)).filter(Boolean);
+const primaryFeaturedVideo = featuredVideos[0];
+const secondaryFeaturedVideos = featuredVideos.slice(1, 5);
+const getVideoHref = (id: string) => `/videos/${stripExt(id)}/`;
+const getVideoThumbnail = (youtubeId: string) => `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg`;
+const getVideoDescription = (description: string, tldr: string) => description || tldr;
 ---
 
 <List
@@ -42,9 +57,9 @@ const curatedMap = new Map(curatedVideos.map((entry) => [entry.data.youtubeId, e
 >
   <section class="videos-hero" aria-labelledby="videos-hero-title">
     <div class="videos-hero__content">
-      <p class="eyebrow">本日有據 Shorts</p>
-      <h2 id="videos-hero-title">30 秒先抓住健康重點，再決定要不要深入閱讀。</h2>
-      <p class="subtitle">用 30 秒掌握一個健康觀念，所有影片同步自本日有據 YouTube Shorts。</p>
+      <p class="eyebrow">本日有據 YouTube Shorts</p>
+      <h2 id="videos-hero-title">30 秒抓住健康重點</h2>
+      <p class="subtitle">所有影片同步來自本日有據 YouTube Shorts。</p>
       <a class="videos-hero__link" href={YOUTUBE_CHANNEL_URL} target="_blank" rel="noopener noreferrer">前往 YouTube 頻道</a>
     </div>
     <dl class="videos-hero__stats" aria-label="短影音內容統計">
@@ -63,18 +78,45 @@ const curatedMap = new Map(curatedVideos.map((entry) => [entry.data.youtubeId, e
     </dl>
   </section>
 
-  {curatedVideos.length > 0 && (
+  {primaryFeaturedVideo && (
     <section class="curated" aria-labelledby="curated-videos-title">
-      <h2 id="curated-videos-title">精選短影音整理</h2>
-      <div class="curated__list">
-        {curatedVideos.slice(0, 5).map((entry, index) => (
-          <a class="curated__item" href={`/videos/${entry.id.replace(/\.[^.]+$/, '')}/`}>
-            <span class="curated__number">{String(index + 1).padStart(2, '0')}</span>
-            <span class="curated__title">{entry.data.title}</span>
-            <span class="curated__arrow" aria-hidden="true">→</span>
-          </a>
-        ))}
+      <div class="curated__header">
+        <p class="curated__eyebrow">YouTube Shorts 精選</p>
+        <h2 id="curated-videos-title">精選短影音整理</h2>
+        <p>先看主編親自拍攝的製作初衷，再接續四支高流量健康短影音重點。</p>
       </div>
+
+      <a class="curated-feature" href={getVideoHref(primaryFeaturedVideo.id)}>
+        <div class="curated-feature__thumb">
+          <img src={getVideoThumbnail(primaryFeaturedVideo.data.youtubeId)} alt={`${primaryFeaturedVideo.data.title}影片縮圖`} loading="lazy" />
+          <span class="curated-play" aria-hidden="true">▶</span>
+        </div>
+        <div class="curated-feature__body">
+          <span class="curated-feature__label">第一精選・主編本人實錄</span>
+          <h3>{primaryFeaturedVideo.data.title}</h3>
+          <p>{getVideoDescription(primaryFeaturedVideo.data.description, primaryFeaturedVideo.data.tldr)}</p>
+          <span class="curated-cta">觀看重點整理 →</span>
+        </div>
+      </a>
+
+      {secondaryFeaturedVideos.length > 0 && (
+        <div class="curated-grid" aria-label="高流量短影音精選">
+          {secondaryFeaturedVideos.map((entry) => (
+            <a class="curated-card" href={getVideoHref(entry.id)}>
+              <div class="curated-card__thumb">
+                <img src={getVideoThumbnail(entry.data.youtubeId)} alt={`${entry.data.title}影片縮圖`} loading="lazy" />
+                <span class="curated-play curated-play--small" aria-hidden="true">▶</span>
+              </div>
+              <div class="curated-card__body">
+                <span class="curated-card__label">高流量作品</span>
+                <h3>{entry.data.title}</h3>
+                <p>{getVideoDescription(entry.data.description, entry.data.tldr)}</p>
+                <span class="curated-cta">觀看整理 →</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      )}
     </section>
   )}
 
@@ -107,7 +149,7 @@ const curatedMap = new Map(curatedVideos.map((entry) => [entry.data.youtubeId, e
                 <p>{v.publishedAt ? fmtDate(new Date(v.publishedAt)) : '日期待補'}</p>
               </div>
               <h3>{v.title}</h3>
-              {curatedMap.has(v.id) && <p class="curated-link"><span class="curated-badge">已整理</span><a href={`/videos/${curatedMap.get(v.id)?.id.replace(/\.[^.]+$/, '')}/`}>看重點整理 →</a></p>}
+              {curatedMap.has(v.id) && <p class="curated-link"><span class="curated-badge">已整理</span><a href={getVideoHref(curatedMap.get(v.id)?.id || '')}>看重點整理 →</a></p>}
             </div>
           </article>
         ))}
@@ -285,12 +327,14 @@ const curatedMap = new Map(curatedVideos.map((entry) => [entry.data.youtubeId, e
   .videos-hero__stats div {
     display: flex;
     flex-direction: column;
+    align-items: center;
     justify-content: center;
     min-height: 5.25rem;
     border: 1px solid color-mix(in oklch, var(--color-cat-video) 18%, var(--color-fog));
     border-radius: var(--radius-card);
     padding: 1rem;
     background: color-mix(in oklch, white 84%, transparent);
+    text-align: center;
     backdrop-filter: blur(8px);
   }
 
@@ -303,7 +347,7 @@ const curatedMap = new Map(curatedVideos.map((entry) => [entry.data.youtubeId, e
   }
 
   .videos-hero__stats dd {
-    margin-top: 0.35rem;
+    margin: 0.35rem 0 0;
     font-family: var(--font-ui);
     font-size: var(--text-meta);
     color: color-mix(in oklch, var(--color-ink) 72%, transparent);
@@ -319,57 +363,167 @@ const curatedMap = new Map(curatedVideos.map((entry) => [entry.data.youtubeId, e
     background: linear-gradient(135deg, color-mix(in oklch, var(--color-teal) 8%, #fff), #fff 64%);
   }
 
-  .curated h2 {
+  .curated__header {
+    max-width: 44rem;
+  }
+
+  .curated__header h2,
+  .curated-feature h3,
+  .curated-card h3 {
     margin: 0;
     color: var(--color-ink);
   }
 
-  .curated__list {
-    display: grid;
-    gap: 0.6rem;
+  .curated__header p:last-child {
+    margin: 0.45rem 0 0;
+    color: color-mix(in oklch, var(--color-ink) 72%, transparent);
   }
 
-  .curated__item {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    align-items: center;
-    gap: 0.75rem;
+  .curated__eyebrow,
+  .curated-feature__label,
+  .curated-card__label {
+    margin: 0 0 0.35rem;
+    color: color-mix(in oklch, var(--color-teal) 72%, var(--color-ink));
+    font-family: var(--font-ui);
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .curated-feature,
+  .curated-card {
+    overflow: hidden;
     border: 1px solid color-mix(in oklch, var(--color-fog) 84%, white);
-    border-radius: 1rem;
-    padding: 0.75rem 0.85rem;
+    border-radius: calc(var(--radius-card) - 0.1rem);
     color: var(--color-ink);
     background: #fff;
     text-decoration: none;
+    transition:
+      transform 0.16s ease,
+      box-shadow 0.16s ease,
+      border-color 0.16s ease;
   }
 
-  .curated__item:hover {
+  .curated-feature:hover,
+  .curated-card:hover {
+    transform: translateY(-3px);
     border-color: color-mix(in oklch, var(--color-teal) 38%, var(--color-fog));
     box-shadow: var(--shadow-card-hover);
   }
 
-  .curated__number {
+  .curated-feature {
+    display: grid;
+    grid-template-columns: minmax(16rem, 0.86fr) minmax(0, 1fr);
+    align-items: stretch;
+  }
+
+  .curated-feature__thumb,
+  .curated-card__thumb {
+    position: relative;
+    overflow: hidden;
+    background: var(--color-fog);
+  }
+
+  .curated-feature__thumb {
+    min-height: 17rem;
+  }
+
+  .curated-card__thumb {
+    aspect-ratio: 16 / 9;
+  }
+
+  .curated-feature__thumb img,
+  .curated-card__thumb img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+
+  .curated-play {
+    position: absolute;
+    inset: 50% auto auto 50%;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 2.25rem;
-    height: 2.25rem;
+    width: 3.25rem;
+    height: 3.25rem;
     border-radius: 999px;
-    color: var(--color-paper);
-    background: var(--color-ink);
-    font-family: var(--font-ui);
-    font-size: 0.75rem;
-    font-weight: 700;
+    color: #fff;
+    background: oklch(0 0 0 / 0.48);
+    font-size: 1.35rem;
+    transform: translate(-50%, -50%);
   }
 
-  .curated__title {
+  .curated-play--small {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1rem;
+  }
+
+  .curated-feature__body,
+  .curated-card__body {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .curated-feature__body {
+    justify-content: center;
+    padding: clamp(1.15rem, 3vw, 2rem);
+  }
+
+  .curated-feature h3 {
+    font-size: clamp(1.45rem, 2.3vw, 2.15rem);
+    line-height: 1.25;
+  }
+
+  .curated-feature p,
+  .curated-card p {
+    color: color-mix(in oklch, var(--color-ink) 72%, transparent);
+    line-height: 1.7;
+  }
+
+  .curated-feature p {
+    margin: 0.8rem 0 1rem;
+  }
+
+  .curated-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(0.85rem, 2vw, 1.1rem);
+  }
+
+  .curated-card {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .curated-card__body {
+    flex: 1;
+    padding: 1rem;
+  }
+
+  .curated-card h3 {
+    font-size: 1.05rem;
+    line-height: 1.45;
+  }
+
+  .curated-card p {
+    display: -webkit-box;
+    flex: 1;
+    margin: 0.55rem 0 0.85rem;
     overflow: hidden;
-    font-weight: 650;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
   }
 
-  .curated__arrow {
+  .curated-cta {
+    margin-top: auto;
     color: var(--color-teal);
+    font-family: var(--font-ui);
+    font-size: var(--text-meta);
     font-weight: 800;
   }
 
@@ -544,6 +698,15 @@ const curatedMap = new Map(curatedVideos.map((entry) => [entry.data.youtubeId, e
     .videos-hero__stats {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
+
+    .curated-feature {
+      grid-template-columns: 1fr;
+    }
+
+    .curated-feature__thumb {
+      min-height: auto;
+      aspect-ratio: 16 / 9;
+    }
   }
 
   @media (max-width: 34rem) {
@@ -557,8 +720,17 @@ const curatedMap = new Map(curatedVideos.map((entry) => [entry.data.youtubeId, e
       gap: 0.45rem;
     }
 
-    .curated__title {
-      white-space: normal;
+    .curated-feature {
+      grid-template-columns: 1fr;
+    }
+
+    .curated-feature__thumb {
+      min-height: auto;
+      aspect-ratio: 16 / 9;
+    }
+
+    .curated-grid {
+      grid-template-columns: 1fr;
     }
   }
 </style>
