@@ -128,13 +128,47 @@ const hasRelatedContent = relatedArticles.length || relatedMyths.length || relat
 </Base>
 
 <style>
-.video-article{padding-block:var(--space-page-y);display:flex;flex-direction:column;gap:1.25rem}
-.video-hero,.video-summary,.video-key-points,.video-body-summary,.video-transcript,.video-related{max-width:50rem;margin-inline:auto;width:100%;background:var(--color-paper);border:1px solid var(--color-fog);border-radius:var(--radius-card);padding:clamp(1rem,.85rem + .8vw,1.5rem)}
+.video-article{
+  padding-block:clamp(1.75rem,1.2rem + 2vw,4rem);
+  display:flex;
+  flex-direction:column;
+  gap:clamp(1.1rem,.9rem + .8vw,1.9rem);
+}
+.video-hero,.video-summary,.video-key-points,.video-body-summary,.video-transcript,.video-related{
+  max-width:min(100%,64rem);
+  margin-inline:auto;
+  width:100%;
+  background:var(--color-paper);
+  border:1px solid var(--color-fog);
+  border-radius:var(--radius-card);
+  padding:clamp(1.15rem,.9rem + 1.2vw,2rem);
+}
+.video-hero{
+  display:flex;
+  flex-direction:column;
+  gap:.65rem;
+}
+.video-hero h1{
+  max-width:18ch;
+  line-height:1.08;
+}
+.video-hero > p:not(.eyebrow):not(.video-meta){
+  max-width:54rem;
+  line-height:1.75;
+}
 .eyebrow{color:var(--color-cat-video);font-size:var(--text-meta)}
 .video-meta{font-size:var(--text-meta);color:color-mix(in oklch,var(--color-ink) 72%,transparent)}
-.video-player{max-width:50rem;margin-inline:auto;width:100%}.video-frame{max-width:26rem;margin-inline:auto;aspect-ratio:9/16;border-radius:var(--radius-card);overflow:hidden;background:var(--color-fog)}
+.video-player{max-width:min(100%,64rem);margin-inline:auto;width:100%}
+.video-frame{width:min(100%,28rem);margin-inline:auto;aspect-ratio:9/16;border-radius:var(--radius-card);overflow:hidden;background:var(--color-fog)}
 .video-frame iframe{width:100%;height:100%;border:0}
+.video-summary h2,.video-key-points h2,.video-body-summary h2,.video-related h2{margin-bottom:.75rem}
+.video-summary ul,.video-key-points ul{padding-left:1.15rem;line-height:1.8}
+.video-summary li,.video-key-points li{padding-left:.25rem;margin-block:.25rem}
+.video-body-summary p,.video-transcript p{line-height:1.85}
+.video-related{display:flex;flex-direction:column;gap:clamp(1.1rem,.9rem + .8vw,1.6rem)}
 .related-grid{display:grid;grid-template-columns:1fr;gap:1rem}.tag-list{display:flex;flex-wrap:wrap;gap:.6rem}.tag-list a{background:var(--color-teal-subtle);color:var(--color-navy);padding:.4rem .75rem;border-radius:999px;text-decoration:none}
-@media (min-width:768px){.related-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (min-width:1280px){.video-frame{max-width:24rem}}
+@media (min-width:768px){.related-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.video-frame{width:min(64vw,30rem)}}
+@media (min-width:1024px){.video-article{gap:clamp(1.4rem,1rem + 1vw,2.2rem)}.video-frame{width:min(42vw,32rem)}}
+@media (min-width:1280px){.video-frame{width:30rem}.video-related{max-width:min(100%,70rem)}}
+@media (max-width:520px){.video-article{padding-inline:.75rem}.video-hero h1{max-width:100%;font-size:clamp(2.15rem,1.7rem + 6vw,3rem)}.video-frame{width:min(100%,24rem)}.video-summary ul,.video-key-points ul{padding-left:1rem}}
 </style>
