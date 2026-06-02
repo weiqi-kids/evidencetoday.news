@@ -3,12 +3,14 @@ import List from '@/layouts/List.astro';
 import PodcastCard from '@/components/blocks/PodcastCard.astro';
 import { getCollection } from 'astro:content';
 import { getPublishedPodcasts, stripPodcastSlug } from '@/utils/podcasts';
+import { listSocial } from '@/utils/social-meta.mjs';
 
 const podcasts = getPublishedPodcasts(await getCollection('podcasts'));
 const latest = podcasts[0];
+const social = listSocial('podcasts');
 ---
 
-<List title="Podcast《喜聞樂健》" description="每一集約 15 分鐘，從一個健康問題開始。" category="podcast" breadcrumbItems={[{ label: '首頁', href: '/' }, { label: 'Podcast' }]} totalItems={podcasts.length}>
+<List title="Podcast《喜聞樂健》" description={social.description} seoTitle={social.title} socialTitle={social.title} socialDescription={social.description} ogImage={social.image} category="podcast" breadcrumbItems={[{ label: '首頁', href: '/' }, { label: 'Podcast' }]} totalItems={podcasts.length}>
   <section class="podcast-hero">
     <p class="podcast-eyebrow">喜聞樂健</p>
     <h2>每一集，從一個健康問題開始。</h2>

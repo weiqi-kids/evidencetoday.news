@@ -127,3 +127,12 @@
 - 「白話辯證」需使用 `.myth-reasoning-grid` 搭配藍色「有道理的部分」與紅色「被誇大的部分」兩張卡；桌機雙欄、手機單欄。
 - myths 單篇底部只保留一個「健康資訊提醒」，固定文案由 page template 統一輸出；分享區字級維持 `1rem`。
 - `scripts/check-myth-quality.mjs` 需同步檢查 27 篇 published myths、快速結論至少 2 點、必要正文區塊、藍紅雙框、References 至少 2 個 URL，以及禁止套版句與已移除的舊區塊標題。
+
+## 全站 SEO / OG 分享預覽規則（2026-06-02）
+
+- 全站分享標題、描述與 OG 圖路徑集中在 `src/utils/social-meta.mjs` 維護；頁面請優先使用 `STATIC_SOCIAL`、`listSocial()`、`contentSocial()` 或 `tagSocial()`，不要在各頁零散拼接 `og:title` / `og:description`。
+- `Base.astro` 支援 `ogTitle`、`ogDescription`、`ogImage`，並會同步輸出 Open Graph 與 Twitter Card；單篇版型由 `Article.astro` / `Media.astro` 轉傳 `socialTitle` 與 `socialDescription`。
+- `scripts/generate-og.mjs` 會在 build 前產生首頁、靜態頁、分類首頁、內容單篇與標籤頁共用的 1200×630 PNG。OG 圖只放短 badge、短主題與小品牌識別；不要把完整 description 放進圖裡。
+- 分類首頁固定使用短字主視覺：健康文章、迷思查證、成分解析、喜聞樂健、短影音、健康雷達。若新增 collection，必須同步補 `COLLECTION_SOCIAL` 與產圖模板色彩。
+- 內容 frontmatter 可選填 `ogShortTitle`、`socialTitle`、`socialDescription` 作為人工覆寫；未填時會由 title / description / summary 推導短標與分享描述。文案應維持 40–80 個中文字左右，避免「值得關注」「帶你了解」「一篇看懂」等套版語氣。
+- 標籤頁的標題與描述會依 tag 個別產生，但共用 `/og/tags/index.png`，避免 build 前產生數百張低差異圖片。

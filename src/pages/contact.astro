@@ -1,8 +1,9 @@
 ---
 import Policy from '@/layouts/Policy.astro';
+import { STATIC_SOCIAL } from '@/utils/social-meta.mjs';
 ---
 
-<Policy title="聯絡我們">
+<Policy title="聯絡我們" description={STATIC_SOCIAL['contact'].description} seoTitle={STATIC_SOCIAL['contact'].title} socialTitle={STATIC_SOCIAL['contact'].title} ogImage={STATIC_SOCIAL['contact'].ogPath}>
   <p>感謝你對本日有據的關注。無論是內容勘誤回報、合作洽詢或一般建議，我們都歡迎你來信。</p>
 
   <h2>內容勘誤回報</h2>

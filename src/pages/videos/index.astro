@@ -5,6 +5,7 @@ import shortsData from '@/data/youtube-shorts.json';
 import { videoItemsSchema, YOUTUBE_CHANNEL_URL } from '@/lib/youtube';
 import { fmtDate } from '@/utils/date';
 import { VIDEO_CATEGORIES, categorizeVideos, type VideoCategorySlug } from '@/utils/videos';
+import { listSocial } from '@/utils/social-meta.mjs';
 
 const parsedVideos = videoItemsSchema.safeParse(shortsData);
 const videos = parsedVideos.success ? parsedVideos.data : [];
@@ -48,11 +49,16 @@ const getVideoSummary = (entry: { data: { keyPoints?: string[]; tldr: string; de
   const keyPointSummary = entry.data.keyPoints?.filter(Boolean).join(' ');
   return keyPointSummary || entry.data.tldr || entry.data.description;
 };
+const social = listSocial('videos');
 ---
 
 <List
   title="短影音"
-  description="本日有據短影音整理健康、營養、醫學與生活科普重點，用短時間看懂有根據的健康資訊。"
+  description={social.description}
+  seoTitle={social.title}
+  socialTitle={social.title}
+  socialDescription={social.description}
+  ogImage={social.image}
   seoTitle="短影音｜本日有據 Evidence Today"
   category="video"
   breadcrumbItems={[{ label: '首頁', href: '/' }, { label: '短影音' }]}

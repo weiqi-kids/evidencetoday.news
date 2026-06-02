@@ -6,6 +6,9 @@ interface Props {
   title: string;
   description: string;
   seoTitle?: string;
+  socialTitle?: string;
+  socialDescription?: string;
+  ogImage?: string;
   category?: 'article' | 'myth' | 'ingredient' | 'podcast' | 'video' | 'news';
   breadcrumbItems: Array<{ label: string; href?: string }>;
   totalItems?: number;
@@ -15,13 +18,16 @@ const {
   title,
   description,
   seoTitle,
+  socialTitle,
+  socialDescription,
+  ogImage,
   category,
   breadcrumbItems,
   totalItems,
 } = Astro.props;
 ---
 
-<Base title={seoTitle ?? `${title} | 本日有據`} description={description}>
+<Base title={seoTitle ?? `${title}｜本日有據`} description={description} ogTitle={socialTitle} ogDescription={socialDescription ?? description} ogImage={ogImage}>
   <div class="list-layout container">
     <Breadcrumb items={breadcrumbItems} />
 

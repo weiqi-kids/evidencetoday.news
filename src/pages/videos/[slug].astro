@@ -11,6 +11,7 @@ import VideoCard from '@/components/blocks/VideoCard.astro';
 import { fmtDate } from '@/utils/date';
 import { stripPodcastSlug } from '@/utils/podcasts';
 import type { MythVerdict } from '@/utils/myths/schema';
+import { contentSocial } from '@/utils/social-meta.mjs';
 
 function stripExt(id: string): string {
   return id.replace(/\.[^.]+$/, '');
@@ -43,6 +44,7 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const data = entry.data;
+const social = contentSocial('videos', data, entry.id.replace(/\.[^.]+$/, ''));
 const slug = stripExt(entry.id);
 const summary = data.aiAnswer || data.citationAnswer || data.quickAnswer || data.tldr || data.description;
 const summaryBlocks = parseSummary(summary);
@@ -93,7 +95,7 @@ const breadcrumbJsonLd = {
 const hasRelatedContent = relatedArticles.length || relatedMyths.length || relatedIngredients.length || relatedPodcasts.length;
 ---
 
-<Base title={`${data.title} | 短影音 | 本日有據`} description={data.description} ogImage={data.coverImage || `/og/videos/${slug}.png`} ogType="article">
+<Base title={social.title} description={social.description} ogTitle={social.title} ogDescription={social.description} ogImage={social.image} ogType="article">
   <Fragment slot="head">
     <JsonLd data={videoJsonLd} />
     <JsonLd data={breadcrumbJsonLd} />

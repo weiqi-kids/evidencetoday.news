@@ -1,8 +1,9 @@
 ---
 import Policy from '@/layouts/Policy.astro';
+import { STATIC_SOCIAL } from '@/utils/social-meta.mjs';
 ---
 
-<Policy title="使用條款" updatedDate={new Date('2026-05-07')}>
+<Policy title="使用條款" description={STATIC_SOCIAL['terms'].description} seoTitle={STATIC_SOCIAL['terms'].title} socialTitle={STATIC_SOCIAL['terms'].title} ogImage={STATIC_SOCIAL['terms'].ogPath} updatedDate={new Date('2026-05-07')}>
   <h2>接受條款</h2>
   <p>使用本日有據（evidencetoday.news）網站即表示你同意遵守本使用條款。如不同意任何條款，請勿繼續使用本站。</p>
 

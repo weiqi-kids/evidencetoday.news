@@ -14,6 +14,9 @@ import MedicalDisclaimer from '@/components/blocks/MedicalDisclaimer.astro';
 interface Props {
   title: string;
   description: string;
+  seoTitle?: string;
+  socialTitle?: string;
+  socialDescription?: string;
   ogImage?: string;
   category: 'article' | 'myth' | 'ingredient';
   variant?: 'prose' | 'cards';
@@ -36,6 +39,9 @@ interface Props {
 const {
   title,
   description,
+  seoTitle,
+  socialTitle,
+  socialDescription,
   ogImage,
   category,
   variant = 'prose',
@@ -56,7 +62,7 @@ const {
 } = Astro.props;
 ---
 
-<Base title={`${title} | 本日有據`} description={description} ogImage={ogImage} ogType="article">
+<Base title={seoTitle ?? `${title}｜本日有據`} description={description} ogTitle={socialTitle} ogDescription={socialDescription ?? description} ogImage={ogImage} ogType="article">
   <Fragment slot="head"><slot name="head" /></Fragment>
   <div class="article-layout container">
     <Breadcrumb items={breadcrumbItems} />

@@ -1,8 +1,9 @@
 ---
 import Policy from '@/layouts/Policy.astro';
+import { STATIC_SOCIAL } from '@/utils/social-meta.mjs';
 ---
 
-<Policy title="隱私權政策" updatedDate={new Date('2026-05-07')}>
+<Policy title="隱私權政策" description={STATIC_SOCIAL['privacy'].description} seoTitle={STATIC_SOCIAL['privacy'].title} socialTitle={STATIC_SOCIAL['privacy'].title} ogImage={STATIC_SOCIAL['privacy'].ogPath} updatedDate={new Date('2026-05-07')}>
   <h2>資料蒐集</h2>
   <p>本站目前不主動蒐集任何個人識別資訊。當你瀏覽本站時，我們的伺服器可能會記錄標準的存取紀錄（如 IP 位址、瀏覽器類型、造訪頁面與時間），這些資料僅用於網站維運與流量分析，不會用於辨識個人身份。</p>
 

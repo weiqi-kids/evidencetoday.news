@@ -2,6 +2,7 @@
 import List from '@/layouts/List.astro';
 import IngredientCard from '@/components/blocks/IngredientCard.astro';
 import { getCollection } from 'astro:content';
+import { listSocial } from '@/utils/social-meta.mjs';
 
 function stripExt(id: string): string {
   return id.replace(/\.[^.]+$/, '');
@@ -9,11 +10,16 @@ function stripExt(id: string): string {
 
 const ingredients = (await getCollection('ingredients', (e) => !e.data.draft))
   .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
+const social = listSocial('ingredients');
 ---
 
 <List
   title="成分解析"
-  description="整理營養素、食物成分與研究常討論的用途、可能機制與安全性。"
+  description={social.description}
+  seoTitle={social.title}
+  socialTitle={social.title}
+  socialDescription={social.description}
+  ogImage={social.image}
   category="ingredient"
   breadcrumbItems={[{ label: '首頁', href: '/' }, { label: '成分解析' }]}
   totalItems={ingredients.length}
