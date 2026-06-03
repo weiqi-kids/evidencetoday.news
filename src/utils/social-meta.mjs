@@ -1,6 +1,6 @@
 export const SITE_NAME = '本日有據';
 export const SITE_SUFFIX = '本日有據';
-export const DEFAULT_DESCRIPTION = '健康研究，白話解釋。把健康議題講得有根據，也講得讓人看得懂。';
+export const DEFAULT_DESCRIPTION = '從研究到日常判斷，整理真正值得注意的健康資訊';
 
 export const OG_IMAGE_VERSION = '20260604-static-og-v1';
 
@@ -35,7 +35,7 @@ export const COLLECTION_SOCIAL = {
     ogTitle: '健康文章',
     label: '健康文章',
     title: '健康文章｜本日有據',
-    description: '從營養、保健食品到生活健康，用研究與公共資料拆解常見問題，保留脈絡也說人話。',
+    description: '從日常健康問題出發，整理一般人看得懂的研究重點',
     color: '#2d8185',
     image: ogImageForCollection('articles'),
   },
@@ -47,7 +47,7 @@ export const COLLECTION_SOCIAL = {
     ogTitle: '迷思查證',
     label: '迷思查證',
     title: '迷思查證｜本日有據',
-    description: '把常見健康說法拿回證據裡檢查：哪些情境成立、哪些被誇大，結論說清楚。',
+    description: '用白話說清楚：這個健康說法到底能不能信',
     color: '#b95b3b',
     image: ogImageForCollection('myths'),
   },
@@ -59,7 +59,7 @@ export const COLLECTION_SOCIAL = {
     ogTitle: '成分解析',
     label: '成分解析',
     title: '成分解析｜本日有據',
-    description: '從營養素、食物成分到安全性，整理研究常談的重點與日常使用情境。',
+    description: '從成分名稱到實際用途，整理一般人看得懂的重點',
     color: '#3f7f55',
     image: ogImageForCollection('ingredients'),
   },
@@ -71,7 +71,7 @@ export const COLLECTION_SOCIAL = {
     ogTitle: '喜聞樂健',
     label: 'Podcast《喜聞樂健》',
     title: 'Podcast《喜聞樂健》｜本日有據',
-    description: '每一集約 15 分鐘，從一個健康問題出發，把知識、觀念與判斷講清楚。',
+    description: '從一個問題開始，談健康資訊背後的思考方式',
     color: '#6657a6',
     image: ogImageForCollection('podcasts'),
   },
@@ -83,7 +83,7 @@ export const COLLECTION_SOCIAL = {
     ogTitle: '短影音',
     label: '短影音',
     title: '短影音｜本日有據',
-    description: '用短時間抓住健康、營養與生活科普重點；每支影片都回到可查證的資料脈絡。',
+    description: '30 秒抓住一個健康重點，快速看懂日常營養與保健觀念',
     color: '#9a7728',
     image: ogImageForCollection('videos'),
   },
@@ -95,7 +95,7 @@ export const COLLECTION_SOCIAL = {
     ogTitle: '健康雷達',
     label: '健康雷達',
     title: '健康雷達｜本日有據',
-    description: '整理健康研究、公共資訊與最新趨勢，幫你更快看懂真正需要留意的消息。',
+    description: '健康雷達整理新研究，幫你快速看懂重要發現',
     color: '#326d8c',
     image: ogImageForCollection('news'),
   },
