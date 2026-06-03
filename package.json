@@ -10,10 +10,8 @@
     "postbuild": "pagefind --site dist",
     "preview": "astro preview",
     "sync:youtube": "node scripts/sync-youtube-shorts.mjs",
-    "prebuild": "pnpm run sync:youtube && pnpm run og:generate",
-    "content:audit": "node scripts/audit-ai-tone.mjs",
-    "og:generate": "node scripts/generate-og.mjs",
-    "og:preview": "node scripts/preview-og.mjs"
+    "prebuild": "pnpm run sync:youtube",
+    "content:audit": "node scripts/audit-ai-tone.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.14",
