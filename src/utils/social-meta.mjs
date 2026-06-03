@@ -2,6 +2,30 @@ export const SITE_NAME = '本日有據';
 export const SITE_SUFFIX = '本日有據';
 export const DEFAULT_DESCRIPTION = '健康研究，白話解釋。把健康議題講得有根據，也講得讓人看得懂。';
 
+export const OG_IMAGE_VERSION = '20260604-static-og-v1';
+
+export const STATIC_OG_IMAGES = {
+  home: '/og-static/home.png',
+  news: '/og-static/news.png',
+  ingredients: '/og-static/ingredients.png',
+  articles: '/og-static/articles.png',
+  myths: '/og-static/myths.png',
+  podcasts: '/og-static/podcasts.png',
+  videos: '/og-static/videos.png',
+  default: '/og-static/home.png',
+};
+
+export function versionedOgImage(path = STATIC_OG_IMAGES.default) {
+  const separator = path.includes('?') ? '&' : '?';
+  return `${path}${separator}v=${OG_IMAGE_VERSION}`;
+}
+
+export const DEFAULT_OG_IMAGE = versionedOgImage(STATIC_OG_IMAGES.home);
+
+export function ogImageForCollection(collection) {
+  return versionedOgImage(STATIC_OG_IMAGES[collection] || STATIC_OG_IMAGES.default);
+}
+
 export const COLLECTION_SOCIAL = {
   articles: {
     route: '/articles/',
@@ -13,6 +37,7 @@ export const COLLECTION_SOCIAL = {
     title: '健康文章｜本日有據',
     description: '從營養、保健食品到生活健康，用研究與公共資料拆解常見問題，保留脈絡也說人話。',
     color: '#2d8185',
+    image: ogImageForCollection('articles'),
   },
   myths: {
     route: '/myths/',
@@ -24,6 +49,7 @@ export const COLLECTION_SOCIAL = {
     title: '迷思查證｜本日有據',
     description: '把常見健康說法拿回證據裡檢查：哪些情境成立、哪些被誇大，結論說清楚。',
     color: '#b95b3b',
+    image: ogImageForCollection('myths'),
   },
   ingredients: {
     route: '/ingredients/',
@@ -35,6 +61,7 @@ export const COLLECTION_SOCIAL = {
     title: '成分解析｜本日有據',
     description: '從營養素、食物成分到安全性，整理研究常談的重點與日常使用情境。',
     color: '#3f7f55',
+    image: ogImageForCollection('ingredients'),
   },
   podcasts: {
     route: '/podcasts/',
@@ -46,6 +73,7 @@ export const COLLECTION_SOCIAL = {
     title: 'Podcast《喜聞樂健》｜本日有據',
     description: '每一集約 15 分鐘，從一個健康問題出發，把知識、觀念與判斷講清楚。',
     color: '#6657a6',
+    image: ogImageForCollection('podcasts'),
   },
   videos: {
     route: '/videos/',
@@ -57,6 +85,7 @@ export const COLLECTION_SOCIAL = {
     title: '短影音｜本日有據',
     description: '用短時間抓住健康、營養與生活科普重點；每支影片都回到可查證的資料脈絡。',
     color: '#9a7728',
+    image: ogImageForCollection('videos'),
   },
   news: {
     route: '/news/',
@@ -68,13 +97,15 @@ export const COLLECTION_SOCIAL = {
     title: '健康雷達｜本日有據',
     description: '整理健康研究、公共資訊與最新趨勢，幫你更快看懂真正需要留意的消息。',
     color: '#326d8c',
+    image: ogImageForCollection('news'),
   },
 };
 
 export const STATIC_SOCIAL = {
   home: {
     path: '/',
-    ogPath: '/og/index.png',
+    ogPath: DEFAULT_OG_IMAGE,
+    image: DEFAULT_OG_IMAGE,
     template: 'home',
     title: '本日有據｜健康研究，白話解釋',
     description: DEFAULT_DESCRIPTION,
@@ -85,7 +116,8 @@ export const STATIC_SOCIAL = {
   },
   about: {
     path: '/about/',
-    ogPath: '/og/pages/about.png',
+    ogPath: DEFAULT_OG_IMAGE,
+    image: DEFAULT_OG_IMAGE,
     template: 'static',
     title: '關於本日有據｜本日有據',
     description: '我們把健康研究、公共資料與生活問題放在同一張桌上，用清楚文字整理可查證的健康資訊。',
@@ -95,7 +127,8 @@ export const STATIC_SOCIAL = {
   },
   'editorial-policy': {
     path: '/editorial-policy/',
-    ogPath: '/og/pages/editorial-policy.png',
+    ogPath: DEFAULT_OG_IMAGE,
+    image: DEFAULT_OG_IMAGE,
     template: 'static',
     title: '編輯政策｜本日有據',
     description: '查看本日有據如何選題、查證、引用來源與修正內容，理解每篇健康資訊背後的編輯流程。',
@@ -105,7 +138,8 @@ export const STATIC_SOCIAL = {
   },
   disclosure: {
     path: '/disclosure/',
-    ogPath: '/og/pages/disclosure.png',
+    ogPath: DEFAULT_OG_IMAGE,
+    image: DEFAULT_OG_IMAGE,
     template: 'static',
     title: '利益揭露與編輯獨立原則｜本日有據',
     description: '說明本站目前的合作、利益揭露與編輯獨立原則，讓讀者知道內容判斷如何與商業關係區隔。',
@@ -115,7 +149,8 @@ export const STATIC_SOCIAL = {
   },
   'medical-disclaimer': {
     path: '/medical-disclaimer/',
-    ogPath: '/og/pages/medical-disclaimer.png',
+    ogPath: DEFAULT_OG_IMAGE,
+    image: DEFAULT_OG_IMAGE,
     template: 'static',
     title: '醫療聲明｜本日有據',
     description: '本站內容提供一般健康教育與參考，不取代醫師、藥師、營養師等專業人員的個別建議。',
@@ -125,7 +160,8 @@ export const STATIC_SOCIAL = {
   },
   privacy: {
     path: '/privacy/',
-    ogPath: '/og/pages/privacy.png',
+    ogPath: DEFAULT_OG_IMAGE,
+    image: DEFAULT_OG_IMAGE,
     template: 'static',
     title: '隱私權政策｜本日有據',
     description: '了解本日有據網站的資料蒐集、Cookie、第三方服務與聯絡方式。',
@@ -135,7 +171,8 @@ export const STATIC_SOCIAL = {
   },
   terms: {
     path: '/terms/',
-    ogPath: '/og/pages/terms.png',
+    ogPath: DEFAULT_OG_IMAGE,
+    image: DEFAULT_OG_IMAGE,
     template: 'static',
     title: '使用條款｜本日有據',
     description: '閱讀本站內容使用、外部連結、醫療免責與條款更新等基本規範。',
@@ -145,7 +182,8 @@ export const STATIC_SOCIAL = {
   },
   contact: {
     path: '/contact/',
-    ogPath: '/og/pages/contact.png',
+    ogPath: DEFAULT_OG_IMAGE,
+    image: DEFAULT_OG_IMAGE,
     template: 'static',
     title: '聯絡我們｜本日有據',
     description: '想回報內容勘誤、洽談合作或提供建議，可以在這裡找到本日有據的聯絡方式。',
@@ -155,7 +193,8 @@ export const STATIC_SOCIAL = {
   },
   'author-luo-yang': {
     path: '/authors/luo-yang/',
-    ogPath: '/og/pages/author-luo-yang.png',
+    ogPath: DEFAULT_OG_IMAGE,
+    image: DEFAULT_OG_IMAGE,
     template: 'static',
     title: '羅揚｜本日有據主編',
     description: '認識本日有據主編羅揚，以及他整理健康資訊、Podcast、文章與短影音內容的背景與方向。',
@@ -212,12 +251,20 @@ export function contentSocial(collection, data = {}, slug = '') {
   const title = cleanText(data.titleDisplay || data.ogTitle || data.socialTitle || data.title || '本日有據');
   const short = cleanText(data.ogShortTitle || shortTitle(title, collection === 'ingredients' ? 14 : 18));
   const description = normalizeDescription(data.socialDescription, data.ogDescription, data.description, data.summary, data.subtitle, data.intro, data.tldr);
-  const image = `/og/${collection}/${slug}.png`;
+  const image = ogImageForCollection(collection);
 
   if (collection === 'podcasts') {
     const ep = data.episodeNumber ? `喜聞樂健 EP${data.episodeNumber}` : '喜聞樂健';
-    return { title: socialTitle(short, ep), description, image, ogBadge: data.episodeNumber ? `Podcast EP${data.episodeNumber}` : 'Podcast', ogTitle: cleanText(data.ogShortTitle || title), ogSubtitle: shortTitle(data.summary || data.description || '', 10) };
+    return {
+      title: socialTitle(short, ep),
+      description,
+      image,
+      ogBadge: data.episodeNumber ? `Podcast EP${data.episodeNumber}` : 'Podcast',
+      ogTitle: cleanText(data.ogShortTitle || title),
+      ogSubtitle: shortTitle(data.summary || data.description || '', 10),
+    };
   }
+
   return {
     title: socialTitle(short, cfg?.label || SITE_SUFFIX),
     description,
@@ -230,14 +277,14 @@ export function contentSocial(collection, data = {}, slug = '') {
 
 export function listSocial(collection) {
   const cfg = COLLECTION_SOCIAL[collection];
-  return { title: cfg.title, description: cfg.description, image: `/og/${collection}/index.png`, ...cfg };
+  return { title: cfg.title, description: cfg.description, image: ogImageForCollection(collection), ...cfg };
 }
 
 export function tagSocial(tag) {
   return {
     title: `${tag}｜主題標籤｜本日有據`,
     description: `所有與「${tag}」相關的健康文章、迷思查證、成分解析與影音內容，集中在同一頁。`,
-    image: '/og/tags/index.png',
+    image: ogImageForCollection('articles'),
     ogBadge: '主題標籤',
     ogTitle: tag.length > 16 ? `${tag.slice(0, 15)}…` : tag,
     color: '#1f6f72',
