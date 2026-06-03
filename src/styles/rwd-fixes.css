@@ -156,6 +156,54 @@ a {
   overflow-x: auto;
 }
 
+/* Homepage hero balance and copy polish */
+#hero .hero__inner {
+  align-items: start !important;
+  grid-template-columns: minmax(0, 52%) minmax(0, 48%) !important;
+}
+
+#hero .hero__left {
+  gap: clamp(1.55rem, 1.05rem + 1vw, 2.15rem) !important;
+}
+
+#hero .hero__buttons,
+#hero .hero__trust {
+  margin-top: 0.15rem;
+}
+
+#hero .hero__subtitle {
+  max-width: 42ch !important;
+}
+
+#hero .hero__subtitle,
+#hero .hero__trust-card:nth-child(3) .hero__trust-label {
+  color: transparent !important;
+  position: relative;
+}
+
+#hero .hero__subtitle::before,
+#hero .hero__trust-card:nth-child(3) .hero__trust-label::before {
+  position: absolute;
+  inset: 0;
+  white-space: normal;
+}
+
+#hero .hero__subtitle::before {
+  content: "從研究結果到生活判斷，本日有據把健康資訊整理成清楚、可查、能理解的內容。";
+  color: oklch(1 0 0 / 0.8);
+}
+
+#hero .hero__trust-card:nth-child(3) .hero__trust-label::before {
+  content: "目前不接受付費置入；如有商業合作，將明確揭露";
+  color: oklch(1 0 0 / 0.7);
+}
+
+@media (max-width: 1024px) {
+  #hero .hero__inner {
+    grid-template-columns: 1fr !important;
+  }
+}
+
 @media (max-width: 768px) {
   .hero__inner,
   .hero__left {
