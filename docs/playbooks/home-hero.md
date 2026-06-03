@@ -38,9 +38,10 @@
   - 3 筆以上：1 主 + 2 次
 - 主焦點可顯示補充 meta（例如 myth verdict、podcast 集數/時長、article 主編把關）但不可改動資料來源邏輯。
 
-- **catch phrase**：「把健康議題，講得有根據，也講得讓人看得懂。」（品牌語，動之前確認）
+- **catch phrase**：Hero 主標題固定以兩個 `.hero__title-line` 分行呈現：「把健康議題講得有根據」／「也講得讓人看得懂」，行尾不加標點。
 - **HeroParticles**：canvas 全幅，desktop only（mobile 不渲染以省電）
 - **CTA buttons**：「最新文章」「迷思破解」「認識主編」
+- **Hero trust cards**：固定三張等寬卡片「來源透明」「白話解讀」「編輯獨立」；桌機 3 欄、平板 2 欄、手機 1 欄，禁止使用透明文字或 `::before` 覆蓋文案的 hack。
 - **JSON-LD**：`@type: "WebSite"` + `Organization` 結構化資料，用於 Google Knowledge Graph
 
 ### SEO / AEO
@@ -64,7 +65,7 @@
 
 - **HeroParticles 高度傳遞鏈斷裂**：canvas 用 `getBoundingClientRect()` 動態量，父層必須有明確高度 → 看 [d3-charts.md](./d3-charts.md)
 - **多個 h1**：每頁只能有一個 h1，hero 已是 h1，內容區的標題用 h2
-- **改了 catch phrase 沒同步 meta description**：兩個地方文案不一致 → 同步更新 frontmatter `description`
+- **改了 catch phrase 沒同步 meta description**：兩個地方文案不一致 → 同步更新首頁社群/SEO 描述來源
 - **加新內容區塊用了 `<section>` 沒加 `aria-labelledby`**：a11y 扣分 → 每個 section 要有可程式化標題
 - **CTA buttons 多於 3 個**：研究顯示 3 個是注意力上限，加更多會降低 click-through
 - **改 JSON-LD schema 但忘了測**：JSON-LD 錯誤不會 break build，但 Google 不收錄 → 一定用 Rich Results Test
@@ -75,7 +76,7 @@
 ```
 - [ ] @375 / @768 / @1280 hero 都正常（particles 只 desktop 出現）
 - [ ] 只有一個 <h1>
-- [ ] meta description 與 catch phrase 一致
+- [ ] meta description 與首頁品牌文案一致
 - [ ] JSON-LD 通過 Google Rich Results Test
 - [ ] Lighthouse CI: Perf≥90 / SEO≥95 / A11y≥95 / BP≥90
 - [ ] OG image 顯示正確（fb sharing debugger 或 twitter card validator）
