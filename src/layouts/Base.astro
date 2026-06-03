@@ -4,7 +4,7 @@ import Footer from '@/components/blocks/Footer.astro';
 import JsonLd from '@/components/seo/JsonLd.astro';
 import '@/styles/global.css';
 import '@/styles/rwd-fixes.css';
-import { DEFAULT_DESCRIPTION } from '@/utils/social-meta.mjs';
+import { DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE } from '@/utils/social-meta.mjs';
 
 /* Self-hosted fonts via fontsource */
 import '@fontsource/inter/400.css';
@@ -31,7 +31,7 @@ const {
   description = DEFAULT_DESCRIPTION,
   ogTitle,
   ogDescription,
-  ogImage = '/og/index.png',
+  ogImage = DEFAULT_OG_IMAGE,
   ogType = 'website',
   noindex = false,
 } = Astro.props;
