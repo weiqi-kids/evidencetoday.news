@@ -1,9 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none">
-  <rect width="800" height="450" rx="8" fill="#EEF3F8"/>
-  <circle cx="400" cy="200" r="80" fill="#C8D8E8" opacity="0.6"/>
-  <circle cx="400" cy="200" r="50" fill="#A0B8D0" opacity="0.5"/>
-  <path d="M370 190 Q400 160 430 190 Q440 200 430 210 Q400 240 370 210 Q360 200 370 190Z" fill="#4A7A8C" opacity="0.7"/>
-  <text x="400" y="320" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#4A7A8C" opacity="0.8">SLEEP</text>
-  <path d="M440 170 l15-15 M455 155 l10 0 M455 155 l0-10" stroke="#4A7A8C" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
-  <path d="M460 185 l12-12 M472 173 l8 0 M472 173 l0-8" stroke="#4A7A8C" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+  <rect width="800" height="450" rx="8" fill="#EDF4FB"/>
+  <circle cx="650" cy="70" r="150" fill="#6E95C2" opacity="0.16"/>
+  <circle cx="126" cy="380" r="130" fill="#FFFFFF" opacity="0.42"/>
+  <path d="M80 350 C190 300 260 386 370 330 S570 282 720 335" stroke="#6E95C2" stroke-width="18" stroke-linecap="round" opacity="0.18"/>
+  <path d="M491 102 C440 148 437 225 482 276 C527 327 604 331 656 291 C634 365 558 405 482 382 C389 354 341 255 376 166 C394 119 435 87 491 102Z" fill="#6E95C2" opacity="0.88"/>
+  <rect x="186" y="250" width="330" height="82" rx="41" fill="#FFFFFF" opacity="0.9"/>
+  <rect x="218" y="219" width="128" height="58" rx="29" fill="#B9CEE8" opacity="0.95"/>
+  <path d="M214 332 C250 374 451 374 514 332" stroke="#3B648F" stroke-width="16" stroke-linecap="round" opacity="0.78"/>
+  <path d="M260 170 C307 145 342 145 390 170 S474 194 525 168" stroke="#3B648F" stroke-width="10" stroke-linecap="round" opacity="0.55"/>
+  <circle cx="607" cy="152" r="13" fill="#FFFFFF" opacity="0.9"/>
+  <circle cx="650" cy="192" r="8" fill="#FFFFFF" opacity="0.86"/>
+  <rect x="565" y="334" width="148" height="50" rx="25" fill="#FFFFFF" opacity="0.82"/>
+  <text x="639" y="368" text-anchor="middle" font-family="system-ui, sans-serif" font-size="30" font-weight="700" fill="#3B648F" opacity="0.92">睡眠</text>
 </svg>

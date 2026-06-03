@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none">
+  <rect width="800" height="450" rx="8" fill="#F3F7ED"/>
+  <circle cx="650" cy="70" r="150" fill="#78A95A" opacity="0.16"/>
+  <circle cx="126" cy="380" r="130" fill="#FFFFFF" opacity="0.42"/>
+  <path d="M80 350 C190 300 260 386 370 330 S570 282 720 335" stroke="#78A95A" stroke-width="18" stroke-linecap="round" opacity="0.18"/>
+  <rect x="258" y="122" width="170" height="238" rx="32" fill="#78A95A" opacity="0.88"/><rect x="293" y="96" width="100" height="46" rx="15" fill="#476F35" opacity="0.86"/><rect x="292" y="185" width="104" height="74" rx="15" fill="#FFFFFF" opacity="0.88"/><path d="M318 222 H371" stroke="#476F35" stroke-width="11" stroke-linecap="round" opacity="0.78"/><path d="M550 148 L642 306 H458Z" fill="#D9854E" opacity="0.88"/><path d="M550 207 V263" stroke="#FFFFFF" stroke-width="16" stroke-linecap="round" opacity="0.96"/><circle cx="550" cy="303" r="11" fill="#FFFFFF" opacity="0.96"/><rect x="430" y="313" width="98" height="38" rx="19" fill="#FFFFFF" opacity="0.9"/><path d="M453 332 H504" stroke="#476F35" stroke-width="9" stroke-linecap="round" opacity="0.72"/>
+  <rect x="565" y="334" width="148" height="50" rx="25" fill="#FFFFFF" opacity="0.82"/>
+  <text x="639" y="368" text-anchor="middle" font-family="system-ui, sans-serif" font-size="30" font-weight="700" fill="#476F35" opacity="0.92">檢驗警示</text>
+</svg>

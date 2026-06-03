@@ -1,15 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none">
-  <rect width="800" height="450" rx="8" fill="#F0EFF6"/>
-  <!-- bone silhouette -->
-  <path d="M280 200 Q260 180 280 160 Q300 150 320 170 L460 170 Q480 150 500 160 Q520 180 500 200 Q520 220 500 240 Q480 250 460 230 L320 230 Q300 250 280 240 Q260 220 280 200Z" fill="#A7B1C8" opacity="0.7"/>
-  <!-- mineral nodes -->
-  <circle cx="180" cy="320" r="22" fill="#7D88A8" opacity="0.6"/>
-  <text x="180" y="326" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.9">Ca</text>
-  <circle cx="240" cy="350" r="20" fill="#7D88A8" opacity="0.55"/>
-  <text x="240" y="356" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#fff" opacity="0.9">Mg</text>
-  <circle cx="560" cy="350" r="20" fill="#7D88A8" opacity="0.55"/>
-  <text x="560" y="356" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#fff" opacity="0.9">Zn</text>
-  <circle cx="620" cy="320" r="22" fill="#7D88A8" opacity="0.6"/>
-  <text x="620" y="326" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.9">Fe</text>
-  <text x="400" y="350" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#5A6388" opacity="0.8">MINERAL</text>
+  <rect width="800" height="450" rx="8" fill="#F2F0FA"/>
+  <circle cx="650" cy="70" r="150" fill="#8E9AC0" opacity="0.16"/>
+  <circle cx="126" cy="380" r="130" fill="#FFFFFF" opacity="0.42"/>
+  <path d="M80 350 C190 300 260 386 370 330 S570 282 720 335" stroke="#8E9AC0" stroke-width="18" stroke-linecap="round" opacity="0.18"/>
+  <path d="M225 240 C181 199 209 141 263 148 C289 151 303 169 316 190 H486 C499 169 513 151 539 148 C593 141 621 199 577 240 C621 281 593 339 539 332 C513 329 499 311 486 290 H316 C303 311 289 329 263 332 C209 339 181 281 225 240Z" fill="#8E9AC0" opacity="0.86"/>
+  <circle cx="573" cy="153" r="31" fill="#FFFFFF" opacity="0.88"/>
+  <circle cx="626" cy="210" r="24" fill="#C9B77A" opacity="0.9"/>
+  <circle cx="586" cy="286" r="28" fill="#7BA6A0" opacity="0.9"/>
+  <path d="M300 240 H500" stroke="#FFFFFF" stroke-width="16" stroke-linecap="round" opacity="0.78"/>
+  <path d="M345 211 L390 269 L455 205" stroke="#58638A" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" opacity="0.78"/>
+  <rect x="565" y="334" width="148" height="50" rx="25" fill="#FFFFFF" opacity="0.82"/>
+  <text x="639" y="368" text-anchor="middle" font-family="system-ui, sans-serif" font-size="30" font-weight="700" fill="#58638A" opacity="0.92">礦物質</text>
 </svg>

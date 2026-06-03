@@ -1,10 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none">
-  <rect width="800" height="450" rx="8" fill="#F0F5ED"/>
-  <ellipse cx="400" cy="230" rx="120" ry="30" fill="#B8CDA8" opacity="0.4"/>
-  <circle cx="370" cy="190" r="28" fill="#7BA668" opacity="0.6"/>
-  <circle cx="420" cy="180" r="22" fill="#E8A04C" opacity="0.6"/>
-  <circle cx="400" cy="210" r="18" fill="#C85A4A" opacity="0.5"/>
-  <circle cx="440" cy="205" r="15" fill="#D4A843" opacity="0.5"/>
-  <circle cx="355" cy="215" r="12" fill="#5B8C3F" opacity="0.5"/>
-  <text x="400" y="310" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#5B8C3F" opacity="0.8">DIET</text>
+  <rect width="800" height="450" rx="8" fill="#F1F7EA"/>
+  <circle cx="650" cy="70" r="150" fill="#79A95A" opacity="0.16"/>
+  <circle cx="126" cy="380" r="130" fill="#FFFFFF" opacity="0.42"/>
+  <path d="M80 350 C190 300 260 386 370 330 S570 282 720 335" stroke="#79A95A" stroke-width="18" stroke-linecap="round" opacity="0.18"/>
+  <ellipse cx="402" cy="278" rx="205" ry="78" fill="#FFFFFF" opacity="0.9"/>
+  <ellipse cx="402" cy="278" rx="158" ry="52" fill="#DDECCB" opacity="0.95"/>
+  <path d="M301 270 C330 215 385 206 423 252 C450 222 501 222 533 266 C475 298 373 315 301 270Z" fill="#6EA14D" opacity="0.9"/>
+  <circle cx="353" cy="238" r="34" fill="#E7A34D" opacity="0.95"/>
+  <circle cx="441" cy="235" r="25" fill="#9B6B41" opacity="0.9"/>
+  <circle cx="479" cy="255" r="18" fill="#C97958" opacity="0.92"/>
+  <rect x="575" y="135" width="58" height="175" rx="25" fill="#FFFFFF" opacity="0.88"/>
+  <path d="M584 173 H624" stroke="#79A95A" stroke-width="10" stroke-linecap="round" opacity="0.9"/>
+  <rect x="565" y="334" width="148" height="50" rx="25" fill="#FFFFFF" opacity="0.82"/>
+  <text x="639" y="368" text-anchor="middle" font-family="system-ui, sans-serif" font-size="30" font-weight="700" fill="#456F33" opacity="0.92">飲食</text>
 </svg>

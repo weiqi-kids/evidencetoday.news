@@ -64,6 +64,63 @@ export function getNewsCategory(
 
 /* ---- Fallback images ---- */
 
+type NewsImageMeta = {
+  title?: string;
+  titleDisplay?: string;
+  subtitle?: string;
+  summary?: string;
+};
+
+export type NewsImageInput = NewsImageMeta & {
+  tags?: string[];
+  category?: string;
+  thumbnail?: string;
+  heroImage?: string;
+};
+
+const TOPIC_IMAGES: Array<{ image: string; keywords: string[] }> = [
+  {
+    image: '/images/news/topics/drrd-diet.svg',
+    keywords: ['DRRD', '糖尿病預防', '控糖飲食', '糖尿病風險降低飲食', '少糖飲', '少糖飲料', '加工肉', '含糖飲料'],
+  },
+  {
+    image: '/images/news/topics/gut-sleep.svg',
+    keywords: ['腸道菌', '睡眠', '失眠', '睡眠呼吸中止', '快速動眼期', '腸腦軸', '腸道與睡眠'],
+  },
+  {
+    image: '/images/news/topics/food-recall.svg',
+    keywords: ['召回', 'FDA', '食品警示', '沙門氏菌', '鉛超標', '污染', '食安警示', '產品召回'],
+  },
+  {
+    image: '/images/news/topics/mind-diet.svg',
+    keywords: ['MIND 飲食', 'MIND飲食', '失智', '認知', '大腦', '腦健康'],
+  },
+  {
+    image: '/images/news/topics/protein-training.svg',
+    keywords: ['乳清', '酪蛋白', '大豆蛋白', '蛋白質', '重訓', '肌肉', '阻力訓練', '運動補充'],
+  },
+  {
+    image: '/images/news/topics/supplement-alert.svg',
+    keywords: ['保健食品', '違禁藥', '壯陽藥', '過敏原', '未標示', '膠囊', '禁藥成分', '補充品'],
+  },
+  {
+    image: '/images/news/topics/infectious-disease.svg',
+    keywords: ['傳染病', '疾管署', '病毒', '疫情', '漢他病毒', '立百病毒', '感染症'],
+  },
+  {
+    image: '/images/news/topics/public-health-alert.svg',
+    keywords: ['WHO', '公共衛生', '世界食品安全日', '食源性疾病', '全球衛生', '公告'],
+  },
+  {
+    image: '/images/news/topics/food-labeling.svg',
+    keywords: ['食品標示', '營養標示', '包裝正面', '標籤', '營養標籤', '食品包裝'],
+  },
+  {
+    image: '/images/news/topics/ultra-processed-food.svg',
+    keywords: ['超加工食品', '加工食品', '飲食指引', '高度加工', '包裝食品'],
+  },
+];
+
 const CATEGORY_IMAGES: Record<string, string> = {
   '睡眠': '/images/news/sleep.svg',
   '飲食': '/images/news/diet.svg',
@@ -82,34 +139,62 @@ const CATEGORY_IMAGES: Record<string, string> = {
 
 const DEFAULT_IMAGE = '/images/news/research.svg';
 
+function normalizeForTopicSearch(value: string): string {
+  return value.toLocaleLowerCase('zh-TW').replace(/\s+/g, '');
+}
+
+function getNewsTopicImage(tags: string[], category?: string, meta?: NewsImageMeta): string | undefined {
+  const searchParts = [
+    meta?.titleDisplay,
+    meta?.title,
+    meta?.subtitle,
+    meta?.summary,
+    category,
+    ...tags,
+  ].filter((part): part is string => Boolean(part?.trim()));
+
+  const haystack = normalizeForTopicSearch(searchParts.join(' '));
+  return TOPIC_IMAGES.find(({ keywords }) => (
+    keywords.some((keyword) => haystack.includes(normalizeForTopicSearch(keyword)))
+  ))?.image;
+}
+
+function getFallbackImage(tags: string[], category?: string, meta?: NewsImageMeta): string {
+  const topicImage = getNewsTopicImage(tags, category, meta);
+  if (topicImage) return topicImage;
+
+  const cat = getNewsCategory(tags, category);
+  return CATEGORY_IMAGES[cat] ?? DEFAULT_IMAGE;
+}
+
 /**
  * Get a hero image for a news article.
- * Priority: heroImage field > thumbnail field > category fallback.
+ * Priority: heroImage field > thumbnail field > topic fallback > category fallback > default fallback.
  */
 export function getNewsHeroImage(
   heroImage: string | undefined,
   thumbnail: string | undefined,
   tags: string[],
   category?: string,
+  meta?: NewsImageMeta,
 ): string {
   if (heroImage?.trim()) return heroImage.trim();
   if (thumbnail?.trim()) return thumbnail.trim();
-  const cat = getNewsCategory(tags, category);
-  return CATEGORY_IMAGES[cat] ?? DEFAULT_IMAGE;
+  return getFallbackImage(tags, category, meta);
 }
 
 /**
  * Get a thumbnail for a news card.
- * Priority: thumbnail field > heroImage field > category fallback.
+ * Priority: thumbnail field > heroImage field > topic fallback > category fallback > default fallback.
  */
 export function getNewsThumbnail(
   thumbnail: string | undefined,
   heroImage: string | undefined,
   tags: string[],
   category?: string,
+  meta?: NewsImageMeta,
 ): string {
   if (thumbnail?.trim()) return thumbnail.trim();
   if (heroImage?.trim()) return heroImage.trim();
-  const cat = getNewsCategory(tags, category);
-  return CATEGORY_IMAGES[cat] ?? DEFAULT_IMAGE;
+  return getFallbackImage(tags, category, meta);
 }

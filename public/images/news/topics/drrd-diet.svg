@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none">
+  <rect width="800" height="450" rx="8" fill="#F1F7EA"/>
+  <circle cx="650" cy="70" r="150" fill="#79A95A" opacity="0.16"/>
+  <circle cx="126" cy="380" r="130" fill="#FFFFFF" opacity="0.42"/>
+  <path d="M80 350 C190 300 260 386 370 330 S570 282 720 335" stroke="#79A95A" stroke-width="18" stroke-linecap="round" opacity="0.18"/>
+  <ellipse cx="354" cy="274" rx="182" ry="70" fill="#FFFFFF" opacity="0.92"/><ellipse cx="354" cy="274" rx="135" ry="45" fill="#DCEBCB" opacity="0.95"/><path d="M245 266 C300 208 397 206 465 260 C412 300 306 307 245 266Z" fill="#6EA14D" opacity="0.92"/><circle cx="319" cy="233" r="29" fill="#C58B4D" opacity="0.95"/><circle cx="410" cy="244" r="22" fill="#E7A34D" opacity="0.95"/><path d="M507 292 C552 292 582 252 627 252" stroke="#456F33" stroke-width="16" stroke-linecap="round" opacity="0.86"/><path d="M516 223 H632" stroke="#456F33" stroke-width="8" stroke-linecap="round" opacity="0.5"/>
+  <rect x="565" y="334" width="148" height="50" rx="25" fill="#FFFFFF" opacity="0.82"/>
+  <text x="639" y="368" text-anchor="middle" font-family="system-ui, sans-serif" font-size="30" font-weight="700" fill="#456F33" opacity="0.92">控糖飲食</text>
+</svg>

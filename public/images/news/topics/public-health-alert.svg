@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none">
+  <rect width="800" height="450" rx="8" fill="#EEF3FA"/>
+  <circle cx="650" cy="70" r="150" fill="#5F84AE" opacity="0.16"/>
+  <circle cx="126" cy="380" r="130" fill="#FFFFFF" opacity="0.42"/>
+  <path d="M80 350 C190 300 260 386 370 330 S570 282 720 335" stroke="#5F84AE" stroke-width="18" stroke-linecap="round" opacity="0.18"/>
+  <rect x="255" y="116" width="230" height="250" rx="30" fill="#FFFFFF" opacity="0.9"/><rect x="297" y="158" width="147" height="24" rx="12" fill="#5F84AE" opacity="0.72"/><path d="M300 224 H424 M300 260 H395" stroke="#355D85" stroke-width="14" stroke-linecap="round" opacity="0.35"/><path d="M556 153 C617 172 642 249 600 302 C553 362 456 332 453 253 C451 184 496 141 556 153Z" fill="#8FB0D0" opacity="0.85"/><path d="M493 199 C531 217 566 216 609 199 M485 264 C529 244 568 247 615 270" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" opacity="0.62"/><circle cx="213" cy="292" r="24" fill="#5F84AE" opacity="0.85"/><circle cx="250" cy="331" r="18" fill="#5F84AE" opacity="0.65"/>
+  <rect x="565" y="334" width="148" height="50" rx="25" fill="#FFFFFF" opacity="0.82"/>
+  <text x="639" y="368" text-anchor="middle" font-family="system-ui, sans-serif" font-size="30" font-weight="700" fill="#355D85" opacity="0.92">公衛公告</text>
+</svg>
