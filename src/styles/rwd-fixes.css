@@ -156,6 +156,82 @@ a {
   overflow-x: auto;
 }
 
+/* Homepage hero wording override */
+#hero .hero__badge,
+#hero .hero__title,
+#hero .hero__subtitle,
+#hero .hero__trust-card:nth-child(1) .hero__trust-number,
+#hero .hero__trust-card:nth-child(1) .hero__trust-label,
+#hero .hero__trust-card:nth-child(2) .hero__trust-number,
+#hero .hero__trust-card:nth-child(2) .hero__trust-label,
+#hero .hero__trust-card:nth-child(3) .hero__trust-number,
+#hero .hero__trust-card:nth-child(3) .hero__trust-label {
+  color: transparent !important;
+  position: relative;
+}
+
+#hero .hero__badge::before,
+#hero .hero__title::before,
+#hero .hero__subtitle::before,
+#hero .hero__trust-card:nth-child(1) .hero__trust-number::before,
+#hero .hero__trust-card:nth-child(1) .hero__trust-label::before,
+#hero .hero__trust-card:nth-child(2) .hero__trust-number::before,
+#hero .hero__trust-card:nth-child(2) .hero__trust-label::before,
+#hero .hero__trust-card:nth-child(3) .hero__trust-number::before,
+#hero .hero__trust-card:nth-child(3) .hero__trust-label::before {
+  color: inherit;
+  color: initial;
+  position: absolute;
+  inset: 0;
+  white-space: normal;
+}
+
+#hero .hero__badge::before {
+  content: "健康研究 ・ 白話解釋";
+  color: oklch(1 0 0 / 0.9);
+}
+
+#hero .hero__title::before {
+  content: "把健康議題講得有根據\A也講得讓人看得懂";
+  color: white;
+  white-space: pre-line;
+}
+
+#hero .hero__subtitle::before {
+  content: "本日有據整理健康研究、新聞與常見迷思，保留來源與脈絡，說清楚證據能支持什麼，也說清楚哪些說法需要保留判斷。";
+  color: oklch(1 0 0 / 0.8);
+}
+
+#hero .hero__trust-card:nth-child(1) .hero__trust-number::before {
+  content: "來源透明";
+  color: white;
+}
+
+#hero .hero__trust-card:nth-child(1) .hero__trust-label::before {
+  content: "盡量附上研究、新聞來源與資料脈絡";
+  color: oklch(1 0 0 / 0.7);
+}
+
+#hero .hero__trust-card:nth-child(2) .hero__trust-number::before {
+  content: "白話解讀";
+  color: white;
+}
+
+#hero .hero__trust-card:nth-child(2) .hero__trust-label::before {
+  content: "把艱深健康資訊整理成一般人能理解的判斷";
+  color: oklch(1 0 0 / 0.7);
+}
+
+#hero .hero__trust-card:nth-child(3) .hero__trust-number::before {
+  content: "編輯獨立";
+  color: white;
+}
+
+#hero .hero__trust-card:nth-child(3) .hero__trust-label::before {
+  content: "內容與商業合作分開，不讓立場混淆判讀";
+  color: oklch(1 0 0 / 0.7);
+}
+
 @media (max-width: 768px) {
   .hero__inner,
   .hero__left {
