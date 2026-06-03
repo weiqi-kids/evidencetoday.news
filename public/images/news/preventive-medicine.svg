@@ -1,20 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none">
-  <rect width="800" height="450" rx="8" fill="#ECF3F2"/>
-  <!-- radar circles -->
-  <circle cx="400" cy="225" r="160" fill="none" stroke="#5A9A8C" stroke-width="2" opacity="0.3"/>
-  <circle cx="400" cy="225" r="110" fill="none" stroke="#5A9A8C" stroke-width="2" opacity="0.4"/>
-  <circle cx="400" cy="225" r="60" fill="none" stroke="#5A9A8C" stroke-width="2" opacity="0.5"/>
-  <line x1="240" y1="225" x2="560" y2="225" stroke="#5A9A8C" stroke-width="1.5" opacity="0.3"/>
-  <line x1="400" y1="65" x2="400" y2="385" stroke="#5A9A8C" stroke-width="1.5" opacity="0.3"/>
-  <!-- radar sweep -->
-  <path d="M400 225 L520 145 A140 140 0 0 0 400 85 Z" fill="#5A9A8C" opacity="0.18"/>
-  <!-- pulse points (risk markers) -->
-  <circle cx="340" cy="180" r="6" fill="#3C7A6C" opacity="0.85"/>
-  <circle cx="340" cy="180" r="12" fill="none" stroke="#3C7A6C" stroke-width="2" opacity="0.4"/>
-  <circle cx="470" cy="270" r="5" fill="#3C7A6C" opacity="0.7"/>
-  <circle cx="450" cy="160" r="4" fill="#3C7A6C" opacity="0.6"/>
-  <!-- shield outline overlay (prevention) -->
-  <path d="M400 95 L450 115 L450 220 Q450 270 400 295 Q350 270 350 220 L350 115 Z" fill="none" stroke="#3C7A6C" stroke-width="2" opacity="0.45"/>
-  <path d="M380 205 L395 220 L425 185" stroke="#3C7A6C" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.55"/>
-  <text x="400" y="420" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#3C7A6C" opacity="0.85">PREVENTIVE</text>
+  <rect width="800" height="450" rx="8" fill="#EAF6F4"/>
+  <circle cx="650" cy="70" r="150" fill="#5AA392" opacity="0.16"/>
+  <circle cx="126" cy="380" r="130" fill="#FFFFFF" opacity="0.42"/>
+  <path d="M80 350 C190 300 260 386 370 330 S570 282 720 335" stroke="#5AA392" stroke-width="18" stroke-linecap="round" opacity="0.18"/>
+  <circle cx="405" cy="235" r="148" fill="#FFFFFF" opacity="0.72"/>
+  <circle cx="405" cy="235" r="118" stroke="#5AA392" stroke-width="14" opacity="0.82"/>
+  <circle cx="405" cy="235" r="72" stroke="#5AA392" stroke-width="10" opacity="0.55"/>
+  <path d="M405 235 L493 162" stroke="#337B70" stroke-width="16" stroke-linecap="round" opacity="0.9"/>
+  <circle cx="405" cy="235" r="20" fill="#337B70" opacity="0.95"/>
+  <path d="M292 344 L335 385 L437 290" stroke="#337B70" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" opacity="0.86"/>
+  <rect x="565" y="334" width="148" height="50" rx="25" fill="#FFFFFF" opacity="0.82"/>
+  <text x="639" y="368" text-anchor="middle" font-family="system-ui, sans-serif" font-size="30" font-weight="700" fill="#337B70" opacity="0.92">預防</text>
 </svg>

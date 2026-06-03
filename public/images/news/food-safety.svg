@@ -1,9 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none">
-  <rect width="800" height="450" rx="8" fill="#FDF5EE"/>
-  <circle cx="400" cy="195" r="65" fill="#F0D8B8" opacity="0.5"/>
-  <path d="M400 150 l-35 60 h70 Z" fill="#D4864A" opacity="0.6"/>
-  <text x="400" y="205" text-anchor="middle" font-family="sans-serif" font-size="32" font-weight="bold" fill="#FDF5EE">!</text>
-  <rect x="350" y="240" width="100" height="12" rx="3" fill="#D4864A" opacity="0.3"/>
-  <rect x="360" y="258" width="80" height="8" rx="2" fill="#D4864A" opacity="0.2"/>
-  <text x="400" y="320" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#B87040" opacity="0.8">FOOD SAFETY</text>
+  <rect width="800" height="450" rx="8" fill="#FFF4E8"/>
+  <circle cx="650" cy="70" r="150" fill="#E0964F" opacity="0.16"/>
+  <circle cx="126" cy="380" r="130" fill="#FFFFFF" opacity="0.42"/>
+  <path d="M80 350 C190 300 260 386 370 330 S570 282 720 335" stroke="#E0964F" stroke-width="18" stroke-linecap="round" opacity="0.18"/>
+  <rect x="250" y="142" width="190" height="210" rx="28" fill="#FFFFFF" opacity="0.9"/>
+  <rect x="276" y="178" width="138" height="50" rx="12" fill="#E0964F" opacity="0.88"/>
+  <rect x="286" y="250" width="92" height="12" rx="6" fill="#9B5A27" opacity="0.65"/>
+  <rect x="286" y="278" width="120" height="12" rx="6" fill="#9B5A27" opacity="0.42"/>
+  <path d="M524 144 L621 198 V270 C621 322 585 355 524 378 C463 355 427 322 427 270 V198Z" fill="#D97848" opacity="0.86"/>
+  <path d="M524 196 V260" stroke="#FFFFFF" stroke-width="18" stroke-linecap="round" opacity="0.95"/>
+  <circle cx="524" cy="304" r="12" fill="#FFFFFF" opacity="0.95"/>
+  <circle cx="438" cy="155" r="42" stroke="#9B5A27" stroke-width="12" opacity="0.7"/>
+  <path d="M468 185 L508 225" stroke="#9B5A27" stroke-width="14" stroke-linecap="round" opacity="0.7"/>
+  <rect x="565" y="334" width="148" height="50" rx="25" fill="#FFFFFF" opacity="0.82"/>
+  <text x="639" y="368" text-anchor="middle" font-family="system-ui, sans-serif" font-size="30" font-weight="700" fill="#9B5A27" opacity="0.92">食安</text>
 </svg>

@@ -1,14 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none">
-  <rect width="800" height="450" rx="8" fill="#F2EFEC"/>
-  <!-- two figures (companions) -->
-  <circle cx="340" cy="170" r="28" fill="#B5A496" opacity="0.85"/>
-  <path d="M312 200 Q312 250 340 260 Q368 250 368 200 L368 320 Q340 340 312 320 Z" fill="#B5A496" opacity="0.7"/>
-  <path d="M312 240 L290 320" stroke="#B5A496" stroke-width="8" stroke-linecap="round" opacity="0.7"/>
-  <circle cx="460" cy="180" r="26" fill="#C8B8A8" opacity="0.85"/>
-  <path d="M434 208 Q434 250 460 258 Q486 250 486 208 L486 320 Q460 338 434 320 Z" fill="#C8B8A8" opacity="0.7"/>
-  <!-- heart on chest -->
-  <path d="M395 250 Q400 240 410 245 Q420 240 425 250 Q425 260 410 275 Q395 260 395 250Z" fill="#D87A6A" opacity="0.7"/>
-  <!-- ECG line -->
-  <path d="M120 380 L240 380 L260 350 L280 410 L300 380 L500 380 L520 360 L540 400 L560 380 L680 380" stroke="#5A8A7A" stroke-width="3" fill="none" opacity="0.6"/>
-  <text x="400" y="425" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#7A5A4A" opacity="0.8">SENIOR HEALTH</text>
+  <rect width="800" height="450" rx="8" fill="#F5F0EC"/>
+  <circle cx="650" cy="70" r="150" fill="#B99D88" opacity="0.16"/>
+  <circle cx="126" cy="380" r="130" fill="#FFFFFF" opacity="0.42"/>
+  <path d="M80 350 C190 300 260 386 370 330 S570 282 720 335" stroke="#B99D88" stroke-width="18" stroke-linecap="round" opacity="0.18"/>
+  <circle cx="335" cy="158" r="43" fill="#B99D88" opacity="0.95"/>
+  <path d="M270 250 C270 202 302 184 335 184 C368 184 399 202 399 250 V347 H270Z" fill="#B99D88" opacity="0.86"/>
+  <circle cx="471" cy="174" r="39" fill="#8AB0A0" opacity="0.95"/>
+  <path d="M413 260 C413 216 441 200 471 200 C501 200 529 216 529 260 V347 H413Z" fill="#8AB0A0" opacity="0.86"/>
+  <path d="M188 358 H285 L309 326 L344 388 L380 345 H612" stroke="#785B4A" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.72"/>
+  <circle cx="602" cy="156" r="34" fill="#FFFFFF" opacity="0.82"/>
+  <path d="M584 156 H620" stroke="#8AB0A0" stroke-width="10" stroke-linecap="round" opacity="0.9"/>
+  <rect x="565" y="334" width="148" height="50" rx="25" fill="#FFFFFF" opacity="0.82"/>
+  <text x="639" y="368" text-anchor="middle" font-family="system-ui, sans-serif" font-size="30" font-weight="700" fill="#785B4A" opacity="0.92">熟齡</text>
 </svg>

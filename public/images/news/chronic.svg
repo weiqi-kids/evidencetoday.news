@@ -1,8 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none">
-  <rect width="800" height="450" rx="8" fill="#F5EFF3"/>
-  <path d="M380 210 Q400 170 420 210 Q440 250 400 270 Q360 250 380 210Z" fill="#9C6080" opacity="0.4"/>
-  <path d="M385 205 Q400 180 415 205 Q430 230 400 245 Q370 230 385 205Z" fill="#B87898" opacity="0.5"/>
-  <path d="M360 200 Q400 200 440 200" stroke="#9C6080" stroke-width="1.5" opacity="0.3"/>
-  <polyline points="360,200 375,200 380,185 390,215 400,190 410,210 420,195 425,200 440,200" stroke="#9C6080" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
-  <text x="400" y="320" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#9C6080" opacity="0.8">CHRONIC</text>
+  <rect width="800" height="450" rx="8" fill="#F8EEF3"/>
+  <circle cx="650" cy="70" r="150" fill="#B8698F" opacity="0.16"/>
+  <circle cx="126" cy="380" r="130" fill="#FFFFFF" opacity="0.42"/>
+  <path d="M80 350 C190 300 260 386 370 330 S570 282 720 335" stroke="#B8698F" stroke-width="18" stroke-linecap="round" opacity="0.18"/>
+  <path d="M260 238 C260 155 348 118 400 190 C452 118 540 155 540 238 C540 316 448 353 400 382 C352 353 260 316 260 238Z" fill="#B8698F" opacity="0.82"/>
+  <path d="M230 245 H308 L333 196 L374 306 L415 178 L458 263 H570" stroke="#FFFFFF" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+  <path d="M230 245 H308 L333 196 L374 306 L415 178 L458 263 H570" stroke="#7D3F62" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" opacity="0.92"/>
+  <circle cx="612" cy="165" r="42" fill="#FFFFFF" opacity="0.78"/>
+  <path d="M585 165 H639" stroke="#7D3F62" stroke-width="9" stroke-linecap="round" opacity="0.85"/>
+  <rect x="565" y="334" width="148" height="50" rx="25" fill="#FFFFFF" opacity="0.82"/>
+  <text x="639" y="368" text-anchor="middle" font-family="system-ui, sans-serif" font-size="30" font-weight="700" fill="#7D3F62" opacity="0.92">慢性病</text>
 </svg>

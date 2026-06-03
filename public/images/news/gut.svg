@@ -1,10 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none">
-  <rect width="800" height="450" rx="8" fill="#F0F3EE"/>
-  <path d="M360 180 Q340 200 360 220 Q380 240 360 260 Q340 280 380 280 Q420 280 440 260 Q460 240 440 220 Q420 200 440 180" stroke="#6A9A5A" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.5"/>
-  <circle cx="370" cy="195" r="5" fill="#8AB87A" opacity="0.6"/>
-  <circle cx="350" cy="225" r="4" fill="#A0C890" opacity="0.5"/>
-  <circle cx="390" cy="250" r="6" fill="#8AB87A" opacity="0.5"/>
-  <circle cx="430" cy="235" r="4" fill="#A0C890" opacity="0.6"/>
-  <circle cx="445" cy="200" r="5" fill="#8AB87A" opacity="0.5"/>
-  <text x="400" y="330" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#6A9A5A" opacity="0.8">GUT HEALTH</text>
+  <rect width="800" height="450" rx="8" fill="#EEF7EF"/>
+  <circle cx="650" cy="70" r="150" fill="#70A765" opacity="0.16"/>
+  <circle cx="126" cy="380" r="130" fill="#FFFFFF" opacity="0.42"/>
+  <path d="M80 350 C190 300 260 386 370 330 S570 282 720 335" stroke="#70A765" stroke-width="18" stroke-linecap="round" opacity="0.18"/>
+  <path d="M407 114 C329 114 275 162 275 226 C275 295 332 338 404 338 C485 338 542 298 542 230 C542 166 489 130 432 150 C385 166 385 225 433 232 C470 237 486 284 443 304 C395 327 327 288 330 224 C333 159 394 132 455 146" stroke="#3F7538" stroke-width="31" stroke-linecap="round" stroke-linejoin="round" opacity="0.88"/>
+  <path d="M407 114 C329 114 275 162 275 226 C275 295 332 338 404 338 C485 338 542 298 542 230 C542 166 489 130 432 150" stroke="#97C889" stroke-width="14" stroke-linecap="round" opacity="0.85"/>
+  <circle cx="236" cy="150" r="18" fill="#70A765" opacity="0.85"/>
+  <circle cx="588" cy="164" r="14" fill="#70A765" opacity="0.75"/>
+  <circle cx="582" cy="300" r="20" fill="#B6D58B" opacity="0.9"/>
+  <circle cx="220" cy="292" r="13" fill="#B6D58B" opacity="0.9"/>
+  <rect x="565" y="334" width="148" height="50" rx="25" fill="#FFFFFF" opacity="0.82"/>
+  <text x="639" y="368" text-anchor="middle" font-family="system-ui, sans-serif" font-size="30" font-weight="700" fill="#3F7538" opacity="0.92">腸道</text>
 </svg>

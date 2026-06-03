@@ -123,3 +123,9 @@
 - [ ] TrendBubbles 在桌機/平板/手機都沒被裁切
 - [ ] 缺源文章顯示「原始來源連結尚未補上」字樣
 - [ ] 來源缺失清單（`grep -L "^references:\|^pmid:\|^sourceUrl:" src/content/news/*.md`）已列入 PR 描述
+
+### 7. 趨勢圖卡與 fallback 圖片
+- `/news` 列表縮圖優先序固定為 `thumbnail → heroImage → topic fallback → category fallback → default fallback`；詳情頁 hero 固定為 `heroImage → thumbnail → topic fallback → category fallback → default fallback`。
+- topic fallback 由 `src/utils/news.ts` 依 `titleDisplay`、`title`、`subtitle`、`summary`、`tags`、`category` 關鍵字判斷，命中後使用 `public/images/news/topics/*.svg`，避免同分類文章全部共用同一張圖。
+- `public/images/news/**/*.svg` 必須是本地、完整 XML，`viewBox="0 0 800 450"`，不可引用外部圖片；主視覺需佔圖面約 45–65%，不可退回中央小 icon 或淡色 placeholder。
+- fallback 圖應以中文健康媒體語氣呈現，避免過小英文裝飾字；若需要文字，只使用足夠辨識的中文短字輔助主視覺。

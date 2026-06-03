@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none">
+  <rect width="800" height="450" rx="8" fill="#FFF2EB"/>
+  <circle cx="650" cy="70" r="150" fill="#D9854E" opacity="0.16"/>
+  <circle cx="126" cy="380" r="130" fill="#FFFFFF" opacity="0.42"/>
+  <path d="M80 350 C190 300 260 386 370 330 S570 282 720 335" stroke="#D9854E" stroke-width="18" stroke-linecap="round" opacity="0.18"/>
+  <rect x="248" y="132" width="160" height="222" rx="28" fill="#FFFFFF" opacity="0.9"/><path d="M248 183 H408 V248 H248Z" fill="#D9854E" opacity="0.88"/><path d="M284 292 H367" stroke="#8B4D2A" stroke-width="13" stroke-linecap="round" opacity="0.4"/><rect x="457" y="148" width="122" height="190" rx="26" fill="#E8B05A" opacity="0.9"/><path d="M488 202 H548 M488 236 H536" stroke="#FFFFFF" stroke-width="12" stroke-linecap="round" opacity="0.76"/><path d="M620 156 V335" stroke="#8B4D2A" stroke-width="13" stroke-linecap="round" opacity="0.78"/><path d="M639 156 C679 190 679 244 639 279" stroke="#8B4D2A" stroke-width="13" stroke-linecap="round" opacity="0.78"/><circle cx="442" cy="309" r="32" fill="#FFFFFF" opacity="0.9"/><path d="M424 309 H460" stroke="#D9854E" stroke-width="10" stroke-linecap="round" opacity="0.9"/>
+  <rect x="565" y="334" width="148" height="50" rx="25" fill="#FFFFFF" opacity="0.82"/>
+  <text x="639" y="368" text-anchor="middle" font-family="system-ui, sans-serif" font-size="30" font-weight="700" fill="#8B4D2A" opacity="0.92">超加工</text>
+</svg>

@@ -1,8 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none">
-  <rect width="800" height="450" rx="8" fill="#F2F5EF"/>
-  <rect x="375" y="160" width="50" height="80" rx="10" fill="#7BA668" opacity="0.5"/>
-  <rect x="385" y="150" width="30" height="18" rx="5" fill="#5B8C3F" opacity="0.5"/>
-  <circle cx="400" cy="195" r="6" fill="#F2F5EF" opacity="0.8"/>
-  <circle cx="400" cy="215" r="6" fill="#F2F5EF" opacity="0.8"/>
-  <text x="400" y="310" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#5B8C3F" opacity="0.8">SUPPLEMENT</text>
+  <rect width="800" height="450" rx="8" fill="#F1F7EC"/>
+  <circle cx="650" cy="70" r="150" fill="#78A95A" opacity="0.16"/>
+  <circle cx="126" cy="380" r="130" fill="#FFFFFF" opacity="0.42"/>
+  <path d="M80 350 C190 300 260 386 370 330 S570 282 720 335" stroke="#78A95A" stroke-width="18" stroke-linecap="round" opacity="0.18"/>
+  <rect x="286" y="126" width="184" height="236" rx="34" fill="#78A95A" opacity="0.88"/>
+  <rect x="323" y="98" width="110" height="48" rx="16" fill="#476F35" opacity="0.85"/>
+  <rect x="318" y="187" width="120" height="72" rx="16" fill="#FFFFFF" opacity="0.88"/>
+  <path d="M344 223 H413" stroke="#476F35" stroke-width="11" stroke-linecap="round" opacity="0.8"/>
+  <circle cx="530" cy="282" r="48" fill="#FFFFFF" opacity="0.88"/>
+  <path d="M505 282 H555 M530 257 V307" stroke="#D18A4E" stroke-width="14" stroke-linecap="round" opacity="0.9"/>
+  <rect x="505" y="146" width="125" height="70" rx="35" fill="#E8B05A" opacity="0.9" transform="rotate(22 567 181)"/>
+  <path d="M566 117 L537 245" stroke="#FFFFFF" stroke-width="8" opacity="0.75"/>
+  <rect x="565" y="334" width="148" height="50" rx="25" fill="#FFFFFF" opacity="0.82"/>
+  <text x="639" y="368" text-anchor="middle" font-family="system-ui, sans-serif" font-size="30" font-weight="700" fill="#476F35" opacity="0.92">保健</text>
 </svg>

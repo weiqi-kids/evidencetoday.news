@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none">
+  <rect width="800" height="450" rx="8" fill="#EEF4FA"/>
+  <circle cx="650" cy="70" r="150" fill="#5485A8" opacity="0.16"/>
+  <circle cx="126" cy="380" r="130" fill="#FFFFFF" opacity="0.42"/>
+  <path d="M80 350 C190 300 260 386 370 330 S570 282 720 335" stroke="#5485A8" stroke-width="18" stroke-linecap="round" opacity="0.18"/>
+  <rect x="217" y="248" width="334" height="32" rx="16" fill="#315F7C" opacity="0.88"/><rect x="168" y="218" width="58" height="92" rx="18" fill="#5485A8" opacity="0.9"/><rect x="544" y="218" width="58" height="92" rx="18" fill="#5485A8" opacity="0.9"/><path d="M343 126 H496 L465 356 H374Z" fill="#FFFFFF" opacity="0.9"/><path d="M366 180 H473 L462 274 H377Z" fill="#CFE4F0" opacity="0.95"/><circle cx="610" cy="156" r="25" fill="#E8B05A" opacity="0.92"/><circle cx="655" cy="208" r="18" fill="#E8B05A" opacity="0.82"/><path d="M610 181 L655 208" stroke="#315F7C" stroke-width="7" opacity="0.55"/>
+  <rect x="565" y="334" width="148" height="50" rx="25" fill="#FFFFFF" opacity="0.82"/>
+  <text x="639" y="368" text-anchor="middle" font-family="system-ui, sans-serif" font-size="30" font-weight="700" fill="#315F7C" opacity="0.92">蛋白訓練</text>
+</svg>
