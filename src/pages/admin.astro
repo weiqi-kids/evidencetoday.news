@@ -1,0 +1,10 @@
+---
+import Base from '@/layouts/Base.astro';
+import AdminLogin from '@/components/editor/AdminLogin.svelte';
+---
+<Base title="管理登入" description="" noindex={true}>
+  <main style="max-width: 40rem; margin: 4rem auto; padding: 0 1rem;">
+    <h1>管理登入</h1>
+    <AdminLogin client:only="svelte" />
+  </main>
+</Base>
