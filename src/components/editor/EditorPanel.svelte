@@ -4,6 +4,7 @@
   import { getFile, putFile } from '@/utils/editor/github';
   import { parse, serialize } from '@/utils/editor/mdx-doc';
   import { classifySave } from '@/utils/editor/save-machine';
+  import { lint } from '@/utils/editor/lint';
   import SeoFields from './SeoFields.svelte';
 
   let { repoPath, collection, slug, onclose, initialDoc = null } = $props();
@@ -35,6 +36,9 @@
   let tab = $state('seo'); // seo | source
   let status = $state(initialDoc ? 'ready' : 'loading'); // loading | ready | saving | done | error
   let message = $state('');
+
+  // 即時 lint 警告（純函式、不擋存檔，僅供作者參考）
+  let lintResults = $derived(lint({ collection, frontmatter, body }));
 
   onMount(async () => {
     if (initialDoc) {
@@ -173,6 +177,18 @@
       <button onclick={applySource}>套用原始碼</button>
     {/if}
 
+    {#if tab === 'seo' && lintResults.length > 0}
+      <ul class="et-lint" aria-label="內容檢查建議">
+        {#each lintResults as r}
+          <li class="et-lint-{r.level}">
+            <span class="et-lint-level">{r.level}</span>
+            <span class="et-lint-msg">{r.message}{#if r.field} <code>({r.field})</code>{/if}</span>
+            {#if r.fix}<span class="et-lint-fix">建議：{r.fix}</span>{/if}
+          </li>
+        {/each}
+      </ul>
+    {/if}
+
     {#if message}<p class="et-msg">{message}</p>{/if}
     <footer>
       <button onclick={save} disabled={status === 'saving' || status === 'loading'}>儲存</button>
@@ -193,4 +209,14 @@
   .et-msg { color: var(--color-ink, #222); background: #f5f5f5; padding: .5rem .75rem; border-radius: 8px; }
   .et-ai { display: flex; flex-wrap: wrap; align-items: flex-start; gap: .5rem; margin-bottom: .5rem; }
   .et-ai-out { flex: 1 1 100%; white-space: pre-wrap; background: #f5f5f5; padding: .5rem .75rem; border-radius: 8px; margin: 0; font-family: inherit; }
+  .et-lint { list-style: none; margin: 0 0 .5rem; padding: 0; display: flex; flex-direction: column; gap: .25rem; max-height: 8rem; overflow: auto; font-size: .85rem; }
+  .et-lint li { display: flex; flex-wrap: wrap; align-items: baseline; gap: .4rem; padding: .35rem .5rem; border-radius: 6px; background: #f7f7f7; }
+  .et-lint-level { font-weight: 700; text-transform: uppercase; font-size: .7rem; letter-spacing: .03em; }
+  .et-lint-error .et-lint-level { color: #c0392b; }
+  .et-lint-warn .et-lint-level { color: #b8860b; }
+  .et-lint-info .et-lint-level { color: #555; }
+  .et-lint-error { border-left: 3px solid #c0392b; }
+  .et-lint-warn { border-left: 3px solid #e0a800; }
+  .et-lint-info { border-left: 3px solid #bbb; }
+  .et-lint-fix { color: #555; flex: 1 1 100%; }
 </style>

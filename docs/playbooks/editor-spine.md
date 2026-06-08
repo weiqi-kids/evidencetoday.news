@@ -33,7 +33,7 @@ flowchart TD
 | 進入點 | 檔案 | 說明 |
 |---|---|---|
 | `/admin` | `src/pages/admin.astro` + `AdminLogin.svelte` | 隱藏管理登入頁。`noindex`，且已從 sitemap 排除（見下）。`client:only="svelte"`，因為元件讀 `sessionStorage`/`location`。 |
-| 編輯按鈕 | `src/components/editor/EditButton.svelte` | `client:idle` island，`onMount` 偵測 `getToken()` 有值才顯示右下角 FAB。掛在 articles / myths 的 `[slug].astro`，於 `</Article>` 之前。 |
+| 編輯按鈕 | `src/components/editor/EditButton.svelte` | `client:idle` island，`onMount` 偵測 `getToken()` 有值才顯示右下角 FAB。掛在 articles / myths 的 `[slug].astro`，於 `</Article>` 之前。**EditorPanel 為按鈕點擊時才 `await import()` 動態載入**（`let EditorPanel = $state(null)`，`openEditor()` 內首次點擊載入後直接以 `<EditorPanel .../>` 渲染）；故匿名訪客（無 token）永不下載 EditorPanel 那塊含 gray-matter/js-yaml 的 chunk（~113 KB）。dist 驗證：`EditButton.*.js` 對 EditorPanel 只有 `import("./EditorPanel.*.js")` 動態引用，無 static `from"…EditorPanel"`。 |
 | 編輯面板 | `src/components/editor/EditorPanel.svelte` | 點 FAB 後開啟。**事實來源為 `{frontmatter, body}` 模型**（非 raw 字串）。載入時 `parse` 並記下 sha，存檔前 `serialize` 做 frontmatter 護欄。雙分頁見下節。 |
 | SEO 欄位 | `src/components/editor/SeoFields.svelte` | 由 `getSeoFields(collection)` 的 `SeoFieldDescriptor[]` 驅動的 SEO/AEO 表單，含字數提示（description≤160、ogTitle≤60 等）。emit `onchange(newFrontmatter)` 回寫 EditorPanel 的 `frontmatter`。 |
 | 新增文章 | `src/components/editor/NewArticle.svelte` | 掛在 `/admin`。選 collection + 輸入 slug（驗證 `^[a-z0-9-]+$`）→ 建一個 `sha=null` 的 `initialDoc` → 開 EditorPanel 進入新增模式。`client:only="svelte"`。 |

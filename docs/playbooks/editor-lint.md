@@ -6,6 +6,23 @@ returns `LintResult[]`. It does **not** depend on `mdx-doc`'s implementation —
 document first (via `mdx-doc.parse`) and pass the resulting pieces in. This keeps every rule a
 trivially testable pure function.
 
+## Wired into the panel
+
+`src/components/editor/EditorPanel.svelte` consumes the engine reactively:
+
+```js
+import { lint } from '@/utils/editor/lint';
+let lintResults = $derived(lint({ collection, frontmatter, body }));
+```
+
+Because `frontmatter`/`body` are `$state`, the `$derived` re-runs on every edit. The results are
+rendered as a small `<ul class="et-lint">` warnings list above the footer, **only on the SEO tab**.
+Each row shows the `level` (color-coded: red `error`, amber `warn`, grey `info`), the `message`
+(with the offending `field` in parentheses when present), and the `fix` hint when present. The
+panel is purely **advisory** — `save()` never inspects `lintResults`, so lint never blocks a save.
+The only hard save guards remain the frontmatter `serialize()` try/catch and the source-tab
+`commitSourceDraft()` parse check.
+
 ## Shape
 
 ```ts
