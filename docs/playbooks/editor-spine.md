@@ -4,8 +4,9 @@
 
 任務涉及以下任一情況：
 
-- 修改 `/admin` 登入頁、`src/components/editor/AdminLogin.svelte`
-- 改編輯按鈕 `EditButton.svelte`、編輯面板 `EditorPanel.svelte`
+- 修改 `/admin` 登入頁、`src/components/editor/AdminLogin.svelte`、新增文章 `NewArticle.svelte`
+- 改編輯按鈕 `EditButton.svelte`、編輯面板 `EditorPanel.svelte`、SEO 欄位表單 `SeoFields.svelte`
+- 改 SEO 欄位描述子 `src/utils/editor/seo-schema.ts`
 - 改 GitHub commit client（`src/utils/editor/github.ts`）、存檔狀態機（`save-machine.ts`）、token 工具（`token.ts`）
 - 把「編輯」按鈕掛到新的內容類型頁（articles / myths 之外）
 - 調整 OAuth Worker 回導契約（`/admin#token=&state=`）
@@ -33,7 +34,9 @@ flowchart TD
 |---|---|---|
 | `/admin` | `src/pages/admin.astro` + `AdminLogin.svelte` | 隱藏管理登入頁。`noindex`，且已從 sitemap 排除（見下）。`client:only="svelte"`，因為元件讀 `sessionStorage`/`location`。 |
 | 編輯按鈕 | `src/components/editor/EditButton.svelte` | `client:idle` island，`onMount` 偵測 `getToken()` 有值才顯示右下角 FAB。掛在 articles / myths 的 `[slug].astro`，於 `</Article>` 之前。 |
-| 編輯面板 | `src/components/editor/EditorPanel.svelte` | 點 FAB 後開啟。raw `<textarea>` 為單一事實來源。載入時抓最新 sha，存檔前做 frontmatter 護欄（`parse`+`serialize` 能通過才送出）。 |
+| 編輯面板 | `src/components/editor/EditorPanel.svelte` | 點 FAB 後開啟。**事實來源為 `{frontmatter, body}` 模型**（非 raw 字串）。載入時 `parse` 並記下 sha，存檔前 `serialize` 做 frontmatter 護欄。雙分頁見下節。 |
+| SEO 欄位 | `src/components/editor/SeoFields.svelte` | 由 `getSeoFields(collection)` 的 `SeoFieldDescriptor[]` 驅動的 SEO/AEO 表單，含字數提示（description≤160、ogTitle≤60 等）。emit `onchange(newFrontmatter)` 回寫 EditorPanel 的 `frontmatter`。 |
+| 新增文章 | `src/components/editor/NewArticle.svelte` | 掛在 `/admin`。選 collection + 輸入 slug（驗證 `^[a-z0-9-]+$`）→ 建一個 `sha=null` 的 `initialDoc` → 開 EditorPanel 進入新增模式。`client:only="svelte"`。 |
 
 ## token 流程
 
@@ -62,6 +65,26 @@ flowchart TD
 | 403 | `forbidden` | 帳號無 repo 寫入權，確認管理者帳號或找工程師開通 |
 | 其他 / fetch 失敗 | `network` | 連線異常，內容仍保留在頁面 |
 
+## SEO 欄位 / 原始碼雙分頁（單一事實來源）
+
+EditorPanel 持有 `frontmatter` + `body` 兩個 `$state`，**兩個分頁編輯的是同一個模型**，不會分歧：
+
+- **「SEO 欄位」分頁**：渲染 `SeoFields`（綁 `frontmatter`）＋ 正文 `<textarea>`（`bind:value={body}`）。SeoFields 的 `onchange` 以不可變更新（`{ ...frontmatter, [key]: value }`）回寫 `frontmatter`。
+- **「原始碼」分頁**：進入時 `enterSource()` 把當前模型 `serialize` 成 `rawDraft` 字串；改完按「套用原始碼」`applySource()` 把 `rawDraft` `parse` 回 `frontmatter`/`body` 並切回 SEO 分頁。frontmatter 有誤時顯示訊息、不覆寫模型。
+- 存檔一律 `serialize({ frontmatter, body })` 後送 `putFile`，兩分頁殊途同歸。
+
+> SEO 欄位由 `src/utils/editor/seo-schema.ts` 的 `getSeoFields(collection)` 驅動（per-collection 描述子；articles/myths/ingredients 目前共用 COMMON）。要加欄位或讓某 collection 不同，改 `BY_COLLECTION` 即可，UI 自動跟著長。
+
+## 新增文章流程（sha=null 建檔）
+
+1. `/admin` 登入後，`NewArticle` 顯示 collection 下拉 + slug 輸入。
+2. 按「建立並編輯」→ slug 驗 `^[a-z0-9-]+$`（不符 `alert`）→ 組 `repoPath = src/content/<collection>/<slug>.mdx`、`initialDoc = { frontmatter: { title, description, publishDate }, body }`。
+3. 以 `initialDoc` 開 EditorPanel。`initialDoc` 非空時面板進入新增模式：`sha=null`、跳過 `getFile`、`status='ready'`。
+4. 存檔走 `putFile`（**不帶 sha → GitHub 建立新檔**），commit message 為 `content: 前台新增 <slug>`。
+5. slug 撞既有檔：因新增模式無 sha，GitHub 回 422/409 → 由 `classifySave` 顯示衝突引導。
+
+> 編輯既有文章與新增共用同一個 `EditorPanel`。差別只在有無 `initialDoc`：有則新增（sha=null），無則 `getFile` 載入既有（記 sha）。EditButton 不傳 `initialDoc`，行為與重構前一致。
+
 ## 鎖定參數（動之前必看）
 
 - repo 常數寫死在 `github.ts`：`OWNER = 'weiqi-kids'`、`REPO = 'evidencetoday.news'`、`branch: 'main'`。換 repo 要改這裡。
@@ -79,7 +102,12 @@ flowchart TD
 
 UI（Svelte island / Astro 頁）以 `pnpm build` 驗證可編譯；端到端 OAuth 需 Worker 部署後才能跑通。
 
+## 測試（forms / seo-schema）
+
+- `pnpm test src/utils/editor/seo-schema.test.ts` — `getSeoFields` 的 per-collection 與 fallback 行為。
+- SeoFields / NewArticle / 重構後的 EditorPanel 為 Svelte island，以 `pnpm build` 驗證可編譯。
+
 ## 範圍邊界
 
-- 此 spine 的 EditorPanel 是 **raw `<textarea>`** 版（source of truth = raw 字串）。frontmatter/body 模型 + SEO 分頁由後續 `editor-04b` 計畫接入，勿在此提前實作。
-- lint 側欄、SSR 真實預覽由 `editor-02-lint-engine` 與 SSR 預覽計畫接入，面板已預留 `raw`/`parse(raw)` 接點。
+- EditorPanel 已從 raw 字串重構為 `{frontmatter, body}` 模型 + 「SEO 欄位 / 原始碼」雙分頁（`editor-04b`）。新增文章流程同 plan 接入。
+- lint 側欄、SSR 真實預覽由 `editor-02-lint-engine` 與 SSR 預覽計畫接入，面板已預留 `parse`/`serialize` 接點。
