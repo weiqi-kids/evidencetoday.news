@@ -6,6 +6,7 @@
   import { classifySave } from '@/utils/editor/save-machine';
   import { lint } from '@/utils/editor/lint';
   import SeoFields from './SeoFields.svelte';
+  import BodyEditor from './BodyEditor.svelte';
 
   let { repoPath, collection, slug, onclose, initialDoc = null } = $props();
 
@@ -161,9 +162,10 @@
 
     {#if status !== 'loading' && tab === 'seo'}
       <SeoFields {collection} {frontmatter} onchange={(fm) => (frontmatter = fm)} />
-      <label class="et-body"><span>正文</span>
-        <textarea bind:value={body} spellcheck="false"></textarea>
-      </label>
+      <div class="et-body">
+        <span>正文</span>
+        <BodyEditor value={body} {slug} onchange={(md) => (body = md)} />
+      </div>
       {#if AI_ENABLED}
         <div class="et-ai">
           <button onclick={() => suggest('improve')}>AI 潤飾正文</button>
