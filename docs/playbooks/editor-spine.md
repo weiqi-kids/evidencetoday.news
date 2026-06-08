@@ -35,7 +35,7 @@ flowchart TD
 | `/admin` | `src/pages/admin.astro` + `AdminLogin.svelte` | 隱藏管理登入頁。`noindex`，且已從 sitemap 排除（見下）。`client:only="svelte"`，因為元件讀 `sessionStorage`/`location`。 |
 | 編輯按鈕 | `src/components/editor/EditButton.svelte` | `client:idle` island，`onMount` 偵測 `getToken()` 有值才顯示右下角 FAB。掛在 articles / myths 的 `[slug].astro`，於 `</Article>` 之前。**EditorPanel 為按鈕點擊時才 `await import()` 動態載入**（`let EditorPanel = $state(null)`，`openEditor()` 內首次點擊載入後直接以 `<EditorPanel .../>` 渲染）；故匿名訪客（無 token）永不下載 EditorPanel 那塊含 gray-matter/js-yaml 的 chunk（~113 KB）。dist 驗證：`EditButton.*.js` 對 EditorPanel 只有 `import("./EditorPanel.*.js")` 動態引用，無 static `from"…EditorPanel"`。 |
 | 編輯面板 | `src/components/editor/EditorPanel.svelte` | 點 FAB 後開啟。**事實來源為 `{frontmatter, body}` 模型**（非 raw 字串）。載入時 `parse` 並記下 sha，存檔前 `serialize` 做 frontmatter 護欄。雙分頁見下節。 |
-| SEO 欄位 | `src/components/editor/SeoFields.svelte` | 由 `getSeoFields(collection)` 的 `SeoFieldDescriptor[]` 驅動的 SEO/AEO 表單，含字數提示（description≤160、ogTitle≤60 等）。emit `onchange(newFrontmatter)` 回寫 EditorPanel 的 `frontmatter`。 |
+| SEO 欄位 | `src/components/editor/SeoFields.svelte` | 由 `getSeoFields(collection)` 的 `SeoFieldDescriptor[]` 驅動的表單，含字數提示。**欄位對齊 `content.config.ts` 真實 schema**：共有 `title`(必填)、`description`、`socialTitle`(≤80)、`socialDescription`(≤120)；只有 myths 另有 `ogTitle`/`ogDescription`/`ogImage`。emit `onchange(newFrontmatter)` 回寫 EditorPanel 的 `frontmatter`（其餘未列於表單的欄位如 tags/faq/references 由模型保留、存檔時原樣帶回；要改它們用「原始碼」分頁）。 |
 | 新增文章 | `src/components/editor/NewArticle.svelte` | 掛在 `/admin`。選 collection + 輸入 slug（驗證 `^[a-z0-9-]+$`）→ 建一個 `sha=null` 的 `initialDoc` → 開 EditorPanel 進入新增模式。`client:only="svelte"`。 |
 
 ## token 流程
@@ -77,7 +77,7 @@ EditorPanel 持有 `frontmatter` + `body` 兩個 `$state`，**兩個分頁編輯
 - 存檔一律在模型反映最新草稿後 `serialize({ frontmatter, body })` 再送 `putFile`，兩分頁殊途同歸。
 - **不變式**：原始碼分頁的編輯不存在被默默丟棄的路徑——不是被套用進模型，就是以解析錯誤擋下並留在原始碼分頁。
 
-> SEO 欄位由 `src/utils/editor/seo-schema.ts` 的 `getSeoFields(collection)` 驅動（per-collection 描述子；articles/myths/ingredients 目前共用 COMMON）。要加欄位或讓某 collection 不同，改 `BY_COLLECTION` 即可，UI 自動跟著長。
+> SEO 欄位由 `src/utils/editor/seo-schema.ts` 的 `getSeoFields(collection)` 驅動（per-collection 描述子）。**欄位 key 必須是該 collection schema 真有的欄位**——例如 articles 沒有 `ogTitle`/`ogImage`，若表單塞這些 key 並存檔會讓 Astro content schema 驗證失敗、build 崩（2026-06-08 修正：早期把 og 欄位誤套到 articles）。要加欄位或讓某 collection 不同，先對照 `content.config.ts` 再改 `BY_COLLECTION`。
 
 ## 新增文章流程（sha=null 建檔）
 
