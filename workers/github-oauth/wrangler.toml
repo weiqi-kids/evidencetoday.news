@@ -1,0 +1,8 @@
+name = "evidencetoday-github-oauth"
+main = "src/index.ts"
+compatibility_date = "2026-01-01"
+
+[vars]
+GITHUB_CLIENT_ID = ""
+ALLOWED_ORIGIN = "https://evidencetoday.news"
+OAUTH_SCOPE = "public_repo"
