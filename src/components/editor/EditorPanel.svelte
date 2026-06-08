@@ -9,6 +9,8 @@
 
   let { repoPath, collection, slug, onclose, initialDoc = null } = $props();
 
+  // AI 建議功能開關：AI Worker 部署 + 設好 ANTHROPIC_API_KEY 後改為 true 即可開啟
+  const AI_ENABLED = false;
   // AI 建議 Worker（workers.dev 子網域 lightman-chang）
   const AI_WORKER = 'https://evidencetoday-ai-suggest.lightman-chang.workers.dev';
   let suggestion = $state('');
@@ -162,14 +164,16 @@
       <label class="et-body"><span>正文</span>
         <textarea bind:value={body} spellcheck="false"></textarea>
       </label>
-      <div class="et-ai">
-        <button onclick={() => suggest('improve')}>AI 潤飾正文</button>
-        <button onclick={() => suggest('summarize')}>AI 摘要</button>
-        {#if suggestion}
-          <pre class="et-ai-out">{suggestion}</pre>
-          <button onclick={acceptSuggestion}>採用為正文</button>
-        {/if}
-      </div>
+      {#if AI_ENABLED}
+        <div class="et-ai">
+          <button onclick={() => suggest('improve')}>AI 潤飾正文</button>
+          <button onclick={() => suggest('summarize')}>AI 摘要</button>
+          {#if suggestion}
+            <pre class="et-ai-out">{suggestion}</pre>
+            <button onclick={acceptSuggestion}>採用為正文</button>
+          {/if}
+        </div>
+      {/if}
     {/if}
 
     {#if tab === 'source'}
