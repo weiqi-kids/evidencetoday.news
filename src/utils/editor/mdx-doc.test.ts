@@ -33,4 +33,21 @@ describe('serialize', () => {
     expect(round.frontmatter).toEqual(once.frontmatter);
     expect(round.body).toBe(once.body);
   });
+
+  it('YAML 日期欄位被 parse 成 Date，且 round-trip 後不變', () => {
+    const raw = `---\nd: 2026-05-25\n---\n\nbody\n`;
+    const once = parse(raw);
+    expect(once.frontmatter.d).toBeInstanceOf(Date);
+    const round = parse(serialize(once));
+    expect(round.frontmatter.d).toBeInstanceOf(Date);
+    expect(round.frontmatter).toEqual(once.frontmatter);
+  });
+
+  it('body 本身以空行開頭時 round-trip 不被破壞', () => {
+    const raw = `---\ntitle: x\n---\n\n\n第一段在空行之後。\n`;
+    const once = parse(raw);
+    const round = parse(serialize(once));
+    expect(round.frontmatter).toEqual(once.frontmatter);
+    expect(round.body).toBe(once.body);
+  });
 });

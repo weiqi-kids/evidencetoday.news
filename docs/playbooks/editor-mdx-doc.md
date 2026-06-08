@@ -46,7 +46,9 @@ serialize(doc: EditDocCore): string;
 
 ## Tests
 
-- `src/utils/editor/mdx-doc.test.ts` — parse/serialize unit + synthetic round-trip.
+- `src/utils/editor/mdx-doc.test.ts` — parse/serialize unit + synthetic round-trip, including
+  explicit regression cases for the two load-bearing subtleties above: Date frontmatter fields
+  (parsed as `Date`, round-trip stable) and bodies that themselves begin with a blank line.
 - `src/utils/editor/mdx-doc.roundtrip.test.ts` — round-trips the real file
   `src/content/myths/carrots-improve-vision-myth.mdx` (dates, nested objects, empty strings,
   Markdown-in-frontmatter). This is the regression guard: the editor must never corrupt real
