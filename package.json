@@ -24,6 +24,7 @@
     "@fontsource/noto-sans-tc": "^5.2.9",
     "@fontsource/noto-serif-tc": "^5.2.10",
     "@fontsource/source-serif-4": "^5.2.9",
+    "@toast-ui/editor": "^3.2.2",
     "astro": "^5.18.1",
     "d3-array": "^3.2.4",
     "d3-force": "^3.0.0",
