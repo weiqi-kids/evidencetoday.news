@@ -3,6 +3,6 @@ main = "src/index.ts"
 compatibility_date = "2026-01-01"
 
 [vars]
-GITHUB_CLIENT_ID = ""
+GITHUB_CLIENT_ID = "Ov23liKCwMwzPMXboeSQ"
 ALLOWED_ORIGIN = "https://evidencetoday.news"
 OAUTH_SCOPE = "public_repo"
