@@ -22,6 +22,7 @@
       {/if}
     </label>
   {/each}
+  <p class="et-fields-note">社群分享的標題、描述與分享圖由系統依「標題」「描述」自動產生，無需手動設定。</p>
 </div>
 
 <style>
@@ -30,6 +31,11 @@
   .et-fields span { font-family: var(--font-ui); font-size: var(--text-meta); font-weight: 600; color: var(--color-ink); }
   .et-fields em { color: var(--color-coral); font-style: normal; }
   .et-fields small {
+    font-size: var(--text-badge);
+    color: color-mix(in oklch, var(--color-ink) 55%, var(--color-paper));
+  }
+  .et-fields-note {
+    margin: 0;
     font-size: var(--text-badge);
     color: color-mix(in oklch, var(--color-ink) 55%, var(--color-paper));
   }

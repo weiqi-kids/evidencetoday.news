@@ -6,39 +6,29 @@ export type SeoFieldDescriptor = {
   required?: boolean;
 };
 
-// 欄位定義對齊 src/content.config.ts 各 collection 的 schema。
-// 共有：title、description；社群分享統一為 socialTitle(≤80)/socialDescription(≤120)。
-// 僅 myths 另有 ogTitle/ogDescription/ogImage（articles 等沒有這些欄位，
-// 若硬塞進 frontmatter 會讓 Astro content schema 驗證失敗、build 崩）。
+// 只列「作者真正手寫」的欄位：title 與 description。
+//
+// 社群分享標題/描述、OG 分享圖都是 src/utils/social-meta.mjs 的 contentSocial()
+// 自動衍生的——社群標題 fallback 到 title、社群描述 fallback 到 description、
+// OG 圖是每個 collection 固定的靜態圖（ogImageForCollection）。這些不該擺進表單
+// 讓使用者編輯（會誤導，且像 ogTitle/ogImage 這種 key 對 articles 根本不存在，
+// 硬填還會讓 build 崩）。description 上限對齊 content.config.ts。
 const titleField: SeoFieldDescriptor = { key: 'title', label: '標題', type: 'text', required: true };
 
-const socialFields: SeoFieldDescriptor[] = [
-  { key: 'socialTitle', label: '社群分享標題', type: 'text', maxLength: 80 },
-  { key: 'socialDescription', label: '社群分享描述', type: 'textarea', maxLength: 120 },
-];
-
-const standard = (descMax: number): SeoFieldDescriptor[] => [
+const fields = (descMax: number): SeoFieldDescriptor[] => [
   titleField,
-  { key: 'description', label: 'SEO 描述', type: 'textarea', maxLength: descMax, required: true },
-  ...socialFields,
+  { key: 'description', label: '描述（摘要）', type: 'textarea', maxLength: descMax, required: true },
 ];
 
 const BY_COLLECTION: Record<string, SeoFieldDescriptor[]> = {
-  articles: standard(155),
-  ingredients: standard(155),
-  podcasts: standard(155),
-  videos: standard(155),
-  news: standard(155),
-  myths: [
-    titleField,
-    { key: 'description', label: 'SEO 描述', type: 'textarea', maxLength: 220, required: true },
-    ...socialFields,
-    { key: 'ogTitle', label: 'OG 標題', type: 'text', required: true },
-    { key: 'ogDescription', label: 'OG 描述', type: 'textarea', required: true },
-    { key: 'ogImage', label: 'OG 圖網址（選填）', type: 'image' },
-  ],
+  articles: fields(155),
+  ingredients: fields(155),
+  podcasts: fields(155),
+  videos: fields(155),
+  news: fields(155),
+  myths: fields(220),
 };
 
 export function getSeoFields(collection: string): SeoFieldDescriptor[] {
-  return BY_COLLECTION[collection] ?? standard(155);
+  return BY_COLLECTION[collection] ?? fields(155);
 }
