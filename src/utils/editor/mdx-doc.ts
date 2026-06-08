@@ -1,4 +1,5 @@
 import matter from 'gray-matter';
+import yaml from 'js-yaml';
 
 export type EditDocCore = {
   frontmatter: Record<string, unknown>;
@@ -20,4 +21,22 @@ export function parse(rawMdx: string): EditDocCore {
   const { data, content } = matter(rawMdx);
   const body = content.startsWith('\n') ? content.slice(1) : content;
   return { frontmatter: data ?? {}, body };
+}
+
+/**
+ * 將 { frontmatter, body } 組回 MDX 字串。
+ *
+ * 使用 js-yaml 的 block style 輸出：lineWidth:-1 不折行、forceQuotes:false
+ * 讓中文字串不被加多餘引號、indent:2 讓 block list 以 2 空格縮排。
+ * 輸出格式固定為 `---\n${fm}---\n\n${body}`，與 parse 互為逆運算。
+ */
+export function serialize(doc: EditDocCore): string {
+  const fm = yaml.dump(doc.frontmatter, {
+    lineWidth: -1,
+    noRefs: true,
+    quotingType: '"',
+    forceQuotes: false,
+    indent: 2,
+  });
+  return `---\n${fm}---\n\n${doc.body}`;
 }
