@@ -195,11 +195,25 @@
       </ul>
     {/if}
 
-    {#if message}<p class="et-msg">{message}</p>{/if}
-    <footer>
-      <button class="et-primary" onclick={save} disabled={status === 'saving' || status === 'loading'}>儲存</button>
-      <button onclick={reload}>重新載入最新版</button>
-    </footer>
+    {#if status === 'done'}
+      <div class="et-done">
+        <p class="et-done-msg">✓ 已存檔並送出更新。可以關閉這個視窗了。</p>
+        <p class="et-done-sub">
+          網站約 1–2 分鐘後更新，屆時重新整理文章頁即可看到新內容。
+          <a href="https://github.com/weiqi-kids/evidencetoday.news/actions" target="_blank" rel="noopener noreferrer">查看部署進度 →</a>
+        </p>
+        <div class="et-done-actions">
+          <button class="et-primary" onclick={onclose}>關閉</button>
+          <button onclick={() => { status = 'ready'; message = ''; }}>繼續編輯</button>
+        </div>
+      </div>
+    {:else}
+      {#if message}<p class="et-msg">{message}</p>{/if}
+      <footer>
+        <button class="et-primary" onclick={save} disabled={status === 'saving' || status === 'loading'}>儲存</button>
+        <button onclick={reload}>重新載入最新版</button>
+      </footer>
+    {/if}
   </div>
 </div>
 
@@ -264,6 +278,28 @@
     border-radius: var(--radius-sm);
     font-size: var(--text-meta);
   }
+  .et-done {
+    background: var(--color-teal-subtle);
+    border: 1px solid color-mix(in oklch, var(--color-teal) 24%, var(--color-fog));
+    border-radius: var(--radius-sm);
+    padding: clamp(0.75rem, 0.5rem + 1vw, 1.25rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .et-done-msg {
+    margin: 0;
+    font-family: var(--font-ui);
+    font-weight: 700;
+    color: var(--color-teal);
+  }
+  .et-done-sub {
+    margin: 0;
+    font-size: var(--text-meta);
+    color: color-mix(in oklch, var(--color-ink) 70%, var(--color-paper));
+  }
+  .et-done-sub a { color: var(--color-teal); font-weight: 600; white-space: nowrap; }
+  .et-done-actions { display: flex; gap: 0.5rem; margin-top: 0.25rem; }
   .et-ai { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 0.5rem; margin-bottom: 0.5rem; }
   .et-ai-out {
     flex: 1 1 100%;
