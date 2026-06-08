@@ -41,19 +41,45 @@
     rawDraft = serialize({ frontmatter, body });
     tab = 'source';
   }
-  function applySource() {
+
+  /**
+   * 將 rawDraft 解析並回寫進 {frontmatter, body} 模型。
+   * 成功回傳 true 並清空訊息；失敗回傳 false 並設定錯誤訊息（不切換分頁、不改模型）。
+   * 為 applySource / SEO 分頁切換 / save() 三條路徑共用的唯一真相來源，
+   * 確保原始碼分頁的編輯只會被「套用進模型」或「以解析錯誤擋下」，不會被默默丟棄。
+   */
+  function commitSourceDraft() {
     try {
       const d = parse(rawDraft);
       frontmatter = d.frontmatter;
       body = d.body;
-      tab = 'seo';
       message = '';
+      return true;
     } catch (e) {
-      message = `原始碼 frontmatter 有誤：${e instanceof Error ? e.message : e}`;
+      message = `原始碼 frontmatter 有誤：${e instanceof Error ? e.message : e}，請先修正`;
+      return false;
     }
   }
 
+  function applySource() {
+    if (commitSourceDraft()) tab = 'seo';
+  }
+
+  function goSeoTab() {
+    // 由原始碼分頁切回 SEO 前，先套用草稿；解析失敗則留在原始碼分頁顯示錯誤。
+    if (tab === 'source') {
+      if (commitSourceDraft()) tab = 'seo';
+      return;
+    }
+    tab = 'seo';
+  }
+
   async function save() {
+    // 原始碼分頁直接按儲存時，先把 rawDraft 套回模型；解析失敗則中止存檔（不推送）。
+    if (tab === 'source' && !commitSourceDraft()) {
+      status = 'error';
+      return;
+    }
     // 送出前的輕量 frontmatter 護欄（擋掉會讓 build 失敗的格式錯誤）
     let content;
     try {
@@ -98,7 +124,7 @@
     <header>
       <strong>編輯：{slug}</strong>
       <nav>
-        <button onclick={() => (tab = 'seo')} disabled={tab === 'seo'}>SEO 欄位</button>
+        <button onclick={goSeoTab} disabled={tab === 'seo'}>SEO 欄位</button>
         <button onclick={enterSource} disabled={tab === 'source'}>原始碼</button>
       </nav>
       <button onclick={onclose} aria-label="關閉">✕</button>

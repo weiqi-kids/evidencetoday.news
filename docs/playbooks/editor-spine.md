@@ -70,8 +70,12 @@ flowchart TD
 EditorPanel 持有 `frontmatter` + `body` 兩個 `$state`，**兩個分頁編輯的是同一個模型**，不會分歧：
 
 - **「SEO 欄位」分頁**：渲染 `SeoFields`（綁 `frontmatter`）＋ 正文 `<textarea>`（`bind:value={body}`）。SeoFields 的 `onchange` 以不可變更新（`{ ...frontmatter, [key]: value }`）回寫 `frontmatter`。
-- **「原始碼」分頁**：進入時 `enterSource()` 把當前模型 `serialize` 成 `rawDraft` 字串；改完按「套用原始碼」`applySource()` 把 `rawDraft` `parse` 回 `frontmatter`/`body` 並切回 SEO 分頁。frontmatter 有誤時顯示訊息、不覆寫模型。
-- 存檔一律 `serialize({ frontmatter, body })` 後送 `putFile`，兩分頁殊途同歸。
+- **「原始碼」分頁**：進入時 `enterSource()` 把當前模型 `serialize` 成 `rawDraft` 字串。三條離開路徑全部走共用的 `commitSourceDraft(): boolean`（唯一真相來源，`parse` 回 `frontmatter`/`body`，成功回 `true` 並清訊息、失敗回 `false` 並設錯誤訊息且不覆寫模型）：
+  - 「套用原始碼」`applySource()`：commit 成功才切回 SEO 分頁。
+  - 「SEO 欄位」分頁鈕 `goSeoTab()`：在原始碼分頁時先 commit，成功才切頁；失敗留在原始碼分頁顯示錯誤（不默默丟棄編輯）。
+  - 「儲存」`save()`：若當前在原始碼分頁，先 `commitSourceDraft()`；解析失敗則 `status='error'` 並中止存檔（不 `putFile`、不推 GitHub）。
+- 存檔一律在模型反映最新草稿後 `serialize({ frontmatter, body })` 再送 `putFile`，兩分頁殊途同歸。
+- **不變式**：原始碼分頁的編輯不存在被默默丟棄的路徑——不是被套用進模型，就是以解析錯誤擋下並留在原始碼分頁。
 
 > SEO 欄位由 `src/utils/editor/seo-schema.ts` 的 `getSeoFields(collection)` 驅動（per-collection 描述子；articles/myths/ingredients 目前共用 COMMON）。要加欄位或讓某 collection 不同，改 `BY_COLLECTION` 即可，UI 自動跟著長。
 

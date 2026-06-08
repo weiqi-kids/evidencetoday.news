@@ -15,6 +15,13 @@ describe('parse', () => {
     expect(result.frontmatter).toEqual({});
     expect(result.body).toBe('只有正文，沒有 frontmatter。\n');
   });
+
+  // EditorPanel 的 commitSourceDraft() 靠 parse() 對壞掉的 frontmatter 丟例外，
+  // 才能在「原始碼分頁存檔／切頁」時擋下並中止（不推 GitHub）。此處鎖住該前提。
+  it('frontmatter YAML 格式錯誤時丟出例外（commitSourceDraft 的擋檔前提）', () => {
+    const raw = `---\ntitle: "未閉合的引號\ntags: [一, 二\n---\n\n正文。\n`;
+    expect(() => parse(raw)).toThrow();
+  });
 });
 
 describe('serialize', () => {
