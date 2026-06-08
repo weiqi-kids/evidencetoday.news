@@ -25,8 +25,26 @@
 </div>
 
 <style>
-  .et-fields { display: flex; flex-direction: column; gap: .75rem; overflow: auto; }
-  .et-fields label { display: flex; flex-direction: column; gap: .25rem; }
-  .et-fields em { color: var(--color-coral, #c0492f); font-style: normal; }
-  .et-fields small { color: #777; }
+  .et-fields { display: flex; flex-direction: column; gap: 0.75rem; overflow: auto; }
+  .et-fields label { display: flex; flex-direction: column; gap: 0.25rem; }
+  .et-fields span { font-family: var(--font-ui); font-size: var(--text-meta); font-weight: 600; color: var(--color-ink); }
+  .et-fields em { color: var(--color-coral); font-style: normal; }
+  .et-fields small {
+    font-size: var(--text-badge);
+    color: color-mix(in oklch, var(--color-ink) 55%, var(--color-paper));
+  }
+  .et-fields :is(input, textarea) {
+    font-family: var(--font-ui);
+    font-size: var(--text-body);
+    color: var(--color-ink);
+    background: white;
+    border: 1px solid var(--color-fog);
+    border-radius: var(--radius-sm);
+    padding: 0.5rem 0.65rem;
+  }
+  .et-fields :is(input, textarea):focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 1px;
+  }
+  .et-fields textarea { min-height: 4rem; resize: vertical; }
 </style>

@@ -195,32 +195,111 @@
 
     {#if message}<p class="et-msg">{message}</p>{/if}
     <footer>
-      <button onclick={save} disabled={status === 'saving' || status === 'loading'}>儲存</button>
+      <button class="et-primary" onclick={save} disabled={status === 'saving' || status === 'loading'}>儲存</button>
       <button onclick={reload}>重新載入最新版</button>
     </footer>
   </div>
 </div>
 
 <style>
-  .et-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 60; display: flex; }
-  .et-panel { background: #fff; margin: auto; width: min(900px, 94vw); height: 90vh; display: flex; flex-direction: column; border-radius: 12px; padding: 1rem; overflow: hidden; }
-  .et-panel header, .et-panel footer { display: flex; justify-content: space-between; align-items: center; gap: .5rem; }
-  .et-panel nav { display: flex; gap: .25rem; }
-  .et-panel textarea { width: 100%; font-family: ui-monospace, monospace; font-size: .9rem; }
-  .et-body { display: flex; flex-direction: column; gap: .25rem; flex: 1; margin: .75rem 0; min-height: 0; }
+  .et-overlay { position: fixed; inset: 0; background: oklch(0 0 0 / 0.5); z-index: 60; display: flex; }
+  .et-panel {
+    background: color-mix(in oklch, var(--color-paper) 55%, white);
+    color: var(--color-ink);
+    margin: auto;
+    width: min(900px, 94vw);
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--color-fog);
+    border-radius: var(--radius-card);
+    padding: clamp(0.75rem, 0.5rem + 1vw, 1.25rem);
+    overflow: hidden;
+    box-shadow: var(--shadow-card-hover);
+  }
+  .et-panel header, .et-panel footer { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
+  .et-panel header strong { font-family: var(--font-ui); font-size: var(--text-body); }
+  .et-panel nav { display: flex; gap: 0.25rem; }
+
+  .et-panel button {
+    min-height: 44px;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--color-fog);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-ui);
+    font-size: var(--text-meta);
+    font-weight: 600;
+    color: var(--color-ink);
+    background: color-mix(in oklch, var(--color-paper) 40%, white);
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+  }
+  .et-panel button:hover { background: var(--color-teal-subtle); }
+  .et-panel button:focus-visible { outline: 2px solid var(--color-teal); outline-offset: 2px; }
+  .et-panel button:disabled { opacity: 0.5; pointer-events: none; }
+  .et-panel button.et-primary { background: var(--color-teal); border-color: var(--color-teal); color: white; }
+  .et-panel button.et-primary:hover { background: var(--color-teal-hover); border-color: var(--color-teal-hover); }
+
+  .et-panel textarea {
+    width: 100%;
+    font-family: ui-monospace, 'SFMono-Regular', monospace;
+    font-size: var(--text-meta);
+    color: var(--color-ink);
+    background: white;
+    border: 1px solid var(--color-fog);
+    border-radius: var(--radius-sm);
+    padding: 0.5rem 0.65rem;
+  }
+  .et-panel textarea:focus-visible { outline: 2px solid var(--color-teal); outline-offset: 1px; }
+  .et-body { display: flex; flex-direction: column; gap: 0.25rem; flex: 1; margin: 0.75rem 0; min-height: 0; }
+  .et-body span { font-family: var(--font-ui); font-size: var(--text-meta); font-weight: 600; }
   .et-body textarea { flex: 1; min-height: 8rem; }
-  .et-source { flex: 1; min-height: 12rem; margin: .75rem 0; }
-  .et-msg { color: var(--color-ink, #222); background: #f5f5f5; padding: .5rem .75rem; border-radius: 8px; }
-  .et-ai { display: flex; flex-wrap: wrap; align-items: flex-start; gap: .5rem; margin-bottom: .5rem; }
-  .et-ai-out { flex: 1 1 100%; white-space: pre-wrap; background: #f5f5f5; padding: .5rem .75rem; border-radius: 8px; margin: 0; font-family: inherit; }
-  .et-lint { list-style: none; margin: 0 0 .5rem; padding: 0; display: flex; flex-direction: column; gap: .25rem; max-height: 8rem; overflow: auto; font-size: .85rem; }
-  .et-lint li { display: flex; flex-wrap: wrap; align-items: baseline; gap: .4rem; padding: .35rem .5rem; border-radius: 6px; background: #f7f7f7; }
-  .et-lint-level { font-weight: 700; text-transform: uppercase; font-size: .7rem; letter-spacing: .03em; }
-  .et-lint-error .et-lint-level { color: #c0392b; }
-  .et-lint-warn .et-lint-level { color: #b8860b; }
-  .et-lint-info .et-lint-level { color: #555; }
-  .et-lint-error { border-left: 3px solid #c0392b; }
-  .et-lint-warn { border-left: 3px solid #e0a800; }
-  .et-lint-info { border-left: 3px solid #bbb; }
-  .et-lint-fix { color: #555; flex: 1 1 100%; }
+  .et-source { flex: 1; min-height: 12rem; margin: 0.75rem 0; }
+  .et-msg {
+    color: var(--color-ink);
+    background: var(--color-teal-subtle);
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--radius-sm);
+    font-size: var(--text-meta);
+  }
+  .et-ai { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 0.5rem; margin-bottom: 0.5rem; }
+  .et-ai-out {
+    flex: 1 1 100%;
+    white-space: pre-wrap;
+    background: var(--color-teal-subtle);
+    color: var(--color-ink);
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--radius-sm);
+    margin: 0;
+    font-family: inherit;
+    font-size: var(--text-meta);
+  }
+  .et-lint {
+    list-style: none;
+    margin: 0 0 0.5rem;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    max-height: 8rem;
+    overflow: auto;
+    font-size: var(--text-meta);
+  }
+  .et-lint li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.4rem;
+    padding: 0.35rem 0.5rem;
+    border-radius: var(--radius-sm);
+    background: color-mix(in oklch, var(--color-paper) 60%, white);
+  }
+  .et-lint-level { font-weight: 700; text-transform: uppercase; font-size: var(--text-badge); letter-spacing: 0.03em; }
+  .et-lint-error .et-lint-level { color: var(--color-verdict-false); }
+  .et-lint-warn .et-lint-level { color: var(--color-verdict-contextual); }
+  .et-lint-info .et-lint-level { color: color-mix(in oklch, var(--color-ink) 55%, var(--color-paper)); }
+  .et-lint-error { border-left: 3px solid var(--color-verdict-false); }
+  .et-lint-warn { border-left: 3px solid var(--color-verdict-contextual); }
+  .et-lint-info { border-left: 3px solid var(--color-fog); }
+  .et-lint-fix { color: color-mix(in oklch, var(--color-ink) 55%, var(--color-paper)); flex: 1 1 100%; }
 </style>
