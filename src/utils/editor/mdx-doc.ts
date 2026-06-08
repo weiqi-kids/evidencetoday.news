@@ -1,4 +1,3 @@
-import matter from 'gray-matter';
 import yaml from 'js-yaml';
 
 export type EditDocCore = {
@@ -6,20 +5,26 @@ export type EditDocCore = {
   body: string;
 };
 
+// 抓取開頭的 frontmatter 區塊：`---\n<yaml>\n---\n`（含結尾 `---` 後的單一換行）。
+const FRONTMATTER_RE = /^---\r?\n([\s\S]*?)\r?\n---[ \t]*\r?\n/;
+
 /**
  * 解析 raw MDX 為 { frontmatter, body }。
  *
- * body 還原策略：gray-matter 的 `content` 會在結尾 frontmatter 的 `---` 之後
- * 保留一個換行（它只吃掉緊接 `---` 的單一 `\n`）。我們再剝掉這一個換行，
- * 讓 body 不帶 frontmatter 與正文之間的分隔空行。
+ * **瀏覽器安全**：只用 js-yaml（純 JS），不用 gray-matter——後者依賴 Node 的
+ * `Buffer`，在瀏覽器會丟 `Buffer is not defined`（編輯器在瀏覽器執行）。
  *
- * 這個策略與 `serialize` 互為逆運算：serialize 用 `---\n\n${body}` 串接，
- * gray-matter 吃掉第一個 `\n`、parse 再剝掉第二個 `\n`，正好還原 body，
- * 確保 parse → serialize → parse 的 round-trip 一致（見 *.roundtrip.test.ts）。
+ * body 還原策略與 `serialize` 互為逆運算：serialize 用 `---\n\n${body}` 串接；
+ * 本函式以 regex 吃掉結尾 `---` 後的第一個 `\n`，再剝掉 body 開頭殘留的一個 `\n`
+ * （即分隔空行），正好還原 body，確保 parse → serialize → parse 一致
+ * （見 *.roundtrip.test.ts）。沒有 frontmatter 時回 `{}` 與原文。
  */
 export function parse(rawMdx: string): EditDocCore {
-  const { data, content } = matter(rawMdx);
-  const body = content.startsWith('\n') ? content.slice(1) : content;
+  const m = rawMdx.match(FRONTMATTER_RE);
+  if (!m) return { frontmatter: {}, body: rawMdx };
+  const data = yaml.load(m[1]) as Record<string, unknown> | null | undefined;
+  let body = rawMdx.slice(m[0].length);
+  if (body.startsWith('\n')) body = body.slice(1);
   return { frontmatter: data ?? {}, body };
 }
 
