@@ -39,10 +39,11 @@ Each rule is one file under `src/utils/editor/lint/rules/`, co-located with its 
 
 - **`description-length`** — `error` if `description` is missing/empty; `warn` if `< 50` or
   `> 160` characters (SEO snippet length). Applies to all collections.
-- **`phantom-image`** — `error` for inline images whose path matches `images/...` (a relative
-  reference into the repo that does not exist). These break the Astro/Rollup build entirely; one
-  result is emitted per match. Absolute URLs (`https://…`) are ignored. (Guards against the
-  2026-06-08 build-failure incident.)
+- **`phantom-image`** — `error` for inline images whose path matches `images/...`, `./images/...`,
+  or `../images/...` (a relative reference into the repo that does not exist). These break the
+  Astro/Rollup build entirely; one result is emitted per match. Absolute URLs (`https://…`) and
+  root-absolute served paths (`/images/…`) are ignored. (Guards against the 2026-06-08
+  build-failure incident.)
 - **`myth-references`** — `myths` collection only: `error` if `frontmatter.references` has fewer
   than 2 entries. Every myth must cite at least 2 credible sources. No-op for other collections.
 
