@@ -4,19 +4,29 @@
   import { getFile, putFile } from '@/utils/editor/github';
   import { parse, serialize } from '@/utils/editor/mdx-doc';
   import { classifySave } from '@/utils/editor/save-machine';
+  import SeoFields from './SeoFields.svelte';
 
-  let { repoPath, slug, onclose } = $props();
+  let { repoPath, collection, slug, onclose, initialDoc = null } = $props();
 
-  let raw = $state('');
+  let frontmatter = $state({});
+  let body = $state('');
   let sha = $state(null);
-  let status = $state('loading'); // loading | ready | saving | done | error
+  let tab = $state('seo'); // seo | source
+  let status = $state(initialDoc ? 'ready' : 'loading'); // loading | ready | saving | done | error
   let message = $state('');
 
   onMount(async () => {
+    if (initialDoc) {
+      frontmatter = initialDoc.frontmatter;
+      body = initialDoc.body;
+      sha = null;
+      return;
+    }
     try {
-      const token = getToken();
-      const file = await getFile(repoPath, token); // 抓最新版與 sha
-      raw = file.content;
+      const file = await getFile(repoPath, getToken()); // 抓最新版與 sha
+      const doc = parse(file.content);
+      frontmatter = doc.frontmatter;
+      body = doc.body;
       sha = file.sha;
       status = 'ready';
     } catch (e) {
@@ -25,42 +35,89 @@
     }
   });
 
+  // 原始碼分頁：編輯字串後回寫模型（兩分頁共用同一個 {frontmatter, body} 模型）
+  let rawDraft = $state('');
+  function enterSource() {
+    rawDraft = serialize({ frontmatter, body });
+    tab = 'source';
+  }
+  function applySource() {
+    try {
+      const d = parse(rawDraft);
+      frontmatter = d.frontmatter;
+      body = d.body;
+      tab = 'seo';
+      message = '';
+    } catch (e) {
+      message = `原始碼 frontmatter 有誤：${e instanceof Error ? e.message : e}`;
+    }
+  }
+
   async function save() {
     // 送出前的輕量 frontmatter 護欄（擋掉會讓 build 失敗的格式錯誤）
+    let content;
     try {
-      const doc = parse(raw);
-      serialize(doc); // 解析+序列化能通過即視為 frontmatter 可用
+      content = serialize({ frontmatter, body });
     } catch (e) {
       status = 'error';
-      message = `frontmatter 格式有誤：${e instanceof Error ? e.message : e}。請修正後再存（常見：縮排、缺引號、日期格式）。`;
+      message = `frontmatter 格式有誤：${e instanceof Error ? e.message : e}。請修正後再存。`;
       return;
     }
     status = 'saving';
     try {
-      const code = await putFile({ path: repoPath, content: raw, sha, message: `content: 前台編輯 ${slug}`, token: getToken() });
+      const code = await putFile({
+        path: repoPath,
+        content,
+        sha,
+        message: `content: ${sha ? '前台編輯' : '前台新增'} ${slug}`,
+        token: getToken(),
+      });
       const outcome = classifySave(code);
       message = outcome.message;
       status = outcome.state === 'success' ? 'done' : 'error';
-    } catch (e) {
-      const outcome = classifySave(0); // 視為 network
-      message = outcome.message;
+    } catch {
+      const o = classifySave(0); // 視為 network
+      message = o.message;
       status = 'error';
     }
   }
 
   async function reload() {
     const file = await getFile(repoPath, getToken());
-    raw = file.content; sha = file.sha; status = 'ready'; message = '';
+    const doc = parse(file.content);
+    frontmatter = doc.frontmatter;
+    body = doc.body;
+    sha = file.sha;
+    status = 'ready';
+    message = '';
   }
 </script>
 
 <div class="et-overlay" role="dialog" aria-modal="true">
   <div class="et-panel">
-    <header><strong>編輯：{slug}</strong><button onclick={onclose} aria-label="關閉">✕</button></header>
+    <header>
+      <strong>編輯：{slug}</strong>
+      <nav>
+        <button onclick={() => (tab = 'seo')} disabled={tab === 'seo'}>SEO 欄位</button>
+        <button onclick={enterSource} disabled={tab === 'source'}>原始碼</button>
+      </nav>
+      <button onclick={onclose} aria-label="關閉">✕</button>
+    </header>
+
     {#if status === 'loading'}<p>載入中…</p>{/if}
-    {#if status !== 'loading'}
-      <textarea bind:value={raw} spellcheck="false"></textarea>
+
+    {#if status !== 'loading' && tab === 'seo'}
+      <SeoFields {collection} {frontmatter} onchange={(fm) => (frontmatter = fm)} />
+      <label class="et-body"><span>正文</span>
+        <textarea bind:value={body} spellcheck="false"></textarea>
+      </label>
     {/if}
+
+    {#if tab === 'source'}
+      <textarea class="et-source" bind:value={rawDraft} spellcheck="false"></textarea>
+      <button onclick={applySource}>套用原始碼</button>
+    {/if}
+
     {#if message}<p class="et-msg">{message}</p>{/if}
     <footer>
       <button onclick={save} disabled={status === 'saving' || status === 'loading'}>儲存</button>
@@ -71,8 +128,12 @@
 
 <style>
   .et-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 60; display: flex; }
-  .et-panel { background: #fff; margin: auto; width: min(900px, 94vw); height: 90vh; display: flex; flex-direction: column; border-radius: 12px; padding: 1rem; }
-  .et-panel header, .et-panel footer { display: flex; justify-content: space-between; gap: .5rem; }
-  .et-panel textarea { flex: 1; width: 100%; font-family: ui-monospace, monospace; font-size: .9rem; margin: .75rem 0; }
+  .et-panel { background: #fff; margin: auto; width: min(900px, 94vw); height: 90vh; display: flex; flex-direction: column; border-radius: 12px; padding: 1rem; overflow: hidden; }
+  .et-panel header, .et-panel footer { display: flex; justify-content: space-between; align-items: center; gap: .5rem; }
+  .et-panel nav { display: flex; gap: .25rem; }
+  .et-panel textarea { width: 100%; font-family: ui-monospace, monospace; font-size: .9rem; }
+  .et-body { display: flex; flex-direction: column; gap: .25rem; flex: 1; margin: .75rem 0; min-height: 0; }
+  .et-body textarea { flex: 1; min-height: 8rem; }
+  .et-source { flex: 1; min-height: 12rem; margin: .75rem 0; }
   .et-msg { color: var(--color-ink, #222); background: #f5f5f5; padding: .5rem .75rem; border-radius: 8px; }
 </style>
