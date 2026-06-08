@@ -128,6 +128,24 @@ UI（Svelte island / Astro 頁）以 `pnpm build` 驗證可編譯；端到端 OA
 - Worker 後端在 `workers/ai-suggest/`：先用呼叫者 token 驗 repo push 權（無權回 403）才呼叫付費的 Anthropic API，避免端點被濫用。部署與密鑰設定見 `workers/ai-suggest/README.md`。
 - 模型由 `wrangler.toml` 的 `ANTHROPIC_MODEL`（預設 `claude-haiku-4-5-20251001`）決定。
 
+## 正文 WYSIWYG（editor-07）
+
+EditorPanel 的 SEO 主分頁正文不再是純 textarea，改用 `BodyEditor.svelte` 包裝 [`@toast-ui/editor`](https://github.com/nhn/tui.editor) 的所見即所得（WYSIWYG）模式。原始碼分頁仍是 raw markdown textarea，兩條路徑共用同一個 `{frontmatter, body}` 模型。
+
+- **元件**：`src/components/editor/BodyEditor.svelte`，props 為 `{ value, slug, onchange }`。
+  - `initialEditType: 'wysiwyg'` + `hideModeSwitch: true`：固定 WYSIWYG，不顯示「markdown / wysiwyg」切換鈕（站上的 markdown 編輯由原始碼分頁負責）。
+  - `toolbarItems`：H2/H3（heading）、bold、italic、link、ul、ol、quote、image。刻意精簡，不放表格／程式碼區塊等較少用且易產生雜訊 markdown 的工具。
+  - `usageStatistics: false`：關閉 Toast UI 的匿名使用統計回傳。
+- **body ↔ 模型同步（雙向，含防迴圈護欄）**：
+  - 編輯器內容變動 → `change` 事件 → `editor.getMarkdown()` → `onchange(md)` → EditorPanel 回寫 `body = md`。
+  - 外部改 `body`（例：原始碼分頁套用、reload 重新載入、AI 採用為正文）→ `$effect` 偵測 `value !== lastSet` → `editor.setMarkdown(value)`。
+  - `lastSet` guard：`change` 與 `$effect` 兩端都會先更新 `lastSet`，避免「外部更新觸發 setMarkdown → 觸發 change → 又回寫 → 再觸發 $effect」的無限迴圈。
+- **圖片上傳**（`addImageBlobHook`）：在編輯器貼上／選檔插入圖片時觸發 → `uploadImage({ blob, slug, token: getToken(), timestamp })`（`src/utils/editor/image-upload.ts`）→ 以 GitHub Contents API 將檔案 commit 進 `public/images/<slug>-<timestamp>.<ext>` → 回傳**絕對路徑** `/images/<name>` 並 `callback(url, '')` 插入文章。
+  - 路徑一律絕對（`/images/...`），**不用相對路徑**，文章搬移分類不會壞圖。
+  - 圖片是另一筆 commit 進 repo，**要等下一次部署完成才看得到實際圖檔**（編輯當下預覽會是尚未部署的 raw 路徑）。上傳失敗（未登入／無寫入權）以 `alert` 提示。
+- **lazy chunk**：BodyEditor 由 EditorPanel 靜態 import，而 EditorPanel 由 EditButton 動態 import（lazy），故 Toast UI 整包落在 lazy chunk，**匿名訪客不會載入**。也因此 `pnpm build` 的 SSR 不會踩到 Toast UI 的 `document/window`，靜態 `import @toast-ui/editor` 即可、無需動態 import fallback。
+- **首次 WYSIWYG 編輯會把 markdown 正規化（canonicalize）**：Toast UI 解析後重新序列化 markdown，可能調整空白、清單符號、強調語法等寫法。第一次儲存會看到一次「格式整理」的 diff，**實際內容不變**；之後再編輯就穩定了。
+
 ## 部署網域（workers.dev 子網域：`lightman-chang`）
 
 - OAuth Worker：`https://evidencetoday-github-oauth.lightman-chang.workers.dev`（`AdminLogin.svelte` 的 `WORKER`）
