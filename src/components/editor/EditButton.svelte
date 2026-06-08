@@ -24,8 +24,29 @@
 
 <style>
   .et-edit-fab {
-    position: fixed; right: 1rem; bottom: 1rem; z-index: 50;
-    padding: 0.6rem 1rem; border-radius: 999px; border: none;
-    background: var(--color-coral, #c0492f); color: #fff; cursor: pointer;
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 50;
+    min-height: 44px;
+    padding: 0.6rem 1.25rem;
+    border: 2px solid var(--color-coral);
+    border-radius: var(--radius-pill);
+    background: var(--color-coral);
+    color: white;
+    font-family: var(--font-ui);
+    font-size: var(--text-meta);
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: var(--shadow-card);
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+  }
+  .et-edit-fab:hover {
+    background: var(--color-coral-hover);
+    border-color: var(--color-coral-hover);
+  }
+  .et-edit-fab:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 2px;
   }
 </style>

@@ -133,3 +133,19 @@ UI（Svelte island / Astro 頁）以 `pnpm build` 驗證可編譯；端到端 OA
   - GitHub OAuth App callback URL 須設為上述 `+ /callback`
 - AI Worker：`https://evidencetoday-ai-suggest.lightman-chang.workers.dev`（`EditorPanel.svelte` 的 `AI_WORKER`）
 - 兩者皆需 `wrangler deploy` 後才生效；secret 分別為 `GITHUB_CLIENT_SECRET`、`ANTHROPIC_API_KEY`。`GITHUB_CLIENT_ID` 填於 `workers/github-oauth/wrangler.toml`。
+
+## 樣式規範（editor UI 必須遵守站上 CSS 規範）
+
+編輯器元件的 `<style>` **一律用設計 token，禁止寫死 hex/rgba/字級**（同 README「CSS / RWD 通用規範」與 `src/styles/tokens.css`）：
+
+- 顏色：`var(--color-teal|coral|ink|fog|paper|verdict-*)` 與 `color-mix(in oklch, …)`；`white` 可直接用（同站上慣例），但**禁 `#fff`/hex fallback**。
+- 字級：`var(--text-body|meta|caption|badge|h3)`（`src/styles/typography.css`），禁寫死 rem。
+- 圓角：`var(--radius-pill|card|sm)`；按鈕比照 `Button.astro`（`min-height:44px`、`--radius-pill`、`--font-ui`、`--text-meta`、`font-weight:600`、`:focus-visible` outline）。
+- 間距用 `clamp()` fluid（禁寫死 px + media query 覆蓋）。
+- 樣式留在各元件 scoped `<style>`，**不抽全域 CSS**（避免匿名訪客也載入，破壞 EditButton→EditorPanel 的 lazy-load）。
+
+## /admin 操作引導與新增文章
+
+- `/admin`（`src/pages/admin.astro`）除登入外，提供：(1)「怎麼編輯文章？」三步說明（**強調 token 是 sessionStorage、僅限同分頁**，編輯鈕在文章頁右下角）；(2) 由 `getCollection` 取得的真實文章快速連結（同分頁前往）。
+- 編輯按鈕 FAB **只在 articles/myths 內頁右下角**出現，不在 `/admin`。
+- 新增文章（`NewArticle.svelte`）為**標題優先**：分類下拉（中文標籤）→ 標題 → slug（附說明：成為網址、僅小寫英數連字號）。slug 與標題皆驗證後才建立。
