@@ -12,16 +12,22 @@
   const AI_WORKER = 'https://evidencetoday-ai-suggest.<account>.workers.dev';
   let suggestion = $state('');
   async function suggest(task) {
+    const token = getToken();
+    if (!token) { suggestion = '請先登入管理者帳號再使用 AI 建議。'; return; }
     suggestion = '產生中…';
     const res = await fetch(`${AI_WORKER}/suggest`, {
       method: 'POST',
-      headers: { 'content-type': 'application/json', authorization: `Bearer ${getToken()}` },
+      headers: { 'content-type': 'application/json', authorization: `Bearer ${token}` },
       body: JSON.stringify({ task, context: { title: frontmatter.title }, selection: body }),
     });
     if (res.ok) suggestion = (await res.json()).suggestion;
     else suggestion = `建議失敗（${res.status}）：請確認已登入管理者帳號。`;
   }
-  function acceptSuggestion() { body = suggestion; suggestion = ''; }
+  function acceptSuggestion() {
+    if (!confirm('採用建議會覆蓋目前的正文，確定嗎？')) return;
+    body = suggestion;
+    suggestion = '';
+  }
 
   let frontmatter = $state({});
   let body = $state('');
