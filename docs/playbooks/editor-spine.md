@@ -121,6 +121,13 @@ UI（Svelte island / Astro 頁）以 `pnpm build` 驗證可編譯；端到端 OA
 - EditorPanel 的 SEO 分頁底下有「AI 潤飾正文 / AI 摘要」按鈕，呼叫 `suggest(task)`：以 `getToken()` 的 GitHub token 帶 `Authorization: Bearer`，POST 到 `${AI_WORKER}/suggest`，body 為 `{ task, context:{title}, selection: body }`，成功回 `{ suggestion }` 顯示於 `<pre>`，按「採用為正文」覆寫 `body`。
   - 未登入（`getToken()` 為 null）時 `suggest` 直接顯示「請先登入管理者帳號再使用 AI 建議。」並中止，不送出 `Authorization: Bearer null` 的請求。
   - 「採用為正文」（`acceptSuggestion`）會先 `confirm` 再覆寫，避免覆蓋掉產生建議後又手動編輯的正文。
-- `AI_WORKER` 網域在 `EditorPanel.svelte` 是 placeholder（`<account>`），同 `AdminLogin` 的 `WORKER` 慣例，Worker 部署後填實際值。**不影響 build 編譯**（fetch 僅在瀏覽器 handler 執行）。
+- `AI_WORKER` 網域在 `EditorPanel.svelte` 已填實際值（見下方「部署網域」）。**不影響 build 編譯**（fetch 僅在瀏覽器 handler 執行）。
 - Worker 後端在 `workers/ai-suggest/`：先用呼叫者 token 驗 repo push 權（無權回 403）才呼叫付費的 Anthropic API，避免端點被濫用。部署與密鑰設定見 `workers/ai-suggest/README.md`。
 - 模型由 `wrangler.toml` 的 `ANTHROPIC_MODEL`（預設 `claude-haiku-4-5-20251001`）決定。
+
+## 部署網域（workers.dev 子網域：`lightman-chang`）
+
+- OAuth Worker：`https://evidencetoday-github-oauth.lightman-chang.workers.dev`（`AdminLogin.svelte` 的 `WORKER`）
+  - GitHub OAuth App callback URL 須設為上述 `+ /callback`
+- AI Worker：`https://evidencetoday-ai-suggest.lightman-chang.workers.dev`（`EditorPanel.svelte` 的 `AI_WORKER`）
+- 兩者皆需 `wrangler deploy` 後才生效；secret 分別為 `GITHUB_CLIENT_SECRET`、`ANTHROPIC_API_KEY`。`GITHUB_CLIENT_ID` 填於 `workers/github-oauth/wrangler.toml`。

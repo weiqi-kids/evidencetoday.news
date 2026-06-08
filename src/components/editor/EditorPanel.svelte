@@ -8,8 +8,8 @@
 
   let { repoPath, collection, slug, onclose, initialDoc = null } = $props();
 
-  // AI 建議 Worker（部署後填實際網域，如 OAuth worker 的 placeholder 慣例）
-  const AI_WORKER = 'https://evidencetoday-ai-suggest.<account>.workers.dev';
+  // AI 建議 Worker（workers.dev 子網域 lightman-chang）
+  const AI_WORKER = 'https://evidencetoday-ai-suggest.lightman-chang.workers.dev';
   let suggestion = $state('');
   async function suggest(task) {
     const token = getToken();

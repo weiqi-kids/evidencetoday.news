@@ -2,8 +2,8 @@
   import { onMount } from 'svelte';
   import { getToken, setToken, clearToken } from '@/utils/editor/token';
 
-  // 部署後填入實際 Worker 網域
-  const WORKER = 'https://evidencetoday-github-oauth.<account>.workers.dev';
+  // 實際 Worker 網域（workers.dev 子網域 lightman-chang）
+  const WORKER = 'https://evidencetoday-github-oauth.lightman-chang.workers.dev';
   let loggedIn = $state(false);
 
   onMount(() => {
