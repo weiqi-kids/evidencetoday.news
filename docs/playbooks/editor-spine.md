@@ -118,6 +118,8 @@ UI（Svelte island / Astro 頁）以 `pnpm build` 驗證可編譯；端到端 OA
 
 ## AI 建議（editor-06）
 
+> **目前以 feature flag 隱藏**：`EditorPanel.svelte` 的 `const AI_ENABLED = false`，AI 按鈕區塊以 `{#if AI_ENABLED}` 包住，故前台不顯示。等 AI Worker 部署（`workers/ai-suggest/` + `wrangler secret put ANTHROPIC_API_KEY`）後把 `AI_ENABLED` 改 `true` 即開啟。`suggest`/`acceptSuggestion`/`AI_WORKER` 程式碼保留待用。
+
 - EditorPanel 的 SEO 分頁底下有「AI 潤飾正文 / AI 摘要」按鈕，呼叫 `suggest(task)`：以 `getToken()` 的 GitHub token 帶 `Authorization: Bearer`，POST 到 `${AI_WORKER}/suggest`，body 為 `{ task, context:{title}, selection: body }`，成功回 `{ suggestion }` 顯示於 `<pre>`，按「採用為正文」覆寫 `body`。
   - 未登入（`getToken()` 為 null）時 `suggest` 直接顯示「請先登入管理者帳號再使用 AI 建議。」並中止，不送出 `Authorization: Bearer null` 的請求。
   - 「採用為正文」（`acceptSuggestion`）會先 `confirm` 再覆寫，避免覆蓋掉產生建議後又手動編輯的正文。
