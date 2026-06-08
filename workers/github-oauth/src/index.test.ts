@@ -41,4 +41,27 @@ describe('/callback', () => {
     const res = await handle(new Request('https://w.dev/callback?code=bad&state=abc'), env);
     expect(res.status).toBe(502);
   });
+
+  it('fetch 拋出網路錯誤 → 502', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () => { throw new Error('network down'); }));
+    const res = await handle(new Request('https://w.dev/callback?code=c&state=s'), env);
+    expect(res.status).toBe(502);
+  });
+
+  it('回應非 JSON（.json() 拋錯）→ 502', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () => new Response('<html>err</html>', { status: 502 })));
+    const res = await handle(new Request('https://w.dev/callback?code=c&state=s'), env);
+    expect(res.status).toBe(502);
+  });
+
+  it('state 含特殊字元時編碼導回，避免 fragment 注入', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () =>
+      new Response(JSON.stringify({ access_token: 'tok789' }), { status: 200, headers: { 'content-type': 'application/json' } })
+    ));
+    const res = await handle(new Request('https://w.dev/callback?code=c1&state=a%26b'), env);
+    expect(res.status).toBe(302);
+    const loc = res.headers.get('location')!;
+    expect(loc).toContain('state=a%26b');
+    expect(loc).not.toContain('b&state');
+  });
 });

@@ -28,20 +28,25 @@ export async function handle(request: Request, env: Env): Promise<Response> {
   if (url.pathname === '/callback') {
     const code = url.searchParams.get('code') ?? '';
     const state = url.searchParams.get('state') ?? '';
-    const tokenRes = await fetch('https://github.com/login/oauth/access_token', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json', accept: 'application/json' },
-      body: JSON.stringify({
-        client_id: env.GITHUB_CLIENT_ID,
-        client_secret: env.GITHUB_CLIENT_SECRET,
-        code,
-      }),
-    });
-    const data = (await tokenRes.json()) as { access_token?: string };
+    let data: { access_token?: string };
+    try {
+      const tokenRes = await fetch('https://github.com/login/oauth/access_token', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', accept: 'application/json' },
+        body: JSON.stringify({
+          client_id: env.GITHUB_CLIENT_ID,
+          client_secret: env.GITHUB_CLIENT_SECRET,
+          code,
+        }),
+      });
+      data = (await tokenRes.json()) as { access_token?: string };
+    } catch {
+      return new Response('token exchange failed', { status: 502 });
+    }
     if (!data.access_token) {
       return new Response('token exchange failed', { status: 502 });
     }
-    const back = `${env.ALLOWED_ORIGIN}/admin#token=${data.access_token}&state=${state}`;
+    const back = `${env.ALLOWED_ORIGIN}/admin#token=${encodeURIComponent(data.access_token)}&state=${encodeURIComponent(state)}`;
     return new Response(null, { status: 302, headers: { location: back } });
   }
 
