@@ -143,7 +143,10 @@ EditorPanel 的 SEO 主分頁正文不再是純 textarea，改用 `BodyEditor.sv
 - **圖片上傳**（`addImageBlobHook`）：在編輯器貼上／選檔插入圖片時觸發 → `uploadImage({ blob, slug, token: getToken(), timestamp })`（`src/utils/editor/image-upload.ts`）→ 以 GitHub Contents API 將檔案 commit 進 `public/images/<slug>-<timestamp>.<ext>` → 回傳**絕對路徑** `/images/<name>` 並 `callback(url, '')` 插入文章。
   - 路徑一律絕對（`/images/...`），**不用相對路徑**，文章搬移分類不會壞圖。
   - 圖片是另一筆 commit 進 repo，**要等下一次部署完成才看得到實際圖檔**（編輯當下預覽會是尚未部署的 raw 路徑）。上傳失敗（未登入／無寫入權）以 `alert` 提示。
-- **lazy chunk**：BodyEditor 由 EditorPanel 靜態 import，而 EditorPanel 由 EditButton 動態 import（lazy），故 Toast UI 整包落在 lazy chunk，**匿名訪客不會載入**。也因此 `pnpm build` 的 SSR 不會踩到 Toast UI 的 `document/window`，靜態 `import @toast-ui/editor` 即可、無需動態 import fallback。
+- **匿名訪客零載入 Toast UI（JS + CSS，load-bearing）**：
+  - **JS**：BodyEditor 在 `onMount` 內 `await import('@toast-ui/editor')`（動態），只在編輯器開啟時抓。
+  - **CSS**：⚠️ 不能用 `import '...toastui-editor.css'`——即使動態 import，Astro 仍會把它收進文章頁 render-blocking 的 route CSS（與 EditButton 的 `.et-edit-fab` 綁在一起，~170KB 害每個匿名訪客白下載）。**正解**：把 CSS 複製到 `public/vendor/toastui-editor.css`（脫離 module graph），BodyEditor 在 `onMount` 以 `ensureToastCss()` runtime 注入 `<link href="/vendor/toastui-editor.css">`。驗證：build 後 `dist/articles/*/index.html` link 的 route CSS 不含 `toastui-editor`、`dist/_astro/*.css` 無任何 toast chunk。
+  - **升級 Toast UI 時**：須同步重新複製 `node_modules/@toast-ui/editor/dist/toastui-editor.css` → `public/vendor/toastui-editor.css`。
 - **首次 WYSIWYG 編輯會把 markdown 正規化（canonicalize）**：Toast UI 解析後重新序列化 markdown，可能調整空白、清單符號、強調語法等寫法。第一次儲存會看到一次「格式整理」的 diff，**實際內容不變**；之後再編輯就穩定了。
 
 ## 部署網域（workers.dev 子網域：`lightman-chang`）
