@@ -8,6 +8,21 @@
 
   let { repoPath, collection, slug, onclose, initialDoc = null } = $props();
 
+  // AI 建議 Worker（部署後填實際網域，如 OAuth worker 的 placeholder 慣例）
+  const AI_WORKER = 'https://evidencetoday-ai-suggest.<account>.workers.dev';
+  let suggestion = $state('');
+  async function suggest(task) {
+    suggestion = '產生中…';
+    const res = await fetch(`${AI_WORKER}/suggest`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', authorization: `Bearer ${getToken()}` },
+      body: JSON.stringify({ task, context: { title: frontmatter.title }, selection: body }),
+    });
+    if (res.ok) suggestion = (await res.json()).suggestion;
+    else suggestion = `建議失敗（${res.status}）：請確認已登入管理者帳號。`;
+  }
+  function acceptSuggestion() { body = suggestion; suggestion = ''; }
+
   let frontmatter = $state({});
   let body = $state('');
   let sha = $state(null);
@@ -137,6 +152,14 @@
       <label class="et-body"><span>正文</span>
         <textarea bind:value={body} spellcheck="false"></textarea>
       </label>
+      <div class="et-ai">
+        <button onclick={() => suggest('improve')}>AI 潤飾正文</button>
+        <button onclick={() => suggest('summarize')}>AI 摘要</button>
+        {#if suggestion}
+          <pre class="et-ai-out">{suggestion}</pre>
+          <button onclick={acceptSuggestion}>採用為正文</button>
+        {/if}
+      </div>
     {/if}
 
     {#if tab === 'source'}
@@ -162,4 +185,6 @@
   .et-body textarea { flex: 1; min-height: 8rem; }
   .et-source { flex: 1; min-height: 12rem; margin: .75rem 0; }
   .et-msg { color: var(--color-ink, #222); background: #f5f5f5; padding: .5rem .75rem; border-radius: 8px; }
+  .et-ai { display: flex; flex-wrap: wrap; align-items: flex-start; gap: .5rem; margin-bottom: .5rem; }
+  .et-ai-out { flex: 1 1 100%; white-space: pre-wrap; background: #f5f5f5; padding: .5rem .75rem; border-radius: 8px; margin: 0; font-family: inherit; }
 </style>

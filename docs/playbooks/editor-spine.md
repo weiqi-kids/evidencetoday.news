@@ -115,3 +115,10 @@ UI（Svelte island / Astro 頁）以 `pnpm build` 驗證可編譯；端到端 OA
 
 - EditorPanel 已從 raw 字串重構為 `{frontmatter, body}` 模型 + 「SEO 欄位 / 原始碼」雙分頁（`editor-04b`）。新增文章流程同 plan 接入。
 - lint 側欄、SSR 真實預覽由 `editor-02-lint-engine` 與 SSR 預覽計畫接入，面板已預留 `parse`/`serialize` 接點。
+
+## AI 建議（editor-06）
+
+- EditorPanel 的 SEO 分頁底下有「AI 潤飾正文 / AI 摘要」按鈕，呼叫 `suggest(task)`：以 `getToken()` 的 GitHub token 帶 `Authorization: Bearer`，POST 到 `${AI_WORKER}/suggest`，body 為 `{ task, context:{title}, selection: body }`，成功回 `{ suggestion }` 顯示於 `<pre>`，按「採用為正文」覆寫 `body`。
+- `AI_WORKER` 網域在 `EditorPanel.svelte` 是 placeholder（`<account>`），同 `AdminLogin` 的 `WORKER` 慣例，Worker 部署後填實際值。**不影響 build 編譯**（fetch 僅在瀏覽器 handler 執行）。
+- Worker 後端在 `workers/ai-suggest/`：先用呼叫者 token 驗 repo push 權（無權回 403）才呼叫付費的 Anthropic API，避免端點被濫用。部署與密鑰設定見 `workers/ai-suggest/README.md`。
+- 模型由 `wrangler.toml` 的 `ANTHROPIC_MODEL`（預設 `claude-haiku-4-5-20251001`）決定。
