@@ -11,7 +11,9 @@
     "preview": "astro preview",
     "sync:youtube": "node scripts/sync-youtube-shorts.mjs",
     "prebuild": "pnpm run sync:youtube",
-    "content:audit": "node scripts/audit-ai-tone.mjs"
+    "content:audit": "node scripts/audit-ai-tone.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.14",
@@ -41,9 +43,13 @@
     "@types/d3-selection": "^3.0.11",
     "@types/d3-shape": "^3.1.8",
     "@types/d3-timer": "^3.0.2",
+    "@types/js-yaml": "^4.0.9",
     "@types/node": "^25.6.0",
+    "gray-matter": "^4.0.3",
+    "js-yaml": "^4.2.0",
     "pagefind": "^1.5.2",
     "sharp": "^0.34.5",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.8"
   }
 }

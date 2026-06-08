@@ -5,6 +5,11 @@ import mdx from '@astrojs/mdx';
 
 export default defineConfig({
   site: 'https://evidencetoday.news',
-  integrations: [svelte(), sitemap(), mdx()],
+  integrations: [
+    svelte(),
+    // /admin 是隱藏管理頁，不應進 sitemap
+    sitemap({ filter: (page) => !page.includes('/admin') }),
+    mdx(),
+  ],
   output: 'static',
 });
