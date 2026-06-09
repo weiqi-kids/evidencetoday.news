@@ -36,7 +36,7 @@ flowchart TD
 | 編輯按鈕 | `src/components/editor/EditButton.svelte` | `client:idle` island，`onMount` 偵測 `getToken()` 有值才顯示右下角 FAB。掛在 articles / myths 的 `[slug].astro`，於 `</Article>` 之前。**EditorPanel 為按鈕點擊時才 `await import()` 動態載入**（`let EditorPanel = $state(null)`，`openEditor()` 內首次點擊載入後直接以 `<EditorPanel .../>` 渲染）；故匿名訪客（無 token）永不下載 EditorPanel 那塊含 gray-matter/js-yaml 的 chunk（~113 KB）。dist 驗證：`EditButton.*.js` 對 EditorPanel 只有 `import("./EditorPanel.*.js")` 動態引用，無 static `from"…EditorPanel"`。 |
 | 編輯面板 | `src/components/editor/EditorPanel.svelte` | 點 FAB 後開啟。**事實來源為 `{frontmatter, body}` 模型**（非 raw 字串）。載入時 `parse` 並記下 sha，存檔前 `serialize` 做 frontmatter 護欄。雙分頁見下節。 |
 | SEO 欄位 | `src/components/editor/SeoFields.svelte` | 由 `getSeoFields(collection)` 驅動，**只列作者手寫的 `title` + `description`**（含字數提示）。社群分享標題/描述/分享圖都是 `social-meta.mjs` 的 `contentSocial()` 自動衍生（social 標題 fallback 到 title、social 描述 fallback 到 description、OG 圖是每個 collection 的固定靜態圖），**故不列入表單**——元件底部有一行說明告知使用者社群預覽自動產生。emit `onchange(newFrontmatter)` 回寫 `frontmatter`（其餘未列欄位如 tags/faq/references 由模型保留、存檔原樣帶回；要改用「原始碼」分頁）。 |
-| 新增文章 | `src/components/editor/NewArticle.svelte` | 掛在 `/admin`。選 collection + 輸入 slug（驗證 `^[a-z0-9-]+$`）→ 建一個 `sha=null` 的 `initialDoc` → 開 EditorPanel 進入新增模式。`client:only="svelte"`。 |
+| 新增文章 | `src/components/editor/NewArticle.svelte` | 掛在 `/admin`。**只填「分類 + 標題」**——slug 由 `slugify.ts` 的 `slugFromTitle()` 自動產生（中文轉拼音、英數保留），使用者不需也看不到 slug 欄位（他們不懂 slug）。建 `sha=null` 的 `initialDoc`（title 帶入、description/body 空，讓作者在編輯器填）→ 開 EditorPanel 新增模式。`client:only="svelte"`，故 pinyin-pro 只在 /admin、不進文章頁。 |
 
 ## token 流程
 
@@ -89,8 +89,8 @@ EditorPanel 持有 `frontmatter` + `body` 兩個 `$state`，**兩個分頁編輯
 
 ## 新增文章流程（sha=null 建檔）
 
-1. `/admin` 登入後，`NewArticle` 顯示 collection 下拉 + slug 輸入。
-2. 按「建立並編輯」→ slug 驗 `^[a-z0-9-]+$`（不符 `alert`）→ 組 `repoPath = src/content/<collection>/<slug>.mdx`、`initialDoc = { frontmatter: { title, description, publishDate }, body }`。
+1. `/admin` 登入後，`NewArticle` 只顯示 **collection 下拉 + 標題輸入**（不要再加 slug 欄位——使用者不懂）。
+2. 按「建立並編輯」→ 驗標題非空 → `slug = slugFromTitle(title)`（拼音自動產生）→ 組 `repoPath = src/content/<collection>/<slug>.mdx`、`initialDoc = { frontmatter: { title, description:'', publishDate }, body:'' }`。
 3. 以 `initialDoc` 開 EditorPanel。`initialDoc` 非空時面板進入新增模式：`sha=null`、跳過 `getFile`、`status='ready'`。
 4. 存檔走 `putFile`（**不帶 sha → GitHub 建立新檔**），commit message 為 `content: 前台新增 <slug>`。
 5. slug 撞既有檔：因新增模式無 sha，GitHub 回 422/409 → 由 `classifySave` 顯示衝突引導。

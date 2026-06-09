@@ -1,5 +1,6 @@
 <script>
   import { getToken } from '@/utils/editor/token';
+  import { slugFromTitle } from '@/utils/editor/slugify';
   import EditorPanel from './EditorPanel.svelte';
 
   const COLLECTIONS = [
@@ -19,14 +20,11 @@
       alert('請先填標題');
       return;
     }
-    if (!slug.match(/^[a-z0-9-]+$/)) {
-      alert('網址代稱只能用小寫英文、數字與連字號，例如 vitamin-c-myth');
-      return;
-    }
+    slug = slugFromTitle(title.trim()); // 由標題自動產生，使用者不需自己填
     repoPath = `src/content/${collection}/${slug}.mdx`;
     initialDoc = {
       frontmatter: { title: title.trim(), description: '', publishDate: new Date().toISOString().slice(0, 10) },
-      body: '\n（在此撰寫正文）\n',
+      body: '',
     };
     open = true;
   }
@@ -45,11 +43,7 @@
       <span>標題</span>
       <input placeholder="例：維他命 C 的劑型迷思" bind:value={title} />
     </label>
-    <label>
-      <span>網址代稱（slug）</span>
-      <input placeholder="例：vitamin-c-myth" bind:value={slug} />
-      <small>會成為文章網址 <code>/{collection}/你填的代稱</code>；只能用小寫英文、數字、連字號。</small>
-    </label>
+    <p class="et-new-note">網址會由標題自動產生（中文轉拼音）；描述、正文等其餘內容，建立後在編輯器裡填寫即可。</p>
     <button class="et-create" onclick={start}>建立並編輯</button>
   </section>
   {#if open}
@@ -83,10 +77,12 @@
     font-size: var(--text-meta);
     font-weight: 600;
   }
-  .et-new small {
+  .et-new small,
+  .et-new-note {
     font-size: var(--text-badge);
     color: color-mix(in oklch, var(--color-ink) 55%, var(--color-paper));
   }
+  .et-new-note { margin: 0; }
   .et-new :is(input, select) {
     font-family: var(--font-ui);
     font-size: var(--text-body);
