@@ -65,7 +65,12 @@ flowchart TD
 | 403 | `forbidden` | 帳號無 repo 寫入權，確認管理者帳號或找工程師開通 |
 | 其他 / fetch 失敗 | `network` | 連線異常，內容仍保留在頁面 |
 
-存檔成功（`status === 'done'`）時，面板下方改顯示明確的**「完成」狀態**（取代儲存/重新載入按鈕）：「✓ 已存檔並送出更新，可關閉視窗」＋「網站約 1–2 分鐘後更新、重新整理文章頁即可看到」＋〔查看部署進度→ GitHub Actions〕，按鈕為「關閉」（`onclose`）與「繼續編輯」（重設 `status='ready'`）。不做即時輪詢部署狀態。
+**載入狀態**：開既有文章時 `status` 初始為 `loading`、只顯示「載入文章內容中…」；內容載好才 `loaded=true`。**lint 與 SEO 表單以 `loaded` 把關**——不可用 `status` 判斷（其 `error` 同時涵蓋載入失敗與存檔失敗），否則載入中會用空 frontmatter 跑 lint、誤跳「缺 description」。
+
+存檔成功（`status === 'done'`）時，面板下方改顯示「完成」狀態（取代儲存/重新載入）：
+- **部署輪詢**：存檔前先記 `preRunId`（`latestDeployRun()` 查 deploy.yml on main 的最新 run id 當基準），成功後 `startDeployPoll()` 每 15s 輪詢；出現 `id !== preRunId` 且 `completed` 的 run → `deployState` 設 `live`/`failed`。`deploy-status.ts` 查不到/無權限回 `null` → `preRunId` 為 null → 不輪詢、退回時間提示（graceful）。
+- done 區塊依 `deployState` 顯示：pending「部署中…完成會自動顯示已上線」、live「✅ 已上線！重整文章頁即可看到」、failed「⚠ 部署失敗，查看進度/找工程師」、''（未輪詢）退回「約 1–2 分鐘後更新」。
+- 按鈕「關閉」（`onclose`）、「繼續編輯」（`stopDeployPoll()` + 重設）。`onDestroy(stopDeployPoll)` 防 timer 洩漏。
 
 ## SEO 欄位 / 原始碼雙分頁（單一事實來源）
 
