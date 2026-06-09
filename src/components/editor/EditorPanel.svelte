@@ -1,5 +1,6 @@
 <script>
-  import { onMount } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
+  import { latestDeployRun } from '@/utils/editor/deploy-status';
   import { getToken } from '@/utils/editor/token';
   import { getFile, putFile } from '@/utils/editor/github';
   import { parse, serialize } from '@/utils/editor/mdx-doc';
@@ -38,10 +39,46 @@
   let sha = $state(null);
   let tab = $state('seo'); // seo | source
   let status = $state(initialDoc ? 'ready' : 'loading'); // loading | ready | saving | done | error
+  let loaded = $state(!!initialDoc); // 內容是否已載入；lint 與表單只在載好後才顯示
   let message = $state('');
+
+  // 部署輪詢：存檔成功後若視窗未關，輪詢 deploy 直到上線
+  let deployState = $state(''); // '' | 'pending' | 'live' | 'failed'
+  let preRunId = null; // 存檔前的最新 deploy run id（baseline）
+  let pollTimer = null;
+  let polling = false;
 
   // 即時 lint 警告（純函式、不擋存檔，僅供作者參考）
   let lintResults = $derived(lint({ collection, frontmatter, body }));
+
+  function stopDeployPoll() {
+    polling = false;
+    if (pollTimer) clearTimeout(pollTimer);
+    pollTimer = null;
+  }
+
+  function startDeployPoll() {
+    if (preRunId == null) return; // 拿不到 baseline（無權限等）→ 不輪詢，退回時間提示
+    deployState = 'pending';
+    polling = true;
+    const tick = async () => {
+      if (!polling) return;
+      try {
+        const r = await latestDeployRun(getToken());
+        if (r && r.id !== preRunId && r.status === 'completed') {
+          deployState = r.conclusion === 'success' ? 'live' : 'failed';
+          stopDeployPoll();
+          return;
+        }
+      } catch {
+        // 單次失敗忽略，繼續輪詢
+      }
+      if (polling) pollTimer = setTimeout(tick, 15000);
+    };
+    pollTimer = setTimeout(tick, 15000);
+  }
+
+  onDestroy(stopDeployPoll);
 
   onMount(async () => {
     if (initialDoc) {
@@ -56,6 +93,7 @@
       frontmatter = doc.frontmatter;
       body = doc.body;
       sha = file.sha;
+      loaded = true;
       status = 'ready';
     } catch (e) {
       status = 'error';
@@ -117,6 +155,13 @@
       message = `frontmatter 格式有誤：${e instanceof Error ? e.message : e}。請修正後再存。`;
       return;
     }
+    // 記下存檔前的最新 deploy run，作為「之後出現的新 run 才是這次的」基準
+    try {
+      const base = await latestDeployRun(getToken());
+      preRunId = base?.id ?? null;
+    } catch {
+      preRunId = null;
+    }
     status = 'saving';
     try {
       const code = await putFile({
@@ -129,6 +174,7 @@
       const outcome = classifySave(code);
       message = outcome.message;
       status = outcome.state === 'success' ? 'done' : 'error';
+      if (status === 'done') startDeployPoll();
     } catch {
       const o = classifySave(0); // 視為 network
       message = o.message;
@@ -158,7 +204,7 @@
       <button onclick={onclose} aria-label="關閉">✕</button>
     </header>
 
-    {#if status === 'loading'}<p>載入中…</p>{/if}
+    {#if status === 'loading'}<p class="et-loading">載入文章內容中…</p>{/if}
 
     {#if status !== 'loading' && tab === 'seo'}
       <SeoFields {collection} {frontmatter} onchange={(fm) => (frontmatter = fm)} />
@@ -183,7 +229,7 @@
       <button onclick={applySource}>套用原始碼</button>
     {/if}
 
-    {#if tab === 'seo' && lintResults.length > 0}
+    {#if tab === 'seo' && loaded && lintResults.length > 0}
       <ul class="et-lint" aria-label="內容檢查建議">
         {#each lintResults as r}
           <li class="et-lint-{r.level}">
@@ -197,14 +243,30 @@
 
     {#if status === 'done'}
       <div class="et-done">
-        <p class="et-done-msg">✓ 已存檔並送出更新。可以關閉這個視窗了。</p>
-        <p class="et-done-sub">
-          網站約 1–2 分鐘後更新，屆時重新整理文章頁即可看到新內容。
-          <a href="https://github.com/weiqi-kids/evidencetoday.news/actions" target="_blank" rel="noopener noreferrer">查看部署進度 →</a>
-        </p>
+        {#if deployState === 'live'}
+          <p class="et-done-msg">✅ 已上線！重新整理文章頁就能看到新內容。</p>
+          <p class="et-done-sub">可以關閉這個視窗了。</p>
+        {:else if deployState === 'failed'}
+          <p class="et-done-msg et-done-fail">⚠ 已存檔，但部署失敗。</p>
+          <p class="et-done-sub">
+            請<a href="https://github.com/weiqi-kids/evidencetoday.news/actions" target="_blank" rel="noopener noreferrer">查看部署進度</a>了解原因，或聯絡網站工程師。
+          </p>
+        {:else if deployState === 'pending'}
+          <p class="et-done-msg">✓ 已存檔，部署中…</p>
+          <p class="et-done-sub">
+            完成後這裡會自動顯示「已上線」（約 1–2 分鐘）。你也可以直接關閉，網站會在背景更新。
+            <a href="https://github.com/weiqi-kids/evidencetoday.news/actions" target="_blank" rel="noopener noreferrer">查看部署進度 →</a>
+          </p>
+        {:else}
+          <p class="et-done-msg">✓ 已存檔並送出更新。可以關閉這個視窗了。</p>
+          <p class="et-done-sub">
+            網站約 1–2 分鐘後更新，屆時重新整理文章頁即可看到新內容。
+            <a href="https://github.com/weiqi-kids/evidencetoday.news/actions" target="_blank" rel="noopener noreferrer">查看部署進度 →</a>
+          </p>
+        {/if}
         <div class="et-done-actions">
           <button class="et-primary" onclick={onclose}>關閉</button>
-          <button onclick={() => { status = 'ready'; message = ''; }}>繼續編輯</button>
+          <button onclick={() => { stopDeployPoll(); deployState = ''; status = 'ready'; message = ''; }}>繼續編輯</button>
         </div>
       </div>
     {:else}
@@ -287,12 +349,18 @@
     flex-direction: column;
     gap: 0.5rem;
   }
+  .et-loading {
+    margin: 0.75rem 0;
+    font-family: var(--font-ui);
+    color: color-mix(in oklch, var(--color-ink) 70%, var(--color-paper));
+  }
   .et-done-msg {
     margin: 0;
     font-family: var(--font-ui);
     font-weight: 700;
     color: var(--color-teal);
   }
+  .et-done-fail { color: var(--color-coral); }
   .et-done-sub {
     margin: 0;
     font-size: var(--text-meta);
