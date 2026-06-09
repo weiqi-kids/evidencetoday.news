@@ -97,6 +97,15 @@ EditorPanel 持有 `frontmatter` + `body` 兩個 `$state`，**兩個分頁編輯
 
 > 編輯既有文章與新增共用同一個 `EditorPanel`。差別只在有無 `initialDoc`：有則新增（sha=null），無則 `getFile` 載入既有（記 sha）。EditButton 不傳 `initialDoc`，行為與重構前一致。
 
+### 進階選項（editor-08）
+
+`NewArticle` 的「進階選項」（可展開）：
+
+- **自訂網址**：選填 input；`resolveSlug()` 決定 slug——填了須 `^[a-z0-9-]+$`（不符 alert 擋下），空則 `slugFromTitle()` 自動拼音。對「建立並編輯」與「建立 AI 寫作任務」皆生效。
+- **AI 寫作任務**：寫作方向／參考資料源／想表達的結論（選填）→「建立 AI 寫作任務」→ `createArticleIssue()`（`src/utils/editor/issue.ts`）開 GitHub Issue 工單（標題 `[文章] <title>`、label `article-draft`、body 含目標檔路徑與「給 Claude Code」指示：依 content.config schema、參考既有文章與 article-layout playbook、references 真實連結禁杜撰、PR 回傳）。
+  - 建立後畫面進「進行中」狀態，每 15s 以 `fileExists()`（`github.ts`，404 回 false 不丟錯）輪詢目標檔；**檔案出現 → 自動開 `EditorPanel`（EDIT 模式，`initialDoc=null` 載入 AI 寫好的內容）**。引導使用者可關閉（任務續行，文章寫好到該網址用編輯鈕改）或等候；`closeTask()`/`onDestroy` 停止輪詢。
+  - **不需 Anthropic 金鑰／AI Worker**——撰寫由 Claude Code 在 repo 上完成。前提：使用者建立任務後自行跑 CLI 處理該 issue。
+
 ## 鎖定參數（動之前必看）
 
 - repo 常數寫死在 `github.ts`：`OWNER = 'weiqi-kids'`、`REPO = 'evidencetoday.news'`、`branch: 'main'`。換 repo 要改這裡。

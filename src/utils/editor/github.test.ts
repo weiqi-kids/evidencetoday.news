@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
-import { getFile, putFile } from './github';
+import { getFile, putFile, fileExists } from './github';
 
 afterEach(() => vi.restoreAllMocks());
 
@@ -32,5 +32,20 @@ describe('putFile', () => {
     vi.stubGlobal('fetch', vi.fn(async () => new Response('conflict', { status: 409 })));
     const status = await putFile({ path: 'p', content: 'c', sha: 's', message: 'm', token: 't' });
     expect(status).toBe(409);
+  });
+});
+
+describe('fileExists', () => {
+  it('200 → true', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () => new Response('{}', { status: 200 })));
+    expect(await fileExists('src/content/articles/x.mdx', 'tok')).toBe(true);
+  });
+  it('404 → false（不丟錯，供輪詢）', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () => new Response('not found', { status: 404 })));
+    expect(await fileExists('src/content/articles/x.mdx', 'tok')).toBe(false);
+  });
+  it('其他狀態 → 丟錯', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () => new Response('err', { status: 500 })));
+    await expect(fileExists('p', 't')).rejects.toThrow('fileExists 500');
   });
 });
