@@ -18,7 +18,7 @@
 
 | 功能 | 實作位置 | 說明 |
 |------|---------|------|
-| Schema.org JSON-LD | 每個頁面的 `<head>` | Article、FAQPage、VideoObject、MedicalWebPage、BreadcrumbList、Organization |
+| Schema.org JSON-LD | 每個頁面的 `<head>` | Article、FAQPage、VideoObject、MedicalWebPage、BreadcrumbList、Organization；myths 頁額外輸出 ClaimReview（`src/utils/schema-org.ts` buildClaimReview） |
 | Open Graph + Twitter Card | `src/layouts/Base.astro` | og:title, og:description, og:type, twitter:card |
 | Canonical URL | `src/layouts/Base.astro` | 每頁自動設定 |
 | sitemap.xml | `@astrojs/sitemap` 自動生成 | |

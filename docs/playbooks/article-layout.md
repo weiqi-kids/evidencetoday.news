@@ -127,6 +127,7 @@
 - 「白話辯證」需使用 `.myth-reasoning-grid` 搭配藍色「有道理的部分」與紅色「被誇大的部分」兩張卡；桌機雙欄、手機單欄。
 - myths 單篇底部只保留一個「健康資訊提醒」，固定文案由 page template 統一輸出；分享區字級維持 `1rem`。
 - `scripts/check-myth-quality.mjs` 需同步檢查 27 篇 published myths、快速結論至少 2 點、必要正文區塊、藍紅雙框、References 至少 2 個 URL，以及禁止套版句與已移除的舊區塊標題。
+- myths 單篇 `<head>` 同時輸出 `Article` 與 `ClaimReview` 兩個 JSON-LD 物件（array 形式，透過 `JsonLd.astro`）。ClaimReview 由 `src/utils/schema-org.ts` 的 `buildClaimReview()` 組裝，使用 `mythClaim`、`verdict`、`verdictSummary`、`publishDate`、`updatedDate`、`url` 欄位。不得新增前台可見區塊。
 
 ## 全站 SEO / OG 分享預覽規則（2026-06-02）
 

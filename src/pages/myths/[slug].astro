@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import Article from '@/layouts/Article.astro';
 import JsonLd from '@/components/seo/JsonLd.astro';
+import { buildClaimReview } from '@/utils/schema-org';
 import MythSquareCardVisual from '@/components/myths/MythSquareCardVisual.astro';
 import { validateMythArticle } from '@/utils/myths/validate';
 import { contentSocial } from '@/utils/social-meta.mjs';
@@ -26,6 +27,26 @@ const whyItems = Array.isArray(d.whyItSpreads)
   : [d.whyItSpreads.commonClaim, d.whyItSpreads.shortVideoVersion, d.whyItSpreads.adVersion, d.whyItSpreads.familyChatVersion].filter(Boolean);
 const evidenceItems = d.evidenceSummary?.evidenceItems || [];
 const shareSummary = d.cardConclusion || d.verdictSummary;
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: social.title,
+  description: social.description,
+  image: [social.image],
+  datePublished: d.publishDate.toISOString(),
+  dateModified: d.updatedDate.toISOString(),
+  author: { '@type': 'Person', name: d.author },
+  publisher: { '@type': 'Organization', name: '本日有據' },
+  mainEntityOfPage: canonical,
+} satisfies Record<string, unknown>;
+const claimReview = buildClaimReview({
+  mythClaim: d.mythClaim,
+  verdict: d.verdict,
+  verdictSummary: d.verdictSummary,
+  publishDate: d.publishDate,
+  updatedDate: d.updatedDate,
+  url: canonical,
+});
 const splitCarefulItem = (item: string) => {
   const match = item.match(/^\*\*(.+?)：\*\*\s*(.+)$/);
   return match ? { label: match[1], text: match[2] } : { label: '', text: item };
@@ -53,7 +74,7 @@ const healthReminder = '本文為健康資訊與迷思查證，不提供個人�
     <meta property="article:published_time" content={d.publishDate.toISOString()} />
     <meta property="article:modified_time" content={d.updatedDate.toISOString()} />
     <meta property="article:author" content={d.author} />
-    <JsonLd data={{ '@context': 'https://schema.org', '@type': 'Article', headline: social.title, description: social.description, image: [social.image], datePublished: d.publishDate.toISOString(), dateModified: d.updatedDate.toISOString(), author: { '@type': 'Person', name: d.author }, publisher: { '@type': 'Organization', name: '本日有據' }, mainEntityOfPage: canonical }} />
+    <JsonLd data={[articleLd, claimReview]} />
   </Fragment>
 
   <section class="block quick">
