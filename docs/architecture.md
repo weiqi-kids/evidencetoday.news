@@ -18,7 +18,7 @@
 
 | 功能 | 實作位置 | 說明 |
 |------|---------|------|
-| Schema.org JSON-LD | 每個頁面的 `<head>` | Article+MedicalWebPage（multi-type）、FAQPage、VideoObject、BreadcrumbList、Organization；文章頁 author/reviewedBy 透過 `buildPerson()` 帶 credential 與 sameAs；成分解析頁（`src/pages/ingredients/[slug].astro`）author/reviewedBy 為 Organization，含 `lastReviewed`、`medicalAudience`（Patient）；myths 頁額外輸出 ClaimReview（`src/utils/schema-org.ts` buildClaimReview）；作者頁（`/authors/luo-yang/`）輸出 Person（`src/utils/schema-org.ts` buildPerson） |
+| Schema.org JSON-LD | 每個頁面的 `<head>` | Article+MedicalWebPage（multi-type）、FAQPage、VideoObject、BreadcrumbList、Organization（首頁含 `sameAs`：Firstory/YouTube，常數 `SITE_SAMEAS`）；文章頁 author/reviewedBy 透過 `buildPerson()` 帶 credential 與 sameAs；成分解析頁（`src/pages/ingredients/[slug].astro`）author/reviewedBy 為 Organization，含 `lastReviewed`、`medicalAudience`（Patient）；myths 頁額外輸出 ClaimReview（`src/utils/schema-org.ts` buildClaimReview）；作者頁（`/authors/luo-yang/`）輸出 Person（`src/utils/schema-org.ts` buildPerson） |
 | Open Graph + Twitter Card | `src/layouts/Base.astro` | og:title, og:description, og:type, twitter:card |
 | Canonical URL | `src/layouts/Base.astro` | 每頁自動設定 |
 | sitemap.xml | `@astrojs/sitemap` 自動生成 | |
