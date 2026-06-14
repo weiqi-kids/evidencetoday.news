@@ -117,8 +117,8 @@ const sample = {
   verdict: '大致錯誤' as const,
   verdictSummary: '人體酸鹼由生理機制嚴格調控，飲食無法改變血液 pH。',
   author: '羅楊',
-  publishDate: new Date('2026-05-01T00:00:00+08:00'),
-  updatedDate: new Date('2026-05-20T00:00:00+08:00'),
+  publishDate: new Date('2026-05-01T00:00:00.000Z'),
+  updatedDate: new Date('2026-05-20T00:00:00.000Z'),
   url: 'https://evidencetoday.news/myths/lemon-water/',
 };
 
@@ -255,7 +255,6 @@ const claimReview = buildClaimReview({
   mythClaim: d.mythClaim,
   verdict: d.verdict,
   verdictSummary: d.verdictSummary,
-  author: d.author,
   publishDate: d.publishDate,
   updatedDate: d.updatedDate,
   url: canonical,
