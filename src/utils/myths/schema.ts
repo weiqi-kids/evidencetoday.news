@@ -13,3 +13,13 @@ export const VERDICT_META: Record<MythVerdict, { shortLabel: string; description
   過度簡化: { shortLabel: '過度簡化', description: '有部分事實，但結論被簡化或誇大。', tone: 'caution', icon: '≈' },
   需謹慎: { shortLabel: '須謹慎', description: '可能涉及風險，請勿自行套用。', tone: 'warning', icon: '⚠' },
 };
+
+// ClaimReview.reviewRating.ratingValue 用：1=與證據不符，5=與證據一致。
+export const VERDICT_RATING: Record<MythVerdict, number> = {
+  大致正確: 5,
+  情境成立: 4,
+  過度簡化: 3,
+  證據不足: 2,
+  需謹慎: 2,
+  大致錯誤: 1,
+};
