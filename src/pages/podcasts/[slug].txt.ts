@@ -1,5 +1,6 @@
 import type { APIRoute, GetStaticPaths } from 'astro';
 import { getCollection } from 'astro:content';
+import { renderSources } from '@/utils/txt-endpoint';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const entries = await getCollection('podcasts', ({ data }) => !data.draft);
@@ -21,7 +22,9 @@ export const GET: APIRoute = async ({ props }) => {
     `Tags: ${d.tags.join(', ')}`,
   ].join('\n');
 
-  return new Response(`${header}\n---\n${body}`, {
+  const summary = `重點摘要：${d.description}`;
+  const sources = renderSources(d.references);
+  return new Response(`${header}\n---\n${summary}\n---\n${body}${sources}`, {
     headers: { 'Content-Type': 'text/plain; charset=utf-8' },
   });
 };
