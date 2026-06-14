@@ -13,6 +13,7 @@ import { stripPodcastSlug } from '@/utils/podcasts';
 import { getArticleQueryPatternLabel } from '@/utils/article-query-patterns';
 import { contentSocial } from '@/utils/social-meta.mjs';
 import EditButton from '@/components/editor/EditButton.svelte';
+import { buildPerson } from '@/utils/schema-org';
 
 function stripExt(id: string): string {
   return id.replace(/\.[^.]+$/, '');
@@ -61,10 +62,13 @@ const hasRelated = relatedMyths.length > 0 || relatedIngredients.length > 0 || r
 const slug = entry.id.replace(/\.[^.]+$/, '');
 const articleSchema = {
   '@context': 'https://schema.org',
-  '@type': 'Article',
+  '@type': ['Article', 'MedicalWebPage'],
   headline: data.title,
   description: data.description,
-  author: { '@type': 'Person', name: data.author },
+  author: buildPerson(data.author),
+  ...(data.reviewer ? { reviewedBy: buildPerson(data.reviewer) } : {}),
+  lastReviewed: data.updatedDate.toISOString(),
+  medicalAudience: { '@type': 'MedicalAudience', audienceType: 'Patient' },
   datePublished: data.publishDate.toISOString(),
   dateModified: data.updatedDate.toISOString(),
   publisher: {
