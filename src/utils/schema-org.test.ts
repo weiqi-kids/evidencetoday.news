@@ -77,3 +77,35 @@ describe('buildClaimReview', () => {
     expect('name' in r).toBe(false);
   });
 });
+
+import { buildPerson, SITE_SAMEAS } from '@/utils/schema-org';
+
+describe('SITE_SAMEAS', () => {
+  it('含 Firstory 與 YouTube 兩個外部身分', () => {
+    expect(SITE_SAMEAS).toContain('https://open.firstory.me/user/cm54wunhn07kb01151eda467n/episodes');
+    expect(SITE_SAMEAS).toContain('https://www.youtube.com/channel/UCTejYxFd04qma-LY0_Z17NQ');
+  });
+});
+
+describe('buildPerson', () => {
+  it('已知作者（羅揚）回傳含 credential 與 sameAs 的 Person', () => {
+    const p = buildPerson('羅揚');
+    expect(p['@type']).toBe('Person');
+    expect(p.name).toBe('羅揚');
+    expect(p.url).toBe('https://evidencetoday.news/authors/luo-yang/');
+    expect(p.jobTitle).toBe('本日有據主編');
+    expect(Array.isArray(p.knowsAbout)).toBe(true);
+    expect(p.knowsAbout!.length).toBeGreaterThan(0);
+    expect(p.sameAs).toEqual(SITE_SAMEAS);
+    expect(p['@id']).toBe('https://evidencetoday.news/authors/luo-yang/#person');
+  });
+
+  it('未知作者回傳僅含 name 的 Person（fallback）', () => {
+    const p = buildPerson('某匿名作者');
+    expect(p['@type']).toBe('Person');
+    expect(p.name).toBe('某匿名作者');
+    expect(p.url).toBeUndefined();
+    expect(p.jobTitle).toBeUndefined();
+    expect(p.sameAs).toBeUndefined();
+  });
+});

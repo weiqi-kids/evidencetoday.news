@@ -1,9 +1,13 @@
 import { VERDICT_RATING, displayVerdict, type MythVerdict } from '@/utils/myths/schema';
+import { AUTHORS, SITE_SAMEAS } from '@/data/authors';
+
+export { SITE_SAMEAS };
 
 const ORG = {
   '@type': 'Organization',
   name: '本日有據',
   url: 'https://evidencetoday.news/',
+  sameAs: SITE_SAMEAS,
 } as const;
 
 export interface ClaimReviewInput {
@@ -40,5 +44,31 @@ export function buildClaimReview(input: ClaimReviewInput) {
     reviewBody: input.verdictSummary,
     author: ORG,
     publisher: ORG,
+  };
+}
+
+interface PersonSchema {
+  '@type': 'Person';
+  name: string;
+  '@id'?: string;
+  url?: string;
+  jobTitle?: string;
+  knowsAbout?: string[];
+  sameAs?: string[];
+}
+
+export function buildPerson(authorName: string): PersonSchema {
+  const info = AUTHORS[authorName];
+  if (!info) {
+    return { '@type': 'Person', name: authorName };
+  }
+  return {
+    '@type': 'Person',
+    '@id': `${info.url}#person`,
+    name: info.name,
+    url: info.url,
+    jobTitle: info.jobTitle,
+    knowsAbout: info.knowsAbout,
+    sameAs: info.sameAs,
   };
 }
