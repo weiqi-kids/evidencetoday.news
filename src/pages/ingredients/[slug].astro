@@ -48,14 +48,21 @@ const hasRelated = relatedArticles.length > 0 || relatedMyths.length > 0 || rela
 const slug = entry.id.replace(/\.[^.]+$/, '');
 const ingredientArticleSchema = {
   '@context': 'https://schema.org',
-  '@type': 'Article',
+  '@type': ['Article', 'MedicalWebPage'],
   headline: data.title,
   description: data.description,
   datePublished: data.publishDate.toISOString(),
   dateModified: data.updatedDate.toISOString(),
+  lastReviewed: data.updatedDate.toISOString(),
+  medicalAudience: { '@type': 'MedicalAudience', audienceType: 'Patient' },
   author: {
     '@type': 'Organization',
     name: '本日有據',
+  },
+  reviewedBy: {
+    '@type': 'Organization',
+    name: '本日有據',
+    url: 'https://evidencetoday.news/',
   },
   publisher: {
     '@type': 'Organization',
