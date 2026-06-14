@@ -23,3 +23,8 @@ export const VERDICT_RATING: Record<MythVerdict, number> = {
   需謹慎: 2,
   大致錯誤: 1,
 };
+
+// 顯示用判定字串：修正 enum 中 需謹慎 → 須謹慎 的用字。
+export function displayVerdict(verdict: MythVerdict): string {
+  return verdict === '需謹慎' ? '須謹慎' : verdict;
+}

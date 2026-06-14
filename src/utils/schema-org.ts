@@ -1,4 +1,4 @@
-import { VERDICT_RATING, type MythVerdict } from '@/utils/myths/schema';
+import { VERDICT_RATING, displayVerdict, type MythVerdict } from '@/utils/myths/schema';
 
 const ORG = {
   '@type': 'Organization',
@@ -13,12 +13,14 @@ export interface ClaimReviewInput {
   publishDate: Date;
   updatedDate: Date;
   url: string;
+  name?: string;
 }
 
 export function buildClaimReview(input: ClaimReviewInput) {
   return {
     '@context': 'https://schema.org',
     '@type': 'ClaimReview',
+    ...(input.name ? { name: input.name } : {}),
     url: input.url,
     datePublished: input.publishDate.toISOString(),
     dateModified: input.updatedDate.toISOString(),
@@ -28,7 +30,7 @@ export function buildClaimReview(input: ClaimReviewInput) {
       ratingValue: VERDICT_RATING[input.verdict],
       bestRating: 5,
       worstRating: 1,
-      alternateName: input.verdict,
+      alternateName: displayVerdict(input.verdict),
     },
     itemReviewed: {
       '@type': 'Claim',

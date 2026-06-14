@@ -65,4 +65,15 @@ describe('buildClaimReview', () => {
     expect(r.datePublished).toBe('2026-05-01T00:00:00.000Z');
     expect(r.dateModified).toBe('2026-05-20T00:00:00.000Z');
   });
+
+  it('需謹慎 的 alternateName 修正為 須謹慎；name 可選帶入', () => {
+    const r = buildClaimReview({ ...sample, verdict: '需謹慎', name: '檸檬水抗癌？查證' });
+    expect(r.reviewRating.alternateName).toBe('須謹慎');
+    expect(r.name).toBe('檸檬水抗癌？查證');
+  });
+
+  it('未提供 name 時不輸出 name 欄位', () => {
+    const r = buildClaimReview(sample);
+    expect('name' in r).toBe(false);
+  });
 });
