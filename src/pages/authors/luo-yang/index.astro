@@ -2,12 +2,18 @@
 import Base from '@/layouts/Base.astro';
 import { getCollection } from 'astro:content';
 import { STATIC_SOCIAL } from '@/utils/social-meta.mjs';
+import JsonLd from '@/components/seo/JsonLd.astro';
+import { buildPerson } from '@/utils/schema-org';
 
 const curatedVideos = await getCollection('videos', ({ data }) => !data.draft);
 const featuredVideos = curatedVideos.slice(0, 5);
+const personSchema = { '@context': 'https://schema.org', ...buildPerson('羅揚') };
 ---
 
 <Base title={STATIC_SOCIAL['author-luo-yang'].title} description={STATIC_SOCIAL['author-luo-yang'].description} ogTitle={STATIC_SOCIAL['author-luo-yang'].title} ogDescription={STATIC_SOCIAL['author-luo-yang'].description} ogImage={STATIC_SOCIAL['author-luo-yang'].ogPath}>
+  <Fragment slot="head">
+    <JsonLd data={personSchema} />
+  </Fragment>
   <main class="container editor-page">
     <header class="editor-header">
       <h1>羅揚｜本日有據主編</h1>
