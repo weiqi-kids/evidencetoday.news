@@ -60,14 +60,18 @@ const hasRelated = relatedMyths.length > 0 || relatedIngredients.length > 0 || r
 
 /* JSON-LD structured data */
 const slug = entry.id.replace(/\.[^.]+$/, '');
+const reviewedBy = data.reviewer
+  ? buildPerson(data.reviewer)
+  : data.editorReviewed
+    ? { '@type': 'Organization', name: '本日有據', url: 'https://evidencetoday.news/' }
+    : null;
 const articleSchema = {
   '@context': 'https://schema.org',
   '@type': ['Article', 'MedicalWebPage'],
   headline: data.title,
   description: data.description,
   author: buildPerson(data.author),
-  ...(data.reviewer ? { reviewedBy: buildPerson(data.reviewer) } : {}),
-  lastReviewed: data.updatedDate.toISOString(),
+  ...(reviewedBy ? { reviewedBy, lastReviewed: data.updatedDate.toISOString() } : {}),
   medicalAudience: { '@type': 'MedicalAudience', audienceType: 'Patient' },
   datePublished: data.publishDate.toISOString(),
   dateModified: data.updatedDate.toISOString(),

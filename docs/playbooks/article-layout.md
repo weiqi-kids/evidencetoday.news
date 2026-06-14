@@ -137,3 +137,19 @@
 - 分類首頁固定使用短字主視覺：健康文章、迷思查證、成分解析、喜聞樂健、短影音、健康雷達。若新增 collection，必須同步補 `COLLECTION_SOCIAL` 與產圖模板色彩。
 - 內容 frontmatter 可選填 `ogShortTitle`、`socialTitle`、`socialDescription` 作為人工覆寫；未填時會由 title / description / summary 推導短標與分享描述。文案應維持 40–80 個中文字左右，避免「值得關注」「帶你了解」「一篇看懂」等套版語氣。
 - 標籤頁的標題與描述會依 tag 個別產生，但共用 `/og/tags/index.png`，避免 build 前產生數百張低差異圖片。
+
+## Articles 文章 JSON-LD 審閱欄位規則（2026-06-14）
+
+`src/pages/articles/[slug].astro` 的 `articleSchema` 採 `['Article', 'MedicalWebPage']` 多型別，審閱相關欄位遵循以下邏輯：
+
+- `medicalAudience`：每篇文章都輸出（描述受眾，與審閱狀態無關）。
+- `reviewedBy` 與 `lastReviewed` **配對輸出**，兩者同時出現或同時省略，不得各自獨立存在。
+- `reviewedBy` 的決定順序（以 `reviewedBy` 變數計算，位於 `const articleSchema =` 之前）：
+  1. frontmatter `reviewer` 有值 → `buildPerson(data.reviewer)`（Person 型別）
+  2. `reviewer` 無值但 `editorReviewed` 為 true（schema 預設 true）→ 機構 `{ '@type': 'Organization', name: '本日有據', url: 'https://evidencetoday.news/' }`
+  3. 兩者皆否 → `null`，不輸出 `reviewedBy` 也不輸出 `lastReviewed`
+- 驗證指令（build 後執行）：
+  ```bash
+  node -e "const fs=require('fs');const ds=require('child_process').execSync('ls dist/articles').toString().trim().split('\n').filter(d=>fs.existsSync('dist/articles/'+d+'/index.html'));let person=0,org=0,none=0,mismatch=0;for(const d of ds){const arr=[...fs.readFileSync('dist/articles/'+d+'/index.html','utf8').matchAll(/<script type=\"application\/ld\+json\">(.*?)<\/script>/gs)].map(x=>JSON.parse(x[1])).flat();const a=arr.find(o=>Array.isArray(o['@type'])&&o['@type'].includes('MedicalWebPage'));if(!a){console.log('NO node:',d);continue;}const hasRev='reviewedBy' in a, hasLR='lastReviewed' in a;if(hasRev!==hasLR){mismatch++;console.log('MISMATCH:',d,'reviewedBy',hasRev,'lastReviewed',hasLR);}if(!hasRev){none++;continue;}if(a.reviewedBy['@type']==='Person')person++;else org++;}console.log('Person reviewer:',person,'| Org reviewer:',org,'| no reviewer:',none,'| pairing mismatches:',mismatch)"
+  ```
+  預期：`pairing mismatches: 0`，大多數文章為機構審閱、少數為 Person。
