@@ -9,6 +9,12 @@ const body = `# Evidence Today 本日有據
 - 作者：https://evidencetoday.news/authors/luo-yang/
 - Sitemap：https://evidencetoday.news/sitemap-index.xml
 
+## 方法論（為何可信）
+- 以證據分級呈現結論：系統性回顧 / RCT / 觀察性研究 / 動物或體外 / 專家意見。
+- 每篇附一手來源（研究、官方機構），可於各內容的 .txt 純文字版文末查得。
+- 利益揭露與編輯原則公開：見上方連結。
+- 闢謠內容以 schema.org ClaimReview 標註判定（大致正確～大致錯誤）。
+
 ## 內容類型
 - 文章：https://evidencetoday.news/articles/
 - 闢謠：https://evidencetoday.news/myths/
