@@ -8,6 +8,7 @@ import { validateMythArticle } from '@/utils/myths/validate';
 import { displayVerdict } from '@/utils/myths/schema';
 import { contentSocial } from '@/utils/social-meta.mjs';
 import EditButton from '@/components/editor/EditButton.svelte';
+import ReadingEngagement from '@/components/blocks/ReadingEngagement.svelte';
 
 export async function getStaticPaths() {
   const entries = await getCollection('myths', ({ data }) => !data.draft && data.status !== 'under-review');
@@ -134,6 +135,7 @@ const healthReminder = '本文為健康資訊與迷思查證，不提供個人�
   {refs.length > 0 && <section class="block"><h2>References</h2><ol>{refs.map((r) => <li><strong>{r.title}</strong>{r.sourceType ? `（類型：${r.sourceType}）` : ''}{r.evidenceType ? `（證據類型：${r.evidenceType}）` : ''}<br /><a href={r.url} target="_blank" rel="noopener noreferrer">{r.url}</a></li>)}</ol></section>}
   <section class="block health-reminder"><h2>健康資訊提醒</h2><p>{healthReminder}</p></section>
   <EditButton client:idle repoPath={`src/content/myths/${entry.id}`} collection="myths" slug={entry.id.replace(/\.[^.]+$/, '')} />
+  <ReadingEngagement client:idle contentType="myth" slug={entry.id.replace(/\.[^.]+$/, '')} tags={d.topicTags} author={d.author} verdict={d.verdict} evidenceLevel={d.evidenceLevel} hasRelated={false} />
 </Article>
 <script define:vars={{ canonical, title: d.title, summary: shareSummary }}>
 const status = document.getElementById('share-status');

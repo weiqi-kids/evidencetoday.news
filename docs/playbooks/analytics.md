@@ -179,6 +179,18 @@ status === 'unset' → 顯示橫幅
 
 閱讀互動追蹤島。**不渲染任何可見 UI**（純 `<script>` 區塊）。掛載於 article / myth / ingredient 單篇頁（`client:idle`）。
 
+### 掛載位置（三個單篇頁）
+
+| 頁面 | 檔案 | Props 對應 |
+|---|---|---|
+| articles | `src/pages/articles/[slug].astro` | `contentType="article"` `slug={slug}` `tags={data.tags}` `author={data.author}` `queryPattern={data.queryPattern}` `readingTime={data.readingTime}` `hasRelated={hasRelated}` |
+| myths | `src/pages/myths/[slug].astro` | `contentType="myth"` `slug={entry.id.replace(...)}` `tags={d.topicTags}` `author={d.author}` `verdict={d.verdict}` `evidenceLevel={d.evidenceLevel}` `hasRelated={false}` |
+| ingredients | `src/pages/ingredients/[slug].astro` | `contentType="ingredient"` `slug={slug}` `tags={data.tags}` `hasRelated={hasRelated}` |
+
+- articles 的 `hasRelated` 由 `relatedMyths / relatedIngredients / relatedVideos / relatedPodcasts` 四個陣列長度計算（已在 frontmatter 中定義）。
+- myths 無 related section，固定 `hasRelated={false}`；無 `readingTime` 與 `queryPattern` 欄位（省略，component 用預設值）。
+- ingredients 無 `author`、`evidenceLevel`、`readingTime` 頁面欄位（省略）；`hasRelated` 由 `relatedArticles / relatedMyths / relatedVideos / relatedPodcasts` 計算。
+
 ### Props
 
 | Prop | 型別 | 預設 | 說明 |
