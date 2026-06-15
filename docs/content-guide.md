@@ -86,6 +86,8 @@ relatedIngredients: ["ingredient-slug"]
 ---
 ```
 
+> **維護提醒：** 新增或下架「已發佈（`status: published` 且非 `draft`）」的闢謠後，必須同步更新 `scripts/check-myth-quality.mjs` 的 `EXPECTED_PUBLISHED_COUNT` 常數，使其等於目前已發佈的闢謠篇數，否則 `pnpm check:myths` 會失敗。此常數是防止意外大量增刪闢謠的守門機制。
+
 ---
 
 ## 新增成分解析
