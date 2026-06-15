@@ -10,6 +10,7 @@ import PodcastCard from '@/components/blocks/PodcastCard.astro';
 import { fmtDate } from '@/utils/date';
 import { stripPodcastSlug } from '@/utils/podcasts';
 import { contentSocial } from '@/utils/social-meta.mjs';
+import ReadingEngagement from '@/components/blocks/ReadingEngagement.svelte';
 
 function stripExt(id: string): string {
   return id.replace(/\.[^.]+$/, '');
@@ -166,6 +167,7 @@ const ingredientBreadcrumbSchema = {
     </Fragment>
   )}
 </Article>
+<ReadingEngagement client:idle contentType="ingredient" slug={slug} tags={data.tags} hasRelated={hasRelated} />
 
 <style>
   .related-content {

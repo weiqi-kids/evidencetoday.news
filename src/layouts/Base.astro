@@ -1,6 +1,7 @@
 ---
 import TopNav from '@/components/blocks/TopNav.astro';
 import Footer from '@/components/blocks/Footer.astro';
+import ConsentBanner from '@/components/blocks/ConsentBanner.svelte';
 import JsonLd from '@/components/seo/JsonLd.astro';
 import '@/styles/global.css';
 import '@/styles/rwd-fixes.css';
@@ -107,6 +108,7 @@ const websiteSchema = {
       <slot />
     </main>
     <Footer />
+    <ConsentBanner client:idle />
     <slot name="scripts" />
   </body>
 </html>

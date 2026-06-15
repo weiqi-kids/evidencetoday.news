@@ -13,6 +13,7 @@ import { stripPodcastSlug } from '@/utils/podcasts';
 import { getArticleQueryPatternLabel } from '@/utils/article-query-patterns';
 import { contentSocial } from '@/utils/social-meta.mjs';
 import EditButton from '@/components/editor/EditButton.svelte';
+import ReadingEngagement from '@/components/blocks/ReadingEngagement.svelte';
 import { buildPerson } from '@/utils/schema-org';
 
 function stripExt(id: string): string {
@@ -191,6 +192,7 @@ const breadcrumbSchema = {
   )}
 
   <EditButton client:idle repoPath={`src/content/articles/${entry.id}`} collection="articles" slug={slug} />
+  <ReadingEngagement client:idle contentType="article" slug={slug} tags={data.tags} author={data.author} queryPattern={data.queryPattern} readingTime={data.readingTime} hasRelated={hasRelated} />
 </Article>
 
 <style>
