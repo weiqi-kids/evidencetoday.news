@@ -26,7 +26,17 @@
 | RSS Feeds | `src/pages/rss.xml.ts` + 各分類 | 主 feed + articles/myths/podcasts/videos 個別 feed |
 | llms.txt | `src/pages/llms.txt.ts` | AI 爬蟲索引（build time 動態生成） |
 | llms-full.txt | `src/pages/llms-full.txt.ts` | 全站內容摘要索引 |
-| 純文字版 | `src/pages/*/[slug].txt.ts` | 每篇內容提供 .txt 版本供 AI 讀取 |
+| 純文字版 | `src/pages/*/[slug].txt.ts` | 每篇內容提供 .txt 版本供 AI 讀取（開頭重點摘要 + 文末來源） |
+
+## 分析與量測（Analytics）
+
+| 功能 | 實作位置 | 說明 |
+|---|---|---|
+| GA4 + Cookie 同意 | `src/utils/analytics.ts`、`src/data/analytics.ts`、`ConsentBanner.svelte` | GA4（`G-5JH83LM8X7`）**僅在使用者點「接受」後才載入**，拒絕＝永不載入；同意狀態存 localStorage，跨 island 用 `et:consent-change` 事件協調 |
+| 閱讀互動追蹤 | `ReadingEngagement.svelte`（掛 articles/myths/ingredients 單篇頁） | content_view、scroll(25/50/75/90)、read_complete（三閘）、engaged_view（真實投入時間）、select_content（下一篇）、faq_open、reference_click；全走 consent-gated `trackEvent` |
+| 退出機制 | `ConsentReset.svelte`（隱私頁 `src/pages/privacy.astro`） | 顯示目前選擇 + 「變更我的選擇」撤回同意 |
+
+> 完整事件分類、自訂維度、GA4 後台設定與報表配方見 **`docs/playbooks/analytics.md`**。
 
 ## 已實作的內容互連（不需要再做）
 
