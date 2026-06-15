@@ -8,9 +8,11 @@
 ## 架構概覽
 
 ```
-src/data/analytics.ts       # 設定常數（MEASUREMENT_ID、同意鍵值、滾動里程碑等）
-src/utils/analytics.ts      # 純邏輯 helpers ＋ 副作用層（同一檔，分兩段）
-src/utils/analytics.test.ts # TDD 測試（vitest node 環境，含副作用層 stub 測試）
+src/data/analytics.ts                     # 設定常數（MEASUREMENT_ID、同意鍵值、滾動里程碑等）
+src/utils/analytics.ts                    # 純邏輯 helpers ＋ 副作用層（同一檔，分兩段）
+src/utils/analytics.test.ts              # TDD 測試（vitest node 環境，含副作用層 stub 測試）
+src/components/blocks/ConsentBanner.svelte # Cookie 同意橫幅 island（client:idle）
+src/layouts/Base.astro                     # 全站掛載 ConsentBanner
 ```
 
 **設計原則：關注點分離**
@@ -129,6 +131,36 @@ pnpm test                                   # 全套
 測試以 TDD 撰寫（vitest node 環境），148 個 case：
 - 純函數：isTrackable / computeScrollDepth / pendingMilestones / parseConsent / serializeConsent / reduceConsent / buildEventEnvelope 的 truth table 與邊界情況
 - 副作用層：以 `globalThis` stub 模擬 localStorage / window / document，不需 jsdom。涵蓋 readConsent 快取、setConsent accept/decline、事件佇列 flush、onConsentChange 訂閱與取消
+
+---
+
+---
+
+## ConsentBanner island（`src/components/blocks/ConsentBanner.svelte`）
+
+全站 Cookie 同意橫幅，掛載於 `src/layouts/Base.astro`（`<ConsentBanner client:idle />`，在 `<Footer />` 之後）。
+
+### 職責劃分
+
+- **Banner 只負責 UI**：不直接操作 localStorage / gtag / dataLayer。
+- **全部同意邏輯委由 `analytics.ts`**：`readConsent()`、`setConsent()`、`onConsentChange()`。
+
+### 運作方式
+
+```
+mount → readConsent()          → status = 'granted'|'denied'|'unset'
+      → onConsentChange(cb)    → 訂閱外部同意變更（返回 unsubscribe，於 $effect cleanup 呼叫）
+status === 'unset' → 顯示橫幅
+按下「接受」→ status = 'granted'（本地立即隱藏）+ setConsent('accept')（持久化＋載入 gtag）
+按下「拒絕」→ status = 'denied'（本地立即隱藏）+ setConsent('decline')（持久化）
+```
+
+### 修改規則
+
+- 不在 Banner 內直接讀寫 `localStorage`，不直接呼叫 `window.gtag`。
+- 按鈕文字為「接受」/「拒絕」；說明文字須維持台灣繁體中文、禁聳動用語。
+- 樣式只用 `tokens.css` CSS custom properties，禁止寫死 oklch/hex 色值或 `!important`。
+- 若需新增文案連結，目標應為 `/privacy/` 或其他站內政策頁。
 
 ---
 
