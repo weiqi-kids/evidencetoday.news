@@ -136,6 +136,24 @@ pnpm test                                   # 全套
 
 ---
 
+## ConsentReset island（`src/components/blocks/ConsentReset.svelte`）
+
+隱私頁的同意狀態顯示與重置控件，掛載於 `src/pages/privacy.astro`（`<ConsentReset client:idle />`）。
+
+### 職責
+
+- 在掛載時讀取目前同意狀態（`readConsent()`），並透過 `onConsentChange` 訂閱後續變更。
+- 以文字顯示目前狀態：`'granted'` → 「目前狀態：已接受分析」、`'denied'` → 「目前狀態：已拒絕分析」、`'unset'` → 「目前狀態：尚未選擇」。
+- 提供「變更我的選擇」按鈕，點擊後呼叫 `setConsent('reset')`，並顯示確認訊息「已清除，重新整理或前往其他頁面即可重新選擇。」。
+- 重置後狀態文字自動更新為「尚未選擇」（由 `onConsentChange` 驅動）。
+
+### 修改規則
+
+- 不直接讀寫 `localStorage`，不直接呼叫 `window.gtag`；所有同意邏輯委由 `analytics.ts`。
+- 樣式只用 `tokens.css` CSS custom properties，禁止寫死色值或 `!important`。
+
+---
+
 ## ConsentBanner island（`src/components/blocks/ConsentBanner.svelte`）
 
 全站 Cookie 同意橫幅，掛載於 `src/layouts/Base.astro`（`<ConsentBanner client:idle />`，在 `<Footer />` 之後）。

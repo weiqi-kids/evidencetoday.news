@@ -1,14 +1,18 @@
 ---
 import Policy from '@/layouts/Policy.astro';
 import { STATIC_SOCIAL } from '@/utils/social-meta.mjs';
+import ConsentReset from '@/components/blocks/ConsentReset.svelte';
 ---
 
 <Policy title="隱私權政策" description={STATIC_SOCIAL['privacy'].description} seoTitle={STATIC_SOCIAL['privacy'].title} socialTitle={STATIC_SOCIAL['privacy'].title} ogImage={STATIC_SOCIAL['privacy'].ogPath} updatedDate={new Date('2026-05-07')}>
   <h2>資料蒐集</h2>
   <p>本站目前不主動蒐集任何個人識別資訊。當你瀏覽本站時，我們的伺服器可能會記錄標準的存取紀錄（如 IP 位址、瀏覽器類型、造訪頁面與時間），這些資料僅用於網站維運與流量分析，不會用於辨識個人身份。</p>
 
-  <h2>Cookie 使用</h2>
-  <p>本站可能使用必要的技術性 Cookie 以確保網站正常運作。若未來導入第三方分析工具（如 Google Analytics），我們將在此頁面更新相關說明，並依法提供選擇退出的機制。</p>
+  <h2>Cookie 與分析工具</h2>
+  <p>本站使用 Google Analytics 4（GA4）了解流量與內容使用情形。GA4 <strong>僅在你於同意橫幅點選「接受」後才會載入</strong>；點選「拒絕」則不會載入、不會放置任何分析 Cookie。</p>
+  <p>我們啟用 IP 匿名化，不進行跨網站追蹤，不販售或分享任何資料給第三方用於廣告目的。</p>
+  <p>你可以隨時在下方變更你的選擇，包括撤回先前的同意。</p>
+  <ConsentReset client:idle />
 
   <h2>第三方服務</h2>
   <p>本站內嵌的 YouTube 影片、Podcast 播放器等第三方服務，可能會依其各自的隱私權政策蒐集資料。建議你參閱各服務的隱私權政策以了解詳情。</p>
