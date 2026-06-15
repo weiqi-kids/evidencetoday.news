@@ -1,9 +1,15 @@
 /**
  * GA4 Analytics — pure logic helpers (no DOM, no gtag, no side effects).
- * Side-effecting functions (readConsent/setConsent/loadGtag/trackEvent)
- * are a separate task and intentionally absent here.
+ * Side-effecting functions live in the second half of this file.
  */
 import type { ConsentStatus } from '@/data/analytics';
+import {
+  MEASUREMENT_ID,
+  CONSENT_KEY,
+  CONSENT_EVENT,
+  MAX_QUEUE,
+  GA_CONFIG,
+} from '@/data/analytics';
 
 // ---------------------------------------------------------------------------
 // isTrackable
@@ -151,4 +157,226 @@ export function buildEventEnvelope(
     }
   }
   return result;
+}
+
+// ---------------------------------------------------------------------------
+// Global type declarations (gtag / dataLayer)
+// ---------------------------------------------------------------------------
+
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void;
+    dataLayer?: unknown[];
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Side-effecting layer — the ONLY place allowed to touch
+// window / localStorage / gtag / dataLayer.
+// All globals accessed INSIDE functions only, guarded by typeof checks.
+// ---------------------------------------------------------------------------
+
+// Module-private state
+let consentCache: ConsentStatus | null = null;
+let gtagReady = false;
+let gtagFailed = false;
+const queue: Array<{ name: string; params: Record<string, unknown> }> = [];
+
+// ---------------------------------------------------------------------------
+// readConsent
+// ---------------------------------------------------------------------------
+
+/**
+ * Returns the current consent status.
+ * Checks the module cache first; falls back to localStorage → parseConsent.
+ * On any localStorage error (private browsing, QuotaExceededError, etc.)
+ * returns 'unset' without caching the failure so the next call retries.
+ */
+export function readConsent(): ConsentStatus {
+  if (consentCache !== null) return consentCache;
+  try {
+    if (typeof localStorage === 'undefined') return 'unset';
+    const raw = localStorage.getItem(CONSENT_KEY);
+    const status = parseConsent(raw);
+    consentCache = status;
+    return status;
+  } catch {
+    return 'unset';
+  }
+}
+
+// ---------------------------------------------------------------------------
+// flushQueue
+// ---------------------------------------------------------------------------
+
+/**
+ * Drains the pending event queue by sending each item to gtag.
+ * No-ops when gtagReady is false or the queue is empty.
+ */
+function flushQueue(): void {
+  while (queue.length > 0 && gtagReady) {
+    const item = queue.shift()!;
+    if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+      window.gtag('event', item.name, item.params);
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// loadGtag
+// ---------------------------------------------------------------------------
+
+/**
+ * Idempotent gtag bootstrap. Injects the GA4 script tag and initialises
+ * window.dataLayer / window.gtag. Marks gtagReady immediately (dataLayer
+ * buffers events until the remote script loads), then flushes the queue.
+ *
+ * Guards: exits early when already ready/failed, no MEASUREMENT_ID, or SSR.
+ */
+function loadGtag(): void {
+  if (gtagReady || gtagFailed) return;
+  if (MEASUREMENT_ID === '') return;
+  if (typeof document === 'undefined') return;
+
+  // Bootstrap dataLayer and gtag shim
+  if (typeof window !== 'undefined') {
+    window.dataLayer = window.dataLayer || [];
+    if (typeof window.gtag !== 'function') {
+      window.gtag = function (...args: unknown[]) {
+        window.dataLayer!.push(args);
+      };
+    }
+  }
+
+  // Inject the GA4 loader script
+  const script = document.createElement('script');
+  (script as HTMLScriptElement & { async: boolean }).async = true;
+  (script as HTMLScriptElement).src =
+    `https://www.googletagmanager.com/gtag/js?id=${MEASUREMENT_ID}`;
+  script.addEventListener('error', () => {
+    gtagFailed = true;
+    queue.length = 0;
+  });
+  document.head.appendChild(script);
+
+  // Fire the standard gtag init calls (buffered in dataLayer until remote loads)
+  if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+    window.gtag('js', new Date());
+    window.gtag('config', MEASUREMENT_ID, GA_CONFIG);
+  }
+
+  gtagReady = true;
+  flushQueue();
+}
+
+// ---------------------------------------------------------------------------
+// trackEvent
+// ---------------------------------------------------------------------------
+
+/**
+ * Sends a GA4 event, subject to consent and gtag-readiness.
+ *
+ * - Consent not granted → event is silently dropped.
+ * - gtag not yet ready → event is queued (up to MAX_QUEUE; excess ignored).
+ * - gtag ready → event is sent immediately via window.gtag.
+ */
+export function trackEvent(
+  name: string,
+  params: Record<string, unknown> = {},
+): void {
+  if (!isTrackable(readConsent(), MEASUREMENT_ID)) return;
+
+  if (!gtagReady) {
+    if (queue.length < MAX_QUEUE) {
+      queue.push({ name, params });
+    }
+    return;
+  }
+
+  if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+    window.gtag('event', name, params);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// setConsent
+// ---------------------------------------------------------------------------
+
+/**
+ * Applies a consent action (accept / decline / reset), persists the new
+ * status to localStorage, updates the cache, and executes any side effects
+ * emitted by the state machine (dispatch → load → flush).
+ */
+export function setConsent(action: ConsentAction): void {
+  const prev = readConsent();
+  const { status, effects } = reduceConsent(prev, action);
+
+  // Persist
+  try {
+    if (typeof localStorage !== 'undefined') {
+      const s = serializeConsent(status);
+      if (s === '') {
+        localStorage.removeItem(CONSENT_KEY);
+      } else {
+        localStorage.setItem(CONSENT_KEY, s);
+      }
+    }
+  } catch {
+    // localStorage unavailable (private mode, storage full, etc.) — continue
+  }
+
+  consentCache = status;
+
+  // Execute effects in the order prescribed by the state machine
+  for (const effect of effects) {
+    if (effect === 'dispatch') {
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(
+          new CustomEvent(CONSENT_EVENT, { detail: { status } }),
+        );
+      }
+    } else if (effect === 'load') {
+      loadGtag();
+    } else if (effect === 'flush') {
+      flushQueue();
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// onConsentChange
+// ---------------------------------------------------------------------------
+
+/**
+ * Subscribes to consent-change events dispatched on window.
+ * Returns an unsubscribe function. No-ops (returns a no-op unsubscribe)
+ * when called in a non-browser (SSR / node) environment.
+ */
+export function onConsentChange(
+  cb: (status: ConsentStatus) => void,
+): () => void {
+  if (typeof window === 'undefined') return () => {};
+
+  const handler = (e: Event) => {
+    const detail = (e as CustomEvent<{ status: ConsentStatus }>).detail;
+    cb(detail.status);
+  };
+
+  window.addEventListener(CONSENT_EVENT, handler);
+  return () => window.removeEventListener(CONSENT_EVENT, handler);
+}
+
+// ---------------------------------------------------------------------------
+// __resetAnalyticsForTest — TEST SEAM ONLY, do not call in production code
+// ---------------------------------------------------------------------------
+
+/**
+ * Resets all module-private state to its initial values.
+ * Exported exclusively for use in test suites (vitest beforeEach).
+ */
+export function __resetAnalyticsForTest(): void {
+  consentCache = null;
+  gtagReady = false;
+  gtagFailed = false;
+  queue.length = 0;
 }

@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import {
   isTrackable,
   computeScrollDepth,
@@ -7,8 +7,13 @@ import {
   serializeConsent,
   reduceConsent,
   buildEventEnvelope,
+  readConsent,
+  setConsent,
+  trackEvent,
+  onConsentChange,
+  __resetAnalyticsForTest,
 } from '@/utils/analytics';
-import { SCROLL_MILESTONES } from '@/data/analytics';
+import { SCROLL_MILESTONES, CONSENT_KEY, CONSENT_EVENT } from '@/data/analytics';
 
 // ---------------------------------------------------------------------------
 // isTrackable
@@ -286,5 +291,281 @@ describe('buildEventEnvelope', () => {
     // pageMeta has undefined for 'x', params has value → value wins, undefined stripped
     const result = buildEventEnvelope({ x: 'value' }, { x: undefined });
     expect(result.x).toBe('value');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// analytics side-effects
+// ---------------------------------------------------------------------------
+// Globals are stubbed directly on globalThis so the module's typeof guards
+// see them without requiring jsdom. Restored in afterEach.
+// ---------------------------------------------------------------------------
+
+describe('analytics side-effects', () => {
+  // Fake localStorage backed by a Map
+  let store: Map<string, string>;
+
+  // Capture calls made to gtag
+  let gtagCalls: unknown[][];
+
+  // Simple listener registry for window events
+  type ListenerMap = Map<string, EventListenerOrEventListenerObject[]>;
+  let listeners: ListenerMap;
+
+  // Save originals so we can restore them
+  let origWindow: unknown;
+  let origDocument: unknown;
+  let origLocalStorage: unknown;
+
+  beforeEach(() => {
+    __resetAnalyticsForTest();
+
+    store = new Map();
+    gtagCalls = [];
+    listeners = new Map();
+
+    // Fake localStorage
+    const fakeLocalStorage = {
+      getItem: (key: string) => store.get(key) ?? null,
+      setItem: (key: string, value: string) => { store.set(key, value); },
+      removeItem: (key: string) => { store.delete(key); },
+    };
+
+    // Fake window with event bus + gtag spy
+    const fakeWindow: Record<string, unknown> = {
+      dataLayer: [] as unknown[],
+      gtag: vi.fn((...args: unknown[]) => {
+        gtagCalls.push(args);
+        (fakeWindow.dataLayer as unknown[]).push(args);
+      }),
+      addEventListener: (type: string, handler: EventListenerOrEventListenerObject) => {
+        if (!listeners.has(type)) listeners.set(type, []);
+        listeners.get(type)!.push(handler);
+      },
+      removeEventListener: (type: string, handler: EventListenerOrEventListenerObject) => {
+        const arr = listeners.get(type);
+        if (!arr) return;
+        const idx = arr.indexOf(handler);
+        if (idx !== -1) arr.splice(idx, 1);
+      },
+      dispatchEvent: (event: Event) => {
+        const arr = listeners.get(event.type) ?? [];
+        for (const h of arr) {
+          if (typeof h === 'function') h(event);
+          else h.handleEvent(event);
+        }
+        return true;
+      },
+    };
+
+    // Fake document
+    const createdElements: unknown[] = [];
+    const fakeDocument = {
+      head: { appendChild: vi.fn((el: unknown) => { createdElements.push(el); }) },
+      createElement: (_tag: string) => {
+        // Return a plain object; the module assigns .async and .src on it
+        const el: Record<string, unknown> = {};
+        // Capture addEventListener on the element (for the 'error' handler)
+        const elListeners: Map<string, EventListenerOrEventListenerObject[]> = new Map();
+        el.addEventListener = (type: string, h: EventListenerOrEventListenerObject) => {
+          if (!elListeners.has(type)) elListeners.set(type, []);
+          elListeners.get(type)!.push(h);
+        };
+        el.__elListeners = elListeners;
+        return el;
+      },
+    };
+
+    origWindow = (globalThis as Record<string, unknown>).window;
+    origDocument = (globalThis as Record<string, unknown>).document;
+    origLocalStorage = (globalThis as Record<string, unknown>).localStorage;
+
+    (globalThis as Record<string, unknown>).window = fakeWindow;
+    (globalThis as Record<string, unknown>).document = fakeDocument;
+    (globalThis as Record<string, unknown>).localStorage = fakeLocalStorage;
+  });
+
+  afterEach(() => {
+    (globalThis as Record<string, unknown>).window = origWindow;
+    (globalThis as Record<string, unknown>).document = origDocument;
+    (globalThis as Record<string, unknown>).localStorage = origLocalStorage;
+    vi.restoreAllMocks();
+  });
+
+  // -------------------------------------------------------------------------
+  // readConsent
+  // -------------------------------------------------------------------------
+
+  it('readConsent: returns parsed value from localStorage', () => {
+    store.set(CONSENT_KEY, 'granted');
+    expect(readConsent()).toBe('granted');
+  });
+
+  it('readConsent: returns "unset" when key is absent', () => {
+    expect(readConsent()).toBe('unset');
+  });
+
+  it('readConsent: returns "unset" when localStorage.getItem throws', () => {
+    (globalThis as Record<string, unknown>).localStorage = {
+      getItem: () => { throw new Error('SecurityError'); },
+      setItem: () => {},
+      removeItem: () => {},
+    };
+    expect(readConsent()).toBe('unset');
+  });
+
+  it('readConsent: uses cache on second call (localStorage not consulted again)', () => {
+    store.set(CONSENT_KEY, 'denied');
+    readConsent(); // prime cache
+    store.set(CONSENT_KEY, 'granted'); // change storage — should be ignored
+    expect(readConsent()).toBe('denied'); // still returns cached value
+  });
+
+  // -------------------------------------------------------------------------
+  // setConsent('accept') — full happy path
+  // -------------------------------------------------------------------------
+
+  it('setConsent("accept"): writes "granted" to localStorage', () => {
+    setConsent('accept');
+    expect(store.get(CONSENT_KEY)).toBe('granted');
+  });
+
+  it('setConsent("accept"): dispatches CONSENT_EVENT with status "granted"', () => {
+    const received: string[] = [];
+    (globalThis as Record<string, unknown>).window &&
+      ((globalThis as { window: { addEventListener: (t: string, h: (e: Event) => void) => void } }).window
+        .addEventListener(CONSENT_EVENT, (e: Event) => {
+          received.push((e as CustomEvent<{ status: string }>).detail.status);
+        }));
+    setConsent('accept');
+    expect(received).toEqual(['granted']);
+  });
+
+  it('setConsent("accept"): appends a script to document.head', () => {
+    setConsent('accept');
+    const doc = (globalThis as Record<string, unknown>).document as {
+      head: { appendChild: ReturnType<typeof vi.fn> };
+    };
+    expect(doc.head.appendChild).toHaveBeenCalledTimes(1);
+  });
+
+  it('setConsent("accept"): a trackEvent after accept calls window.gtag("event", ...)', () => {
+    setConsent('accept');
+    trackEvent('test_event', { foo: 'bar' });
+    const win = (globalThis as Record<string, unknown>).window as {
+      gtag: ReturnType<typeof vi.fn>;
+    };
+    const eventCalls = gtagCalls.filter((c) => c[0] === 'event');
+    expect(eventCalls.length).toBeGreaterThanOrEqual(1);
+    const lastEvent = eventCalls[eventCalls.length - 1];
+    expect(lastEvent[1]).toBe('test_event');
+    expect(lastEvent[2]).toEqual({ foo: 'bar' });
+  });
+
+  // -------------------------------------------------------------------------
+  // setConsent('decline')
+  // -------------------------------------------------------------------------
+
+  it('setConsent("decline"): writes "denied" to localStorage', () => {
+    setConsent('decline');
+    expect(store.get(CONSENT_KEY)).toBe('denied');
+  });
+
+  it('setConsent("decline"): dispatches CONSENT_EVENT with status "denied"', () => {
+    const received: string[] = [];
+    (globalThis as { window: { addEventListener: (t: string, h: (e: Event) => void) => void } })
+      .window.addEventListener(CONSENT_EVENT, (e: Event) => {
+        received.push((e as CustomEvent<{ status: string }>).detail.status);
+      });
+    setConsent('decline');
+    expect(received).toEqual(['denied']);
+  });
+
+  it('setConsent("decline"): trackEvent does NOT call gtag (event dropped)', () => {
+    setConsent('decline');
+    trackEvent('should_be_dropped', { x: 1 });
+    const eventCalls = gtagCalls.filter((c) => c[0] === 'event');
+    // No 'event' call should exist at all
+    expect(eventCalls.length).toBe(0);
+  });
+
+  // -------------------------------------------------------------------------
+  // Queue: events queued before accept are flushed after accept
+  // -------------------------------------------------------------------------
+
+  it('trackEvent queues event when granted but gtag not yet ready; flush happens on accept', () => {
+    // Start from unset. Call setConsent('accept') to put consent=granted in
+    // localStorage and dispatch the event — but we call __resetAnalyticsForTest
+    // afterwards to simulate a page reload where gtagReady is still false while
+    // localStorage already holds 'granted'.
+    setConsent('accept');           // writes 'granted' to store, loads gtag, etc.
+    __resetAnalyticsForTest();      // simulate fresh page: gtagReady=false, cache=null
+
+    // Now trackEvent should see readConsent()='granted' but gtagReady=false → queue
+    trackEvent('queued_event', { queued: true });
+
+    // Nothing sent to gtag yet
+    gtagCalls.length = 0; // clear init calls from the first setConsent above
+
+    // Trigger accept again (prev=granted → same state → no effects, no flush).
+    // Instead we go through reset→accept so effects fire.
+    setConsent('reset');   // status→unset, dispatches event
+    setConsent('accept');  // status→granted, triggers load+flush
+
+    const eventCalls = gtagCalls.filter((c) => c[0] === 'event');
+    expect(eventCalls.length).toBeGreaterThanOrEqual(1);
+    expect(eventCalls[0][1]).toBe('queued_event');
+    expect(eventCalls[0][2]).toEqual({ queued: true });
+  });
+
+  // -------------------------------------------------------------------------
+  // onConsentChange
+  // -------------------------------------------------------------------------
+
+  it('onConsentChange: fires callback when CONSENT_EVENT dispatched', () => {
+    const received: string[] = [];
+    onConsentChange((status) => received.push(status));
+    setConsent('accept');
+    expect(received).toContain('granted');
+  });
+
+  it('onConsentChange: unsubscribe stops future callbacks', () => {
+    const received: string[] = [];
+    const unsub = onConsentChange((status) => received.push(status));
+    setConsent('accept');
+    expect(received).toEqual(['granted']);
+    unsub();
+    // Reset and decline — callback should NOT fire again
+    __resetAnalyticsForTest();
+    setConsent('decline');
+    expect(received).toEqual(['granted']); // still only the one from before
+  });
+
+  it('onConsentChange: returns no-op unsubscribe when window is undefined', () => {
+    const savedWindow = (globalThis as Record<string, unknown>).window;
+    (globalThis as Record<string, unknown>).window = undefined;
+    // Must not throw, must return a function
+    const unsub = onConsentChange(() => {});
+    expect(typeof unsub).toBe('function');
+    expect(() => unsub()).not.toThrow();
+    (globalThis as Record<string, unknown>).window = savedWindow;
+  });
+
+  // -------------------------------------------------------------------------
+  // Privacy regression: unset state must never send events
+  // -------------------------------------------------------------------------
+
+  it('unset 狀態下 trackEvent 完全不送 gtag（同意前零追蹤）', () => {
+    // fresh state: localStorage empty → readConsent() === 'unset'
+    trackEvent('page_view', { content_type: 'article' });
+    trackEvent('scroll', { percent_scrolled: 50 });
+    // assert the gtag stub received ZERO 'event' calls
+    const eventCalls = gtagCalls.filter((c) => c[0] === 'event');
+    expect(eventCalls.length).toBe(0);
+    // assert no gtag script was injected into document.head
+    const doc = (globalThis as Record<string, unknown>).document as {
+      head: { appendChild: ReturnType<typeof vi.fn> };
+    };
+    expect(doc.head.appendChild).toHaveBeenCalledTimes(0);
   });
 });
