@@ -172,3 +172,82 @@ status === 'unset' → 顯示橫幅
 - `reduceConsent` 只回傳 `{ status, effects }`，不做儲存；`setConsent` 負責 localStorage 寫入與 effects 執行。
 - `buildEventEnvelope` 移除 `undefined`（不是 `null`）——傳入 `null` 是刻意的「無值」標記，會被保留送往 GA4。
 - `__resetAnalyticsForTest` 僅限測試 `beforeEach` 呼叫，生產環境禁用。
+
+---
+
+## ReadingEngagement island（`src/components/blocks/ReadingEngagement.svelte`）
+
+閱讀互動追蹤島。**不渲染任何可見 UI**（純 `<script>` 區塊）。掛載於 article / myth / ingredient 單篇頁（`client:idle`）。
+
+### Props
+
+| Prop | 型別 | 預設 | 說明 |
+|---|---|---|---|
+| `contentType` | `string` | — | 內容種類（`'article'`、`'myth'`、`'ingredient'` 等） |
+| `slug` | `string` | — | 文章 slug |
+| `tags` | `string[]` | `[]` | 文章標籤；`tags[0]` 作為 `content_category` |
+| `author` | `string` | `''` | 作者 |
+| `queryPattern` | `string?` | — | AEO 問題模式 |
+| `verdict` | `string?` | — | 闢謠判定（myths 用） |
+| `evidenceLevel` | `string?` | — | 證據等級 |
+| `readingTime` | `number` | `0` | 閱讀時間（分鐘）；用於計算 `read_complete` 時間門檻與 `reading_time_bucket` |
+| `hasRelated` | `boolean` | `false` | 是否有「延伸閱讀」區塊（開啟 `select_content` 監聽） |
+
+### pageMeta（自動組合，每個事件 envelope 均含）
+
+```ts
+{
+  content_type, content_slug, content_category,  // tags[0] ?? ''
+  author, query_pattern, verdict, evidence_level,
+  reading_time_bucket  // '<3' | '3-6' | '6-10' | '10+'
+}
+```
+
+### 追蹤事件一覽
+
+| 事件名稱 | 觸發時機 | 主要參數 |
+|---|---|---|
+| `content_view` | 掛載後立即（once） | pageMeta |
+| `scroll` | 捲動達 25 / 50 / 75 / 90% | `percent_scrolled` |
+| `read_complete` | maxScroll ≥ 90% **且** engagedSec ≥ 時間門檻（once） | `engaged_time_sec`, `completion_ratio` |
+| `engaged_view` | `pagehide` 或 `visibilitychange→hidden`（once，bfcache 重置） | `engaged_time_sec`, `max_scroll_percent`, `read_completed`, `reached_references`, `transport_type:'beacon'` |
+| `read_skim` | flush 時 maxScroll ≥ 75% 且從未達時間門檻 | pageMeta |
+| `select_content` | `.related-content__grid` 內連結被點擊（需 `hasRelated=true`） | `content_type:'related_card'`, `item_id`, `source_type/slug`, `target_type/slug`, `link_position`, `link_text` |
+| `faq_open` | `.article-faq` 內 `details.faq-accordion__item` 展開（每個 index 觸發一次） | `faq_index`, `faq_question` |
+| `click` | `.reference-list` 內 `a[target="_blank"]` 點擊 | `outbound:true`, `link_url`, `link_domain`, `reference_index` |
+| `references_expand` | `details.reference-list` 展開（once） | pageMeta |
+
+### read_complete 三道門檻
+
+1. `maxScroll ≥ 90`
+2. `engagedSec ≥ clamp(floor(readingTime * 60 * 0.5), 20, 240)`
+3. 上述兩個條件同時成立時才觸發（latch，永不重複）
+
+### 投入時間（engagedMs）計算規則
+
+- `setInterval(1000)` 每秒 tick，只在以下三個條件全部成立時累加：
+  1. `document.visibilityState === 'visible'`
+  2. `document.hasFocus()`
+  3. `Date.now() - lastActivity ≤ 15,000 ms`（ENGAGED_IDLE_TIMEOUT_MS）
+- `lastActivity` 由 `scroll / keydown / pointermove / pointerdown / wheel / touchstart` 更新（passive）；`resetActivity()` **只更新 `lastActivity`**，不動 `lastTickTime`（避免縮短 tick delta）
+- `visibilitychange→hidden` 與 `blur` 立即暫停計時；`visibilitychange→visible` 先呼叫 `resetActivity()` 再恢復計時（防止返回頁面被誤計為閒置）；`focus` 恢復計時
+- 上限 1,800,000 ms（ENGAGED_MAX_MS = 30 分）
+- bfcache 恢復（`pageshow` 且 `event.persisted`）：完整重置所有單次瀏覽計數器（`engagedMs / maxScroll / timeGateMet / readCompleteFired / reachedReferences / firedScrollMilestones / firedFaqIndexes / referenceExpandFired / engagedViewSent / lastActivity / lastTickTime`），再恢復計時
+
+### DOM 選擇器依賴（頁面必須存在才會生效）
+
+| 選擇器 | 功能 |
+|---|---|
+| `.article-content` | 捲動深度計算基準（fallback `document.documentElement`） |
+| `.related-content__grid` | select_content 委派監聽（需 `hasRelated=true`） |
+| `.article-faq` | FAQ 展開追蹤 |
+| `details.faq-accordion__item` | FAQ 個別 item（在 `.article-faq` 內） |
+| `.reference-list` 或 `.article-references` | 來源點擊 / 展開 / reached_references |
+
+### 修改規則
+
+- **所有事件必須經由 `trackEvent()`**，禁止直接呼叫 `window.gtag`。
+- 全部 listener / observer / interval 在 `$effect` return 函數中清除。
+- scroll 與 activity listeners 均加 `{ passive: true }`。
+- SSR guard：`$effect` 頂層先檢查 `typeof window === 'undefined'`，是則立即返回。
+- 不新增任何 npm 依賴。
