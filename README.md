@@ -129,6 +129,7 @@
 | 串接外部 API（YouTube / PubMed / WebSearch） | [docs/playbooks/external-apis.md](./docs/playbooks/external-apis.md) |
 | CI/CD 與 deploy.yml 維護 | [docs/playbooks/ci-cd.md](./docs/playbooks/ci-cd.md) |
 | 看架構 / SEO / AEO / 無障礙總覽 | [docs/architecture.md](./docs/architecture.md) |
+| GA4/GSC 數據驅動選題與寫法（audience insights） | [docs/playbooks/audience-insights.md](./docs/playbooks/audience-insights.md) |
 
 
 

@@ -236,11 +236,11 @@ git push origin main
 
 ### 8.4 調整排程頻率
 
-至 [Claude Code Scheduled](https://claude.ai/code/scheduled) 修改 cron expression。
+編輯 server 上的 crontab（`crontab -e`），調整 `claude -p` 的執行頻率（cron expression）。
 
 ### 8.5 手動觸發一次
 
-在 Claude Code 中使用 `RemoteTrigger` 工具的 `run` action。
+於 server 直接執行管線指令（`claude -p` 帶對應 prompt）。
 
 ---
 

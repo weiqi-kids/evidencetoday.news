@@ -38,6 +38,10 @@
 
 > 完整事件分類、自訂維度、GA4 後台設定與報表配方見 **`docs/playbooks/analytics.md`**。
 
+### Audience Insights（閉環選題回饋）
+
+`/news` 管線 Phase 2 執行 `scripts/audience-insights.mjs`，即時讀 GA4（讀完率/AI 轉介/站內搜尋）+ GSC（搜尋需求/排名），跑 8 策略產出 topicCandidates（選題）/writingDirectives（寫法）/siteOptimizations（人工建議）。輸出 `data/audience-insights.json` 為私密、gitignore。詳見 playbook 與 spec（2026-06-16）。
+
 ## 已實作的內容互連（不需要再做）
 
 | 功能 | 說明 |
