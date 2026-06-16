@@ -51,6 +51,7 @@
 
 - **生成 / 上傳**：`image-compress.ts` 壓成 ≤1280 寬 WebP → 經 `addPending()` 登記為待提交，存檔時與 `.mdx` 打包成**單一 commit**（`git-commit.ts`，Git Data API）。當場用 blob URL 預覽，存檔時 `toStore()` 換回 `/images|/covers` 正式路徑。
 - **圖庫照片（stock）**：存外部絕對 URL + 攝影師署名（`coverImageCredit` / 內文 `<figure><figcaption>`），不下載、不壓縮。
+- **內文 `<img>` 一律自閉**：MDX 把未自閉的 `<img ...>` 當 JSX 並要求閉合標籤 → build 失敗、整站部署中斷。`BodyEditor` 的 `figure` 樣板用 `<img ... />`，且 `toStore()` 存檔前以 `selfCloseImg()` 把 TOAST WYSIWYG 重序列化吐出的 void `<img src="...">` 一律正規化成自閉形式。曾因此讓 `observational-study-nutrition-research-trap.mdx` 連續 build fail（見「踩過的坑」）。
 - **既有 repo 圖**：直接設站內路徑。
 - 封面落 `public/covers/`、內文圖落 `public/images/`；存檔只打包「內容實際引用到」的圖（過濾 re-roll 孤兒）。
 

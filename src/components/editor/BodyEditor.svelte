@@ -27,7 +27,13 @@
     let out = md;
     if (BASE) out = out.split(`${BASE}/images/`).join('/images/').split(`${BASE}/covers/`).join('/covers/');
     for (const m of blobMap) out = out.split(m.blobUrl).join(m.storedUrl);
-    return out;
+    return selfCloseImg(out);
+  }
+  // MDX 把未自閉的 <img ...> 當 JSX → 要求閉合標籤 → build 失敗。TOAST WYSIWYG 重序列化
+  // 圖庫 <figure> 時可能吐出 void 形式的 <img src="...">（甚至剝掉 figure 外殼），故存檔前一律
+  // 正規化成自閉 <img ... />，確保任何來源的內文圖都是合法 MDX。
+  function selfCloseImg(md) {
+    return md.replace(/<img\b([^>]*?)\s*\/?>/gi, (_m, attrs) => `<img${attrs} />`);
   }
 
   // Toast UI 的 CSS 以 runtime <link> 注入（指向 public/vendor 的靜態副本），
@@ -128,7 +134,7 @@
       if (credit && editor) {
         const md = editor.getMarkdown();
         const imgMd = `![](${displayUrl})`;
-        const figure = `<figure>\n  <img src="${displayUrl}" alt="">\n  <figcaption>攝影：${credit}</figcaption>\n</figure>`;
+        const figure = `<figure>\n  <img src="${displayUrl}" alt="" />\n  <figcaption>攝影：${credit}</figcaption>\n</figure>`;
         if (md.includes(imgMd)) editor.setMarkdown(md.replace(imgMd, figure));
       }
     } catch (e) {
