@@ -55,9 +55,9 @@
     }
   }
 
-  // AI 建議功能開關：刻意關閉（線上即時潤飾會計費，使用者選擇不啟用）。
-  // 要開啟：設好 ai-suggest worker 的 ANTHROPIC_API_KEY secret 後改為 true。
-  const AI_ENABLED = false;
+  // AI 建議功能開關：控制內文「AI 潤飾/摘要」(/suggest)。worker 的 ANTHROPIC_API_KEY 已設定，
+  // 與標籤/alt/生圖/找圖一致開啟（全功能）。要省錢一鍵關掉潤飾/摘要時改回 false 即可。
+  const AI_ENABLED = true;
   const AI_WORKER = 'https://evidencetoday-ai-suggest.lightman-chang.workers.dev';
   let suggestion = $state('');
   async function suggest(task) {

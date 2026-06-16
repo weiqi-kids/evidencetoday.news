@@ -72,7 +72,7 @@
 2. `npx wrangler queues create evidencetoday-gen`
 3. secrets：`npx wrangler secret put ANTHROPIC_API_KEY`（必填）；選配 `OPENAI_API_KEY` / `FAL_KEY` / `UNSPLASH_ACCESS_KEY` / `PEXELS_API_KEY`
 4. `npx wrangler deploy`（在 `workers/ai-suggest/`）
-5. 要開啟內文「AI 潤飾/摘要」：把 `EditorPanel.svelte` 的 `AI_ENABLED` 改 `true`（生圖/找圖/標籤/alt 不受此旗標影響）。
+5. 內文「AI 潤飾/摘要」由 `EditorPanel.svelte` 的 `AI_ENABLED` 控制（**目前 `true`**，與標籤/alt/生圖/找圖一致開啟）；要一鍵關掉潤飾/摘要省錢就改回 `false`。生圖/找圖/標籤/alt 各在 ImagePicker/SeoFields/CoverField，不受此旗標影響。
 
 > 缺某把 key 時，對應功能回可讀錯誤、其餘照常（如缺 FAL_KEY → Flux 502；缺 Unsplash/Pexels → 找圖回空）。
 
