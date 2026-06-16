@@ -129,14 +129,10 @@
         displayUrl = URL.createObjectURL(compressed);
         blobMap.push({ blobUrl: displayUrl, storedUrl }); // toStore 存檔時換回
       }
-      editor?.exec('addImage', { imageUrl: displayUrl, altText: '' });
-      // 圖庫圖署名：把剛插入的 markdown image 換成 <figure> + <figcaption>
-      if (credit && editor) {
-        const md = editor.getMarkdown();
-        const imgMd = `![](${displayUrl})`;
-        const figure = `<figure>\n  <img src="${displayUrl}" alt="" />\n  <figcaption>攝影：${credit}</figcaption>\n</figure>`;
-        if (md.includes(imgMd)) editor.setMarkdown(md.replace(imgMd, figure));
-      }
+      // 以標準 markdown 圖插入（TOAST WYSIWYG 原生支援、選完一定顯示）；圖庫圖把攝影署名存進 alt。
+      // ⚠️ 不可在 WYSIWYG 模式用 setMarkdown 注入 <figure> 原始 HTML：TOAST 重序列化會把它拆成
+      // 未自閉 <img> + 裸文字 → 圖在編輯器消失、且 MDX build 失敗（見 editor-images.md）。
+      editor?.exec('addImage', { imageUrl: displayUrl, altText: credit ? `攝影：${credit}` : '' });
     } catch (e) {
       alert(e instanceof Error ? e.message : String(e));
     }
