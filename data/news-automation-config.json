@@ -67,5 +67,18 @@
   },
   "dedup": {
     "retentionDays": 90
+  },
+  "audienceInsights": {
+    "enabled": true,
+    "windowDays": 28,
+    "trendWindowDays": 7,
+    "thresholds": {
+      "minImpressions": 1,
+      "lowRankPosition": 10,
+      "boostRankMin": 5,
+      "boostRankMax": 15,
+      "trendSurgeRatio": 2.0
+    },
+    "aiReferralDomains": ["chat.openai.com", "chatgpt.com", "perplexity.ai", "gemini.google.com", "claude.ai", "copilot.microsoft.com"]
   }
 }
