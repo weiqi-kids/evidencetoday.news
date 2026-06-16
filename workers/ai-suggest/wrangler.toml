@@ -7,7 +7,7 @@ compatibility_date = "2026-01-01"
 #   npx wrangler kv namespace create GEN_JOBS
 [[kv_namespaces]]
 binding = "GEN_JOBS"
-id = "REPLACE_WITH_GEN_JOBS_KV_ID"
+id = "420c83f99beb4a30928fd066158dabda"
 
 # 生圖工作佇列：/generate-async 入列 → consumer 背景生圖（不受 request/waitUntil 時限，失敗自動重試）。
 # ⚠️ 部署前先建佇列：npx wrangler queues create evidencetoday-gen
