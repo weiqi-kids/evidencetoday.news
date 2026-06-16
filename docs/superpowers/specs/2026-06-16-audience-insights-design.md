@@ -54,6 +54,8 @@ flowchart TB
 | **strategy 層** | 純函數 | 8 個 `(rawRows, config) → 部分桶輸出` transform，無 I/O | **vitest 單元測試**（比照 `src/utils/analytics.test.ts`）|
 | **組裝層** | 不純 | 合併 8 策略輸出 → 寫 `data/audience-insights.json` + stdout | 整合驗證 |
 
+> **隱私**：`data/audience-insights.json` 含 GSC 搜尋字詞、流量來源、選題策略等經營內幕，**一律 gitignore、不 commit、不 deploy**（本 repo 與站台皆公開，任何 commit/deploy 物即公開）。它是本機/server 私密產物；給使用者檢視走 run summary 或本機開檔，不走站上端點。
+
 常數（與 `~/ga4-report.py` 對齊）：
 - GA4 `PROPERTY = properties/541692554`（`G-5JH83LM8X7`）
 - GSC `sc-domain:evidencetoday.news`
@@ -204,4 +206,4 @@ flowchart TB
 2. `scripts/lib/insight-strategies.mjs`（8 個純函數策略）+ 對應 vitest 測試
 3. `data/news-automation-config.json` 加 `audienceInsights` 區塊
 4. SOP/AGENTS/README/playbook/architecture 文件同步（含修正 news_sop 第一節）
-5. 一份 `data/audience-insights.json` 範例（首次本機實跑產出，供 review）
+5. `data/audience-insights.json` 加入 `.gitignore`（首次本機實跑產出供 review，但**不 commit**）
