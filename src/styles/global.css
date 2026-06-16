@@ -232,6 +232,25 @@ img {
   border-radius: var(--radius-sm);
 }
 
+/* 內文圖庫圖：rehype-stock-figure 產生的 <figure> + 攝影署名（含可點連結） */
+.prose figure.et-figure {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+.prose figure.et-figure img {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.prose figure.et-figure .et-figure__credit {
+  margin-top: 0.5em;
+  font-size: var(--text-meta);
+  color: color-mix(in oklch, var(--color-ink) 55%, var(--color-paper));
+}
+.prose figure.et-figure .et-figure__credit a {
+  color: inherit;
+  text-decoration: underline;
+}
+
 .prose table {
   width: 100%;
   max-width: 100%;

@@ -15,6 +15,11 @@
 
   const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
   let blobMap = []; // 生成/上傳圖的 blob 預覽 URL ↔ 正式路徑（存檔時換回）
+  // 圖庫圖攝影署名：插入時記下 { url, credit, creditUrl }，存檔時把 markdown 圖補成
+  // ![credit](url "creditUrl")。creditUrl 是 worker /stock 回傳的真實攝影師頁網址；
+  // 前台 rehype-stock-figure 再轉成 <figure> + 可點署名。TOAST 不一定保留 image title，
+  // 故以 url 比對在 toStore 重寫保底，確保署名與連結不流失。
+  let creditMap = []; // { url, credit, creditUrl }
 
   // 進 TOAST：站內路徑（/images、/covers）補 BASE，編輯器才載得到（連舊文章既有圖一併修好）
   function toDisplay(md) {
@@ -27,7 +32,20 @@
     let out = md;
     if (BASE) out = out.split(`${BASE}/images/`).join('/images/').split(`${BASE}/covers/`).join('/covers/');
     for (const m of blobMap) out = out.split(m.blobUrl).join(m.storedUrl);
-    return selfCloseImg(out);
+    return selfCloseImg(applyCredits(out));
+  }
+  // 把本 session 插入的圖庫圖（creditMap）重寫成 ![credit](url "creditUrl")，
+  // 不論 TOAST 對 alt/title 做了什麼，只要圖的 url 還在就能補回正確署名與連結。
+  function reEsc(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+  function applyCredits(md) {
+    let out = md;
+    for (const c of creditMap) {
+      if (!c.url || !c.creditUrl) continue;
+      const alt = (c.credit || '').replace(/[\[\]]/g, '');
+      const re = new RegExp(`!\\[[^\\]]*\\]\\(${reEsc(c.url)}(?:\\s+"[^"]*")?\\)`, 'g');
+      out = out.replace(re, `![${alt}](${c.url} "${c.creditUrl}")`);
+    }
+    return out;
   }
   // MDX 把未自閉的 <img ...> 當 JSX → 要求閉合標籤 → build 失敗。TOAST WYSIWYG 重序列化
   // 圖庫 <figure> 時可能吐出 void 形式的 <img src="...">（甚至剝掉 figure 外殼），故存檔前一律
@@ -117,6 +135,8 @@
       let credit = '';
       if (result.source === 'stock') {
         displayUrl = storedUrl = result.url; credit = result.credit || ''; // 外部絕對 URL，編輯器/上線都可載
+        // 記下攝影師頁網址（worker /stock 給的真實連結）；存檔時補成 ![credit](url "creditUrl")
+        if (result.creditUrl) creditMap.push({ url: result.url, credit, creditUrl: result.creditUrl });
       } else if (result.source === 'library') {
         storedUrl = result.url; // 站內路徑（無 BASE，由 build 補）
         displayUrl = asset(storedUrl); // 編輯器預覽補 BASE 才載得到
@@ -129,10 +149,11 @@
         displayUrl = URL.createObjectURL(compressed);
         blobMap.push({ blobUrl: displayUrl, storedUrl }); // toStore 存檔時換回
       }
-      // 以標準 markdown 圖插入（TOAST WYSIWYG 原生支援、選完一定顯示）；圖庫圖把攝影署名存進 alt。
+      // 以標準 markdown 圖插入（TOAST WYSIWYG 原生支援、選完一定顯示）；圖庫圖把攝影師名存進 alt，
+      // creditUrl 由 toStore 的 applyCredits 補成 image title，前台再轉 <figure> + 可點署名。
       // ⚠️ 不可在 WYSIWYG 模式用 setMarkdown 注入 <figure> 原始 HTML：TOAST 重序列化會把它拆成
       // 未自閉 <img> + 裸文字 → 圖在編輯器消失、且 MDX build 失敗（見 editor-images.md）。
-      editor?.exec('addImage', { imageUrl: displayUrl, altText: credit ? `攝影：${credit}` : '' });
+      editor?.exec('addImage', { imageUrl: displayUrl, altText: credit || '' });
     } catch (e) {
       alert(e instanceof Error ? e.message : String(e));
     }

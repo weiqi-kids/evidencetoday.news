@@ -51,7 +51,17 @@
 
 - **生成 / 上傳**：`image-compress.ts` 壓成 ≤1280 寬 WebP → 經 `addPending()` 登記為待提交，存檔時與 `.mdx` 打包成**單一 commit**（`git-commit.ts`，Git Data API）。當場用 blob URL 預覽，存檔時 `toStore()` 換回 `/images|/covers` 正式路徑。
 - **圖庫照片（stock）**：存外部絕對 URL，**用標準 markdown 圖 `![攝影：…](url)` 插入內文**（攝影署名存進 `alt`）；封面署名走 `coverImageCredit`。不下載、不壓縮。
-- **內文圖一律走標準 markdown 圖，不可注入原始 HTML `<figure>`**：TOAST WYSIWYG 無法 round-trip 原始 HTML——`setMarkdown` 灌入 `<figure><figcaption>` 會被重序列化拆成「未自閉 `<img>` + 裸文字」，造成兩個連動災情：(1) 圖在編輯器選完當下就消失（使用者回報「選圖沒出現」）；(2) 未自閉 `<img>` 讓 MDX 當 JSX 要求閉合標籤 → build 失敗、整站部署連續中斷。故 `onPick` 一律用 `editor.exec('addImage', …)` 插標準 markdown 圖；另在 `toStore()` 以 `selfCloseImg()` 把任何殘留 void `<img>` 正規化成自閉形式當防呆。曾因此讓 `observational-study-nutrition-research-trap.mdx` 連續 build fail。內文圖庫圖目前不顯示 figcaption 樣式署名（署名存於 alt）；若要前台呈現「攝影：XXX」需另做前台 figure 支援。
+- **內文圖一律走標準 markdown 圖，不可注入原始 HTML `<figure>`**：TOAST WYSIWYG 無法 round-trip 原始 HTML——`setMarkdown` 灌入 `<figure><figcaption>` 會被重序列化拆成「未自閉 `<img>` + 裸文字」，造成兩個連動災情：(1) 圖在編輯器選完當下就消失（使用者回報「選圖沒出現」）；(2) 未自閉 `<img>` 讓 MDX 當 JSX 要求閉合標籤 → build 失敗、整站部署連續中斷。故 `onPick` 一律用 `editor.exec('addImage', …)` 插標準 markdown 圖；另在 `toStore()` 以 `selfCloseImg()` 把任何殘留 void `<img>` 正規化成自閉形式當防呆。曾因此讓 `observational-study-nutrition-research-trap.mdx` 連續 build fail。
+
+### 內文圖庫圖的攝影署名（含可點連結）
+
+不靠編輯器灌 HTML，改用「**存標準 markdown 圖 → build 時 rehype 轉 figure**」兩段式，避開 WYSIWYG 的 HTML round-trip 問題：
+
+1. **存檔形式**：`BodyEditor.onPick` 選圖庫圖時，把攝影師名存進 `alt`、攝影師頁網址（worker `/stock` 回傳的 `creditUrl`，即 Unsplash `user.links.html` / Pexels `photographer_url`）記進 `creditMap`；`toStore()` 的 `applyCredits()` 以圖片 url 比對，重寫成 `![攝影師名](url "creditUrl")`（即把 creditUrl 放進 image title）。用 url 比對保底，TOAST 即使動了 alt/title 也能補回。
+2. **前台呈現**：`src/utils/rehype-stock-figure.mjs`（掛在 `astro.config.mjs` 的 `markdown.rehypePlugins`，mdx 預設繼承）把「段落只含單一 `<img>`、且 title 是合法圖庫網址」的圖轉成 `<figure class="et-figure">` + `<figcaption>攝影：<a>名字</a></figcaption>`，樣式在 `global.css` 的 `.et-figure`。
+3. **連結把關（確保不是幻想連結）**：rehype plugin 只接受 hostname 屬於 `unsplash.com` / `pexels.com`（含子網域）的 http(s) URL；其餘一律不轉、不產生連結。連結來源是圖庫 API 的真實攝影師頁，非 AI 編造。用 hast 結構化節點輸出（非 raw HTML 字串），MDX 會序列化成自閉 `<img />`，不會重蹈未自閉 build fail。測試見 `rehype-stock-figure.test.mjs`。
+
+> 舊資料若只有 `<figure><figcaption>攝影：…</figcaption>` 而無 `creditUrl`（如早期手動修的 `observational-study-...mdx`），維持純文字署名不補連結——不編造不存在的連結。
 - **既有 repo 圖**：直接設站內路徑。
 - 封面落 `public/covers/`、內文圖落 `public/images/`；存檔只打包「內容實際引用到」的圖（過濾 re-roll 孤兒）。
 
