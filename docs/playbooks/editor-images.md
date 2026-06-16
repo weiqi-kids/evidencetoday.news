@@ -76,6 +76,11 @@
 
 > 缺某把 key 時，對應功能回可讀錯誤、其餘照常（如缺 FAL_KEY → Flux 502；缺 Unsplash/Pexels → 找圖回空）。
 
+## 五、圖庫去重 + 前台封面呈現
+
+- **去重產生器**：`scripts/used-images.mjs`（接在 `package.json` 的 `prebuild`）掃全部 6 集合內容裡的 Unsplash/Pexels URL，產 `public/admin/used-images.json`（`{ids:[…]}`，已 gitignore，build 時重生）。`CoverField` 載入時 fetch 它當 `exclude` 傳給 worker `/stock`，避免推薦站上用過的圖。識別規則 `provider:id` 必須與 worker `stockImageId()` 一致；改其一要同步另一。
+- **前台封面**：`coverAlt` 已接到 `ArticleCard` / `IngredientCard`（`<img alt>` fallback）與 `news/[slug]` hero（`alt`）；`coverImageCredit` 在 news hero 右下角以 `攝影：…` 浮層顯示（stock 圖授權署名）。articles/ingredients 詳情頁本站設計無大封面圖，故 credit 主要呈現在 news hero 與卡片縮圖 alt。
+
 ## 驗證清單
 
 - `pnpm test`（含 `content.schemas.test.ts`、`git-commit`/`image-compress`/`tags-suggest`、worker `index.test.ts`）全綠。

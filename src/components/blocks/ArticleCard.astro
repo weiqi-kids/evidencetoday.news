@@ -11,11 +11,12 @@ interface Props {
   date: string;
   editorReviewed?: boolean;
   coverImage?: string;
+  coverAlt?: string;
   topicLabel?: string;
   aeoLabel?: string;
 }
 
-const { title, description, href, category, author, date, coverImage, topicLabel, aeoLabel } = Astro.props;
+const { title, description, href, category, author, date, coverImage, coverAlt, topicLabel, aeoLabel } = Astro.props;
 const safeCoverImage =
   typeof coverImage === 'string' &&
   (coverImage.startsWith('http://') ||
@@ -27,7 +28,7 @@ const safeCoverImage =
 
 <a href={href} class="article-card">
   {safeCoverImage ? (
-    <img class="article-card__image" src={safeCoverImage} alt={`${title} 縮圖`} loading="lazy" />
+    <img class="article-card__image" src={safeCoverImage} alt={coverAlt || `${title} 縮圖`} loading="lazy" />
   ) : (
     <div class="article-card__image article-card__image--fallback" aria-hidden="true">本日有據</div>
   )}

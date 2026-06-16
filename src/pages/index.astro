@@ -334,6 +334,7 @@ const categories = [
                 href={`/articles/${stripExt(item.id)}/`}
                 category="article"
                 coverImage={d.coverImage as string | undefined}
+                coverAlt={d.coverAlt as string | undefined}
                 author={d.author as string}
                 date={fmtDate(item.date)}
                 editorReviewed={d.editorReviewed as boolean}

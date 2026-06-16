@@ -43,6 +43,9 @@ src/data/youtube-shorts.json
 # Generated OG images (build-time output)
 public/og/**/*.png
 
+# Generated stock-image dedup list (prebuild output for editor「AI 找圖庫」)
+public/admin/used-images.json
+
 # Generated OG preview images (local verification output)
 public/og-preview/*.png
 public/og-preview/**/*.png

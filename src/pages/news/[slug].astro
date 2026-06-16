@@ -152,7 +152,8 @@ const breadcrumbSchema = {
       </header>
 
       <div class="news-article__hero-img">
-        <img src={heroImage} alt={displayTitle} loading="eager" />
+        <img src={heroImage} alt={data.coverAlt || displayTitle} loading="eager" />
+        {data.coverImageCredit && <p class="news-article__hero-credit">攝影：{data.coverImageCredit}</p>}
       </div>
 
       {data.intro && (
@@ -374,6 +375,21 @@ const breadcrumbSchema = {
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  /* 圖庫照片授權署名（stock 圖才會有 coverImageCredit），疊在封面右下 */
+  .news-article__hero-credit {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    margin: 0;
+    padding: 0.15rem 0.5rem;
+    font-family: var(--font-ui);
+    font-size: var(--text-badge);
+    color: white;
+    background: rgb(0 0 0 / 0.45);
+    border-top-left-radius: var(--radius-sm);
   }
 
   .news-article__intro,
