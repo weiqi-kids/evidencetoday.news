@@ -106,3 +106,41 @@ export function strategyLlmReferral(data, cfg) {
   }
   return out;
 }
+
+/** 讀完率回饋：算各 content_type 的 read_complete ÷ content_view，挑最高者給寫法指令。 */
+export function strategyCompletionStyle(data, cfg) {
+  const out = emptyBucket();
+  const views = new Map((data.ga4?.contentViewByType ?? []).map((r) => [r.content_type, r.eventCount]));
+  const ratios = [];
+  for (const r of data.ga4?.readCompleteByType ?? []) {
+    const v = views.get(r.content_type) ?? 0;
+    if (v < 1) continue;
+    ratios.push({ type: r.content_type, ratio: r.eventCount / v, sample: v });
+  }
+  if (ratios.length === 0) return out;
+  ratios.sort((a, b) => b.ratio - a.ratio);
+  const top = ratios[0];
+  out.writingDirectives.push({
+    directive: `「${top.type}」類讀完率最高（${round(top.ratio * 100)}%，樣本 ${top.sample}）→ 撰文時優先採用此類型的結構與長度`,
+    basis: 'completion',
+    confidence: top.sample >= 50 ? 'med' : 'low',
+  });
+  return out;
+}
+
+/** AEO 結構訊號：FAQ 展開 / 來源點擊相對 content_view 的比例高 → 強化問答+來源結構。 */
+export function strategyAeoStructure(data, cfg) {
+  const out = emptyBucket();
+  const byEvent = new Map((data.ga4?.aeoByEvent ?? []).map((r) => [r.eventName, r.eventCount]));
+  const faq = byEvent.get('faq_open') ?? 0;
+  const refs = byEvent.get('references_expand') ?? 0;
+  if (faq + refs === 0) return out;
+  const views = byEvent.get('content_view') ?? 0;
+  const rate = views > 0 ? round(((faq + refs) / views) * 100) : null;
+  out.writingDirectives.push({
+    directive: `讀者高度使用 FAQ（${faq}）與來源展開（${refs}）${rate !== null ? `，互動率約 ${rate}%` : ''} → 維持「問答式 FAQ + 可驗證來源清單」結構（LLM 抓答案最愛此格式）`,
+    basis: 'aeo',
+    confidence: faq + refs >= 30 ? 'med' : 'low',
+  });
+  return out;
+}

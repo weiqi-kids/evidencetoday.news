@@ -106,3 +106,36 @@ describe('strategyLlmReferral', () => {
     expect(strategyLlmReferral(data, CFG).topicCandidates).toHaveLength(0);
   });
 });
+
+import { strategyCompletionStyle, strategyAeoStructure } from './insight-strategies.mjs';
+
+describe('strategyCompletionStyle', () => {
+  it('讀完率最高的類型 → writingDirective', () => {
+    const data = {
+      ga4: {
+        contentViewByType: [{ content_type: 'ingredient', eventCount: 100 }, { content_type: 'article', eventCount: 100 }],
+        readCompleteByType: [{ content_type: 'ingredient', eventCount: 62 }, { content_type: 'article', eventCount: 30 }],
+      },
+    };
+    const out = strategyCompletionStyle(data, CFG);
+    expect(out.writingDirectives.length).toBeGreaterThanOrEqual(1);
+    expect(out.writingDirectives[0].directive).toContain('ingredient');
+    expect(out.writingDirectives[0].basis).toBe('completion');
+  });
+  it('樣本量為 0 → 無指令（優雅退化）', () => {
+    const data = { ga4: { contentViewByType: [], readCompleteByType: [] } };
+    expect(strategyCompletionStyle(data, CFG).writingDirectives).toHaveLength(0);
+  });
+});
+
+describe('strategyAeoStructure', () => {
+  it('FAQ/來源互動量高 → 強化結構指令', () => {
+    const data = { ga4: { aeoByEvent: [{ eventName: 'faq_open', eventCount: 40 }, { eventName: 'references_expand', eventCount: 25 }, { eventName: 'content_view', eventCount: 100 }] } };
+    const out = strategyAeoStructure(data, CFG);
+    expect(out.writingDirectives).toHaveLength(1);
+    expect(out.writingDirectives[0].basis).toBe('aeo');
+  });
+  it('無 AEO 事件 → 無指令', () => {
+    expect(strategyAeoStructure({ ga4: { aeoByEvent: [] } }, CFG).writingDirectives).toHaveLength(0);
+  });
+});
