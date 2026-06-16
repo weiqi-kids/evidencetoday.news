@@ -1,6 +1,6 @@
 # 趨勢新聞自動化 SOP
 
-> 「健康議題雷達」（`/news/`）的內容由 Claude Code scheduled trigger 全自動產出。
+> 「健康議題雷達」（`/news/`）的內容由自動化管線全自動產出。
 > 本文件說明完整流程、日常維運操作、以及常見問題排除。
 
 ---
@@ -9,12 +9,10 @@
 
 | 項目 | 設定 |
 |------|------|
-| 排程方式 | Claude Code Scheduled Trigger |
-| Trigger ID | `trig_01BZVUWus4zzfj5ccCzqcEpG` |
-| Cron | `17 4,10,16,22 * * *` UTC |
-| 台灣時間 | 每日 06:17 / 12:17 / 18:17 / 00:17（共 4 次） |
-| 管理介面 | https://claude.ai/code/scheduled/trig_01BZVUWus4zzfj5ccCzqcEpG |
-| 手動觸發 | 在 Claude Code 中使用 `RemoteTrigger` 工具的 `run` action |
+| 執行方式 | 使用者 server 上的 `cron` 呼叫 `claude -p`（headless）|
+| 環境 | 具 gcloud 服務帳號認證 + 對外網路；可即時呼叫 GA4／GSC／WebSearch |
+| 排程 | 由 server crontab 設定（建議每日數次，與內容節奏對齊）|
+| 手動觸發 | 於 server 直接執行管線指令 |
 
 ---
 
@@ -31,11 +29,13 @@
   │   └─ 素材池為空 → 靜默結束
   │
   ├─ Phase 2：編輯企劃（Sonnet x1）
-  │   └─ 五維度加權評分 → 分組 → 產出撰文工單
+  │   ├─ 執行 `node scripts/audience-insights.mjs`（即時抓 GA4+GSC → 8 策略）
+  │   ├─ topicCandidates 併入素材池（來源標記 internal-demand）
+  │   ├─ 五維度加權評分（話題性維度改吃候選 demandScore）→ 分組 → 撰文工單
   │   └─ 無工單 → 靜默結束
   │
   ├─ Phase 3：平行撰文（Sonnet x n）
-  │   └─ 每份工單一個 agent，照撰文規則產出 markdown
+  │   └─ 每份工單一個 agent，照撰文規則 + 注入 writingDirectives 產出 markdown
   │
   ├─ Phase 4：連結驗證
   │   └─ 確認所有外部連結可連線，死連結剔除
@@ -120,6 +120,15 @@ Commit + push 後，下次排程自動使用新設定。
 - 同主題素材合併為一篇（2-5 則素材）
 - 高分素材（>= 7.0）可單獨成篇
 - 每篇自動判定 `editorPick`（官方政策更新、高證據等級結論修正、平均分 >= 8.0、食安緊急事件）
+
+### 5.3 Audience Insights 注入（GA4/GSC 數據驅動）
+
+Phase 2 執行 `node scripts/audience-insights.mjs`，讀其輸出三桶：
+- **topicCandidates** → 併入素材池一同評分；**話題性(10%)維度改用候選的 `demandScore`**（真實搜尋需求/AI 轉介），其餘四維度照舊。標記 `editorPickHint` 的候選可優先考慮主編選題。
+- **writingDirectives** → Phase 3 撰文 agent 的 prompt 注入。
+- **siteOptimizations** → 寫入 run summary，純人工建議，**不自動編輯既有文章**。
+
+資料空（站點初期）時三桶皆空 → 行為等同未接入。設定見 `data/news-automation-config.json` 的 `audienceInsights`。詳見 `docs/playbooks/audience-insights.md`。
 
 ---
 

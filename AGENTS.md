@@ -29,6 +29,7 @@
 
 1. 準備（讀取 config + 去重紀錄）
 2. 搜尋素材（8 組查詢，平行執行）
+2.5. 執行 `node scripts/audience-insights.mjs`，取得 topicCandidates / writingDirectives / siteOptimizations。將 topicCandidates 併入素材池（話題性維度用 demandScore）；writingDirectives 於撰文時注入；siteOptimizations 列入結尾報告供人工檢視。資料空時略過。
 3. 評分與選題（五維度加權 → 分組 → **產出 n 份工單，有多少合格素材就寫多少篇**）
 4. 撰寫文章（**每份工單各一篇，共 n 篇**，平行撰寫）
 5. **自動審核**（每篇獨立審核，build + frontmatter + 內容品質，不通過就修正，連續 3 輪未改善才判定未收斂）
