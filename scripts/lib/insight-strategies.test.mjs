@@ -139,3 +139,40 @@ describe('strategyAeoStructure', () => {
     expect(strategyAeoStructure({ ga4: { aeoByEvent: [] } }, CFG).writingDirectives).toHaveLength(0);
   });
 });
+
+import { strategyRankBoost, strategyQuestionFaq } from './insight-strategies.mjs';
+
+describe('strategyRankBoost', () => {
+  it('既有頁排名 5–15 且有曝光 → siteOptimization', () => {
+    const data = { gsc: { pageQueries: [{ page: 'https://evidencetoday.news/articles/creatine/', query: '肌酸 劑量', clicks: 0, impressions: 30, ctr: 0, position: 8 }] } };
+    const out = strategyRankBoost(data, CFG);
+    expect(out.siteOptimizations).toHaveLength(1);
+    expect(out.siteOptimizations[0].type).toBe('edit-existing');
+    expect(out.siteOptimizations[0].target).toBe('/articles/creatine/');
+  });
+  it('排名已在前段（<5）→ 不建議', () => {
+    const data = { gsc: { pageQueries: [{ page: 'https://evidencetoday.news/articles/creatine/', query: 'x', clicks: 5, impressions: 30, ctr: 0.1, position: 2 }] } };
+    expect(strategyRankBoost(data, CFG).siteOptimizations).toHaveLength(0);
+  });
+});
+
+describe('strategyQuestionFaq', () => {
+  it('疑問句查詢 + 站內已有對應頁 → 建議補 FAQ（siteOptimization）', () => {
+    const data = { gsc: { queries: [{ query: '肌酸 會不會 傷腎', clicks: 0, impressions: 6, ctr: 0, position: 9 }] }, contentIndex: INDEX };
+    const out = strategyQuestionFaq(data, CFG);
+    expect(out.siteOptimizations).toHaveLength(1);
+    expect(out.siteOptimizations[0].action).toContain('FAQ');
+  });
+  it('疑問句查詢 + 站內無對應頁 → 新主題候選', () => {
+    const data = { gsc: { queries: [{ query: '褪黑激素 安全嗎', clicks: 0, impressions: 8, ctr: 0, position: 20 }] }, contentIndex: INDEX };
+    const out = strategyQuestionFaq(data, CFG);
+    expect(out.topicCandidates).toHaveLength(1);
+    expect(out.topicCandidates[0].source).toBe('question-faq');
+  });
+  it('非疑問句 → 略過', () => {
+    const data = { gsc: { queries: [{ query: '肌酸 功效', clicks: 0, impressions: 8, ctr: 0, position: 20 }] }, contentIndex: INDEX };
+    const out = strategyQuestionFaq(data, CFG);
+    expect(out.topicCandidates).toHaveLength(0);
+    expect(out.siteOptimizations).toHaveLength(0);
+  });
+});

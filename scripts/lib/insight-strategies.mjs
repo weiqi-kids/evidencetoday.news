@@ -144,3 +144,52 @@ export function strategyAeoStructure(data, cfg) {
   });
   return out;
 }
+
+/** 臨門一腳：既有頁排名落在 boostRankMin–boostRankMax 且有曝光 → 補強建議。 */
+export function strategyRankBoost(data, cfg) {
+  const out = emptyBucket();
+  const { boostRankMin, boostRankMax, minImpressions } = cfg.thresholds;
+  for (const row of data.gsc?.pageQueries ?? []) {
+    if (row.position < boostRankMin || row.position > boostRankMax) continue;
+    if (row.impressions < minImpressions) continue;
+    out.siteOptimizations.push({
+      type: 'edit-existing',
+      target: '/' + slugPathFromUrl(row.page),
+      action: '補強內容 / 優化標題與描述',
+      rationale: `查詢「${row.query}」排名 ${round(row.position)}（第一頁邊緣）、曝光 ${row.impressions}，小幅優化即可進前段`,
+    });
+  }
+  return out;
+}
+
+/** 問句查詢→FAQ：疑問句查詢，有對應頁→建議補 FAQ；無→新主題候選。 */
+export function strategyQuestionFaq(data, cfg) {
+  const out = emptyBucket();
+  for (const row of data.gsc?.queries ?? []) {
+    if (!isQuestionQuery(row.query)) continue;
+    if (row.impressions < cfg.thresholds.minImpressions) continue;
+    if (queryHasExistingPage(row.query, data.contentIndex ?? [])) {
+      out.siteOptimizations.push({
+        type: 'edit-existing',
+        target: '(對應既有頁)',
+        action: `新增 FAQ 條目回答「${row.query}」`,
+        rationale: `疑問句查詢曝光 ${row.impressions}、排名 ${round(row.position)}；LLM 偏好引用直接回答問句的 FAQ`,
+      });
+    } else {
+      out.topicCandidates.push({
+        topic: row.query,
+        source: 'question-faq',
+        rationale: `疑問句查詢曝光 ${row.impressions}、站內無對應頁`,
+        demandScore: demandScore({ impressions: row.impressions, position: row.position }),
+        suggestedAngle: `以 FAQ 問答形式直接回答「${row.query}」`,
+        evidence: { impressions: row.impressions, position: round(row.position), aiReferrals: 0, onSiteSearch: 0 },
+      });
+    }
+  }
+  return out;
+}
+
+/** URL → 去掉 origin 的路徑（保留尾段 slug，供 target 顯示）。 */
+function slugPathFromUrl(url) {
+  try { return new URL(url).pathname.replace(/^\/+/, ''); } catch { return slugFromUrl(url); }
+}
