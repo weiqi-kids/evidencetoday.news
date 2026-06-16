@@ -101,15 +101,23 @@ effects 意義：`dispatch`=發出 CustomEvent、`load`=載入 gtag.js、`flush`
 | `trackEvent(name, params)` | 未同意→丟棄；同意但 gtag 未就緒→佇列（超過上限忽略）；就緒→立即發送 |
 | `flushQueue()` | 當 gtagReady=true 時清空佇列 |
 | `setConsent(action)` | 執行狀態機轉換，持久化至 localStorage，按 effects 順序執行 dispatch/load/flush |
+| `bootstrapAnalytics()` | **每頁載入時呼叫**：若 `readConsent() === 'granted'` 就執行 `loadGtag()`，否則 no-op。由 `ConsentBanner` 的 `$effect` 呼叫 |
 | `onConsentChange(cb)` | 訂閱 `CONSENT_EVENT`，回傳 unsubscribe 函數；SSR 環境回傳 no-op |
 | `__resetAnalyticsForTest()` | **僅限測試使用**：重置全部模組私有狀態 |
 
 ### gtag 載入流程
 
+`loadGtag()` 有**兩個進入點**，缺一不可（本站為 Astro MPA，每次換頁都是全新 JS context，模組私有的 `gtagReady`/`queue` 會歸零，故每頁都得重新 bootstrap）：
+
+**A. 首次同意（按下「接受」）**
 1. `setConsent('accept')` → `reduceConsent` 回傳 effects `['dispatch','load','flush']`
 2. `loadGtag()` — 建立 `<script async src="https://www.googletagmanager.com/gtag/js?id=...">` 並 append 至 `document.head`
 3. `gtagReady = true`（dataLayer 會緩衝事件直到遠端腳本載入）
 4. `flushQueue()` — 清空佇列
+
+**B. 回訪 / 後續換頁（同意已為 granted）**
+- `ConsentBanner` mount → `bootstrapAnalytics()` → 偵測到 `granted` → `loadGtag()`（同上 2–4）。
+- **少了 B 會出大包**：gtag 只在「按接受的那一頁」載入，之後每一頁（含回訪）的 `page_view`、`content_view`、`scroll`、`read_complete`、`engaged_view` 全部進佇列後永不送出。此為 2026-06-16 修正的迴歸 bug。
 
 ### setConsent effects 對照
 
@@ -161,17 +169,20 @@ pnpm test                                   # 全套
 ### 職責劃分
 
 - **Banner 只負責 UI**：不直接操作 localStorage / gtag / dataLayer。
-- **全部同意邏輯委由 `analytics.ts`**：`readConsent()`、`setConsent()`、`onConsentChange()`。
+- **全部同意邏輯委由 `analytics.ts`**：`readConsent()`、`setConsent()`、`bootstrapAnalytics()`、`onConsentChange()`。
 
 ### 運作方式
 
 ```
 mount → readConsent()          → status = 'granted'|'denied'|'unset'
+      → bootstrapAnalytics()   → 若已 granted（回訪/換頁）立即 loadGtag()，補回 page_view 與富事件
       → onConsentChange(cb)    → 訂閱外部同意變更（返回 unsubscribe，於 $effect cleanup 呼叫）
 status === 'unset' → 顯示橫幅
 按下「接受」→ status = 'granted'（本地立即隱藏）+ setConsent('accept')（持久化＋載入 gtag）
 按下「拒絕」→ status = 'denied'（本地立即隱藏）+ setConsent('decline')（持久化）
 ```
+
+> **為何 mount 要呼叫 `bootstrapAnalytics()`**：本站為 MPA，每頁全新 context。少了它，gtag 只在「按接受那一頁」載入，回訪與後續換頁全程零追蹤（2026-06-16 修正）。Banner 仍「只負責 UI」——載入決策仍在 `analytics.ts`，Banner 只是觸發點。
 
 ### 修改規則
 

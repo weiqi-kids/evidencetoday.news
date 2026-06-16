@@ -344,6 +344,28 @@ export function setConsent(action: ConsentAction): void {
 }
 
 // ---------------------------------------------------------------------------
+// bootstrapAnalytics
+// ---------------------------------------------------------------------------
+
+/**
+ * Loads gtag on page load when consent has ALREADY been granted (on a previous
+ * visit or a previous page in this MPA).
+ *
+ * Without this, gtag was only ever loaded inside setConsent('accept') — so on
+ * every subsequent full page load (this is a multi-page Astro site, so every
+ * navigation is a fresh JS context) a consented visitor's gtag never loaded:
+ * page_view never fired and every queued reading event sat unsent. Call this
+ * once per page, as early as practical, from a globally-mounted island.
+ *
+ * No-op unless consent is 'granted'. loadGtag() is itself idempotent.
+ */
+export function bootstrapAnalytics(): void {
+  if (readConsent() === 'granted') {
+    loadGtag();
+  }
+}
+
+// ---------------------------------------------------------------------------
 // onConsentChange
 // ---------------------------------------------------------------------------
 

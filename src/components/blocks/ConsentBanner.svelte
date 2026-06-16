@@ -1,5 +1,10 @@
 <script lang="ts">
-  import { readConsent, setConsent, onConsentChange } from '@/utils/analytics';
+  import {
+    readConsent,
+    setConsent,
+    onConsentChange,
+    bootstrapAnalytics,
+  } from '@/utils/analytics';
   import type { ConsentStatus } from '@/data/analytics';
 
   let status = $state<ConsentStatus>('unset');
@@ -7,6 +12,11 @@
   $effect(() => {
     // Read current consent on mount
     status = readConsent();
+
+    // Returning/consented visitor: this is an MPA, so every page load is a
+    // fresh JS context. Load gtag now if consent was already granted —
+    // otherwise only the page where "接受" was clicked would ever be tracked.
+    bootstrapAnalytics();
 
     // Subscribe to future consent changes
     const unsubscribe = onConsentChange((s) => {
