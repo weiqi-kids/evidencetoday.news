@@ -155,10 +155,10 @@ flowchart TB
   "thresholds": {
     "minImpressions": 1,
     "lowRankPosition": 10,
-    "boostRankRange": [5, 15],
+    "boostRankMin": 5,
+    "boostRankMax": 15,
     "trendSurgeRatio": 2.0
   },
-  "demandScoreToTopicalityWeight": 1.0,
   "aiReferralDomains": ["chat.openai.com", "chatgpt.com", "perplexity.ai", "gemini.google.com", "claude.ai", "copilot.microsoft.com"]
 }
 ```

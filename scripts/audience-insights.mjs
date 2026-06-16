@@ -53,7 +53,7 @@ async function main() {
     gscQuery(token, { dimensions: ['query'], startDate: tw(D), endDate: tw(0), rowLimit: 200 }),
     gscQuery(token, { dimensions: ['page', 'query'], startDate: tw(D), endDate: tw(0), rowLimit: 200 }),
     gscQuery(token, { dimensions: ['query'], startDate: tw(T), endDate: tw(0), rowLimit: 200 }),
-    gscQuery(token, { dimensions: ['query'], startDate: tw(2 * T), endDate: tw(T), rowLimit: 200 }),
+    gscQuery(token, { dimensions: ['query'], startDate: tw(2 * T), endDate: tw(T + 1), rowLimit: 200 }),
   ]);
 
   const data = {
