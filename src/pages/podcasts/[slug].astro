@@ -1,6 +1,7 @@
 ---
 import { getCollection, getEntry } from 'astro:content';
 import Media from '@/layouts/Media.astro';
+import EditButton from '@/components/editor/EditButton.svelte';
 import JsonLd from '@/components/seo/JsonLd.astro';
 import ReferenceList from '@/components/blocks/ReferenceList.astro';
 import ArticleCard from '@/components/blocks/ArticleCard.astro';
@@ -101,5 +102,6 @@ const podcastBreadcrumbSchema = { '@context': 'https://schema.org', '@type': 'Br
     {data.references?.length > 0 && <ReferenceList references={data.references} />}
     {hasRelated && <section class="related-content"><h2 class="related-content__title">延伸閱讀</h2><div class="related-content__grid">{relatedArticles.map((a)=><ArticleCard title={a.data.title} description={a.data.description} href={`/articles/${stripExt(a.id)}/`} category="article" author={a.data.author} date={fmtDate(a.data.publishDate)} editorReviewed={a.data.editorReviewed} />)}{relatedMyths.map((m)=><MythCard title={m.data.title} verdictSummary={m.data.verdictSummary} href={`/myths/${stripExt(m.id)}/`} verdict={m.data.verdict} date={fmtDate(m.data.publishDate)} />)}{relatedIngredients.map((i)=><IngredientCard title={i.data.title} description={i.data.description} href={`/ingredients/${stripExt(i.id)}/`} uses={i.data.uses} />)}{relatedVideos.map((v)=><VideoCard title={v.data.title} tldr={v.data.tldr} href={`/videos/${stripExt(v.id)}/`} youtubeId={v.data.youtubeId} />)}</div></section>}
   </Fragment>
+  <EditButton client:idle repoPath={`src/content/podcasts/${entry.id}`} collection="podcasts" slug={slug} />
 </Media>
 <style>.episode-summary{line-height:1.82}.episode-meta{font-family:var(--font-ui);font-size:var(--text-meta);color:color-mix(in oklch,var(--color-ink) 65%,transparent)} .podcast-player{border-radius:var(--radius-card);overflow:hidden;background:white;box-shadow:var(--shadow-card)} .podcast-player__iframe{border:0;display:block} .podcast-section{margin-block:1.5rem 2rem;padding-top:.25rem}.podcast-section__title{margin:0 0 1rem;line-height:1.3;padding-top:.25rem;border:0}.podcast-section__list{display:flex;flex-direction:column;gap:.75rem;margin:0;padding-inline-start:1.25rem} .related-content__grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-card-gap)}@media (max-width:640px){.related-content__grid{grid-template-columns:1fr}}</style>

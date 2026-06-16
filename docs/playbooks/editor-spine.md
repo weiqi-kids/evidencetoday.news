@@ -13,6 +13,13 @@
 
 > 此編輯器是「裝飾層」：真正的寫入安全在 GitHub 端驗證（token 的 repo 寫入權）。前台的 `state` 僅作 CSRF 對照，非密鑰。
 
+> **2026-06 重大強化（影像 / AI / 多集合 / Zod gate）—— 細節見 [`editor-images.md`](./editor-images.md)。**
+> 本份 spine 描述登入 / 面板骨架 / 雙分頁 / 部署輪詢；下列幾點已被強化覆蓋：
+> - **掛載範圍**：EditButton 現掛在全部 6 種內容類型（articles / myths / ingredients / podcasts / videos / news）的 `[slug].astro`，非只 articles + myths。
+> - **SeoFields 不再只有 title + description**：改為 `getCoreFields(collection)` 描述子驅動的混合式表單（核心 widget + 封面選擇器 + 進階 YAML 區）；`category`/`author` 維持自由文字。
+> - **存檔不再是單檔 `putFile`**：改用 `git-commit.ts` 的 `commitFiles()` 把「文章 .mdx + 待提交圖片」打包成單一 commit；存檔前先過 `validateFrontmatter(collection, fm)`（來源 `src/content.schemas.ts`，與 build 同一份 schema）這道 Zod gate。
+> - **影像**：封面 `CoverField`、內文 `BodyEditor` 工具列鈕、共用 `ImagePicker`（AI 生成 / 找圖庫 / 上傳 / 既有圖庫）+ 瀏覽器端壓縮 + 關閉前「保留生成圖」歸檔。
+
 ## 架構總覽
 
 ```mermaid

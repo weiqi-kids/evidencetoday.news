@@ -10,6 +10,9 @@
     { value: 'articles', label: '健康文章' },
     { value: 'myths', label: '迷思查證' },
     { value: 'ingredients', label: '成分解析' },
+    { value: 'podcasts', label: 'Podcast' },
+    { value: 'videos', label: '短影音' },
+    { value: 'news', label: '趨勢新聞' },
   ];
   let collection = $state('articles');
   let title = $state('');
@@ -47,8 +50,10 @@
     if (!s) return;
     slug = s;
     repoPath = `src/content/${collection}/${slug}.mdx`;
+    // 只帶最小必填（標題 + 發佈日期）；其餘欄位在編輯器表單/進階 YAML 補齊，
+    // 由 content.schemas 的 Zod gate 把關（每個集合必填欄位不同，不在此硬塞）。
     initialDoc = {
-      frontmatter: { title: title.trim(), description: '', publishDate: new Date().toISOString().slice(0, 10) },
+      frontmatter: { title: title.trim(), publishDate: new Date().toISOString().slice(0, 10) },
       body: '',
     };
     open = true;

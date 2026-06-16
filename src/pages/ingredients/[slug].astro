@@ -1,6 +1,7 @@
 ---
 import { getCollection, getEntry } from 'astro:content';
 import Article from '@/layouts/Article.astro';
+import EditButton from '@/components/editor/EditButton.svelte';
 import JsonLd from '@/components/seo/JsonLd.astro';
 import TableOfContents from '@/components/blocks/TableOfContents.svelte';
 import ArticleCard from '@/components/blocks/ArticleCard.astro';
@@ -167,6 +168,7 @@ const ingredientBreadcrumbSchema = {
     </Fragment>
   )}
 </Article>
+<EditButton client:idle repoPath={`src/content/ingredients/${entry.id}`} collection="ingredients" slug={slug} />
 <ReadingEngagement client:idle contentType="ingredient" slug={slug} tags={data.tags} hasRelated={hasRelated} />
 
 <style>

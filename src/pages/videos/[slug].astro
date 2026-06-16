@@ -1,6 +1,7 @@
 ---
 import { getCollection, getEntry } from 'astro:content';
 import Base from '@/layouts/Base.astro';
+import EditButton from '@/components/editor/EditButton.svelte';
 import Breadcrumb from '@/components/ui/Breadcrumb.astro';
 import JsonLd from '@/components/seo/JsonLd.astro';
 import ArticleCard from '@/components/blocks/ArticleCard.astro';
@@ -127,6 +128,7 @@ const hasRelatedContent = relatedArticles.length || relatedMyths.length || relat
       {continueWatching.length > 0 && <div><h3>繼續看短影音</h3><div class="related-grid">{continueWatching.map((item) => <VideoCard title={item.data.title} tldr={item.data.tldr} href={`/videos/${stripExt(item.id)}/`} youtubeId={item.data.youtubeId} />)}</div></div>}
     </section>
   </article>
+  <EditButton client:idle repoPath={`src/content/videos/${entry.id}`} collection="videos" slug={slug} />
 </Base>
 
 <style>

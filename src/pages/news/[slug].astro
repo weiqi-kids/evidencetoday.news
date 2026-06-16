@@ -1,6 +1,7 @@
 ---
 import { getCollection, getEntry } from 'astro:content';
 import Base from '@/layouts/Base.astro';
+import EditButton from '@/components/editor/EditButton.svelte';
 import Breadcrumb from '@/components/ui/Breadcrumb.astro';
 import JsonLd from '@/components/seo/JsonLd.astro';
 import ArticleCard from '@/components/blocks/ArticleCard.astro';
@@ -290,6 +291,7 @@ const breadcrumbSchema = {
       </section>
     )}
   </div>
+  <EditButton client:idle repoPath={`src/content/news/${entry.id}`} collection="news" slug={slug} />
 </Base>
 
 <style>
