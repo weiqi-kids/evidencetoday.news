@@ -417,6 +417,30 @@
     "https://www.who.int/news/item/04-06-2026-unsafe-food-causes-866-million-illnesses-and-1.5-million-deaths-annually--young-children-at-highest-risk": {
       "processedAt": "2026-06-16T08:29:14Z",
       "outputFile": "src/content/news/radar-2026-06-16-16-03.md"
+    },
+    "PMID:41338694": {
+      "processedAt": "2026-06-18T07:35:00Z",
+      "outputFile": "src/content/news/radar-2026-06-18-06-01.md"
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12902778/": {
+      "processedAt": "2026-06-18T07:35:00Z",
+      "outputFile": "src/content/news/radar-2026-06-18-06-02.md"
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12816316/": {
+      "processedAt": "2026-06-18T07:35:00Z",
+      "outputFile": "src/content/news/radar-2026-06-18-06-02.md"
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12910210/": {
+      "processedAt": "2026-06-18T07:35:00Z",
+      "outputFile": "src/content/news/radar-2026-06-18-06-02.md"
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12348695/": {
+      "processedAt": "2026-06-18T07:35:00Z",
+      "outputFile": "src/content/news/radar-2026-06-18-06-03.md"
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC11827344/": {
+      "processedAt": "2026-06-18T07:35:00Z",
+      "outputFile": "src/content/news/radar-2026-06-18-06-03.md"
     }
   }
 }
