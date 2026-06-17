@@ -34,7 +34,20 @@ pnpm preview        # 預覽建置結果
 pnpm content:audit  # 掃描內容 AI 感句型 / 模糊引用 / raw enum 外露
 pnpm check:myths    # 闢謠內容品質 gate（發布 myths 前必跑）
 pnpm og:generate    # 生成 OG 圖至 public/og/（1200x630，不提交 repo）
+pnpm perf           # 近 28 天 GA4+GSC 效能快照（唯讀，經營決策用；需 gcloud token）
+pnpm insights       # GA4/GSC 驅動 /news 選題（吐三桶 JSON 給新聞管線）
 ```
+
+---
+
+## § session 啟動行為（每次開工先做）
+
+**每個 session 一開始，先跑 `pnpm perf` 抓真實 GA4+GSC 數據，據此給「經營建議」再進入當次任務。**
+
+- 指令：`pnpm perf`（`scripts/perf-snapshot.mjs`，唯讀、不寫檔；認證見 `docs/playbooks/audience-insights.md` 與記憶 `ga4-insights-auth-setup`）。
+- 建議聚焦：① 哪些查詢在第一頁邊緣（排名 5–15）可小幅優化即進前段；② 哪個主題叢集有曝光牽引力、值得擴寫；③ 流量/曝光趨勢與 AI 導流（referrer）變化；④ 舊→新 slug 改名後的索引回補狀況。
+- 數據為 0 或極低屬正常（站早期）；此時建議偏「衝索引/權威」（見 `docs/playbooks/geo-offsite.md`）而非站內微調。
+- 失敗（無 token/網路）不擋工作：說明一聲、改用既有 GSC/GA4 認知續行。
 
 ---
 
