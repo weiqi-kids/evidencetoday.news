@@ -12,6 +12,8 @@ interface Props {
   category?: 'article' | 'myth' | 'ingredient' | 'podcast' | 'video' | 'news';
   breadcrumbItems: Array<{ label: string; href?: string }>;
   totalItems?: number;
+  noindex?: boolean;
+  robotsFollow?: boolean;
 }
 
 const {
@@ -24,10 +26,12 @@ const {
   category,
   breadcrumbItems,
   totalItems,
+  noindex = false,
+  robotsFollow = false,
 } = Astro.props;
 ---
 
-<Base title={seoTitle ?? `${title}｜本日有據`} description={description} ogTitle={socialTitle} ogDescription={socialDescription ?? description} ogImage={ogImage}>
+<Base title={seoTitle ?? `${title}｜本日有據`} description={description} ogTitle={socialTitle} ogDescription={socialDescription ?? description} ogImage={ogImage} noindex={noindex} robotsFollow={robotsFollow}>
   <div class="list-layout container">
     <Breadcrumb items={breadcrumbItems} />
 

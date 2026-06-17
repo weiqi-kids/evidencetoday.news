@@ -22,6 +22,11 @@
 
 在 `src/content/articles/` 建立 `.mdx` 檔案，檔名即為 URL slug（例如 `my-article.mdx` → `/articles/my-article/`）。
 
+> **Slug 命名規則（必遵守，影響 AEO 與分享）**
+> - 一律用**語意化英文短語**、全小寫、連字號分隔，含主關鍵字（例：`menstrual-pain-primary-vs-secondary`、`vitamin-d-beyond-bone-immune-mood-heart`）。
+> - **禁止無語意的數字／來源序號 slug**（如 `appi-news-63`、`lodes-22`）。舊有此類 slug 已於 2026-06 全數改名並在 `astro.config.mjs` 設轉址，新文章不得再產生。
+> - slug 一旦發布即固定；若必須改名，務必同步在 `astro.config.mjs` 的 `redirects` 補一條 `舊 → 新/`，避免斷連結與流失索引權重。
+
 ```yaml
 ---
 title: "文章標題"

@@ -24,6 +24,8 @@ interface Props {
   ogImage?: string;
   ogType?: string;
   noindex?: boolean;
+  /** 當 noindex 時仍允許跟隨連結（thin 分類頁用 noindex,follow，保留爬蟲穿透內部連結） */
+  robotsFollow?: boolean;
 }
 
 const {
@@ -34,6 +36,7 @@ const {
   ogImage = DEFAULT_OG_IMAGE,
   ogType = 'website',
   noindex = false,
+  robotsFollow = false,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -72,7 +75,7 @@ const websiteSchema = {
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
 
-    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    {noindex && <meta name="robots" content={robotsFollow ? 'noindex, follow' : 'noindex, nofollow'} />}
 
     <!-- Open Graph -->
     <meta property="og:title" content={resolvedOgTitle} />
