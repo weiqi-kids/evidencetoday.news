@@ -43,6 +43,13 @@
   }
   function tagsToText(v) { return Array.isArray(v) ? v.join(', ') : (v ?? ''); }
   function textToTags(t) { return t.split(',').map((s) => s.trim()).filter(Boolean); }
+  // js-yaml 會把 YAML 時間戳 publishDate 解析成 Date 物件；直接 String(Date).slice(0,10)
+  // 會得到 "Sun Jun 07" 之類無效字串，使 <input type="date"> 顯示空白。空白的必填欄位一旦
+  // 被觸碰就會寫回 ''，導致存檔時 z.coerce.date('') 驗證失敗、整筆存檔中止（連同剛選好的封面一起被丟掉）。
+  function toDateInputValue(v) {
+    if (v instanceof Date) return Number.isNaN(v.getTime()) ? '' : v.toISOString().slice(0, 10);
+    return String(v ?? '').slice(0, 10);
+  }
 
   // AI 推薦標籤
   let tagsBusy = $state(false);
@@ -99,7 +106,7 @@
         {:else if f.type === 'date'}
           <label>
             <span>{f.label}{#if f.required}<em> *</em>{/if}</span>
-            <input type="date" value={String(frontmatter[f.key] ?? '').slice(0, 10)} oninput={(e) => setCore(f.key, e.currentTarget.value)} />
+            <input type="date" value={toDateInputValue(frontmatter[f.key])} oninput={(e) => setCore(f.key, e.currentTarget.value)} />
           </label>
         {:else if f.type === 'textarea'}
           <label>

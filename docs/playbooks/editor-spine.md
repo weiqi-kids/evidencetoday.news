@@ -120,6 +120,10 @@ EditorPanel 持有 `frontmatter` + `body` 兩個 `$state`，**兩個分頁編輯
 - `/admin` 排除 sitemap：在 `astro.config.mjs` 用 `sitemap({ filter: (page) => !page.includes('/admin') })`。新增其他隱藏頁要一併加進 filter。
 - 掛 EditButton 的 `repoPath` = `src/content/<collection>/${entry.id}`（`entry.id` 已含副檔名）；`slug` = 去副檔名。新增內容類型時照此模式。
 
+## 常見陷阱
+
+- **`date` 欄位（如 `publishDate`）顯示空白 → 存檔被中止、連封面一起被丟**：`mdx-doc.ts` 的 `parse()` 用 js-yaml，YAML 時間戳會被解析成 **Date 物件**。`SeoFields.svelte` 的 `<input type="date">` 必須用 `toDateInputValue()`（會把 Date 轉成 `toISOString().slice(0,10)`），**不可**直接 `String(frontmatter[key]).slice(0,10)`——那會得到 `"Sun Jun 07"` 之類無效字串，使必填日期欄顯示空白；使用者一旦觸碰該欄就寫回 `''`，存檔時 `z.coerce.date('')` 驗證失敗、整筆 `save()` 中止（`EditorPanel.svelte` 的 Zod gate），剛選好的封面圖也一併沒被 commit。新增任何 `date` 型欄位都要走 `toDateInputValue()`。
+
 ## 測試
 
 純邏輯三檔走 TDD，單元測試在同目錄：
