@@ -92,6 +92,51 @@
 - **去重產生器**：`scripts/used-images.mjs`（接在 `package.json` 的 `prebuild`）掃全部 6 集合內容裡的 Unsplash/Pexels URL，產 `public/admin/used-images.json`（`{ids:[…]}`，已 gitignore，build 時重生）。`CoverField` 載入時 fetch 它當 `exclude` 傳給 worker `/stock`，避免推薦站上用過的圖。識別規則 `provider:id` 必須與 worker `stockImageId()` 一致；改其一要同步另一。
 - **前台封面**：`coverAlt` 已接到 `ArticleCard` / `IngredientCard`（`<img alt>` fallback）與 `news/[slug]` hero（`alt`）；`coverImageCredit` 在 news hero 右下角以 `攝影：…` 浮層顯示（stock 圖授權署名）。articles/ingredients 詳情頁本站設計無大封面圖，故 credit 主要呈現在 news hero 與卡片縮圖 alt。
 
+## 六、封面圖診斷與批次補圖（維運手法）
+
+> 2026-06-17「選了圖卻沒上首頁」案例沉澱的 SOP，遇到「封面沒顯示 / 想批次補封面」直接照這走，別重新摸索。
+
+### A. 先分清是「沒存到」還是「快取舊版」
+
+1. **看線上實際 HTML，不要只信瀏覽器畫面**（瀏覽器/CDN 可能給舊版）：
+   ```bash
+   curl -s https://evidencetoday.news/articles/ -o /tmp/live.html
+   grep -o '<div class="article-card__image article-card__image--fallback"' /tmp/live.html | wc -l   # 佔位圖張數
+   grep -c "<photo-id>" /tmp/live.html   # 某封面 URL 是否在線上
+   ```
+2. **本機建置比對**：`pnpm exec astro build`（跳過 prebuild 的 youtube sync）→ 同樣 grep `dist/articles/index.html` 與 `dist/index.html`。本機有、線上沒有 = 純快取/尚未部署；本機也沒有 = 真的資料問題。
+3. 注意：`本日有據` 在 logo/footer 也會出現，**只有 `article-card__image--fallback` 那個 `<div>` 才是真的佔位卡**（`ArticleCard.astro`；`MythCard` 無封面、不算）。
+4. 哪些文章缺封面：`grep -rLE "^coverImage:" src/content/articles/` 列出沒有 `coverImage` 的檔。
+
+### B. 封面「選了卻沒存到」的已知根因
+
+- `SeoFields.svelte` 的 `date` 欄位曾因 js-yaml 把 `publishDate` 解析成 **Date 物件**而顯示空白，使用者一觸碰即寫回 `''` → `z.coerce.date('')` 驗證失敗 → **整筆 `save()` 中止、連封面一起沒 commit**。已用 `toDateInputValue()` 修掉（細節見 [editor-spine.md「常見陷阱」](./editor-spine.md)）。**任何新增的 `date` 型欄位都要走 `toDateInputValue()`**。
+- 教訓：存檔是「全有全無」的單一 commit（`EditorPanel.save()`）。**任一必填欄位驗證失敗，封面圖就一起被丟**。排查封面沒上時，先確認 Zod gate 有沒有默默擋下。
+
+### C. 用 `gh` token 直接呼叫 `/stock` worker 批次補封面（headless）
+
+不想一篇篇開前台編輯器時，可直接打 AI worker 的 `/stock`（與編輯器同一來源，回真實 Unsplash/Pexels）：
+
+```bash
+TOKEN=$(gh auth token)                         # worker 驗證此 token 對 repo 有 push 權
+curl -s -X POST https://evidencetoday-ai-suggest.lightman-chang.workers.dev/stock \
+  -H "authorization: Bearer $TOKEN" -H "content-type: application/json" \
+  -d '{"keywords":"omega 3 fish oil capsule supplement"}'
+# 回 photos[]：{ full, credit, creditUrl, provider, id }；full 即 coverImage 值
+```
+
+批次補圖流程（照 `CoverField` 的 stock 行為寫 frontmatter）：
+1. 蒐集站上已用過的圖 id（避免重複）：`grep -rhE "^coverImage:" src/content/ | grep -oE "photo-[0-9]+-[a-z0-9]+|photos/[0-9]+" | sort -u`。
+2. 每篇用主題關鍵字打 `/stock`，挑**第一張非重複的 unsplash**（站上慣例多用 unsplash URL）。
+3. **逐張看圖再寫 alt**：下載 `full` 的 `w=400` 版用 Read 工具看，寫準確的繁中 `coverAlt`（無障礙＋符合站上慣例）。
+4. **存檔前 HEAD 驗證每個 URL 回 200**（`ArticleCard` 對 https URL 不檢查存在性，404 會變破圖、比佔位圖更糟）。
+5. 寫進 frontmatter 三欄：`coverAlt` / `coverImage`(=full) / `coverImageCredit`(=credit)。`pnpm build` 後確認佔位圖歸零。
+6. 尊重「有選的用選的圖」：**已有 `coverImage` 的文章不要覆蓋**；只補真的空的。若 rebase 撞到使用者前台剛存的封面，保留對方（theirs）。
+
+### D. 部署行為：`cancelled` ≠ 失敗
+
+GitHub Pages 部署有 concurrency group，**同時只跑一個**。連續 push（例如使用者在前台連存幾次）會讓新部署**取消**還在跑的舊部署 → `gh run list` 看到一排 `cancelled` 是正常的，不是 build fail。只要最新 commit 是目標的祖先，**等最後一筆 `success` 即全部上線**；停止 push 約 5–6 分鐘（含 Pagefind 索引＋連結檢查）會自然完成。等待用 `until gh run list --workflow "Deploy to GitHub Pages" --limit 1 | grep -q completed; do sleep 20; done`。
+
 ## 驗證清單
 
 - `pnpm test`（含 `content.schemas.test.ts`、`git-commit`/`image-compress`/`tags-suggest`、worker `index.test.ts`）全綠。
