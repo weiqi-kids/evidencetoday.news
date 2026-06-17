@@ -11,12 +11,13 @@ function fmtDate(d: Date): string {
 }
 
 export const GET: APIRoute = async () => {
-  const [articles, myths, ingredients, podcasts, videos] = await Promise.all([
+  const [articles, myths, ingredients, podcasts, videos, news] = await Promise.all([
     getCollection('articles', ({ data }) => !data.draft),
     getCollection('myths', ({ data }) => !data.draft),
     getCollection('ingredients', ({ data }) => !data.draft),
     getCollection('podcasts', ({ data }) => !data.draft),
     getCollection('videos', ({ data }) => !data.draft),
+    getCollection('news', ({ data }) => !data.draft),
   ]);
 
   const sortByDate = <T extends { data: { publishDate: Date } }>(arr: T[]) =>
@@ -60,6 +61,13 @@ export const GET: APIRoute = async () => {
   for (const entry of sortByDate(videos)) {
     lines.push(`- ${entry.data.title} | /videos/${stripExt(entry.id)}/ | ${fmtDate(entry.data.publishDate)}`);
     lines.push(`  ${entry.data.description}`);
+  }
+  lines.push('');
+
+  lines.push('## 趨勢新聞');
+  for (const entry of sortByDate(news)) {
+    lines.push(`- ${entry.data.titleDisplay ?? entry.data.title} | /news/${stripExt(entry.id)}/ | ${fmtDate(entry.data.publishDate)}`);
+    lines.push(`  ${entry.data.summary}`);
   }
   lines.push('');
 
