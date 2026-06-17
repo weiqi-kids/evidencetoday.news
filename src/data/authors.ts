@@ -1,5 +1,8 @@
 // 站台層級的外部身分連結（sameAs）。主編羅揚即品牌代表，作者與機構共用同一份。
+// Wikidata 機構實體 Q140265345（本日有據／Evidence Today）擺第一，是最權威的可連結實體，
+// 讓站內 Organization/Person 的 sameAs 與 Wikidata 互相指認，形成站內↔站外閉環（見 docs/playbooks/geo-offsite.md）。
 export const SITE_SAMEAS = [
+  'https://www.wikidata.org/wiki/Q140265345',
   'https://open.firstory.me/user/cm54wunhn07kb01151eda467n/episodes',
   'https://www.youtube.com/channel/UCTejYxFd04qma-LY0_Z17NQ',
 ] as const;
