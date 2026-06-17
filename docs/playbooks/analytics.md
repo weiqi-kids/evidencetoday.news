@@ -14,7 +14,7 @@ src/utils/analytics.test.ts  # TDD 測試（vitest node 環境，含副作用層
 src/layouts/Base.astro       # 全站 inline <script> 每頁呼叫 bootstrapAnalytics()
 ```
 
-> **2026-06-17 變更**：移除底部 Cookie 同意彈窗（`ConsentBanner.svelte`）與隱私頁退出控件（`ConsentReset.svelte`，兩檔已刪除）。GA4 改為**每頁無條件載入**，蒐集基本流量（page_view）。同意狀態機（`setConsent` / `reduceConsent` / `onConsentChange` / `readConsent` / `isTrackable`）保留於 `analytics.ts`，純函數與測試不變，但已不接任何前台 UI；富事件（scroll / engaged_view 等）仍經 `trackEvent` 受 `isTrackable` 把關，consent 未明確 granted 時不送出。
+> **2026-06-17 變更**：移除底部 Cookie 同意彈窗（`ConsentBanner.svelte`）與隱私頁退出控件（`ConsentReset.svelte`，兩檔已刪除）。GA4 改為**每頁無條件載入**，蒐集基本流量（page_view）與全部富事件（scroll / engaged_view 等）。`trackEvent` **不再 consent-gated**，只要 `MEASUREMENT_ID` 有值即送出（設 `''` 可全域停用）。同意狀態機（`setConsent` / `reduceConsent` / `onConsentChange` / `readConsent` / `isTrackable`）保留於 `analytics.ts`，純函數與測試不變，但已不接任何前台 UI、也不再參與 `trackEvent` 把關。
 
 **設計原則：關注點分離**
 
@@ -99,7 +99,7 @@ effects 意義：`dispatch`=發出 CustomEvent、`load`=載入 gtag.js、`flush`
 |---|---|
 | `readConsent()` | 讀取同意狀態（cache → localStorage → 'unset'）。localStorage 拋出時回傳 'unset'，不快取失敗 |
 | `loadGtag()` | 冪等。注入 gtag.js `<script>`，初始化 dataLayer/gtag shim，標記 gtagReady=true，執行 flushQueue |
-| `trackEvent(name, params)` | 未同意→丟棄；同意但 gtag 未就緒→佇列（超過上限忽略）；就緒→立即發送 |
+| `trackEvent(name, params)` | `MEASUREMENT_ID===''`→丟棄；gtag 未就緒→佇列（超過上限忽略）；就緒→立即發送（無同意橫幅後不再受 consent 把關） |
 | `flushQueue()` | 當 gtagReady=true 時清空佇列 |
 | `setConsent(action)` | 執行狀態機轉換，持久化至 localStorage，按 effects 順序執行 dispatch/load/flush |
 | `bootstrapAnalytics()` | **每頁載入時呼叫**：無條件執行 `loadGtag()`（無同意橫幅，GA4 每頁載入蒐集 page_view）。由 `Base.astro` 的 inline `<script>` 呼叫。`loadGtag` 冪等且受 `MEASUREMENT_ID` 守門 |
@@ -151,7 +151,7 @@ pnpm test                                   # 全套
 - **全站 GA4 載入**改由 `src/layouts/Base.astro` 底部 inline `<script>` 負責，每頁無條件呼叫 `bootstrapAnalytics()`。
 - 前台**不再有任何底部同意彈窗**（手機 / 桌機皆無）。
 - 隱私頁（`src/pages/privacy.astro`）「Cookie 與分析工具」段落改為純說明文字，不再嵌入退出控件。
-- 同意狀態機（`setConsent` / `reduceConsent` / `onConsentChange` / `readConsent` / `isTrackable`）保留於 `analytics.ts` 供未來需要時重新接線；目前無前台 UI 觸發 `setConsent`，故 `readConsent()` 恆為 `'unset'`，富事件（scroll / engaged_view 等）經 `trackEvent` 被 `isTrackable` 擋下不送，僅保留 GA4 內建流量量測（page_view 等）。
+- 同意狀態機（`setConsent` / `reduceConsent` / `onConsentChange` / `readConsent` / `isTrackable`）保留於 `analytics.ts` 供未來需要時重新接線；目前無前台 UI 觸發 `setConsent`，`trackEvent` 也不再呼叫 `isTrackable`。富事件（scroll / engaged_view 等）每頁 `bootstrapAnalytics()` 載入 gtag 後即正常送出，與舊版（按「接受」後）收集的資料完整度一致，差別只在沒有同意橫幅。
 
 ### Base.astro 載入片段
 

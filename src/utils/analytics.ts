@@ -274,9 +274,12 @@ function loadGtag(): void {
 // ---------------------------------------------------------------------------
 
 /**
- * Sends a GA4 event, subject to consent and gtag-readiness.
+ * Sends a GA4 event, subject only to gtag-readiness. There is no consent
+ * banner, so events are no longer consent-gated: any configured
+ * MEASUREMENT_ID means the site is collecting analytics, including the rich
+ * reading-engagement events fired by ReadingEngagement.
  *
- * - Consent not granted → event is silently dropped.
+ * - MEASUREMENT_ID === '' → event is silently dropped (tracking disabled).
  * - gtag not yet ready → event is queued (up to MAX_QUEUE; excess ignored).
  * - gtag ready → event is sent immediately via window.gtag.
  */
@@ -284,7 +287,7 @@ export function trackEvent(
   name: string,
   params: Record<string, unknown> = {},
 ): void {
-  if (!isTrackable(readConsent(), MEASUREMENT_ID)) return;
+  if (MEASUREMENT_ID === '') return;
 
   if (!gtagReady) {
     if (queue.length < MAX_QUEUE) {
