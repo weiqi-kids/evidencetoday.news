@@ -31,9 +31,9 @@ ChatGPT 的網路搜尋走 Bing 索引，台灣市場最常被忽略。
 4. 驗證通過後 →「Sitemaps」→ Submit：`https://evidencetoday.news/sitemap-index.xml`
 5. 完成。日後可在此看到 Bing 索引頁數、查詢字詞、被點擊狀況。
 
-- [ ] Bing 帳號建立並加入網站
-- [ ] 驗證碼交給工程 → 回填 → Verify 通過
-- [ ] 提交 sitemap
+- [x] Bing 帳號建立並加入網站（2026-06-17 完成）
+- [x] 驗證 → Verify 通過
+- [x] 提交 sitemap
 
 ## 2. Google Search Console
 
@@ -44,9 +44,9 @@ ChatGPT 的網路搜尋走 Bing 索引，台灣市場最常被忽略。
 3. 提交 sitemap：`https://evidencetoday.news/sitemap-index.xml`
 4. 之後用「網址審查」抽查幾篇文章是否已編入索引。
 
-- [ ] GSC 資源建立
-- [ ] 驗證碼交給工程 → 回填 → 通過
-- [ ] 提交 sitemap，抽查 3 篇已收錄
+- [x] GSC 資源建立（2026-06-17 完成；SA `ga4-insights@yaocare` 已有資源權限，`pnpm perf` 可拉 GSC 資料）
+- [x] 驗證 → 通過
+- [ ] 提交 sitemap，抽查 3 篇已收錄（改名後新 slug 可在此手動送 URL 加速回補索引）
 
 ## 3. Wikidata 機構 entity（C2）
 
@@ -65,8 +65,9 @@ ChatGPT 的網路搜尋走 Bing 索引，台灣市場最常被忽略。
    - **把這個 URL 交給工程**，我加進 `SITE_SAMEAS`（`src/data/authors.ts`），讓 Organization/Person 的 sameAs 多一個權威實體。
 5. （進階）若主編羅揚要獨立 Person item，可比照建立並用 `P50 author` 串接，但非必要。
 
-- [ ] Wikidata item 建立並填 4 項 statement
-- [ ] Q 編號 URL 交給工程回填 SITE_SAMEAS
+- [x] Wikidata item 建立並填 statement（2026-06-17：**Q140265345** 本日有據／Evidence Today；P31 website、P856 官網、P17 Taiwan、P407 Chinese、P571 2026）
+- [x] Q 編號 URL 回填 `SITE_SAMEAS`（`src/data/authors.ts` 第一順位 `https://www.wikidata.org/wiki/Q140265345`）
+- [ ] 後續：累積 1–2 個第三方提及以鞏固 notability（降低被提刪風險）
 
 注意：Wikidata 對「值得收錄性（notability）」有要求，若 item 被提刪，先累積一些第三方報導/引用再建（見下一步）。
 
