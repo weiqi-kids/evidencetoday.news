@@ -464,12 +464,11 @@ describe('analytics side-effects', () => {
   });
 
   // -------------------------------------------------------------------------
-  // bootstrapAnalytics — load gtag on page load when consent already granted
-  // (regression: MPA pages after the accept-click went untracked because gtag
-  // was only ever loaded inside setConsent('accept'))
+  // bootstrapAnalytics — loads gtag on every page load (no consent banner).
+  // GA4 is always loaded so basic traffic (page_view) is collected site-wide.
   // -------------------------------------------------------------------------
 
-  it('bootstrapAnalytics: loads gtag when consent is already "granted"', () => {
+  it('bootstrapAnalytics: loads gtag regardless of stored consent (granted)', () => {
     store.set(CONSENT_KEY, 'granted');
     bootstrapAnalytics();
     const doc = (globalThis as Record<string, unknown>).document as {
@@ -478,30 +477,27 @@ describe('analytics side-effects', () => {
     expect(doc.head.appendChild).toHaveBeenCalledTimes(1);
   });
 
-  it('bootstrapAnalytics: a trackEvent after bootstrap reaches window.gtag', () => {
-    store.set(CONSENT_KEY, 'granted');
-    bootstrapAnalytics();
-    trackEvent('content_view', { content_type: 'myth' });
-    const eventCalls = gtagCalls.filter((c) => c[0] === 'event');
-    expect(eventCalls.length).toBeGreaterThanOrEqual(1);
-    expect(eventCalls[eventCalls.length - 1][1]).toBe('content_view');
-  });
-
-  it('bootstrapAnalytics: does NOT load gtag when consent is "unset"', () => {
+  it('bootstrapAnalytics: loads gtag when consent is "unset" (no banner)', () => {
     bootstrapAnalytics();
     const doc = (globalThis as Record<string, unknown>).document as {
       head: { appendChild: ReturnType<typeof vi.fn> };
     };
-    expect(doc.head.appendChild).not.toHaveBeenCalled();
+    expect(doc.head.appendChild).toHaveBeenCalledTimes(1);
   });
 
-  it('bootstrapAnalytics: does NOT load gtag when consent is "denied"', () => {
+  it('bootstrapAnalytics: loads gtag even when consent is "denied"', () => {
     store.set(CONSENT_KEY, 'denied');
     bootstrapAnalytics();
     const doc = (globalThis as Record<string, unknown>).document as {
       head: { appendChild: ReturnType<typeof vi.fn> };
     };
-    expect(doc.head.appendChild).not.toHaveBeenCalled();
+    expect(doc.head.appendChild).toHaveBeenCalledTimes(1);
+  });
+
+  it('bootstrapAnalytics: fires gtag config (page_view) on load', () => {
+    bootstrapAnalytics();
+    const configCalls = gtagCalls.filter((c) => c[0] === 'config');
+    expect(configCalls.length).toBeGreaterThanOrEqual(1);
   });
 
   // -------------------------------------------------------------------------

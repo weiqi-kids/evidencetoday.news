@@ -32,9 +32,8 @@
 
 | 功能 | 實作位置 | 說明 |
 |---|---|---|
-| GA4 + Cookie 同意 | `src/utils/analytics.ts`、`src/data/analytics.ts`、`ConsentBanner.svelte` | GA4（`G-5JH83LM8X7`）**僅在使用者點「接受」後才載入**，拒絕＝永不載入；同意狀態存 localStorage，跨 island 用 `et:consent-change` 事件協調 |
-| 閱讀互動追蹤 | `ReadingEngagement.svelte`（掛 articles/myths/ingredients 單篇頁） | content_view、scroll(25/50/75/90)、read_complete（三閘）、engaged_view（真實投入時間）、select_content（下一篇）、faq_open、reference_click；全走 consent-gated `trackEvent` |
-| 退出機制 | `ConsentReset.svelte`（隱私頁 `src/pages/privacy.astro`） | 顯示目前選擇 + 「變更我的選擇」撤回同意 |
+| GA4（無同意橫幅） | `src/utils/analytics.ts`、`src/data/analytics.ts`、`src/layouts/Base.astro` inline script | GA4（`G-5JH83LM8X7`）**每頁載入**蒐集基本流量（page_view）；無底部 Cookie 同意彈窗。`Base.astro` 的 `<script>` 每頁呼叫 `bootstrapAnalytics()`。設 `MEASUREMENT_ID=''` 可全域停用 |
+| 閱讀互動追蹤 | `ReadingEngagement.svelte`（掛 articles/myths/ingredients 單篇頁） | content_view、scroll(25/50/75/90)、read_complete（三閘）、engaged_view（真實投入時間）、select_content（下一篇）、faq_open、reference_click；走 `trackEvent`（仍受 `isTrackable` 把關，consent 未明確 granted 時不送富事件，僅保留 GA4 內建流量量測） |
 
 > 完整事件分類、自訂維度、GA4 後台設定與報表配方見 **`docs/playbooks/analytics.md`**。
 
