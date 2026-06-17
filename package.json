@@ -15,7 +15,8 @@
     "content:audit": "node scripts/audit-ai-tone.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
-    "insights": "node scripts/audience-insights.mjs"
+    "insights": "node scripts/audience-insights.mjs",
+    "perf": "node scripts/perf-snapshot.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.14",
