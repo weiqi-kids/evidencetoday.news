@@ -8,12 +8,13 @@
 ## 架構概覽
 
 ```
-src/data/analytics.ts                     # 設定常數（MEASUREMENT_ID、同意鍵值、滾動里程碑等）
-src/utils/analytics.ts                    # 純邏輯 helpers ＋ 副作用層（同一檔，分兩段）
-src/utils/analytics.test.ts              # TDD 測試（vitest node 環境，含副作用層 stub 測試）
-src/components/blocks/ConsentBanner.svelte # Cookie 同意橫幅 island（client:idle）
-src/layouts/Base.astro                     # 全站掛載 ConsentBanner
+src/data/analytics.ts        # 設定常數（MEASUREMENT_ID、滾動里程碑等）
+src/utils/analytics.ts       # 純邏輯 helpers ＋ 副作用層（同一檔，分兩段）
+src/utils/analytics.test.ts  # TDD 測試（vitest node 環境，含副作用層 stub 測試）
+src/layouts/Base.astro       # 全站 inline <script> 每頁呼叫 bootstrapAnalytics()
 ```
+
+> **2026-06-17 變更**：移除底部 Cookie 同意彈窗（`ConsentBanner.svelte`）與隱私頁退出控件（`ConsentReset.svelte`，兩檔已刪除）。GA4 改為**每頁無條件載入**，蒐集基本流量（page_view）與全部富事件（scroll / engaged_view 等）。`trackEvent` **不再 consent-gated**，只要 `MEASUREMENT_ID` 有值即送出（設 `''` 可全域停用）。同意狀態機（`setConsent` / `reduceConsent` / `onConsentChange` / `readConsent` / `isTrackable`）保留於 `analytics.ts`，純函數與測試不變，但已不接任何前台 UI、也不再參與 `trackEvent` 把關。
 
 **設計原則：關注點分離**
 
@@ -98,26 +99,23 @@ effects 意義：`dispatch`=發出 CustomEvent、`load`=載入 gtag.js、`flush`
 |---|---|
 | `readConsent()` | 讀取同意狀態（cache → localStorage → 'unset'）。localStorage 拋出時回傳 'unset'，不快取失敗 |
 | `loadGtag()` | 冪等。注入 gtag.js `<script>`，初始化 dataLayer/gtag shim，標記 gtagReady=true，執行 flushQueue |
-| `trackEvent(name, params)` | 未同意→丟棄；同意但 gtag 未就緒→佇列（超過上限忽略）；就緒→立即發送 |
+| `trackEvent(name, params)` | `MEASUREMENT_ID===''`→丟棄；gtag 未就緒→佇列（超過上限忽略）；就緒→立即發送（無同意橫幅後不再受 consent 把關） |
 | `flushQueue()` | 當 gtagReady=true 時清空佇列 |
 | `setConsent(action)` | 執行狀態機轉換，持久化至 localStorage，按 effects 順序執行 dispatch/load/flush |
-| `bootstrapAnalytics()` | **每頁載入時呼叫**：若 `readConsent() === 'granted'` 就執行 `loadGtag()`，否則 no-op。由 `ConsentBanner` 的 `$effect` 呼叫 |
+| `bootstrapAnalytics()` | **每頁載入時呼叫**：無條件執行 `loadGtag()`（無同意橫幅，GA4 每頁載入蒐集 page_view）。由 `Base.astro` 的 inline `<script>` 呼叫。`loadGtag` 冪等且受 `MEASUREMENT_ID` 守門 |
 | `onConsentChange(cb)` | 訂閱 `CONSENT_EVENT`，回傳 unsubscribe 函數；SSR 環境回傳 no-op |
 | `__resetAnalyticsForTest()` | **僅限測試使用**：重置全部模組私有狀態 |
 
 ### gtag 載入流程
 
-`loadGtag()` 有**兩個進入點**，缺一不可（本站為 Astro MPA，每次換頁都是全新 JS context，模組私有的 `gtagReady`/`queue` 會歸零，故每頁都得重新 bootstrap）：
+本站為 Astro MPA，每次換頁都是全新 JS context，模組私有的 `gtagReady`/`queue` 會歸零，故**每頁都得重新 bootstrap**。`Base.astro` 的 inline `<script>` 在每頁呼叫 `bootstrapAnalytics()`：
 
-**A. 首次同意（按下「接受」）**
-1. `setConsent('accept')` → `reduceConsent` 回傳 effects `['dispatch','load','flush']`
-2. `loadGtag()` — 建立 `<script async src="https://www.googletagmanager.com/gtag/js?id=...">` 並 append 至 `document.head`
+1. `bootstrapAnalytics()` → 無條件 `loadGtag()`
+2. `loadGtag()` — 建立 `<script async src="https://www.googletagmanager.com/gtag/js?id=...">` 並 append 至 `document.head`，呼叫 `gtag('js', ...)`、`gtag('config', MEASUREMENT_ID, GA_CONFIG)`（`send_page_view: true` 故 page_view 自動送出）
 3. `gtagReady = true`（dataLayer 會緩衝事件直到遠端腳本載入）
 4. `flushQueue()` — 清空佇列
 
-**B. 回訪 / 後續換頁（同意已為 granted）**
-- `ConsentBanner` mount → `bootstrapAnalytics()` → 偵測到 `granted` → `loadGtag()`（同上 2–4）。
-- **少了 B 會出大包**：gtag 只在「按接受的那一頁」載入，之後每一頁（含回訪）的 `page_view`、`content_view`、`scroll`、`read_complete`、`engaged_view` 全部進佇列後永不送出。此為 2026-06-16 修正的迴歸 bug。
+> `loadGtag` 冪等：`gtagReady`/`gtagFailed` 任一為 true、`MEASUREMENT_ID === ''` 或 SSR 環境（`document` undefined）時提前返回。
 
 ### setConsent effects 對照
 
@@ -144,52 +142,27 @@ pnpm test                                   # 全套
 
 ---
 
-## ConsentReset island（`src/components/blocks/ConsentReset.svelte`）
+## 同意橫幅與退出控件（已移除）
 
-隱私頁的同意狀態顯示與重置控件，掛載於 `src/pages/privacy.astro`（`<ConsentReset client:idle />`）。
+`ConsentBanner.svelte`（全站底部 Cookie 同意橫幅）與 `ConsentReset.svelte`（隱私頁退出控件）已於 **2026-06-17 刪除**。原因：MPA 每頁換頁都重新顯示底部彈窗，嚴重干擾閱讀，文案也易使讀者產生被追蹤感。
 
-### 職責
+現況：
 
-- 在掛載時讀取目前同意狀態（`readConsent()`），並透過 `onConsentChange` 訂閱後續變更。
-- 以文字顯示目前狀態：`'granted'` → 「目前狀態：已接受分析」、`'denied'` → 「目前狀態：已拒絕分析」、`'unset'` → 「目前狀態：尚未選擇」。
-- 提供「變更我的選擇」按鈕，點擊後呼叫 `setConsent('reset')`，並顯示確認訊息「已清除，重新整理或前往其他頁面即可重新選擇。」。
-- 重置後狀態文字自動更新為「尚未選擇」（由 `onConsentChange` 驅動）。
+- **全站 GA4 載入**改由 `src/layouts/Base.astro` 底部 inline `<script>` 負責，每頁無條件呼叫 `bootstrapAnalytics()`。
+- 前台**不再有任何底部同意彈窗**（手機 / 桌機皆無）。
+- 隱私頁（`src/pages/privacy.astro`）「Cookie 與分析工具」段落改為純說明文字，不再嵌入退出控件。
+- 同意狀態機（`setConsent` / `reduceConsent` / `onConsentChange` / `readConsent` / `isTrackable`）保留於 `analytics.ts` 供未來需要時重新接線；目前無前台 UI 觸發 `setConsent`，`trackEvent` 也不再呼叫 `isTrackable`。富事件（scroll / engaged_view 等）每頁 `bootstrapAnalytics()` 載入 gtag 後即正常送出，與舊版（按「接受」後）收集的資料完整度一致，差別只在沒有同意橫幅。
 
-### 修改規則
+### Base.astro 載入片段
 
-- 不直接讀寫 `localStorage`，不直接呼叫 `window.gtag`；所有同意邏輯委由 `analytics.ts`。
-- 樣式只用 `tokens.css` CSS custom properties，禁止寫死色值或 `!important`。
-
----
-
-## ConsentBanner island（`src/components/blocks/ConsentBanner.svelte`）
-
-全站 Cookie 同意橫幅，掛載於 `src/layouts/Base.astro`（`<ConsentBanner client:idle />`，在 `<Footer />` 之後）。
-
-### 職責劃分
-
-- **Banner 只負責 UI**：不直接操作 localStorage / gtag / dataLayer。
-- **全部同意邏輯委由 `analytics.ts`**：`readConsent()`、`setConsent()`、`bootstrapAnalytics()`、`onConsentChange()`。
-
-### 運作方式
-
-```
-mount → readConsent()          → status = 'granted'|'denied'|'unset'
-      → bootstrapAnalytics()   → 若已 granted（回訪/換頁）立即 loadGtag()，補回 page_view 與富事件
-      → onConsentChange(cb)    → 訂閱外部同意變更（返回 unsubscribe，於 $effect cleanup 呼叫）
-status === 'unset' → 顯示橫幅
-按下「接受」→ status = 'granted'（本地立即隱藏）+ setConsent('accept')（持久化＋載入 gtag）
-按下「拒絕」→ status = 'denied'（本地立即隱藏）+ setConsent('decline')（持久化）
+```astro
+<script>
+  import { bootstrapAnalytics } from '@/utils/analytics';
+  bootstrapAnalytics();
+</script>
 ```
 
-> **為何 mount 要呼叫 `bootstrapAnalytics()`**：本站為 MPA，每頁全新 context。少了它，gtag 只在「按接受那一頁」載入，回訪與後續換頁全程零追蹤（2026-06-16 修正）。Banner 仍「只負責 UI」——載入決策仍在 `analytics.ts`，Banner 只是觸發點。
-
-### 修改規則
-
-- 不在 Banner 內直接讀寫 `localStorage`，不直接呼叫 `window.gtag`。
-- 按鈕文字為「接受」/「拒絕」；說明文字須維持台灣繁體中文、禁聳動用語。
-- 樣式只用 `tokens.css` CSS custom properties，禁止寫死 oklch/hex 色值或 `!important`。
-- 若需新增文案連結，目標應為 `/privacy/` 或其他站內政策頁。
+> 若未來要恢復同意流程，重新掛載一個呼叫 `setConsent('accept'|'decline')` 的 island，並把 `bootstrapAnalytics()` 改回 consent-gated 即可；純邏輯與測試仍齊備。
 
 ---
 

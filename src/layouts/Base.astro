@@ -1,7 +1,6 @@
 ---
 import TopNav from '@/components/blocks/TopNav.astro';
 import Footer from '@/components/blocks/Footer.astro';
-import ConsentBanner from '@/components/blocks/ConsentBanner.svelte';
 import JsonLd from '@/components/seo/JsonLd.astro';
 import '@/styles/global.css';
 import '@/styles/rwd-fixes.css';
@@ -108,7 +107,12 @@ const websiteSchema = {
       <slot />
     </main>
     <Footer />
-    <ConsentBanner client:idle />
     <slot name="scripts" />
+    <script>
+      // GA4 載入無同意橫幅；每次換頁（MPA 全新 context）都重新 bootstrap，
+      // 確保 page_view 正常送出。loadGtag 本身冪等且受 MEASUREMENT_ID 守門。
+      import { bootstrapAnalytics } from '@/utils/analytics';
+      bootstrapAnalytics();
+    </script>
   </body>
 </html>

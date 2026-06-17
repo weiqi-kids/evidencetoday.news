@@ -274,9 +274,12 @@ function loadGtag(): void {
 // ---------------------------------------------------------------------------
 
 /**
- * Sends a GA4 event, subject to consent and gtag-readiness.
+ * Sends a GA4 event, subject only to gtag-readiness. There is no consent
+ * banner, so events are no longer consent-gated: any configured
+ * MEASUREMENT_ID means the site is collecting analytics, including the rich
+ * reading-engagement events fired by ReadingEngagement.
  *
- * - Consent not granted → event is silently dropped.
+ * - MEASUREMENT_ID === '' → event is silently dropped (tracking disabled).
  * - gtag not yet ready → event is queued (up to MAX_QUEUE; excess ignored).
  * - gtag ready → event is sent immediately via window.gtag.
  */
@@ -284,7 +287,7 @@ export function trackEvent(
   name: string,
   params: Record<string, unknown> = {},
 ): void {
-  if (!isTrackable(readConsent(), MEASUREMENT_ID)) return;
+  if (MEASUREMENT_ID === '') return;
 
   if (!gtagReady) {
     if (queue.length < MAX_QUEUE) {
@@ -348,21 +351,17 @@ export function setConsent(action: ConsentAction): void {
 // ---------------------------------------------------------------------------
 
 /**
- * Loads gtag on page load when consent has ALREADY been granted (on a previous
- * visit or a previous page in this MPA).
+ * Loads gtag on every page load. The site no longer shows a cookie-consent
+ * banner: GA4 is always loaded so basic traffic (page_view via GA_CONFIG's
+ * send_page_view) is collected site-wide.
  *
- * Without this, gtag was only ever loaded inside setConsent('accept') — so on
- * every subsequent full page load (this is a multi-page Astro site, so every
- * navigation is a fresh JS context) a consented visitor's gtag never loaded:
- * page_view never fired and every queued reading event sat unsent. Call this
- * once per page, as early as practical, from a globally-mounted island.
- *
- * No-op unless consent is 'granted'. loadGtag() is itself idempotent.
+ * This is a multi-page Astro site, so every navigation is a fresh JS context —
+ * call this once per page, as early as practical, so gtag re-bootstraps and
+ * page_view fires on each page. loadGtag() is idempotent and still guarded by
+ * MEASUREMENT_ID (set it to '' in src/data/analytics.ts to disable globally).
  */
 export function bootstrapAnalytics(): void {
-  if (readConsent() === 'granted') {
-    loadGtag();
-  }
+  loadGtag();
 }
 
 // ---------------------------------------------------------------------------
