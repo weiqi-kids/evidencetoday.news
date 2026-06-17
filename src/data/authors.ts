@@ -8,6 +8,8 @@ export interface AuthorInfo {
   name: string;
   url: string;
   jobTitle: string;
+  /** 專業背景敘述，會進 Person JSON-LD 的 description，是 LLM/Knowledge Graph 判斷作者權威（E-E-A-T）的關鍵欄位。須與 about.md 主編簡介一致、精準不浮誇。 */
+  description: string;
   knowsAbout: string[];
   sameAs: string[];
 }
@@ -18,7 +20,18 @@ export const AUTHORS: Record<string, AuthorInfo> = {
     name: '羅揚',
     url: 'https://evidencetoday.news/authors/luo-yang/',
     jobTitle: '本日有據主編',
-    knowsAbout: ['健康識讀', '營養科學', '預防醫學', '公共衛生', '熟齡健康溝通', '保健食品觀念'],
+    description:
+      '本日有據（Evidence Today）主編，具牙醫學與口腔衛生材料研究背景，長期關注健康識讀、營養科學、預防醫學、公共衛生與熟齡健康溝通；主持 Podcast《喜聞樂健》。',
+    knowsAbout: [
+      '牙醫學',
+      '口腔衛生材料',
+      '健康識讀',
+      '營養科學',
+      '預防醫學',
+      '公共衛生',
+      '熟齡健康溝通',
+      '保健食品觀念',
+    ],
     sameAs: [...SITE_SAMEAS],
   },
 };

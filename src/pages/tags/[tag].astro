@@ -80,6 +80,8 @@ const social = tagSocial(tag);
   ogImage={social.image}
   breadcrumbItems={[{ label: '首頁', href: '/' }, { label: `#${tag}` }]}
   totalItems={entries.length}
+  noindex={true}
+  robotsFollow={true}
 >
   <div class="tag-grid">
     {entries.map((item: TaggedEntry) => {

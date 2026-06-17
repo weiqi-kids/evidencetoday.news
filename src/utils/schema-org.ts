@@ -53,6 +53,7 @@ interface PersonSchema {
   '@id'?: string;
   url?: string;
   jobTitle?: string;
+  description?: string;
   knowsAbout?: string[];
   sameAs?: string[];
 }
@@ -68,6 +69,7 @@ export function buildPerson(authorName: string): PersonSchema {
     name: info.name,
     url: info.url,
     jobTitle: info.jobTitle,
+    description: info.description,
     knowsAbout: info.knowsAbout,
     sameAs: info.sameAs,
   };

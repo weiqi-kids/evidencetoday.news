@@ -11,6 +11,15 @@ For both pages, avoid build-time `existsSync` checks for the portrait. Render th
 
 When the hero uses `<picture>`, also set `display: block; width: 100%;` on the picture so it fills its grid column (see `.editor-portrait` in the author page styles). Without this, picture's default inline display collapses the portrait width.
 
+## 作者 JSON-LD 與專業背景（E-E-A-T）
+
+作者結構化資料由 `buildPerson()`（`src/utils/schema-org.ts`）依 `AUTHORS` registry（`src/data/authors.ts`）產生，輸出 `name / url / jobTitle / description / knowsAbout / sameAs`。
+
+- `description` 是 LLM 與 Google Knowledge Graph 判斷作者權威的關鍵欄位 — 把專業背景（如「具牙醫學與口腔衛生材料研究背景」）寫進機器可讀層，不要只留在 `about.md` 內文。
+- **三處須一致**：`AUTHORS[羅揚].description`、`src/data/policies/about.md` 主編簡介、`authors/luo-yang/` 作者頁敘述。改一處要同步。
+- 精準原則：照實寫「背景／研究」，**不得浮誇成「執業醫師」等未經證實的執照宣稱**（違反 YMYL 與不實醫療宣稱紅線）。
+- `knowsAbout` 為主題標籤陣列，可含專業領域（牙醫學、口腔衛生材料）與關注議題。
+
 ## Editor meta card (右側 at-a-glance)
 
 `.editor-meta` 卡片提供快速一覽資訊，與肖像並列。目前欄位：
