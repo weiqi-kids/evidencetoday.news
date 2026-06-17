@@ -56,6 +56,12 @@ interface PersonSchema {
   description?: string;
   knowsAbout?: string[];
   sameAs?: string[];
+  hasCredential?: {
+    '@type': 'EducationalOccupationalCredential';
+    name: string;
+    credentialCategory: string;
+    recognizedBy?: { '@type': 'GovernmentOrganization'; name: string };
+  };
 }
 
 export function buildPerson(authorName: string): PersonSchema {
@@ -72,5 +78,22 @@ export function buildPerson(authorName: string): PersonSchema {
     description: info.description,
     knowsAbout: info.knowsAbout,
     sameAs: info.sameAs,
+    ...(info.hasCredential
+      ? {
+          hasCredential: {
+            '@type': 'EducationalOccupationalCredential' as const,
+            name: info.hasCredential.name,
+            credentialCategory: info.hasCredential.credentialCategory,
+            ...(info.hasCredential.recognizedBy
+              ? {
+                  recognizedBy: {
+                    '@type': 'GovernmentOrganization' as const,
+                    name: info.hasCredential.recognizedBy,
+                  },
+                }
+              : {}),
+          },
+        }
+      : {}),
   };
 }

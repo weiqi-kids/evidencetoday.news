@@ -15,6 +15,12 @@ export interface AuthorInfo {
   description: string;
   knowsAbout: string[];
   sameAs: string[];
+  /** 專業憑證（schema.org EducationalOccupationalCredential）。只放真實、可被外部查證的憑證；目前為自述，待補可驗證 sameAs（公會註冊頁）後權威才完整。 */
+  hasCredential?: {
+    name: string;
+    credentialCategory: string;
+    recognizedBy?: string;
+  };
 }
 
 // 作者資料 registry。key 必須與內容 frontmatter 的 author 字串完全一致。
@@ -22,9 +28,14 @@ export const AUTHORS: Record<string, AuthorInfo> = {
   羅揚: {
     name: '羅揚',
     url: 'https://evidencetoday.news/authors/luo-yang/',
-    jobTitle: '本日有據主編',
+    jobTitle: '牙醫師、本日有據主編',
     description:
-      '本日有據（Evidence Today）主編，具牙醫學與口腔衛生材料研究背景，長期關注健康識讀、營養科學、預防醫學、公共衛生與熟齡健康溝通；主持 Podcast《喜聞樂健》。',
+      '本日有據（Evidence Today）主編，為領有執業執照的牙醫師，具口腔衛生材料研究背景，長期關注健康識讀、營養科學、預防醫學、公共衛生與熟齡健康溝通；主持 Podcast《喜聞樂健》。',
+    hasCredential: {
+      name: '牙醫師執業執照',
+      credentialCategory: 'professional license',
+      recognizedBy: '中華民國衛生福利部',
+    },
     knowsAbout: [
       '牙醫學',
       '口腔衛生材料',
