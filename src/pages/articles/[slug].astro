@@ -44,6 +44,9 @@ const citationAnswer =
 
 
 /* Resolve related content */
+const relatedArticles = data.relatedArticles
+  ? (await Promise.all(data.relatedArticles.map((id) => getEntry('articles', id)))).filter(Boolean)
+  : [];
 const relatedMyths = data.relatedMyths
   ? (await Promise.all(data.relatedMyths.map((id) => getEntry('myths', id)))).filter(Boolean)
   : [];
@@ -57,13 +60,17 @@ const relatedPodcasts = data.relatedPodcasts
   ? (await Promise.all(data.relatedPodcasts.map((id) => getEntry('podcasts', id)))).filter(Boolean)
   : [];
 
-const hasRelated = relatedMyths.length > 0 || relatedIngredients.length > 0 || relatedVideos.length > 0 || relatedPodcasts.length > 0;
+const hasRelated = relatedArticles.length > 0 || relatedMyths.length > 0 || relatedIngredients.length > 0 || relatedVideos.length > 0 || relatedPodcasts.length > 0;
 
 /* JSON-LD structured data */
 const slug = entry.id.replace(/\.[^.]+$/, '');
-const reviewedBy = data.reviewer
+// 只有「審閱者 ≠ 作者」時才輸出 Person 層級的 reviewedBy（獨立審閱才有 E-E-A-T 價值；
+// 自己審自己是 schema.org reviewedBy 的反模式，Google/LLM 會折價）。審閱者等於作者、
+// 或僅 editorReviewed 時，退為機構層級（本日有據編輯室背書），誠實且不灌水。
+const independentReviewer = data.reviewer && data.reviewer !== data.author;
+const reviewedBy = independentReviewer
   ? buildPerson(data.reviewer)
-  : data.editorReviewed
+  : data.reviewer || data.editorReviewed
     ? { '@type': 'Organization', name: '本日有據', url: 'https://evidencetoday.news/' }
     : null;
 const articleSchema = {
@@ -152,6 +159,19 @@ const breadcrumbSchema = {
       <section class="related-content">
         <h2 class="related-content__title">相關內容</h2>
         <div class="related-content__grid">
+          {relatedArticles.map((a) => (
+            <ArticleCard
+              title={a.data.title}
+              description={a.data.description}
+              href={`/articles/${stripExt(a.id)}/`}
+              category="article"
+              author={a.data.author}
+              date={fmtDate(a.data.publishDate)}
+              editorReviewed={a.data.editorReviewed}
+              coverImage={a.data.coverImage}
+              coverAlt={a.data.coverAlt}
+            />
+          ))}
           {relatedMyths.map((m) => (
             <MythCard
               title={m.data.title}

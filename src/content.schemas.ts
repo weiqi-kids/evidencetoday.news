@@ -124,6 +124,8 @@ export const articlesSchema = z.object({
     )
     .optional(),
   references: z.array(referenceSchema).optional(),
+  // relatedArticles：article→article 內鏈，topic cluster（hub↔spoke）的結構基礎。
+  relatedArticles: z.array(z.string()).optional(),
   relatedMyths: z.array(z.string()).optional(),
   relatedIngredients: z.array(z.string()).optional(),
   relatedVideos: z.array(z.string()).optional(),

@@ -27,6 +27,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # 需要前一個 commit 才能用 git diff 算出本次異動的內容頁（IndexNow 用）。
+          fetch-depth: 2
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -76,6 +79,17 @@ jobs:
         uses: actions/upload-pages-artifact@v5
         with:
           path: dist/
+
+      # 只在 push（非 cron/手動）時，把本次異動的內容頁推送 IndexNow（Bing→ChatGPT 搜尋接地）。
+      # 失敗不阻擋 deploy；只送存在於 sitemap 的 URL（見 scripts/indexnow-submit.mjs）。
+      - name: Notify IndexNow (changed content pages)
+        if: github.event_name == 'push'
+        env:
+          INDEXNOW_KEY: d53c801c406ed5f98e8db8f1ac17bbbe
+        run: |
+          BASE=$(git rev-parse HEAD^ 2>/dev/null || true)
+          if [ -z "$BASE" ]; then echo "[indexnow] 無父 commit，跳過。"; exit 0; fi
+          git diff --name-only "$BASE" HEAD -- 'src/content/' | node scripts/indexnow-submit.mjs
 
   deploy:
     needs: build
