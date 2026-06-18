@@ -31,12 +31,14 @@
 2. 搜尋素材（8 組查詢，平行執行）
 2.5. 執行 `node scripts/audience-insights.mjs`，取得 topicCandidates / writingDirectives / siteOptimizations。將 topicCandidates 併入素材池（話題性維度用 demandScore）；writingDirectives 於撰文時注入；siteOptimizations 列入結尾報告供人工檢視。資料空時略過。
 3. 評分與選題（五維度加權 → 分組 → **產出 n 份工單，有多少合格素材就寫多少篇**）
-4. 撰寫文章（**每份工單各一篇，共 n 篇**，平行撰寫）
-5. **自動審核**（每篇獨立審核，build + frontmatter + 內容品質，不通過就修正，連續 3 輪未改善才判定未收斂）
+4. 撰寫文章（**每份工單各一篇，共 n 篇**，**用 sub-agent（Agent 工具）並行**：同一則訊息內一次發起全部撰文 sub-agent，每個只寫一篇，不要逐一發起等前一個結束）
+5. **自動審核**（每篇獨立審核，build + frontmatter + 內容品質，不通過就修正，連續 3 輪未改善才判定未收斂；**每輪的各審核角色也用 sub-agent 一次發起並行**，收齊回饋再彙整修稿）
 6. 更新去重紀錄
 7. 發布（push main 或開 PR）
 
 **關鍵要求：不要只寫一篇。** 有多少合格素材就分組成多少篇文章。步驟 5 的審核必須全部通過才能進入步驟 6。開出的 PR 應該是可以直接 merge 的狀態。
+
+**並行紀律：** 步驟 4 撰文與步驟 5 每輪審核都用 sub-agent（Agent 工具，subagent_type=general-purpose）並行——**在同一則訊息內一次發起多個 sub-agent**（如 3 篇撰文一次發 3 個）。注意審核的多輪收斂（輪1→修稿→輪2→修稿）本質上是**串行**的：每輪內的多個審核角色並行，但輪與輪之間必須等修稿完成，這是品質收斂成本（一輪完整跑約佔總時長 6 成），非並行缺陷，無人值守凌晨跑可接受。
 
 ### 重要規則
 

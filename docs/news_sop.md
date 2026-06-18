@@ -66,7 +66,7 @@
 | 4 | 衛福部新聞 | `site:mohw.gov.tw` — 健康、食安 | 5 |
 | 5 | 衛福部疾管署 | `site:cdc.gov.tw` — 疫情、傳染病 | 5 |
 | 6 | Nature/Lancet/BMJ | 營養、健康、臨床試驗 | 10 |
-| 7 | 健康新聞媒體 | MedPage Today、STAT News、Medscape | 5 |
+| 7 | 健康新聞媒體 | Medscape、ScienceDaily、EurekAlert | 5 |
 | 8 | 腸道菌/睡眠/運動 | 跨來源主題搜尋 | 5 |
 
 ### 新增或修改來源
@@ -314,3 +314,5 @@ git push origin main
 | 主圖未顯示 | 未提供 heroImage/thumbnail | 正常，會使用分類 fallback SVG |
 | 標題仍帶「健康雷達」 | 未設定 titleDisplay | 正常，前台 cleanNewsTitle() 會自動清理前綴 |
 | PR 一直沒人處理 | 審核未收斂的草稿 | 定期檢查 GitHub PR 列表 |
+| 某組查詢整組 0 命中/報錯 | `allowed_domains` 內含**封鎖 Anthropic 爬蟲**的網域（如 medpagetoday.com），WebSearch 回 400「domains are not accessible」，**整組查詢全滅**（非只略過該網域） | 移除被封網域；新增來源前先單獨測該網域可搜。已知可用：medscape.com、sciencedaily.com、eurekalert.org、nature.com、pubmed |
+| 檔名/標題小時數多 8（如 06 變 14/15） | agent 把已是台灣時間的系統時鐘又 +8 | cron 腳本 prompt 已註明「TZ 已是台灣，直接用 `date`，勿再 +8」 |

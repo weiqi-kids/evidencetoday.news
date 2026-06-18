@@ -44,8 +44,8 @@
       },
       {
         "name": "健康新聞媒體",
-        "query": "health nutrition research new study findings 2026",
-        "allowed_domains": ["medpagetoday.com", "statnews.com", "medscape.com"],
+        "query": "health nutrition diet research new study findings 2026",
+        "allowed_domains": ["medscape.com", "sciencedaily.com", "eurekalert.org"],
         "max_results": 5
       },
       {
