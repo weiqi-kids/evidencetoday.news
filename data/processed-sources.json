@@ -441,6 +441,30 @@
     "https://pmc.ncbi.nlm.nih.gov/articles/PMC11827344/": {
       "processedAt": "2026-06-18T07:35:00Z",
       "outputFile": "src/content/news/radar-2026-06-18-06-03.md"
+    },
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11663920/": {
+      "processedAt": "2026-06-18T22:37:00Z",
+      "outputFile": "src/content/news/radar-2026-06-19-06-01.md"
+    },
+    "https://www.sciencedaily.com/releases/2026/04/260414075637.htm": {
+      "processedAt": "2026-06-18T22:37:00Z",
+      "outputFile": "src/content/news/radar-2026-06-19-06-02.md"
+    },
+    "https://www.sciencedaily.com/releases/2026/02/260227071914.htm": {
+      "processedAt": "2026-06-18T22:37:00Z",
+      "outputFile": "src/content/news/radar-2026-06-19-06-02.md"
+    },
+    "https://www.sciencedaily.com/releases/2025/12/251214100928.htm": {
+      "processedAt": "2026-06-18T22:37:00Z",
+      "outputFile": "src/content/news/radar-2026-06-19-06-03.md"
+    },
+    "https://www.thelancet.com/journals/lanepe/article/PIIS2666-7762(25)00262-5/fulltext": {
+      "processedAt": "2026-06-18T22:37:00Z",
+      "outputFile": "src/content/news/radar-2026-06-19-06-03.md"
+    },
+    "https://www.eurekalert.org/news-releases/1130918": {
+      "processedAt": "2026-06-18T22:37:00Z",
+      "outputFile": "src/content/news/radar-2026-06-19-06-03.md"
     }
   }
 }
