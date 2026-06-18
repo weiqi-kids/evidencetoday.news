@@ -37,6 +37,9 @@
   ├─ Phase 3：平行撰文（Sonnet x n）
   │   └─ 每份工單一個 agent，照撰文規則 + 注入 writingDirectives 產出 markdown
   │
+  ├─ Phase 3.5：配圖（併入撰文 agent）
+  │   └─ 每篇 1 封面 + 2 內文圖；先 /stock 圖庫、沒有才 /generate-async 生成（人物用台灣人）
+  │
   ├─ Phase 4：連結驗證
   │   └─ 確認所有外部連結可連線，死連結剔除
   │
@@ -175,6 +178,17 @@ src/content/news/radar-{YYYY}-{MM}-{DD}-{HH}-{NN}.md
 - **分類**：優先 `category` → 從 `tags` 關鍵字自動推斷
 - **圖片**：優先 `heroImage`/`thumbnail` → 分類 fallback SVG（`public/images/news/`）
 - **前台不顯示**：「本日有據編輯室」來源標示
+
+### 6.4 配圖（每篇 1 封面 + 2 內文情境圖）
+
+管線 Phase 3.5 自動配圖，**先找圖庫、沒有才生成**：
+
+- **來源**：AI worker（`evidencetoday-ai-suggest...workers.dev`，`gh auth token` 認證）。`/stock` 取 Unsplash/Pexels 圖庫圖（回 `{full, credit, creditUrl}`）；圖庫無合適圖才用 `/generate-async`（OpenAI/Flux）。
+- **人物用台灣人**：圖庫圖優先食物/物件/情境、避開明顯非亞洲人臉；生圖端點已內建 `applyPeopleDirective()`「畫面有人物一律台灣人」鐵律。
+- **封面**：寫 frontmatter `heroImage`(=full)、`coverAlt`(繁中描述)、`coverImageCredit`(=credit)。
+- **內文圖**：用標準 markdown 圖 `![攝影師](full "creditUrl")` 各自獨立成段插進 body 不同小節；build 時 `rehype-stock-figure` 轉成含攝影師連結的 `<figure>`。creditUrl 須 unsplash.com/pexels.com 開頭。
+- **把關**：每個圖 URL 驗 HTTP 200、避開站上已用圖；**嚴禁本地行內圖 `](images/...)`**（Rollup 無法解析、破壞 build）。
+- 完整影像系統見 [`docs/playbooks/editor-images.md`](playbooks/editor-images.md)。
 
 ---
 

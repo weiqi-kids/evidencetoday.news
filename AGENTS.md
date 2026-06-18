@@ -32,6 +32,7 @@
 2.5. 執行 `node scripts/audience-insights.mjs`，取得 topicCandidates / writingDirectives / siteOptimizations。將 topicCandidates 併入素材池（話題性維度用 demandScore）；writingDirectives 於撰文時注入；siteOptimizations 列入結尾報告供人工檢視。資料空時略過。
 3. 評分與選題（五維度加權 → 分組 → **產出 n 份工單，有多少合格素材就寫多少篇**）
 4. 撰寫文章（**每份工單各一篇，共 n 篇**，**用 sub-agent（Agent 工具）並行**：同一則訊息內一次發起全部撰文 sub-agent，每個只寫一篇，不要逐一發起等前一個結束）
+4.5. **配圖**（每篇 1 封面 + 2 內文情境圖，併入該篇撰文 sub-agent 一起做）：**先找圖庫、沒有才生成**。打 AI worker `/stock`（`gh auth token` 認證）取圖庫圖；【人物用台灣人】故圖庫圖優先食物/物件/情境、避開明顯非亞洲人臉，非真人不可且圖庫無合適亞洲人物時才走 `/generate-async`（生圖端點內建台灣人鐵律）。封面寫 `heroImage`/`coverAlt`/`coverImageCredit`；內文 2 張用 `![攝影師](full "creditUrl")` 各自獨立成段插進 body 不同小節。每個圖 URL 驗 200、避開已用圖、**嚴禁本地行內圖 `](images/...)`**。細節見 [`editor-images.md`](./docs/playbooks/editor-images.md) 第三、六節。
 5. **自動審核**（每篇獨立審核，build + frontmatter + 內容品質，不通過就修正，連續 3 輪未改善才判定未收斂；**每輪的各審核角色也用 sub-agent 一次發起並行**，收齊回饋再彙整修稿）
 6. 更新去重紀錄
 7. 發布（push main 或開 PR）
