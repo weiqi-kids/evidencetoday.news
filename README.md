@@ -9,6 +9,30 @@
 
 ---
 
+## 你是來做哪一種維護？（先對號入座）
+
+> 本專案維護分兩種情境。**先判斷自己屬於哪一種，再照該情境的入口走。** 三份入口文件（`CLAUDE.md` / `README.md` / `AGENTS.md`）此區塊內容一致，不論先讀到哪一份都該得到相同分流。
+
+### 🛠️ A. 開發維護 — 改程式 / 版面 / CI / 效能
+動到 `src/`（元件/版面/樣式/工具/路由邏輯）、`scripts/`、`.github/workflows/`、`astro.config.mjs`、`content.config.ts`、`package.json`。
+
+1. 先 `pnpm build` 立基線（確認動手前是綠的）
+2. **查下方「我要做什麼？（任務索引）」找對應 playbook**，照其「鎖定參數/修改流程/常見陷阱/驗證清單」走
+3. 守「修改紀律」＋「CSS / RWD 通用規範」
+4. 改完 `pnpm build` 零錯誤 → **同步文件**（否則 `docs-sync-check` fail）
+- 主檔：本檔「任務索引」、`docs/playbooks/*`、`docs/architecture.md`
+
+### 📝 B. 內容與曝光 — 加內容 / 選題 / 看流量 / 自動發文
+動到 `src/content/`、`src/data/policies/`、`public/images/`（不觸發 docs-sync）。
+
+1. **session 一開始先 `pnpm perf`**（近 28 天 GA4+GSC 曝光快照，給經營建議）
+2. 要做數據驅動選題再 `pnpm insights`（吐三桶 JSON）
+3. 依內容類型找 playbook：一般內容 → `docs/content-guide.md`；趨勢新聞自動化 → `docs/news_sop.md` + `AGENTS.md`；曝光/選題寫法 → `docs/playbooks/audience-insights.md`、`docs/playbooks/analytics.md`；站外權威/GEO → `docs/playbooks/geo-offsite.md`
+4. 發布：push `main` 自動部署
+- 主檔：`docs/content-guide.md`、`docs/news_sop.md`、`docs/playbooks/{audience-insights,analytics,geo-offsite,news-article,editor-*}.md`
+
+---
+
 ## 修改紀律（必讀）
 
 **功能改動必須同步文件**。動到以下任一路徑：
@@ -105,9 +129,12 @@
 |---|---|
 | 新增文章 / 闢謠 / 成分解析 / Podcast / 短影音 / 趨勢新聞 | [docs/content-guide.md](./docs/content-guide.md) |
 | 修改、刪除既有內容 | [docs/content-guide.md](./docs/content-guide.md) |
-| 撰寫趨勢新聞 SOP（自動化排程） | [docs/news_sop.md](./docs/news_sop.md) |
+| 撰寫趨勢新聞 SOP（自動化排程） | [docs/news_sop.md](./docs/news_sop.md)、[AGENTS.md](./AGENTS.md)「撰寫趨勢文章」 |
 | 維護趨勢文章結構與前台（/news） | [docs/playbooks/news-article.md](./docs/playbooks/news-article.md) |
 | 新增 Content Collection 類型 | [docs/playbooks/new-content-type.md](./docs/playbooks/new-content-type.md) |
+| 文章配圖（封面+內文情境圖／圖庫優先） | [docs/playbooks/editor-images.md](./docs/playbooks/editor-images.md) |
+| 主編 / 作者頁維護 | [docs/playbooks/editor-author-page.md](./docs/playbooks/editor-author-page.md) |
+| 文章骨架 / MDX 文件 / lint（編輯器系列） | [docs/playbooks/editor-spine.md](./docs/playbooks/editor-spine.md)、[editor-mdx-doc.md](./docs/playbooks/editor-mdx-doc.md)、[editor-lint.md](./docs/playbooks/editor-lint.md) |
 
 ### 排版 / 視覺類
 
@@ -129,7 +156,15 @@
 | 串接外部 API（YouTube / PubMed / WebSearch） | [docs/playbooks/external-apis.md](./docs/playbooks/external-apis.md) |
 | CI/CD 與 deploy.yml 維護 | [docs/playbooks/ci-cd.md](./docs/playbooks/ci-cd.md) |
 | 看架構 / SEO / AEO / 無障礙總覽 | [docs/architecture.md](./docs/architecture.md) |
-| GA4/GSC 數據驅動選題與寫法（audience insights） | [docs/playbooks/audience-insights.md](./docs/playbooks/audience-insights.md) |
+
+### 曝光量 / 內容運營類（情境 B）
+
+| 任務 | 看哪份 |
+|---|---|
+| 每 session 看真實曝光（`pnpm perf`）給經營建議 | [docs/playbooks/audience-insights.md](./docs/playbooks/audience-insights.md) |
+| GA4/GSC 數據驅動選題與寫法（`pnpm insights`） | [docs/playbooks/audience-insights.md](./docs/playbooks/audience-insights.md) |
+| GA4/GSC 分析腳本與報表 | [docs/playbooks/analytics.md](./docs/playbooks/analytics.md) |
+| 站外權威 / GEO / LLM 推薦曝光 | [docs/playbooks/geo-offsite.md](./docs/playbooks/geo-offsite.md) |
 
 
 
@@ -187,12 +222,23 @@
 ## 快速開始
 
 ```bash
+# — 開發 / 建置 —
 pnpm install        # 安裝依賴（不是 npm）
 pnpm dev            # 啟動開發伺服器 (localhost:4321)
-pnpm build          # 建置靜態網站 (輸出至 dist/)
+pnpm build          # 建置靜態網站 (輸出至 dist/；prebuild 跑 sync:youtube + og:generate)
 pnpm preview        # 預覽建置結果
-pnpm content:audit  # 掃描內容的 AI 感句型與模糊引用
+
+# — 內容品質 gate —
+pnpm content:audit  # 掃描內容的 AI 感句型與模糊引用 / raw enum 外露
+pnpm check:myths    # 闢謠內容品質 gate（發布 myths 前必跑）
+pnpm og:generate    # 生成 OG 圖至 public/og/（1200x630，不提交 repo）
+
+# — 曝光量 / 選題（情境 B）—
+pnpm perf           # 近 28 天 GA4+GSC 效能快照（唯讀，經營決策用；需 gcloud token）
+pnpm insights       # GA4/GSC 驅動 /news 選題（吐三桶 JSON 給新聞管線）
 ```
+
+> 情境 B（內容與曝光）每個 session 建議**先跑 `pnpm perf`** 看真實曝光再決定選題；認證設定見 [`docs/playbooks/audience-insights.md`](./docs/playbooks/audience-insights.md)。
 
 ---
 
@@ -346,6 +392,11 @@ GitHub Actions 自動執行：build → Pagefind 索引 → 連結檢查 → 部
 | [`docs/architecture.md`](docs/architecture.md) | 架構、SEO / AEO、無障礙、CI/CD 總覽 |
 | [`docs/content-guide.md`](docs/content-guide.md) | 內容維護指南（新增 / 修改 / 刪除各類內容） |
 | [`docs/news_sop.md`](docs/news_sop.md) | 趨勢新聞自動化 SOP |
+| [`docs/playbooks/news-article.md`](docs/playbooks/news-article.md) | 維護趨勢文章結構與 /news 前台 |
+| [`docs/playbooks/audience-insights.md`](docs/playbooks/audience-insights.md) | GA4/GSC 數據驅動選題與寫法（`pnpm perf` / `pnpm insights`） |
+| [`docs/playbooks/analytics.md`](docs/playbooks/analytics.md) | GA4/GSC 分析腳本與報表 |
+| [`docs/playbooks/geo-offsite.md`](docs/playbooks/geo-offsite.md) | 站外權威 / GEO / LLM 推薦曝光 |
+| [`docs/playbooks/editor-images.md`](docs/playbooks/editor-images.md) | 文章配圖（封面+內文情境圖／圖庫優先） |
 | [`docs/playbooks/topnav.md`](docs/playbooks/topnav.md) | 改導覽列 TopNav |
 | [`docs/playbooks/design-tokens.md`](docs/playbooks/design-tokens.md) | 改 design tokens（顏色 / 字體 / 間距） |
 | [`docs/playbooks/article-layout.md`](docs/playbooks/article-layout.md) | 改 Article.astro variant 排版 |
