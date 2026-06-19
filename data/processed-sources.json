@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-06-16T08:29:14Z",
+  "lastRun": "2026-06-19T22:35:33Z",
   "processed": {
     "PMID:42098536": {
       "processedAt": "2026-05-08T12:00:00Z",
@@ -465,6 +465,18 @@
     "https://www.eurekalert.org/news-releases/1130918": {
       "processedAt": "2026-06-18T22:37:00Z",
       "outputFile": "src/content/news/radar-2026-06-19-06-03.md"
+    },
+    "https://www.sciencedaily.com/releases/2026/06/260619020512.htm": {
+      "processedAt": "2026-06-19T22:35:33Z",
+      "outputFile": "src/content/news/radar-2026-06-20-06-01.md"
+    },
+    "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON596": {
+      "processedAt": "2026-06-19T22:35:33Z",
+      "outputFile": "src/content/news/radar-2026-06-20-06-02.md"
+    },
+    "https://www.eurekalert.org/news-releases/1132626": {
+      "processedAt": "2026-06-19T22:35:33Z",
+      "outputFile": "src/content/news/radar-2026-06-20-06-03.md"
     }
   }
 }
