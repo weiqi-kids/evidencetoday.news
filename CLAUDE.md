@@ -57,6 +57,7 @@ pnpm build          # 建置至 dist/（prebuild 會跑 sync:youtube + og:genera
 pnpm preview        # 預覽建置結果
 pnpm content:audit  # 掃描內容 AI 感句型 / 模糊引用 / raw enum 外露
 pnpm check:myths    # 闢謠內容品質 gate（發布 myths 前必跑）
+pnpm check:news     # 趨勢新聞來源連結 gate（每篇須有可點 references/sourceUrl/pmid；CI 已接）
 pnpm og:generate    # 生成 OG 圖至 public/og/（1200x630，不提交 repo）
 pnpm perf           # 近 28 天 GA4+GSC 效能快照（唯讀，經營決策用；需 gcloud token）
 pnpm insights       # GA4/GSC 驅動 /news 選題（吐三桶 JSON 給新聞管線）

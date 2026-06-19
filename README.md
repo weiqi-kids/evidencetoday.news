@@ -231,6 +231,7 @@ pnpm preview        # 預覽建置結果
 # — 內容品質 gate —
 pnpm content:audit  # 掃描內容的 AI 感句型與模糊引用 / raw enum 外露
 pnpm check:myths    # 闢謠內容品質 gate（發布 myths 前必跑）
+pnpm check:news     # 趨勢新聞來源連結 gate（每篇須有可點 references/sourceUrl/pmid；CI 已接）
 pnpm og:generate    # 生成 OG 圖至 public/og/（1200x630，不提交 repo）
 
 # — 曝光量 / 選題（情境 B）—

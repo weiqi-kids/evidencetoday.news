@@ -160,7 +160,10 @@ src/content/news/radar-{YYYY}-{MM}-{DD}-{HH}-{NN}.md
 | intro | 否 | 2-4 句白話開頭介紹 |
 | termBox | 否 | 專有名詞科普（`[{term, definition}]`） |
 | evidenceNote | 否 | 2-3 句白話證據提醒 |
-| pmid | 否 | PubMed ID |
+| **references** | **是**※ | **結構化來源清單**，每筆 `{title, type, url}`（`url` 為可點 http(s)）。前台「參考資料」footer 只渲染這個欄位 |
+| pmid | 否 | PubMed ID（無結構化 references 時的替代來源連結） |
+| sourceUrl | 否 | 單一原文連結（無結構化 references 時的替代來源連結） |
+| sourcePending | 否 | 來源刻意暫缺時設 `true`，並**必填** `sourcePendingReason` 說明 |
 | heroImage | 否 | 文章主圖路徑 |
 | thumbnail | 否 | 列表縮圖路徑 |
 | editorPick | 是 | 是否為主編選題 |
@@ -171,6 +174,8 @@ src/content/news/radar-{YYYY}-{MM}-{DD}-{HH}-{NN}.md
 | relatedVideos | 否 | 相關影片 slug |
 | relatedPodcasts | 否 | 相關 Podcast slug |
 | draft | 是 | 草稿狀態 |
+
+> ※ **來源連結 gate（`pnpm check:news`，已接進 deploy.yml）**：每篇非 draft 的 news 必須具備可點來源連結——**結構化 `references` 至少 1 筆含 `url`**，或退而有 `sourceUrl`／`pmid`，否則 CI 擋下、無法部署。**禁止只把來源連結放在 body 文字而 frontmatter `references` 留空**（前台 footer 會顯示「原始來源連結尚未補上」）。真的暫無連結才設 `sourcePending: true` + `sourcePendingReason`。`type` 用 `referenceSchema` 列舉值（meta-analysis / systematic-review / rct / cohort / observational / review / guideline / official-agency / expert-review / other 等）。
 
 ### 6.3 前台呈現邏輯
 
@@ -280,6 +285,9 @@ git push origin main
 - 所有連結必須來自素材原始 URL，禁止編造
 - PubMed 使用 PMID 連結：`https://pubmed.ncbi.nlm.nih.gov/{PMID}/`
 - 每個議題必須標明來源
+- **來源一律寫進 frontmatter 結構化 `references`**（每筆 `{title, type, url}`，`url` 可點），不可只放在 body 文字。body 可另列「資料來源」清單，但**不能取代** `references` 欄位。
+- 發布前自查（Phase 7）：`references` 至少 1 筆含 `url`（或具 `sourceUrl`/`pmid`）；本機可跑 `pnpm check:news` 預檢，CI 會以此 gate 把關。
+- Phase 4 連結驗證若把某 reference 的死 `url` 移除，**必須連該筆 reference 一起拿掉或換可用來源**，不可留下無 `url` 的孤兒 reference。
 
 ---
 
