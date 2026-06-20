@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-06-19T22:35:33Z",
+  "lastRun": "2026-06-20T22:38:46Z",
   "processed": {
     "PMID:42098536": {
       "processedAt": "2026-05-08T12:00:00Z",
@@ -477,6 +477,14 @@
     "https://www.eurekalert.org/news-releases/1132626": {
       "processedAt": "2026-06-19T22:35:33Z",
       "outputFile": "src/content/news/radar-2026-06-20-06-03.md"
+    },
+    "https://www.eurekalert.org/news-releases/1124831": {
+      "processedAt": "2026-06-20T22:38:46Z",
+      "outputFile": "src/content/news/radar-2026-06-21-06-01.md"
+    },
+    "topic:檸檬水排毒反應": {
+      "processedAt": "2026-06-20T22:38:46Z",
+      "outputFile": "src/content/news/radar-2026-06-21-06-02.md"
     }
   }
 }
