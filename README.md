@@ -132,6 +132,8 @@
 | 撰寫趨勢新聞 SOP（自動化排程） | [docs/news_sop.md](./docs/news_sop.md)、[AGENTS.md](./AGENTS.md)「撰寫趨勢文章」 |
 | 維護趨勢文章結構與前台（/news） | [docs/playbooks/news-article.md](./docs/playbooks/news-article.md) |
 | 新增 Content Collection 類型 | [docs/playbooks/new-content-type.md](./docs/playbooks/new-content-type.md) |
+| 健康專題（topic hub）/ 主題整理頁 | [docs/playbooks/topic-hubs.md](./docs/playbooks/topic-hubs.md) |
+| 內容區塊結構（AEO 自然段落 / FAQ 規範） | [docs/content-guide.md](./docs/content-guide.md)「內容區塊結構」 |
 | 文章配圖（封面+內文情境圖／圖庫優先） | [docs/playbooks/editor-images.md](./docs/playbooks/editor-images.md) |
 | 主編 / 作者頁維護 | [docs/playbooks/editor-author-page.md](./docs/playbooks/editor-author-page.md) |
 | 文章骨架 / MDX 文件 / lint（編輯器系列） | [docs/playbooks/editor-spine.md](./docs/playbooks/editor-spine.md)、[editor-mdx-doc.md](./docs/playbooks/editor-mdx-doc.md)、[editor-lint.md](./docs/playbooks/editor-lint.md) |
@@ -156,6 +158,8 @@
 | 串接外部 API（YouTube / PubMed / WebSearch） | [docs/playbooks/external-apis.md](./docs/playbooks/external-apis.md) |
 | CI/CD 與 deploy.yml 維護 | [docs/playbooks/ci-cd.md](./docs/playbooks/ci-cd.md) |
 | 看架構 / SEO / AEO / 無障礙總覽 | [docs/architecture.md](./docs/architecture.md) |
+| 結構化資料實體圖（Organization / WebSite / Person / Article 的 @id）/ citation | [docs/architecture.md](./docs/architecture.md)「結構化資料」、`src/utils/schema-org.ts` |
+| sitemap lastmod / 前台可見性（draft·未來日期·under-review） | `astro.config.mjs` + `scripts/lib/content-dates.mjs`；`src/utils/visibility.ts` |
 
 ### 曝光量 / 內容運營類（情境 B）
 

@@ -15,7 +15,11 @@ export interface AuthorInfo {
   description: string;
   knowsAbout: string[];
   sameAs: string[];
-  /** 專業憑證（schema.org EducationalOccupationalCredential）。只放真實、可被外部查證的憑證；目前為自述，待補可驗證 sameAs（公會註冊頁）後權威才完整。 */
+  /**
+   * 專業憑證（schema.org EducationalOccupationalCredential）。只放真實、可被外部查證的憑證。
+   * 羅揚為「牙醫學學歷背景」，並非執業牙醫師、亦未領有牙醫師執照，故不得以 hasCredential 宣稱專業執照。
+   * 待有可驗證來源（如公會註冊頁）前，此欄位刻意留空。
+   */
   hasCredential?: {
     name: string;
     credentialCategory: string;
@@ -28,14 +32,9 @@ export const AUTHORS: Record<string, AuthorInfo> = {
   羅揚: {
     name: '羅揚',
     url: 'https://evidencetoday.news/authors/luo-yang/',
-    jobTitle: '牙醫師、本日有據主編',
+    jobTitle: '本日有據主編',
     description:
-      '本日有據（Evidence Today）主編，為領有執業執照的牙醫師，具口腔衛生材料研究背景，長期關注健康識讀、營養科學、預防醫學、公共衛生與熟齡健康溝通；主持 Podcast《喜聞樂健》。',
-    hasCredential: {
-      name: '牙醫師執業執照',
-      credentialCategory: 'professional license',
-      recognizedBy: '中華民國衛生福利部',
-    },
+      '本日有據（Evidence Today）主編，具牙醫學學歷背景與口腔衛生材料相關研究經驗，並有保健食品產業實務與健康教育內容製作經驗；長期關注健康識讀、營養科學、預防醫學、公共衛生與熟齡健康溝通，擅長將血液檢查、保健食品與營養議題整理成白話內容；主持 Podcast《喜聞樂健》。',
     knowsAbout: [
       '牙醫學',
       '口腔衛生材料',

@@ -2,7 +2,8 @@
 import { getCollection } from 'astro:content';
 import Article from '@/layouts/Article.astro';
 import JsonLd from '@/components/seo/JsonLd.astro';
-import { buildClaimReview } from '@/utils/schema-org';
+import { buildClaimReview, buildPerson, buildCitations, PUBLISHER_REF, WEBSITE_REF } from '@/utils/schema-org';
+import { isPublicEntry } from '@/utils/visibility';
 import MythSquareCardVisual from '@/components/myths/MythSquareCardVisual.astro';
 import { validateMythArticle } from '@/utils/myths/validate';
 import { displayVerdict } from '@/utils/myths/schema';
@@ -11,7 +12,7 @@ import EditButton from '@/components/editor/EditButton.svelte';
 import ReadingEngagement from '@/components/blocks/ReadingEngagement.svelte';
 
 export async function getStaticPaths() {
-  const entries = await getCollection('myths', ({ data }) => !data.draft && data.status !== 'under-review');
+  const entries = await getCollection('myths', ({ data }) => isPublicEntry(data));
   return entries.map((entry) => ({ params: { slug: entry.id.replace(/\.[^.]+$/, '') }, props: { entry } }));
 }
 
@@ -29,16 +30,20 @@ const whyItems = Array.isArray(d.whyItSpreads)
   : [d.whyItSpreads.commonClaim, d.whyItSpreads.shortVideoVersion, d.whyItSpreads.adVersion, d.whyItSpreads.familyChatVersion].filter(Boolean);
 const evidenceItems = d.evidenceSummary?.evidenceItems || [];
 const shareSummary = d.cardConclusion || d.verdictSummary;
+const mythCitations = buildCitations(d.references);
 const articleLd = {
   '@context': 'https://schema.org',
   '@type': 'Article',
+  '@id': `${canonical}#article`,
   headline: social.title,
   description: social.description,
   image: [social.image],
   datePublished: d.publishDate.toISOString(),
   dateModified: d.updatedDate.toISOString(),
-  author: { '@type': 'Person', name: d.author },
-  publisher: { '@type': 'Organization', name: '本日有據' },
+  author: buildPerson(d.author),
+  publisher: PUBLISHER_REF,
+  isPartOf: WEBSITE_REF,
+  ...(mythCitations ? { citation: mythCitations } : {}),
   mainEntityOfPage: canonical,
 } satisfies Record<string, unknown>;
 const claimReview = buildClaimReview({

@@ -5,6 +5,7 @@ import JsonLd from '@/components/seo/JsonLd.astro';
 import '@/styles/global.css';
 import '@/styles/rwd-fixes.css';
 import { DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE } from '@/utils/social-meta.mjs';
+import { buildSiteGraph } from '@/utils/schema-org';
 
 /* Self-hosted fonts via fontsource */
 import '@fontsource/inter/400.css';
@@ -44,24 +45,9 @@ const ogImageURL = new URL(ogImage, Astro.site);
 const resolvedOgTitle = ogTitle ?? title;
 const resolvedOgDescription = ogDescription ?? description;
 
-const websiteSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  name: '本日有據',
-  alternateName: 'Evidence Today',
-  url: 'https://evidencetoday.news/',
-  inLanguage: 'zh-TW',
-  publisher: {
-    '@type': 'Organization',
-    name: '本日有據',
-    url: 'https://evidencetoday.news/',
-  },
-  potentialAction: {
-    '@type': 'SearchAction',
-    target: 'https://evidencetoday.news/search/?q={search_term_string}',
-    'query-input': 'required name=search_term_string',
-  },
-};
+// 站台實體圖（Organization + WebSite，皆帶穩定 @id），每頁輸出一次，
+// 讓內容頁的 publisher / isPartOf @id 參照在同頁即可解析（schema-org.ts 單一真相）。
+const siteGraph = buildSiteGraph();
 ---
 
 <!doctype html>
@@ -100,7 +86,7 @@ const websiteSchema = {
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="alternate" type="application/rss+xml" title="本日有據 RSS" href="/rss.xml" />
 
-    <JsonLd data={websiteSchema} />
+    <JsonLd data={siteGraph} />
     <slot name="head" />
   </head>
   <body>

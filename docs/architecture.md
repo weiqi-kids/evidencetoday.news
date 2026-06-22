@@ -18,10 +18,12 @@
 
 | 功能 | 實作位置 | 說明 |
 |------|---------|------|
-| Schema.org JSON-LD | 每個頁面的 `<head>` | Article+MedicalWebPage（multi-type）、FAQPage、VideoObject、BreadcrumbList、Organization（首頁含 `sameAs`：Firstory/YouTube，常數 `SITE_SAMEAS`）；文章頁 author/reviewedBy 透過 `buildPerson()` 帶 credential 與 sameAs；成分解析頁（`src/pages/ingredients/[slug].astro`）author/reviewedBy 為 Organization，含 `lastReviewed`、`medicalAudience`（Patient）；myths 頁額外輸出 ClaimReview（`src/utils/schema-org.ts` buildClaimReview）；作者頁（`/authors/luo-yang/`）輸出 Person（`src/utils/schema-org.ts` buildPerson） |
+| 結構化資料實體圖（@id） | `src/layouts/Base.astro` + `src/utils/schema-org.ts` | **每頁**由 Base layout 輸出 `@graph`：`Organization`（`@id` `…/#organization`，含 logo / `SITE_SAMEAS`）+ `WebSite`（`@id` `…/#website`，含 SearchAction）。內容頁的 `publisher` / `isPartOf` 只以 `{ '@id': … }` 參照，讓搜尋引擎與 AI 跨頁合併實體。常數與 builder 集中在 `schema-org.ts`（`ORG_ID` / `WEBSITE_ID` / `PUBLISHER_REF` / `WEBSITE_REF` / `buildSiteGraph`）。 |
+| Schema.org JSON-LD（內容頁） | 每個頁面的 `<head>` | Article+MedicalWebPage（multi-type，帶 `@id …#article`、`mainEntityOfPage`）、FAQPage、VideoObject、BreadcrumbList；文章/闢謠頁 author 透過 `buildPerson()` 帶 `@id`（`…/#person`）與 sameAs；publisher→`ORG_ID`、isPartOf→`WEBSITE_ID`；`references` 透過 `buildCitations()` 輸出 schema.org `citation`（CreativeWork：name/url/publisher/date/genre/doi）；成分解析頁 author/reviewedBy/publisher 皆為 `ORG_ID` 參照，含 `lastReviewed`、`medicalAudience`（Patient）；myths 頁額外輸出 ClaimReview（`buildClaimReview`）；健康專題頁（`/topics/`）輸出 CollectionPage + ItemList + FAQPage；作者頁輸出 Person（`buildPerson`，**羅揚為牙醫學學歷背景，非執業牙醫師，無 `hasCredential` 執照宣稱**） |
 | Open Graph + Twitter Card | `src/layouts/Base.astro` | og:title, og:description, og:type, twitter:card |
 | Canonical URL | `src/layouts/Base.astro` | 每頁自動設定 |
-| sitemap.xml | `@astrojs/sitemap` 自動生成 | |
+| sitemap.xml | `@astrojs/sitemap` + `serialize` | 每篇內容頁輸出 `lastmod`（`updatedDate ?? publishDate`，來源 `scripts/lib/content-dates.mjs` 掃 frontmatter）；`/admin`、`/tags/*`（noindex,follow）以 `filter` 排除；舊 slug 轉址不進 sitemap |
+| 前台可見性（draft / 未來 publishDate / under-review） | `src/utils/visibility.ts`（`isPublicEntry`） | 首頁分類數字、各分類列表、內容頁 `getStaticPaths`、健康專題頁共用單一判斷，確保數字一致且不外露未發布內容 |
 | robots.txt | `public/robots.txt` | 允許所有爬蟲含 GPTBot、ClaudeBot、PerplexityBot |
 | RSS Feeds | `src/pages/rss.xml.ts` + 各分類 | 主 feed + articles/myths/podcasts/videos 個別 feed |
 | llms.txt | `src/pages/llms.txt.ts` | AI 爬蟲索引（build time 動態生成） |
