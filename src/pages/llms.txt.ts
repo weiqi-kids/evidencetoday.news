@@ -7,6 +7,8 @@ const body = `# Evidence Today 本日有據
 - 編輯原則：https://evidencetoday.news/editorial-policy/
 - 利益揭露：https://evidencetoday.news/disclosure/
 - 作者：https://evidencetoday.news/authors/luo-yang/
+- 健康專題（主題整理）：https://evidencetoday.news/topics/
+- 全部內容索引：https://evidencetoday.news/all/
 - Sitemap：https://evidencetoday.news/sitemap-index.xml
 
 ## 方法論（為何可信）
@@ -16,6 +18,7 @@ const body = `# Evidence Today 本日有據
 - 闢謠內容以 schema.org ClaimReview 標註判定（大致正確～大致錯誤）。
 
 ## 內容類型
+- 健康專題：https://evidencetoday.news/topics/
 - 文章：https://evidencetoday.news/articles/
 - 闢謠：https://evidencetoday.news/myths/
 - 成分解析：https://evidencetoday.news/ingredients/

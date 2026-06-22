@@ -1,0 +1,348 @@
+---
+import Base from '@/layouts/Base.astro';
+import Breadcrumb from '@/components/ui/Breadcrumb.astro';
+import JsonLd from '@/components/seo/JsonLd.astro';
+import ArticleCard from '@/components/blocks/ArticleCard.astro';
+import MythCard from '@/components/blocks/MythCard.astro';
+import IngredientCard from '@/components/blocks/IngredientCard.astro';
+import PodcastCard from '@/components/blocks/PodcastCard.astro';
+import VideoCard from '@/components/blocks/VideoCard.astro';
+import NewsItem from '@/components/blocks/NewsItem.astro';
+import { getCollection } from 'astro:content';
+import { fmtDate } from '@/utils/date';
+import { stripPodcastSlug } from '@/utils/podcasts';
+import { isPublicEntry } from '@/utils/visibility';
+import { TOPICS, matchesTopic, type Topic } from '@/data/topics';
+import { WEBSITE_REF, PUBLISHER_REF, SITE_URL } from '@/utils/schema-org';
+
+function stripExt(id: string): string {
+  return id.replace(/\.[^.]+$/, '');
+}
+
+export async function getStaticPaths() {
+  const [articles, myths, ingredients, news, podcasts, videos] = await Promise.all([
+    getCollection('articles', (e) => isPublicEntry(e.data)),
+    getCollection('myths', (e) => isPublicEntry(e.data)),
+    getCollection('ingredients', (e) => isPublicEntry(e.data)),
+    getCollection('news', (e) => isPublicEntry(e.data)),
+    getCollection('podcasts', (e) => isPublicEntry(e.data)),
+    getCollection('videos', (e) => isPublicEntry(e.data)),
+  ]);
+
+  const byDate = (a: { data: { publishDate: Date } }, b: { data: { publishDate: Date } }) =>
+    b.data.publishDate.getTime() - a.data.publishDate.getTime();
+
+  return TOPICS.map((topic: Topic) => ({
+    params: { slug: topic.slug },
+    props: {
+      topic,
+      articles: articles.filter((e) => matchesTopic(topic, e.data)).sort(byDate).slice(0, 6),
+      myths: myths.filter((e) => matchesTopic(topic, { title: e.data.title, tags: [...e.data.tags, ...e.data.topicTags] })).sort(byDate).slice(0, 4),
+      ingredients: ingredients.filter((e) => matchesTopic(topic, e.data)).sort(byDate).slice(0, 4),
+      news: news.filter((e) => matchesTopic(topic, { title: e.data.title, tags: e.data.tags })).sort(byDate).slice(0, 4),
+      podcasts: podcasts.filter((e) => matchesTopic(topic, e.data)).slice(0, 2),
+      videos: videos.filter((e) => matchesTopic(topic, e.data)).slice(0, 4),
+    },
+  }));
+}
+
+const { topic, articles, myths, ingredients, news, podcasts, videos } = Astro.props;
+const url = `${SITE_URL}/topics/${topic.slug}/`;
+const description = topic.intro.slice(0, 150);
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  '@id': `${url}#faq`,
+  mainEntity: topic.faq.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: { '@type': 'Answer', text: item.answer },
+  })),
+};
+
+const itemListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  '@id': `${url}#collection`,
+  name: `${topic.name}｜健康專題`,
+  description,
+  url,
+  isPartOf: WEBSITE_REF,
+  publisher: PUBLISHER_REF,
+  about: { '@type': 'Thing', name: topic.name },
+  mainEntity: {
+    '@type': 'ItemList',
+    itemListElement: articles.map((entry, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      url: `${SITE_URL}/articles/${stripExt(entry.id)}/`,
+      name: entry.data.title,
+    })),
+  },
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: '首頁', item: `${SITE_URL}/` },
+    { '@type': 'ListItem', position: 2, name: '健康專題', item: `${SITE_URL}/topics/` },
+    { '@type': 'ListItem', position: 3, name: topic.name, item: url },
+  ],
+};
+---
+
+<Base title={`${topic.name}｜健康專題 - 本日有據`} description={description} ogTitle={`${topic.name}｜健康專題`} ogDescription={description}>
+  <Fragment slot="head">
+    <JsonLd data={itemListSchema} />
+    <JsonLd data={faqSchema} />
+    <JsonLd data={breadcrumbSchema} />
+  </Fragment>
+
+  <main class="container topic-page">
+    <Breadcrumb items={[
+      { label: '首頁', href: '/' },
+      { label: '健康專題', href: '/topics/' },
+      { label: topic.name },
+    ]} />
+
+    <header class="topic-header">
+      <p class="topic-eyebrow">健康專題</p>
+      <h1>{topic.name}</h1>
+      <p class="topic-intro">{topic.intro}</p>
+    </header>
+
+    <section class="topic-tldr card" aria-label="30 秒重點">
+      <h2>30 秒重點</h2>
+      <ul>
+        {topic.thirtySecond.map((point) => <li>{point}</li>)}
+      </ul>
+    </section>
+
+    {articles.length > 0 && (
+      <section class="topic-section">
+        <h2>代表文章</h2>
+        <div class="grid grid-cards">
+          {articles.map((a) => (
+            <ArticleCard
+              title={a.data.title}
+              description={a.data.description}
+              href={`/articles/${stripExt(a.id)}/`}
+              category="article"
+              coverImage={a.data.coverImage}
+              coverAlt={a.data.coverAlt}
+              author={a.data.author}
+              date={fmtDate(a.data.publishDate)}
+              editorReviewed={a.data.editorReviewed}
+            />
+          ))}
+        </div>
+      </section>
+    )}
+
+    {myths.length > 0 && (
+      <section class="topic-section">
+        <h2>相關闢謠</h2>
+        <div class="grid grid-cards">
+          {myths.map((m) => (
+            <MythCard
+              title={m.data.title}
+              verdictSummary={m.data.verdictSummary}
+              href={`/myths/${stripExt(m.id)}/`}
+              verdict={m.data.verdict}
+              date={fmtDate(m.data.publishDate)}
+            />
+          ))}
+        </div>
+      </section>
+    )}
+
+    {ingredients.length > 0 && (
+      <section class="topic-section">
+        <h2>相關成分解析</h2>
+        <div class="grid grid-cards">
+          {ingredients.map((i) => (
+            <IngredientCard
+              title={i.data.title}
+              description={i.data.description}
+              href={`/ingredients/${stripExt(i.id)}/`}
+              uses={i.data.uses}
+            />
+          ))}
+        </div>
+      </section>
+    )}
+
+    {news.length > 0 && (
+      <section class="topic-section">
+        <h2>相關趨勢與研究</h2>
+        <div class="topic-news">
+          {news.map((n) => (
+            <NewsItem
+              title={n.data.title}
+              source={n.data.source}
+              date={fmtDate(n.data.publishDate)}
+              summary={n.data.summary}
+              href={`/news/${stripExt(n.id)}/`}
+              sourceUrl={n.data.sourceUrl}
+              tags={n.data.tags}
+            />
+          ))}
+        </div>
+      </section>
+    )}
+
+    {(podcasts.length > 0 || videos.length > 0) && (
+      <section class="topic-section">
+        <h2>Podcast 與短影音</h2>
+        <div class="grid grid-cards">
+          {podcasts.map((p) => (
+            <PodcastCard
+              title={p.data.title}
+              description={p.data.description}
+              href={`/podcasts/${stripPodcastSlug(p.id)}/`}
+              episodeNumber={p.data.episodeNumber}
+              duration={p.data.duration}
+            />
+          ))}
+          {videos.map((v) => (
+            <VideoCard
+              title={v.data.title}
+              tldr={v.data.tldr}
+              href={`/videos/${stripExt(v.id)}/`}
+              youtubeId={v.data.youtubeId}
+            />
+          ))}
+        </div>
+      </section>
+    )}
+
+    <section class="topic-section topic-faq">
+      <h2>常見疑問</h2>
+      <div class="faq-list">
+        {topic.faq.map((item) => (
+          <details class="faq-item">
+            <summary>{item.question}</summary>
+            <p>{item.answer}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+  </main>
+</Base>
+
+<style>
+  .topic-page {
+    padding-block: var(--space-page-y);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.5rem, 1.2rem + 1vw, 2.5rem);
+  }
+
+  .topic-header h1 {
+    font-family: var(--font-serif);
+    font-size: var(--text-h1);
+    color: var(--color-ink);
+    margin: 0.25rem 0 0.5rem;
+  }
+
+  .topic-eyebrow {
+    font-family: var(--font-ui);
+    font-size: var(--text-badge);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-teal);
+  }
+
+  .topic-intro {
+    max-width: 60ch;
+    font-size: var(--text-body);
+    line-height: 1.8;
+    color: color-mix(in oklch, var(--color-ink) 74%, transparent);
+  }
+
+  .card {
+    border: 1px solid var(--color-fog);
+    border-radius: var(--radius-card);
+    background: white;
+    padding: clamp(1rem, 0.85rem + 0.6vw, 1.4rem);
+  }
+
+  .topic-tldr h2 {
+    font-size: var(--text-h3);
+    margin: 0 0 0.6rem;
+  }
+
+  .topic-tldr ul {
+    margin: 0;
+    padding-left: 1.15rem;
+    display: grid;
+    gap: 0.45rem;
+    line-height: 1.75;
+  }
+
+  .topic-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .topic-section > h2 {
+    font-family: var(--font-sans);
+    font-size: var(--text-h2);
+    font-weight: 700;
+    color: var(--color-ink);
+    margin: 0;
+  }
+
+  .grid-cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-card-gap);
+  }
+
+  .topic-news {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .faq-item {
+    border: 1px solid var(--color-fog);
+    border-radius: var(--radius-card);
+    background: white;
+    padding: 0.85rem 1.1rem;
+  }
+
+  .faq-item summary {
+    font-family: var(--font-ui);
+    font-weight: 700;
+    cursor: pointer;
+    color: var(--color-ink);
+  }
+
+  .faq-item p {
+    margin: 0.7rem 0 0;
+    line-height: 1.8;
+    color: color-mix(in oklch, var(--color-ink) 78%, transparent);
+  }
+
+  @media (min-width: 640px) {
+    .grid-cards {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .grid-cards {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

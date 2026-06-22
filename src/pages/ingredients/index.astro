@@ -3,12 +3,13 @@ import List from '@/layouts/List.astro';
 import IngredientCard from '@/components/blocks/IngredientCard.astro';
 import { getCollection } from 'astro:content';
 import { listSocial } from '@/utils/social-meta.mjs';
+import { isPublicEntry } from '@/utils/visibility';
 
 function stripExt(id: string): string {
   return id.replace(/\.[^.]+$/, '');
 }
 
-const ingredients = (await getCollection('ingredients', (e) => !e.data.draft))
+const ingredients = (await getCollection('ingredients', (e) => isPublicEntry(e.data)))
   .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
 const social = listSocial('ingredients');
 ---

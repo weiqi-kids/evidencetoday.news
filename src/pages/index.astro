@@ -1,6 +1,5 @@
 ---
 import Base from '@/layouts/Base.astro';
-import JsonLd from '@/components/seo/JsonLd.astro';
 import Button from '@/components/ui/Button.astro';
 import ArticleCard from '@/components/blocks/ArticleCard.astro';
 import MythCard from '@/components/blocks/MythCard.astro';
@@ -11,11 +10,12 @@ import HeroParticles from '@/components/charts/HeroParticles.svelte';
 import TrendBubbles from '@/components/charts/TrendBubbles.svelte';
 import { getTopTags } from '@/utils/tag-stats';
 import { STATIC_SOCIAL } from '@/utils/social-meta.mjs';
-import { SITE_SAMEAS } from '@/utils/schema-org';
 import { getCollection } from 'astro:content';
 import { fmtDate } from '@/utils/date';
 import { getPublishedPodcasts, stripPodcastSlug } from '@/utils/podcasts';
 import { getPublishedArticles } from '@/utils/articles';
+import { isPublicEntry } from '@/utils/visibility';
+import { TOPICS } from '@/data/topics';
 import shortsData from '@/data/youtube-shorts.json';
 import { videoItemsSchema } from '@/lib/youtube';
 import type { MythVerdict } from '@/utils/myths/schema';
@@ -29,17 +29,17 @@ function stripExt(id: string): string {
 /* ------------------------------------------------------------------ */
 const allArticles = await getPublishedArticles();
 
-const allMyths = (await getCollection('myths', (e) => !e.data.draft))
+const allMyths = (await getCollection('myths', (e) => isPublicEntry(e.data)))
   .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
 
-const allIngredients = (await getCollection('ingredients', (e) => !e.data.draft))
+const allIngredients = (await getCollection('ingredients', (e) => isPublicEntry(e.data)))
   .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
 
 const allPodcasts = getPublishedPodcasts(await getCollection('podcasts'));
 
 const allVideos = videoItemsSchema.safeParse(shortsData).success ? videoItemsSchema.parse(shortsData) : [];
 
-const allNews = (await getCollection('news', (e) => !e.data.draft))
+const allNews = (await getCollection('news', (e) => isPublicEntry(e.data)))
   .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
 
 /* ------------------------------------------------------------------ */
@@ -191,17 +191,7 @@ const categories = [
 ---
 
 <Base title={STATIC_SOCIAL.home.title} description={STATIC_SOCIAL.home.description} ogTitle={STATIC_SOCIAL.home.title} ogDescription={STATIC_SOCIAL.home.description} ogImage={STATIC_SOCIAL.home.ogPath}>
-  <Fragment slot="head">
-    <JsonLd data={{
-      '@context': 'https://schema.org',
-      '@type': 'Organization',
-      name: '本日有據',
-      alternateName: 'Evidence Today',
-      url: 'https://evidencetoday.news',
-      publishingPrinciples: 'https://evidencetoday.news/editorial-policy/',
-      sameAs: SITE_SAMEAS,
-    }} />
-  </Fragment>
+  <!-- 站台實體圖（Organization + WebSite）由 Base layout 全站輸出，首頁不另重複。 -->
 
   <!-- ============================================================== -->
   <!--  1. Hero                                                        -->
@@ -315,13 +305,35 @@ const categories = [
   </section>
 
   <!-- ============================================================== -->
+  <!--  2.5 Health Topics                                             -->
+  <!-- ============================================================== -->
+  <section id="topics" class="section-topics">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">健康專題</h2>
+        <Button variant="secondary" href="/topics/">看全部專題</Button>
+      </div>
+      <p class="section-subtitle">把同一主題的文章、闢謠、成分解析、Podcast 與短影音整理在一起，幫助讀者快速建立完整理解。</p>
+      <div class="topics-home-grid">
+        {TOPICS.map((topic) => (
+          <a href={`/topics/${topic.slug}/`} class="topic-home-card">
+            <h3>{topic.name}</h3>
+            <p>{topic.intro}</p>
+            <span class="topic-home-card__cta">查看專題 →</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
   <!--  3. Latest Content                                              -->
   <!-- ============================================================== -->
   <section id="latest" class="section-latest">
     <div class="container">
       <div class="section-header">
         <h2 class="section-title">最新內容</h2>
-        <Button variant="secondary" href="/articles/">看全部內容</Button>
+        <Button variant="secondary" href="/all/">看全部內容</Button>
       </div>
       <div class="latest-grid">
         {latestAll.map((item) => {
@@ -918,6 +930,72 @@ const categories = [
 
   @media (max-width: 640px) {
     .category-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ==========================================================================
+     2.5 Health Topics
+     ========================================================================== */
+
+  .section-topics {
+    padding: var(--space-section-gap) 0;
+  }
+
+  .topics-home-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-card-gap);
+  }
+
+  .topic-home-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: clamp(1.2rem, 1rem + 0.7vw, 1.6rem);
+    border: 1px solid var(--color-fog);
+    border-radius: var(--radius-card);
+    background-color: white;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+
+  .topic-home-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card-hover);
+    border-color: var(--color-teal);
+    color: inherit;
+  }
+
+  .topic-home-card h3 {
+    font-family: var(--font-sans);
+    font-size: var(--text-h3);
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+
+  .topic-home-card p {
+    font-size: var(--text-meta);
+    line-height: 1.65;
+    color: color-mix(in oklch, var(--color-ink) 70%, transparent);
+  }
+
+  .topic-home-card__cta {
+    margin-top: auto;
+    font-family: var(--font-ui);
+    font-weight: 700;
+    color: var(--color-teal);
+  }
+
+  @media (max-width: 1024px) {
+    .topics-home-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .topics-home-grid {
       grid-template-columns: 1fr;
     }
   }

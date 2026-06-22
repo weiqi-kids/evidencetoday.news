@@ -3,6 +3,11 @@ import svelte from '@astrojs/svelte';
 import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
 import rehypeStockFigure from './src/utils/rehype-stock-figure.mjs';
+import { buildLastmodMap } from './scripts/lib/content-dates.mjs';
+
+// 每篇公開內容的 lastmod（updatedDate ?? publishDate），給 sitemap serialize 逐頁標註，
+// 讓搜尋引擎/AI 知道內容新鮮度。掃 frontmatter 一次，build 期間建好。
+const lastmodMap = buildLastmodMap();
 
 export default defineConfig({
   site: 'https://evidencetoday.news',
@@ -59,7 +64,17 @@ export default defineConfig({
   integrations: [
     svelte(),
     // /admin 是隱藏管理頁；/tags/* 是 thin 自動分類頁（noindex,follow），皆不應進 sitemap
-    sitemap({ filter: (page) => !page.includes('/admin') && !page.includes('/tags/') }),
+    sitemap({
+      filter: (page) => !page.includes('/admin') && !page.includes('/tags/'),
+      // 對每篇內容頁輸出 lastmod（updatedDate ?? publishDate）。靜態頁（首頁/分類/政策頁）
+      // 不在內容 frontmatter 中，無對應日期時不強加 lastmod。
+      serialize(item) {
+        const path = new URL(item.url).pathname;
+        const lastmod = lastmodMap.get(path) ?? lastmodMap.get(path.endsWith('/') ? path : `${path}/`);
+        if (lastmod) item.lastmod = lastmod;
+        return item;
+      },
+    }),
     mdx(),
   ],
   // 內文圖庫圖：把帶真實圖庫攝影連結（img title）的圖轉成 <figure> + 可點署名。

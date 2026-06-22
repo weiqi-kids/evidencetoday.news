@@ -14,14 +14,15 @@ import { getArticleQueryPatternLabel } from '@/utils/article-query-patterns';
 import { contentSocial } from '@/utils/social-meta.mjs';
 import EditButton from '@/components/editor/EditButton.svelte';
 import ReadingEngagement from '@/components/blocks/ReadingEngagement.svelte';
-import { buildPerson } from '@/utils/schema-org';
+import { buildPerson, buildCitations, PUBLISHER_REF, WEBSITE_REF } from '@/utils/schema-org';
+import { isPublicEntry } from '@/utils/visibility';
 
 function stripExt(id: string): string {
   return id.replace(/\.[^.]+$/, '');
 }
 
 export async function getStaticPaths() {
-  const entries = await getCollection('articles', ({ data }) => !data.draft);
+  const entries = await getCollection('articles', ({ data }) => isPublicEntry(data));
   return entries.map((entry) => ({
     params: { slug: entry.id.replace(/\.[^.]+$/, '') },
     props: { entry },
@@ -73,9 +74,12 @@ const reviewedBy = independentReviewer
   : data.reviewer || data.editorReviewed
     ? { '@type': 'Organization', name: '本日有據', url: 'https://evidencetoday.news/' }
     : null;
+const citations = buildCitations(data.references);
 const articleSchema = {
   '@context': 'https://schema.org',
   '@type': ['Article', 'MedicalWebPage'],
+  '@id': `https://evidencetoday.news/articles/${slug}/#article`,
+  mainEntityOfPage: `https://evidencetoday.news/articles/${slug}/`,
   headline: data.title,
   description: data.description,
   author: buildPerson(data.author),
@@ -83,11 +87,9 @@ const articleSchema = {
   medicalAudience: { '@type': 'MedicalAudience', audienceType: 'Patient' },
   datePublished: data.publishDate.toISOString(),
   dateModified: data.updatedDate.toISOString(),
-  publisher: {
-    '@type': 'Organization',
-    name: '本日有據',
-    url: 'https://evidencetoday.news',
-  },
+  publisher: PUBLISHER_REF,
+  isPartOf: WEBSITE_REF,
+  ...(citations ? { citation: citations } : {}),
   keywords: [...(data.tags ?? []), ...(queryPatternLabel ? [queryPatternLabel] : [])],
 };
 
