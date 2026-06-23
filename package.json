@@ -8,7 +8,7 @@
     "build": "astro build",
     "check:myths": "node scripts/check-myth-quality.mjs",
     "check:news": "node scripts/check-news-quality.mjs",
-    "postbuild": "pagefind --site dist",
+    "postbuild": "node scripts/subset-fonts.mjs && pagefind --site dist",
     "preview": "astro preview",
     "sync:youtube": "node scripts/sync-youtube-shorts.mjs",
     "used-images": "node scripts/used-images.mjs",
@@ -41,6 +41,7 @@
     "d3-timer": "^3.0.1",
     "pinyin-pro": "^3.28.1",
     "satori": "^0.26.0",
+    "subset-font": "^2.5.0",
     "svelte": "^5.55.5"
   },
   "devDependencies": {

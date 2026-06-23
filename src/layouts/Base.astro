@@ -7,15 +7,19 @@ import '@/styles/rwd-fixes.css';
 import { DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE } from '@/utils/social-meta.mjs';
 import { buildSiteGraph } from '@/utils/schema-org';
 
-/* Self-hosted fonts via fontsource */
-import '@fontsource/inter/400.css';
-import '@fontsource/inter/500.css';
-import '@fontsource/inter/700.css';
-import '@fontsource/noto-sans-tc/400.css';
-import '@fontsource/noto-sans-tc/700.css';
-import '@fontsource/noto-serif-tc/700.css';
-import '@fontsource/source-serif-4/600.css';
-import '@fontsource/source-serif-4/700.css';
+/* Self-hosted fonts via fontsource — 只載入需要的子集進入點：
+   繁中走 chinese-traditional 子集、Latin/數字走 latin 子集。
+   原本載入完整版（noto-sans-tc/400.css 等）會帶進 ~350 條 unicode-range @font-face，
+   render-blocking CSS 肥大；改子集後 @font-face 大幅縮減。
+   build 後 scripts/subset-fonts.mjs 會再把繁中整包 woff2 依實際用字切塊（見 postbuild）。 */
+import '@fontsource/inter/latin-400.css';
+import '@fontsource/inter/latin-500.css';
+import '@fontsource/inter/latin-700.css';
+import '@fontsource/noto-sans-tc/chinese-traditional-400.css';
+import '@fontsource/noto-sans-tc/chinese-traditional-700.css';
+import '@fontsource/noto-serif-tc/chinese-traditional-700.css';
+import '@fontsource/source-serif-4/latin-600.css';
+import '@fontsource/source-serif-4/latin-700.css';
 
 interface Props {
   title: string;

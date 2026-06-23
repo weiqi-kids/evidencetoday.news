@@ -46,6 +46,14 @@
 
 > **歷史踩坑**：cards variant 第一版遺漏 `max-width: none`，blocks 被 68ch 限死（記憶：2026-05-13 RWD 修正）。
 
+### 內建社群分享列（ShareButtons）
+
+`Article.astro` 在內容區尾端（medical disclaimer 之後、`after-content` slot 之前）渲染 `src/components/blocks/ShareButtons.astro`（LINE / Facebook / X / 複製連結，無外部 SDK）。
+
+- **myths 不渲染**：`showShare = category !== 'myth'`。myths 單篇刻意極簡，且自己的頁面已有原生分享區（`#share-btn` / `#copy-btn`），由 Article 再加會重複。**勿移除這個 gate**。
+- 分享網址用 `new URL(Astro.url.pathname, Astro.site).href`（canonical 絕對網址）。
+- articles / ingredients 走 Article 自帶這條；**news 內頁不走 Article**，已在 `src/pages/news/[slug].astro` 另行 import 並放在 `<footer class="source-ref">` 之後。
+
 ## 修改流程
 
 1. **辨識 variant**：先用 `git grep "variant=" src/pages/articles src/pages/myths src/pages/ingredients` 找各頁傳什麼 variant

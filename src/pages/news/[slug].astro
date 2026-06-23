@@ -9,6 +9,7 @@ import MythCard from '@/components/blocks/MythCard.astro';
 import IngredientCard from '@/components/blocks/IngredientCard.astro';
 import VideoCard from '@/components/blocks/VideoCard.astro';
 import PodcastCard from '@/components/blocks/PodcastCard.astro';
+import ShareButtons from '@/components/blocks/ShareButtons.astro';
 import { fmtDate } from '@/utils/date';
 import { getDisplayTitle, getNewsCategory, getNewsHeroImage } from '@/utils/news';
 import { stripPodcastSlug } from '@/utils/podcasts';
@@ -103,6 +104,7 @@ const relatedPodcasts = data.relatedPodcasts
 
 const hasRelated = relatedArticles.length > 0 || relatedMyths.length > 0 || relatedIngredients.length > 0 || relatedVideos.length > 0 || relatedPodcasts.length > 0;
 const metaDesc = (data.subtitle || data.summary || '').slice(0, 140);
+const shareUrl = new URL(Astro.url.pathname, Astro.site).href;
 
 const newsCitations = buildCitations(references);
 const articleSchema = {
@@ -240,6 +242,8 @@ const breadcrumbSchema = {
           <p class="source-ref__link">{data.sourcePendingReason || '原始來源連結尚未補上'}</p>
         )}
       </footer>
+
+      <ShareButtons url={shareUrl} title={displayTitle} />
     </article>
 
     {hasRelated && (

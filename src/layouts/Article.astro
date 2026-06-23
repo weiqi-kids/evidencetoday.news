@@ -10,6 +10,7 @@ import TldrBox from '@/components/blocks/TldrBox.astro';
 import FaqAccordion from '@/components/blocks/FaqAccordion.astro';
 import ReferenceList from '@/components/blocks/ReferenceList.astro';
 import MedicalDisclaimer from '@/components/blocks/MedicalDisclaimer.astro';
+import ShareButtons from '@/components/blocks/ShareButtons.astro';
 
 interface Props {
   title: string;
@@ -60,6 +61,10 @@ const {
   queryPatternLabel,
   showMedicalDisclaimer = true,
 } = Astro.props;
+
+// 分享列：用 canonical 絕對網址。myths 單篇刻意極簡（見 CLAUDE.md 與 myths playbook），不加分享列。
+const shareUrl = new URL(Astro.url.pathname, Astro.site).href;
+const showShare = category !== 'myth';
 ---
 
 <Base title={seoTitle ?? `${title}｜本日有據`} description={description} ogTitle={socialTitle} ogDescription={socialDescription ?? description} ogImage={ogImage} ogType="article">
@@ -103,6 +108,7 @@ const {
           </section>
         )}
         {showMedicalDisclaimer && <MedicalDisclaimer />}
+        {showShare && <ShareButtons url={shareUrl} title={title} />}
         <slot name="after-content" />
       </div>
       <aside class="article-sidebar">

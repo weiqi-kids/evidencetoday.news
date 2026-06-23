@@ -26,7 +26,7 @@ build (ubuntu-latest)
 ├─ pnpm build
 │   ├─ prebuild: pnpm run sync:youtube      ← fail-loud, no fallback
 │   ├─ astro build
-│   └─ postbuild: pagefind --site dist
+│   └─ postbuild: subset-fonts.mjs → pagefind --site dist
 ├─ lychee internal links check (offline, fail: true)
 ├─ lychee external links check (fail: false, continue-on-error)
 ├─ Lighthouse CI (continue-on-error)
@@ -43,6 +43,15 @@ deploy (ubuntu-latest, needs: build)
 | `src/data/youtube-shorts.json` | `prebuild` 階段（YouTube Data API） | `.gitignore` 排除；CI 跑時臨時寫入，build 結束丟棄 |
 
 若 prebuild sync 失敗 → `pnpm build` 整個中斷 → 後續 step（lighthouse / upload / deploy）不會跑 → CI 紅燈通知。詳見 [external-apis.md](./external-apis.md) 的 fail-loud 設計。
+
+### 字型子集化（postbuild：`scripts/subset-fonts.mjs`）
+
+繁中字型走 build-time 切塊，**不要改回完整版 import**：
+
+- `src/layouts/Base.astro` 只 import 子集進入點（`@fontsource/noto-sans-tc/chinese-traditional-*.css`、`@fontsource/inter/latin-*.css` 等）。改回 `noto-sans-tc/400.css` 這類完整版會帶進 ~350 條 `@font-face`，render-blocking CSS 暴肥。
+- `postbuild` 先跑 `node scripts/subset-fonts.mjs`：掃 `dist` 全站 HTML 實際用字，把每個繁中權重（Noto Sans TC 400/700、Noto Serif TC 700）依碼位切成 ~200 字一段的 woff2，改寫 `_astro/*.css` 的 `@font-face`（帶 `unicode-range` + `font-display:optional`），並刪掉舊整包 woff2/woff。純邏輯在 `scripts/lib/font-slicing.mjs`（有 vitest 可測）。
+- **新增/移除繁中字重時**：同步改 `Base.astro` 的 import 與 `subset-fonts.mjs` 的 `WEIGHTS` 陣列，兩邊要一致，否則該權重不會被切塊（會 fallback 到整包或缺字）。
+- 依賴 `subset-font`（package.json）。基線量測：完整版約 351 條 `@font-face` / 339 個 woff2 / 8.4MB；切塊後約 50 條 / 50 檔 / 1.7MB，且每頁只下載 `unicode-range` 命中的切片。
 
 ### Action 版本鎖定
 
