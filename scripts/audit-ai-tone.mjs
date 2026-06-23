@@ -33,6 +33,33 @@ const vagueReferencePatterns = [
 
 const rawEnumPattern = /\b(meta-analysis|rct|observational|animal|in-vitro)\b/gi;
 
+// 模板化第一人稱開頭：YMYL 致命傷，命中一律「強制」擋下（exit 1），不受 warning/strict 模式影響。
+// 偵測「正文第一句」是否以固定人設開場白起頭（見 docs/content-guide.md 鐵則 / CLAUDE.md 硬規則 7a）。
+const bannedOpeningPatterns = [
+  // 規則:正文第一句不得以第一人稱「我…」或固定人設/軼事開場白起頭，
+  // 必須直接給具體價值（數據/主張/情境）。詳見 CLAUDE.md 硬規則 7a。
+  /^我[^們]/,            // 任何以「我…」起頭的人設開場（我一直/我最近/我做/我有/我在/我觀察…）
+  /^我$/,
+  /^老實(講|說)/,
+  /^朋友(最常|常)問我/,
+  /^最近[，,]?\s*有讀者/, // 軼事型開場（最近有讀者傳訊息給我…）
+];
+
+// 取「正文」第一段文字（跳過 frontmatter、標題、圖片、HTML、引用、清單、表格）。
+function firstBodyLine(text) {
+  const lines = text.split(/\r?\n/);
+  let fm = 0;
+  for (let i = 0; i < lines.length; i += 1) {
+    const t = lines[i].trim();
+    if (t === '---') { fm += 1; continue; }
+    if (fm < 2) continue;          // 仍在 frontmatter 內
+    if (!t) continue;              // 空行
+    if (/^(#|!\[|<|>|\||[-*]\s)/.test(t)) continue; // 標題/圖片/HTML/引用/表格/清單（- 或 * 後接空白）；不跳過 **粗體** 開頭段
+    return { text: t, line: i + 1 };
+  }
+  return null;
+}
+
 function walk(dir) {
   const out = [];
   for (const name of readdirSync(dir)) {
@@ -64,6 +91,18 @@ function collectFindings(file) {
   const text = readFileSync(file, 'utf8');
   const lines = text.split(/\r?\n/);
   const findings = [];
+
+  // 模板化開頭檢查（強制擋）
+  const opening = firstBodyLine(text);
+  if (opening && bannedOpeningPatterns.some((re) => re.test(opening.text))) {
+    findings.push({
+      file: relativeFile,
+      line: opening.line,
+      type: 'banned-opening',
+      label: opening.text.slice(0, 12),
+      message: `禁止的模板化第一人稱開頭「${opening.text.slice(0, 12)}…」，開頭第一句須直接給具體價值且每篇不同（CLAUDE.md 硬規則 7a）。`,
+    });
+  }
 
   for (let i = 0; i < lines.length; i += 1) {
     const lineText = lines[i];
@@ -154,10 +193,12 @@ const findings = files.flatMap((file) => collectFindings(file));
 const aiCount = findings.filter((item) => item.type === 'ai-phrase').length;
 const vagueCount = findings.filter((item) => item.type === 'vague-reference').length;
 const rawEnumCount = findings.filter((item) => item.type === 'raw-enum').length;
+const bannedOpeningCount = findings.filter((item) => item.type === 'banned-opening').length;
 
 console.log(`Content audit mode: ${strictMode ? 'strict mode' : 'warning mode'}`);
 console.log(`Scanned files: ${files.length} (.mdx + .md)`);
 console.log(`Total findings: ${findings.length}`);
+console.log(`- Banned openings (BLOCKING): ${bannedOpeningCount}`);
 console.log(`- AI phrase warnings: ${aiCount}`);
 console.log(`- Vague reference warnings: ${vagueCount}`);
 console.log(`- Raw enum warnings: ${rawEnumCount}`);
@@ -174,9 +215,12 @@ if (findings.length > 0) {
 emitGitHubWarnings(findings);
 writeStepSummary(findings);
 
-if (strictMode && findings.length > 0) {
+if (bannedOpeningCount > 0) {
+  console.log(`\n❌ ${bannedOpeningCount} 篇使用禁止的模板化開頭——一律擋下（不受 warning/strict 模式影響）。請改寫開頭後再發布。`);
+  process.exitCode = 1;
+} else if (strictMode && findings.length > 0) {
   console.log('Strict mode enabled and findings detected, setting exit code to 1.');
   process.exitCode = 1;
 } else {
-  console.log('Warning mode behavior: findings do not block CI.');
+  console.log('Warning mode behavior（banned-opening 除外）: 其餘 findings 不擋 CI。');
 }
