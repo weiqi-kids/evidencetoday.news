@@ -45,6 +45,8 @@ export const AUTHORS: Record<string, AuthorInfo> = {
       '熟齡健康溝通',
       '保健食品觀念',
     ],
-    sameAs: [...SITE_SAMEAS],
+    // 第一個為羅揚本人的 Wikidata Person 項（Q140319371，2026-06-23 建立），
+    // 與本頁 Person JSON-LD 形成站內↔Wikidata 人物實體閉環（E-E-A-T/GEO）；其後為機構共用 sameAs。
+    sameAs: ['https://www.wikidata.org/wiki/Q140319371', ...SITE_SAMEAS],
   },
 };
