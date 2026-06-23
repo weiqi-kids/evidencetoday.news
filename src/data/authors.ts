@@ -15,6 +15,8 @@ export interface AuthorInfo {
   description: string;
   knowsAbout: string[];
   sameAs: string[];
+  /** 任職/經營的組織，輸出為 Person JSON-LD 的 worksFor，串起作者↔機構實體圖（E-E-A-T）。 */
+  worksFor?: Array<{ name: string; url?: string }>;
   /**
    * 專業憑證（schema.org EducationalOccupationalCredential），選填。
    * 羅揚的作者權威錨定在「營養保健產業第一線實務經驗」（樂地滋有限公司負責人，可由公司登記查證），
@@ -52,7 +54,14 @@ export const AUTHORS: Record<string, AuthorInfo> = {
       'https://appi.news/authors/luo-yang/',
       'https://lodes.com.tw/',
       'https://www.facebook.com/LODES8/',
+      'https://open.spotify.com/show/2Qu0wOcTRsnqimaENnsIp8',
       ...SITE_SAMEAS,
+    ],
+    // worksFor 串起作者↔機構實體圖：本日有據（主編）＋ 樂地滋（其經營的營養食品公司，
+    // 商業利益見 /disclosure）。讓 Google/LLM 把這些資產認成同一個可究責的人。
+    worksFor: [
+      { name: '本日有據 Evidence Today', url: 'https://evidencetoday.news/' },
+      { name: '樂地滋有限公司', url: 'https://lodes.com.tw/' },
     ],
   },
 };

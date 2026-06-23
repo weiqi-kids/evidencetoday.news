@@ -86,6 +86,19 @@ ChatGPT 的網路搜尋走 Bing 索引，台灣市場最常被忽略。
 - [x] Wikidata Person **Q140319371**（中性知識庫，事實陳述「樂地滋負責人、本日有據主編」屬適當，保留）＋ P973→appi 作者頁。
 - 牙醫醫學士／高醫口腔衛生研究所背景屬實，但**列次要、不主打**。
 
+### 已串成的作者+品牌實體圖（2026-06-23 補完整）
+
+把羅揚所有**可查證**的真實資產連成一張 Google/LLM 認得的圖（這是把既有信任度「變成可辨識形式」，非無中生有）：
+
+- **Person 羅揚 `Q140319371`**：`P1416` 隸屬→本日有據、`P108` employer→樂地滋、`P106` editor＋businessperson、`P973`→appi 作者頁。
+- **Org 樂地滋有限公司 `Q140320516`**（新建）：`P31` company、`P17` Taiwan、`P856` lodes.com.tw、`P1037` director→羅揚（附[公司登記](https://twincn.com/item.aspx?no=90189258)來源）。
+- **Org 本日有據 `Q140265345`**：機構實體（官網、YouTube、主題=health）。
+- **站內 Person JSON-LD**（`buildPerson`，`src/utils/schema-org.ts`）新增 `worksFor`→本日有據＋樂地滋；`sameAs` 含 Wikidata Person、appi 作者頁、lodes.com.tw、FB LODES8、**Spotify 喜聞樂健 `open.spotify.com/show/2Qu0wOcTRsnqimaENnsIp8`**、Firstory、YouTube。
+
+**資產清單（可查證）**：樂地滋（lodes.com.tw／FB LODES8／[公司登記](https://twincn.com/item.aspx?no=90189258)）、appi.news 作者頁（同營運者）、本日有據、Podcast《喜聞樂健》（Firstory＋Spotify）、YouTube 本日有據影音、Wikidata 雙實體。
+
+待補（需站外操作）：appi.news 端作者頁回連樂地滋/Spotify；累積第三方獨立引用（降低 Q140319371/Q140320516 被提刪風險、並讓 Google 真正「認得」此權威）。
+
 待辦（鞏固作者實體）：
 - [ ] 各站敘述用詞持續對齊（evidencetoday / appi.news / lodes.com.tw 一致，避免實體被拆成多個）。
 - [ ] 樂地滋官網、appi.news、本站作者頁互設連結（強化跨站實體串接）。

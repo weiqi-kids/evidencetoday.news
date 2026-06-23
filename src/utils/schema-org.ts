@@ -143,6 +143,7 @@ interface PersonSchema {
   description?: string;
   knowsAbout?: string[];
   sameAs?: string[];
+  worksFor?: Array<{ '@type': 'Organization'; name: string; url?: string }>;
   hasCredential?: {
     '@type': 'EducationalOccupationalCredential';
     name: string;
@@ -165,6 +166,9 @@ export function buildPerson(authorName: string): PersonSchema {
     description: info.description,
     knowsAbout: info.knowsAbout,
     sameAs: info.sameAs,
+    ...(info.worksFor && info.worksFor.length
+      ? { worksFor: info.worksFor.map((o) => ({ '@type': 'Organization' as const, name: o.name, ...(o.url ? { url: o.url } : {}) })) }
+      : {}),
     ...(info.hasCredential
       ? {
           hasCredential: {
