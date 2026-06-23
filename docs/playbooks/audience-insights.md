@@ -30,6 +30,13 @@
 - **自動化**：本機 cron 每週一重 ping 並記錄覆蓋率 → `/root/.config/evidencetoday-news/sitemap-submit.sh`（crontab `0 1 * * 1`，log 在 `/tmp/evidencetoday-sitemap.log`）。沿用既有 cron 慣例（`/snap/bin` PATH、UTC 寫死時間、Vixie 不支援 `CRON_TZ`）。
 - 部署到 GitHub Pages 的 CI **沒有** gcloud 憑證，故此提交只能在本機/cron 跑，不在 deploy workflow 內。
 
+## 姊妹指令：`pnpm index:coverage`（全站索引覆蓋率 + 歷史追蹤）
+- `scripts/index-coverage.mjs` — 對 sitemap 全部 URL 逐一打 GSC **URL 檢查 API**，彙總 coverageState 分布與各 collection「已索引/總」，算真實索引率（只認 `Submitted and indexed`），並把快照記到歷史檔、印出與上次的差異。`--no-save` 只看不記。
+- **為何存在**：2026-06-23 診斷出真正瓶頸是「Google 發現了卻不索引」——真實索引僅 25/233（11%），189 頁「Discovered - currently not indexed」（網域權重不足，非技術 bug；robots/canonical/noindex/GA4/schema 全驗過正常）。sitemap 當天才提交，需 2–4 週讓 Google 消化。本指令把一次性掃描變可重複量測，判斷索引數在「爬升中（時間問題）」還是「卡住（權重天花板，該投資站外）」。
+- **唯讀**：URL 檢查 API 唯讀即可（與 perf/insights 共用唯讀 token，不需 sitemap:submit 的寫入 scope）。
+- **歷史檔**：`/root/.config/evidencetoday-news/index-coverage-history.jsonl`（每行一筆 JSON 快照；僅彙總計數、非機密，存倉庫外不 commit）。掃描約 200+ 個 URL、受 API 速率限制，約 2–3 分鐘。
+- **判讀**：已索引數逐次成長＝多屬時間問題、續觀察；停滯不動＝偏向權重天花板，全力投資站外權威（見 `docs/playbooks/geo-offsite.md`）。⚠️ 易誤判：`Discovered - currently not indexed` 的字串含 "indexed"，計數務必用「精確等於 `Submitted and indexed`」，勿用 `/indexed/` 比對。
+
 ## 修改流程（加新策略）
 1. 在 `insight-strategies.mjs` 加 `(data,cfg)=>Bucket` 純函數，回 `emptyBucket()` 起手
 2. 在 `insight-strategies.test.mjs` 先寫失敗測試（命中 + 空資料 + 門檻邊界）
