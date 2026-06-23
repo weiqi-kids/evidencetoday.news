@@ -34,7 +34,7 @@ export const AUTHORS: Record<string, AuthorInfo> = {
     url: 'https://evidencetoday.news/authors/luo-yang/',
     jobTitle: '本日有據主編',
     description:
-      '本日有據（Evidence Today）主編，同時為營養食品公司「樂地滋有限公司」（Lodes）負責人，長年深耕營養保健產業第一線，累積營養、保健食品與消費者溝通的實務經驗；具健康教育內容製作與編輯經驗，長期關注健康識讀、營養科學、預防醫學、公共衛生與熟齡健康溝通，擅長將血液檢查、保健食品與營養議題整理成一般人看得懂的內容；主持 Podcast《喜聞樂健》。',
+      '本日有據（Evidence Today）主編。長年身處營養保健產業，熟悉成分、研究與行銷話術之間的落差，擅長把這些拆解成一般人看得懂、能自己判斷的內容；長期關注健康識讀、營養科學、預防醫學、公共衛生與熟齡健康溝通，並主持 Podcast《喜聞樂健》。（主編相關商業利益揭露見 /disclosure）',
     knowsAbout: [
       '營養科學',
       '保健食品',
