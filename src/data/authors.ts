@@ -16,9 +16,9 @@ export interface AuthorInfo {
   knowsAbout: string[];
   sameAs: string[];
   /**
-   * 專業憑證（schema.org EducationalOccupationalCredential）。只放真實、可被外部查證的憑證。
-   * 羅揚為「牙醫學學歷背景」，並非執業牙醫師、亦未領有牙醫師執照，故不得以 hasCredential 宣稱專業執照。
-   * 待有可驗證來源（如公會註冊頁）前，此欄位刻意留空。
+   * 專業憑證（schema.org EducationalOccupationalCredential），選填。
+   * 羅揚的作者權威錨定在「營養保健產業第一線實務經驗」（樂地滋有限公司負責人，可由公司登記查證），
+   * 以 description + sameAs（lodes.com.tw）承載，而非以執照式 hasCredential 宣稱，故此欄位刻意留空。
    */
   hasCredential?: {
     name: string;
@@ -34,19 +34,25 @@ export const AUTHORS: Record<string, AuthorInfo> = {
     url: 'https://evidencetoday.news/authors/luo-yang/',
     jobTitle: '本日有據主編',
     description:
-      '本日有據（Evidence Today）主編，具牙醫學學歷背景與口腔衛生材料相關研究經驗，並有保健食品產業實務與健康教育內容製作經驗；長期關注健康識讀、營養科學、預防醫學、公共衛生與熟齡健康溝通，擅長將血液檢查、保健食品與營養議題整理成白話內容；主持 Podcast《喜聞樂健》。',
+      '本日有據（Evidence Today）主編，同時為營養食品公司「樂地滋有限公司」（Lodes）負責人，長年深耕營養保健產業第一線，累積營養、保健食品與消費者溝通的實務經驗；具健康教育內容製作與編輯經驗，長期關注健康識讀、營養科學、預防醫學、公共衛生與熟齡健康溝通，擅長將血液檢查、保健食品與營養議題整理成一般人看得懂的內容；主持 Podcast《喜聞樂健》。',
     knowsAbout: [
-      '牙醫學',
-      '口腔衛生材料',
-      '健康識讀',
       '營養科學',
+      '保健食品',
+      '保健食品產業',
+      '健康識讀',
       '預防醫學',
       '公共衛生',
       '熟齡健康溝通',
-      '保健食品觀念',
     ],
-    // 第一個為羅揚本人的 Wikidata Person 項（Q140319371，2026-06-23 建立），
-    // 與本頁 Person JSON-LD 形成站內↔Wikidata 人物實體閉環（E-E-A-T/GEO）；其後為機構共用 sameAs。
-    sameAs: ['https://www.wikidata.org/wiki/Q140319371', ...SITE_SAMEAS],
+    // sameAs 串起羅揚的跨站作者實體：本人 Wikidata Person（Q140319371）、姊妹站 appi.news 作者頁
+    // （已回指本站）、其負責的營養食品公司樂地滋官網與粉專、機構共用頻道。形成 LLM/知識圖譜可串接的
+    // 作者權威網（E-E-A-T 的 Experience：營養保健產業第一線）。見 docs/playbooks/geo-offsite.md。
+    sameAs: [
+      'https://www.wikidata.org/wiki/Q140319371',
+      'https://appi.news/authors/luo-yang/',
+      'https://lodes.com.tw/',
+      'https://www.facebook.com/LODES8/',
+      ...SITE_SAMEAS,
+    ],
   },
 };

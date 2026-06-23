@@ -71,6 +71,24 @@ ChatGPT 的網路搜尋走 Bing 索引，台灣市場最常被忽略。
 
 注意：Wikidata 對「值得收錄性（notability）」有要求，若 item 被提刪，先累積一些第三方報導/引用再建（見下一步）。
 
+## 3b. 作者實體與跨站權威網（E-E-A-T 的 Experience）
+
+主編**羅揚**的權威錨定在「**營養保健產業第一線實務經驗**」，不走證照框架。可外部查證的核心事實：
+
+- **羅揚為「樂地滋有限公司」（Lodes）負責人**——營養食品公司，台北中正區、營業中（[台灣公司網](https://twincn.com/item.aspx?no=90189258)登記）。官網 `https://lodes.com.tw/`、FB `https://www.facebook.com/LODES8/`。這就是家族營養事業，也是站上 `lodes-*` 舊 slug 的內容來源。
+- 姊妹站 `https://appi.news/authors/luo-yang/` 已有完整 Person JSON-LD（jobTitle、hasCredential 含「樂地滋負責人」、sameAs 已回指本站）。
+- 牙醫醫學士／高醫口腔衛生研究所背景屬實，但**列為次要、不當主打**。
+
+已落地（2026-06-23）：
+- [x] 羅揚 Wikidata Person item **Q140319371**（P31 human、P106 editor、P1416→Q140265345、P973→appi 作者頁）；description 已改為「樂地滋負責人、本日有據主編」。
+- [x] `src/data/authors.ts` 的 `description` 改以「樂地滋有限公司負責人／營養保健產業實務」為主敘述；`sameAs` 補上 **Wikidata Person、appi.news 作者頁、lodes.com.tw、FB LODES8**（原本只有機構 Wikidata/Firstory/YouTube）。
+- [x] 作者頁 `src/pages/authors/luo-yang/index.astro`、`src/data/policies/about.md`、`src/data/authors.ts` 三處敘述一致對齊「樂地滋負責人」。
+
+待辦（鞏固作者實體）：
+- [ ] 各站敘述用詞持續對齊（evidencetoday / appi.news / lodes.com.tw 一致，避免實體被拆成多個）。
+- [ ] 樂地滋官網、appi.news、本站作者頁互設連結（強化跨站實體串接）。
+- [ ] 累積第三方提及以降低 Q140319371 被提刪風險（與第 4 點共用）。
+
 ## 4. 有機提及與 backlink（C3/C4）
 
 LLM 偏好被全網廣泛引用的來源。重質不重量、禁灌水。
