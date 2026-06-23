@@ -44,6 +44,14 @@ deploy (ubuntu-latest, needs: build)
 
 若 prebuild sync 失敗 → `pnpm build` 整個中斷 → 後續 step（lighthouse / upload / deploy）不會跑 → CI 紅燈通知。詳見 [external-apis.md](./external-apis.md) 的 fail-loud 設計。
 
+### 內容把關 gate（deploy.yml build job 內，會擋部署）
+
+`deploy.yml` 的 build job 依序跑兩道**會擋部署**的內容 gate（任一失敗 → build 中斷 → 不部署）：
+1. `pnpm check:news`：每篇非 draft 的 news 須有可點來源連結。
+2. `pnpm content:audit`：擋 `banned-opening`（模板化第一人稱開頭）+ `ai-phrase`（不是…而是／換句話說／我一直覺得…）+ `vague-reference`（研究顯示／文獻回顧…）；`raw-enum` 僅警告。規範見 `CLAUDE.md` 硬規則 7a 與 `docs/content-guide.md`。
+
+> 注意：另有獨立的 `content-audit.yml` workflow（PR/push 時跑，提供行內 annotation），但**真正擋部署的是 deploy.yml 裡這道 step**——獨立 workflow 紅燈不會阻止 Pages 部署，2026-06-23 已把 `content:audit` 加進 deploy build job 補上這個缺口。
+
 ### Action 版本鎖定
 
 | Action | 當前 | 最新（2026-05-15） | 備註 |

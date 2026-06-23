@@ -48,6 +48,9 @@ jobs:
       - name: Check news source links
         run: pnpm check:news
 
+      - name: Content AI-tone gate (blocks deploy on banned-opening / ai-phrase / vague-reference)
+        run: pnpm content:audit
+
       - name: Build Astro
         run: pnpm build
 
