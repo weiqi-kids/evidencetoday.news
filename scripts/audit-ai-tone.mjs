@@ -215,12 +215,16 @@ if (findings.length > 0) {
 emitGitHubWarnings(findings);
 writeStepSummary(findings);
 
-if (bannedOpeningCount > 0) {
-  console.log(`\n❌ ${bannedOpeningCount} 篇使用禁止的模板化開頭——一律擋下（不受 warning/strict 模式影響）。請改寫開頭後再發布。`);
+// 強制擋下的類型：模板化開頭 + AI 感句型 + 模糊引用（全站已清零，2026-06-23 起鎖定防回歸）。
+// raw-enum 仍為警告：多數命中其實是 references 的合法 `type:` schema 值與正文研究類型用詞。
+const blockingCount = bannedOpeningCount + aiCount + vagueCount;
+if (blockingCount > 0) {
+  console.log(`\n❌ 偵測到 ${blockingCount} 處必須修正才能發布的問題（模板化開頭 ${bannedOpeningCount}／AI 感句型 ${aiCount}／模糊引用 ${vagueCount}）——一律擋下，不受 warning/strict 模式影響。`);
+  console.log('   規範見 CLAUDE.md 硬規則 7a 與 docs/content-guide.md「鐵則」。');
   process.exitCode = 1;
-} else if (strictMode && findings.length > 0) {
-  console.log('Strict mode enabled and findings detected, setting exit code to 1.');
+} else if (strictMode && rawEnumCount > 0) {
+  console.log('Strict mode enabled and raw-enum findings detected, setting exit code to 1.');
   process.exitCode = 1;
 } else {
-  console.log('Warning mode behavior（banned-opening 除外）: 其餘 findings 不擋 CI。');
+  console.log('✅ 無模板化開頭／AI 感句型／模糊引用。raw-enum 為警告（多為合法 schema 值），不擋 CI。');
 }
