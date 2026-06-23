@@ -119,7 +119,7 @@ const breadcrumbSchema = {
 <Article
   title={data.title}
   description={social.description}
-  seoTitle={social.title}
+  seoTitle={data.seoTitle ?? social.title}
   socialTitle={social.title}
   socialDescription={social.description}
   ogImage={social.image}

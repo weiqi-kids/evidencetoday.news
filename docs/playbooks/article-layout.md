@@ -136,6 +136,7 @@
 - `scripts/generate-og.mjs` 會在 build 前產生首頁、靜態頁、分類首頁、內容單篇與標籤頁共用的 1200×630 PNG。OG 圖只放短 badge、短主題與小品牌識別；不要把完整 description 放進圖裡。
 - 分類首頁固定使用短字主視覺：健康文章、迷思查證、成分解析、喜聞樂健、短影音、健康雷達。若新增 collection，必須同步補 `COLLECTION_SOCIAL` 與產圖模板色彩。
 - 內容 frontmatter 可選填 `ogShortTitle`、`socialTitle`、`socialDescription` 作為人工覆寫；未填時會由 title / description / summary 推導短標與分享描述。文案應維持 40–80 個中文字左右，避免「值得關注」「帶你了解」「一篇看懂」等套版語氣。
+- **`seoTitle`（articles 限定，覆寫 `<title>`，不影響頁面 H1）**：`src/content.schemas.ts` 的 `articlesSchema` 提供 `seoTitle`（`max(60)`），`src/pages/articles/[slug].astro` 以 `seoTitle={data.seoTitle ?? social.title}` 帶入 `Article.astro`。用途是把搜尋查詢關鍵詞**前置**到 SERP 標題，解決編輯式長標題不對題、CTR 低的問題（依 GSC 真實查詢調整，見 `docs/playbooks/audience-insights.md`）。**需自帶品牌後綴**（如「｜本日有據」，因為走的不是 `social.title` 那條會自動加雙重後綴的路徑）；SERP 中文約 28–30 字會截斷，宜精簡並把關鍵詞放最前。未填時維持原本 `social.title`（機器推導短標）行為，不影響其他文章。`socialTitle`（OG 標題）不受 `seoTitle` 影響，仍走 `social.title`。
 - 標籤頁的標題與描述會依 tag 個別產生，但共用 `/og/tags/index.png`，避免 build 前產生數百張低差異圖片。
 
 ## Articles 文章 JSON-LD 審閱欄位規則（2026-06-14）

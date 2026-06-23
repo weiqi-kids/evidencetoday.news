@@ -91,6 +91,10 @@ const coverFields = {
 
 export const articlesSchema = z.object({
   title: z.string(),
+  // seoTitle：覆蓋 <title> 的 SEO 標題（不影響頁面 H1）。用於把搜尋查詢關鍵詞前置，
+  // 解決編輯式長標在 SERP 不對題、點擊率低的問題。未填則回退為 `${title}｜本日有據`。
+  // 自行帶品牌後綴（如「｜本日有據」）；SERP 中文約 28–30 字會截斷，宜精簡。
+  seoTitle: z.string().max(60).optional(),
   description: z.string().max(155),
   ogShortTitle: z.string().max(40).optional(),
   socialTitle: z.string().max(80).optional(),
