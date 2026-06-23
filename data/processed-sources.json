@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-06-20T22:38:46Z",
+  "lastRun": "2026-06-24T06:32:58+08:00",
   "processed": {
     "PMID:42098536": {
       "processedAt": "2026-05-08T12:00:00Z",
@@ -485,6 +485,18 @@
     "topic:檸檬水排毒反應": {
       "processedAt": "2026-06-20T22:38:46Z",
       "outputFile": "src/content/news/radar-2026-06-21-06-02.md"
+    },
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12318760/": {
+      "processedAt": "2026-06-24T06:32:58+08:00",
+      "outputFile": "src/content/news/radar-2026-06-24-06-01.md"
+    },
+    "https://www.sciencedaily.com/releases/2026/06/260621060318.htm": {
+      "processedAt": "2026-06-24T06:32:58+08:00",
+      "outputFile": "src/content/news/radar-2026-06-24-06-02.md"
+    },
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12437512/": {
+      "processedAt": "2026-06-24T06:32:58+08:00",
+      "outputFile": "src/content/news/radar-2026-06-24-06-03.md"
     }
   }
 }
