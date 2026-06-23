@@ -4,6 +4,7 @@
 export const SITE_SAMEAS = [
   'https://www.wikidata.org/wiki/Q140265345',
   'https://open.firstory.me/user/cm54wunhn07kb01151eda467n/episodes',
+  'https://open.spotify.com/show/2Qu0wOcTRsnqimaENnsIp8',
   'https://www.youtube.com/channel/UCTejYxFd04qma-LY0_Z17NQ',
 ] as const;
 
@@ -54,7 +55,6 @@ export const AUTHORS: Record<string, AuthorInfo> = {
       'https://appi.news/authors/luo-yang/',
       'https://lodes.com.tw/',
       'https://www.facebook.com/LODES8/',
-      'https://open.spotify.com/show/2Qu0wOcTRsnqimaENnsIp8',
       ...SITE_SAMEAS,
     ],
     // worksFor 串起作者↔機構實體圖：本日有據（主編）＋ 樂地滋（其經營的營養食品公司，
