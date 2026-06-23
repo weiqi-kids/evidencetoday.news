@@ -54,6 +54,14 @@
 - 分享網址用 `new URL(Astro.url.pathname, Astro.site).href`（canonical 絕對網址）。
 - articles / ingredients 走 Article 自帶這條；**news 內頁不走 Article**，已在 `src/pages/news/[slug].astro` 另行 import 並放在 `<footer class="source-ref">` 之後。
 
+### 相關內容：手動優先 + 自動 fallback
+
+文章與趨勢內頁的「相關內容」採兩段式（`src/utils/related.ts` 的 `getAutoRelated`）：
+
+- **手動 `relatedX` 優先**（frontmatter 的 `relatedArticles/Myths/Ingredients/Videos/Podcasts`）：hub↔spoke 內鏈結構，有填就完全用手動。
+- **手動全空才自動補**：用 tag 重疊度（articles/news 的 `tags`、myths 另含 `topicTags`）跨 collection 推薦，避免相關區整片空白。評分＝共享 tag 數，同分取新者。
+- 行為刻意「全有或全無自動」：只要任一手動桶有填就不混入自動，維持編輯可控。要改推薦邏輯改 `related.ts` 單一處即可。
+
 ## 修改流程
 
 1. **辨識 variant**：先用 `git grep "variant=" src/pages/articles src/pages/myths src/pages/ingredients` 找各頁傳什麼 variant

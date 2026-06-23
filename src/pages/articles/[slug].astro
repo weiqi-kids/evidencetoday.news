@@ -16,6 +16,7 @@ import EditButton from '@/components/editor/EditButton.svelte';
 import ReadingEngagement from '@/components/blocks/ReadingEngagement.svelte';
 import { buildPerson, buildCitations, PUBLISHER_REF, WEBSITE_REF } from '@/utils/schema-org';
 import { isPublicEntry } from '@/utils/visibility';
+import { getAutoRelated } from '@/utils/related';
 
 function stripExt(id: string): string {
   return id.replace(/\.[^.]+$/, '');
@@ -44,22 +45,34 @@ const citationAnswer =
   data.description;
 
 
-/* Resolve related content */
-const relatedArticles = data.relatedArticles
+/* Resolve related content（手動 relatedX 優先，hub↔spoke 結構） */
+const manualArticles = data.relatedArticles
   ? (await Promise.all(data.relatedArticles.map((id) => getEntry('articles', id)))).filter(Boolean)
   : [];
-const relatedMyths = data.relatedMyths
+const manualMyths = data.relatedMyths
   ? (await Promise.all(data.relatedMyths.map((id) => getEntry('myths', id)))).filter(Boolean)
   : [];
-const relatedIngredients = data.relatedIngredients
+const manualIngredients = data.relatedIngredients
   ? (await Promise.all(data.relatedIngredients.map((id) => getEntry('ingredients', id)))).filter(Boolean)
   : [];
-const relatedVideos = data.relatedVideos
+const manualVideos = data.relatedVideos
   ? (await Promise.all(data.relatedVideos.map((id) => getEntry('videos', id)))).filter(Boolean)
   : [];
-const relatedPodcasts = data.relatedPodcasts
+const manualPodcasts = data.relatedPodcasts
   ? (await Promise.all(data.relatedPodcasts.map((id) => getEntry('podcasts', id)))).filter(Boolean)
   : [];
+const hasManual = manualArticles.length > 0 || manualMyths.length > 0 || manualIngredients.length > 0 || manualVideos.length > 0 || manualPodcasts.length > 0;
+
+/* 手動全空 → 用 tag 重疊自動補相關內容，避免相關區整片空白（見 src/utils/related.ts） */
+const auto = hasManual
+  ? { articles: [], myths: [], ingredients: [], videos: [], podcasts: [] }
+  : await getAutoRelated({ tags: data.tags ?? [], exclude: { collection: 'articles', id: entry.id }, perBucket: 3 });
+
+const relatedArticles = hasManual ? manualArticles : auto.articles;
+const relatedMyths = hasManual ? manualMyths : auto.myths;
+const relatedIngredients = hasManual ? manualIngredients : auto.ingredients;
+const relatedVideos = hasManual ? manualVideos : auto.videos;
+const relatedPodcasts = hasManual ? manualPodcasts : auto.podcasts;
 
 const hasRelated = relatedArticles.length > 0 || relatedMyths.length > 0 || relatedIngredients.length > 0 || relatedVideos.length > 0 || relatedPodcasts.length > 0;
 
