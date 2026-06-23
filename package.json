@@ -17,7 +17,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "insights": "node scripts/audience-insights.mjs",
-    "perf": "node scripts/perf-snapshot.mjs"
+    "perf": "node scripts/perf-snapshot.mjs",
+    "sitemap:submit": "node scripts/sitemap-submit.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.14",
