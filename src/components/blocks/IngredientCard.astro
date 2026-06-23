@@ -29,8 +29,10 @@ const topTags = tags.slice(0, 3);
 
 <a href={href} class="ingredient-card">
   <div class="ingredient-card__bar"></div>
-  {coverImage && (
+  {coverImage ? (
     <img class="ingredient-card__thumb" src={coverImage} alt={coverAlt || `${title} 成分解析縮圖`} loading="lazy" />
+  ) : (
+    <img class="ingredient-card__thumb" src="/og-thumb/ingredients.webp" alt="" aria-hidden="true" loading="lazy" />
   )}
   <div class="ingredient-card__body">
     <h3 class="ingredient-card__title">{title}</h3>

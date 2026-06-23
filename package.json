@@ -8,6 +8,7 @@
     "build": "astro build",
     "check:myths": "node scripts/check-myth-quality.mjs",
     "check:news": "node scripts/check-news-quality.mjs",
+    "og:thumbs": "node scripts/generate-og-thumbs.mjs",
     "postbuild": "node scripts/subset-fonts.mjs && pagefind --site dist",
     "preview": "astro preview",
     "sync:youtube": "node scripts/sync-youtube-shorts.mjs",
