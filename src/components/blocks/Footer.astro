@@ -10,9 +10,12 @@ const contentLinks = [
   { label: '全部內容', href: '/all/' },
 ];
 
-const resourceLinks = [
+// Google News 追蹤連結（出版品 ID CAowh4bHDA）：通過 Publisher Center 後，
+// follower 是 Google News 的正向訊號，故放在「資源」欄與 RSS 同列為訂閱/追蹤管道。
+const resourceLinks: { label: string; href: string; external?: boolean }[] = [
   { label: '搜尋', href: '/search/' },
   { label: 'RSS', href: '/rss.xml' },
+  { label: '在 Google News 追蹤', href: 'https://news.google.com/publications/CAowh4bHDA', external: true },
 ];
 
 const aboutLinks = [
@@ -56,7 +59,13 @@ const year = new Date().getFullYear();
           <h3 class="footer__col-title">資源</h3>
           <ul>
             {resourceLinks.map((link) => (
-              <li><a href={link.href}>{link.label}</a></li>
+              <li>
+                {link.external ? (
+                  <a href={link.href} target="_blank" rel="noopener">{link.label}</a>
+                ) : (
+                  <a href={link.href}>{link.label}</a>
+                )}
+              </li>
             ))}
           </ul>
         </div>

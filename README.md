@@ -206,6 +206,7 @@
 - Podcast slug 必須使用 `stripPodcastSlug()`。
 - feed item 以 `updatedDate ?? publishDate` 排序，最多輸出 50 筆。
 - Footer RSS 入口與 Base alternate link 都指向 `/rss.xml`。
+- Footer「資源」欄另有「在 Google News 追蹤」外連（出版品 ID `CAowh4bHDA` → `https://news.google.com/publications/CAowh4bHDA`，`target=_blank rel=noopener`）；通過 Publisher Center 後，follower 是 Google News 正向訊號。`resourceLinks` 以 `external?: boolean` 標記是否外連。
 
 ---
 
@@ -379,7 +380,7 @@ GitHub Actions 自動執行：build → Pagefind 索引 → 連結檢查 → 部
 - [ ] 隱私權政策正式文案 — `src/pages/privacy.astro`
 - [ ] 使用條款正式文案 — `src/pages/terms.astro`
 - [ ] Email 信箱 — evidencetodaynews@gmail.com（單一聯絡信箱）
-- [ ] 社群連結 — `src/components/blocks/Footer.astro`
+- [ ] 社群連結 — `src/components/blocks/Footer.astro`（已加「在 Google News 追蹤」；其餘社群待補）
 - [ ] Logo SVG — `src/components/blocks/TopNav.astro`
 - [ ] 實際內容量 — 至少 10-15 篇文章 + 5 篇闢謠
 
