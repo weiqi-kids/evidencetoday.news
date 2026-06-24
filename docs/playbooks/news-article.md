@@ -138,7 +138,7 @@
   驗 XML well-formed，並 grep 一篇 `dist/news/*/index.html` 確認 `author`/`editor`/`dateModified` 都在。
 - **收錄監測**：`pnpm gnews:watch`（`scripts/googlenews-watch.mjs`，純 GSC 查詢）查 googleNews/news/discover
   曝光、做週對週對比，`googleNews`/`news`「從 0 變正」會回 exit 10（里程碑）。cron 包裝
-  `/root/.config/evidencetoday-news/googlenews-watch.sh` 每週一 09:45 跑、報告存 `reports/gnews-<date>.md`、
+  `ops/googlenews-watch.sh` 每週一 09:45 跑、報告存 `reports/gnews-<date>.md`、
   里程碑另寫 `reports/GOOGLENEWS-MILESTONE.md` 旗標。設 `GNEWS_HISTORY` 才會累積歷史與偵測里程碑。
 
 ## 驗證清單

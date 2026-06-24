@@ -1,6 +1,6 @@
 # Playbook：每日優化引擎（daily-optimize）
 
-> 本檔是「每日自我優化迴圈」的權威方法論。cron 包裝 `/root/.config/evidencetoday-news/optimize-cron.sh`
+> 本檔是「每日自我優化迴圈」的權威方法論。cron 包裝 `ops/optimize-cron.sh`
 > 以 headless `claude -p` 每日執行本 playbook。**情境分流屬 B（內容與曝光）**，但它會自動 commit/push，
 > 故動到 `src/` 時仍須回到 A（開發維護）守 docs-sync。
 

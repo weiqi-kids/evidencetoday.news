@@ -27,7 +27,7 @@
 - `scripts/sitemap-submit.mjs` — 把 `sitemap-index.xml` 主動提交給 GSC，並印出 sitemap 處理狀態與「近 28 天有曝光頁數 / sitemap 234 頁」的覆蓋率訊號。`--check` 只查不提交。
 - **為何存在**：2026-06-23 診斷發現 **GSC 從未提交過 sitemap** → 約 200 頁內容僅 26 頁有曝光，整批 myths/ingredients 經 URL 檢查 API 回報「URL is unknown to Google」（Google 連爬都沒爬）。robots.txt 雖已聲明 sitemap，但對權重低的新站不足以系統性發現全部頁。提交後 Google 會週期性重抓 sitemap、自動發現新頁——這是全站流量的最高槓桿動作，遠勝單頁 title/CTR 微調。
 - **認證差異**：`pnpm perf`/`insights` 用唯讀 scope（`webmasters.readonly`，見 `insight-constants.mjs` 的 `SCOPES`）；**提交 sitemap 需寫入 scope**，故本腳本就地用 `gcloud ... --scopes https://www.googleapis.com/auth/webmasters` 取一顆獨立 token，不放寬其他唯讀流程的權限。SA `ga4-insights@yaocare` 已具該 GSC 屬性擁有者權限（已實測可提交，HTTP 204）。
-- **自動化**：本機 cron 每週一重 ping 並記錄覆蓋率 → `/root/.config/evidencetoday-news/sitemap-submit.sh`（crontab `0 1 * * 1`，log 在 `/tmp/evidencetoday-sitemap.log`）。沿用既有 cron 慣例（`/snap/bin` PATH、UTC 寫死時間、Vixie 不支援 `CRON_TZ`）。
+- **自動化**：本機 cron 每週一重 ping 並記錄覆蓋率 → `ops/sitemap-submit.sh`（crontab `0 1 * * 1`，log 在 `/tmp/evidencetoday-sitemap.log`）。沿用既有 cron 慣例（`/snap/bin` PATH、UTC 寫死時間、Vixie 不支援 `CRON_TZ`）。
 - 部署到 GitHub Pages 的 CI **沒有** gcloud 憑證，故此提交只能在本機/cron 跑，不在 deploy workflow 內。
 
 ## 姊妹指令：`pnpm index:coverage`（全站索引覆蓋率 + 歷史追蹤）

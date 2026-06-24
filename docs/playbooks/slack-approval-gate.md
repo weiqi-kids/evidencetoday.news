@@ -1,7 +1,8 @@
 # Playbook：Slack 按鈕核准閘半自動發布（slack-approval-gate）
 
 > 文章／成分解析／闢謠／趨勢四型內容的「半自動撰寫＋按鈕核准發布」流程。
-> 主機腳本在 repo 外 `/root/.config/evidencetoday-news/`；互動端點在 `workers/ai-suggest/`（Cloudflare Worker）。
+> 腳本在 repo 內 `ops/`（經 `ops/bootstrap.sh` 由 cron 啟動）；互動端點在 `workers/ai-suggest/`（Cloudflare Worker）。
+> 機密與執行期狀態在主機 `$CONF_DIR`（預設 `/root/.config/evidencetoday-news`）：`slack-bot-token`、`pending/`、`awaiting-live/`、`reports/`、`*-ledger.jsonl`。見 `ops/README.md`。
 > 情境分流屬 **B（內容與曝光）**，但 publish 端會 commit/push 故發布前仍守全 gate。
 
 ## 0. 它是什麼
@@ -38,11 +39,11 @@ publish-approved.sh（主機，每 ~10 分輪詢）
 |---|---|
 | `workers/ai-suggest/src/slack-gate.ts` | Worker：驗簽、按鈕互動（預覽 modal／核准／退稿）、KV 狀態機。 |
 | `workers/ai-suggest/src/index.ts` | 路由：`POST /slack/interact`、`PUT /gate/draft`、`GET/PUT /gate/state`。 |
-| `…/gate-lib.sh` | 主機共用：型別→頻道/目錄/副檔名/gate 對應；`gate_post_buttons`、`gate_put_draft`、`gate_get_state`、`gate_set_state`、`WORKER_URL`。 |
-| `…/draft-cron.sh <type>` | 出草稿：撰寫→原地 gate→搬暫存→發按鈕訊息→存 Worker→記 ts→清工作樹。 |
-| `…/publish-approved.sh` | 發布：輪詢 KV 狀態→approved 發布→等連結生效→回貼上線連結。自鎖（flock）。 |
-| `…/slack-notify.sh` | 通用發訊（thread 回貼、優化報報共用）。 |
-| `…/pending/<type>/<slug>/` | 主機暫存區：`content.<ext>` + `meta.json`（含 id/channel/slack_ts）。 |
+| `ops/gate-lib.sh` | 共用：型別→頻道/目錄/副檔名/gate 對應；`gate_post_buttons`、`gate_put_draft`、`gate_get_state`、`gate_set_state`、`WORKER_URL`。 |
+| `ops/draft-cron.sh <type>` | 出草稿：撰寫→原地 gate→搬暫存→發按鈕訊息→存 Worker→記 ts→清工作樹。 |
+| `ops/publish-approved.sh` | 發布：輪詢 KV 狀態→approved 發布→等連結生效→回貼上線連結。自鎖（flock）。 |
+| `ops/slack-notify.sh` | 通用發訊（thread 回貼、優化報報共用）。 |
+| `$CONF_DIR/pending/<type>/<slug>/` | 主機暫存區：`content.<ext>` + `meta.json`（含 id/channel/slack_ts）。 |
 | `…/awaiting-live/<id>.json` | 已 push、等連結 200 的標記。 |
 
 型別對應：articles→文章 `C0BCVEYG5HS`/.mdx；ingredients→成分解析 `C0BCRS08DMG`/.mdx；myths→闢謠 `C0BCKFMLS9Z`/.mdx（+check:myths）；news→趨勢 `C0BCAC0GKBR`/.md（+check:news）。完整見記憶 `slack-channels`。
@@ -77,15 +78,16 @@ publish-approved.sh（主機，每 ~10 分輪詢）
 - **news 時效性**：改走核准閘後新聞要等你按 ✅ 才上線；趕時效就即時去頻道核准。
 - **scope**：bot 需 chat:write + channels:join + channels:history（views.open/chat.update 用 bot token 即可，免額外 scope）。
 
-## 6. 排程（crontab，UTC 寫死；本機 Vixie cron 不支援 CRON_TZ）
+## 6. 排程（crontab，系統 TZ=UTC，排程以 UTC 寫；台北＝UTC+8。一律經 `ops/bootstrap.sh` 啟動）
 
 ```
-17 22 * * *  draft-cron.sh news         # 台北每日 06:17（取代原 news-cron 自動發布）
-30 3  * * 1  draft-cron.sh articles     # 台北週一 11:30
-30 3  * * 3  draft-cron.sh ingredients  # 台北週三 11:30
-30 3  * * 5  draft-cron.sh myths        # 台北週五 11:30
-*/10 * * * * publish-approved.sh        # 每 10 分輪詢狀態 + 等連結生效回貼
+17 22 * * *  ops/bootstrap.sh draft-cron.sh news         # 台北每日 06:17（取代原 news-cron 自動發布）
+30 3  * * 1  ops/bootstrap.sh draft-cron.sh articles     # 台北週一 11:30
+30 3  * * 3  ops/bootstrap.sh draft-cron.sh ingredients  # 台北週三 11:30
+30 3  * * 5  ops/bootstrap.sh draft-cron.sh myths        # 台北週五 11:30
+*/10 * * * * ops/bootstrap.sh publish-approved.sh        # 每 10 分輪詢狀態 + 等連結生效回貼
 ```
+（路徑前綴 `/root/evidencetoday.news/`。為何經 bootstrap：repo 內腳本不可自我 `git pull`，見 `ops/README.md`。）
 
 ## 相關
 - 頻道對照與發送：記憶 `slack-channels`；token 位置 `secrets.md` § Slack；Worker 部署事實 `editor-ai-worker-deploy`。

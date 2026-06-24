@@ -11,7 +11,7 @@
 
 | 層 | 檔案 | 角色 |
 |---|---|---|
-| **進入點 prompt** | `/root/.config/evidencetoday-news/news-cron.sh` 內的 `PROMPT` heredoc | cron 每日餵給 `claude -p` 的那段話；把 7 階段濃縮成可執行指令，並補上環境陷阱（時區、WebSearch 封網域、配圖端點） |
+| **進入點 prompt** | `ops/news-cron.sh` 內的 `PROMPT` heredoc | cron 每日餵給 `claude -p` 的那段話；把 7 階段濃縮成可執行指令，並補上環境陷阱（時區、WebSearch 封網域、配圖端點） |
 | **流程 SOP** | `AGENTS.md`「撰寫趨勢文章」7 步驟 | prompt 第一句就是「請依本 repo 的 AGENTS.md 與 docs/news_sop.md 執行」，AI 會去讀它 |
 | **細節 SOP** | `docs/news_sop.md` | 評分維度、frontmatter 欄位、審核委員會、配圖規範的完整定義 |
 
@@ -130,7 +130,7 @@ prompt 要求「連結驗證剔除死連結」。若某 reference 的 url 驗不
 
 ## 相關檔案
 
-- 進入點 prompt：`/root/.config/evidencetoday-news/news-cron.sh`（不在 repo，在主機 config）
+- 進入點 prompt：`ops/news-cron.sh`（不在 repo，在主機 config）
 - 流程：[`AGENTS.md`](../AGENTS.md)、[`news_sop.md`](./news_sop.md)
 - 選題：[`playbooks/audience-insights.md`](./playbooks/audience-insights.md)
 - 配圖：[`playbooks/editor-images.md`](./playbooks/editor-images.md)
