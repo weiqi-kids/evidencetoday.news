@@ -63,13 +63,7 @@ stage_and_notify() {  # <src_content_file>
   [ -z "$title" ] && title="$slug"
   desc="$(grep -m1 -E '^(description|excerpt|summary):' "$src" | sed -E 's/^[a-z]+:[[:space:]]*//; s/^["'\'']//; s/["'\'']$//' | cut -c1-200)"
   nsrc="$(grep -cE 'https?://' "$src")"
-  if [ "$IS_SCRIPT" = "1" ]; then
-    local words verb; words="$(wc -m < "$src" | tr -d ' ')"
-    verb="$( [ "$TYPE" = "podcast" ] && echo "待錄製" || echo "待拍攝" )"
-    gateline="${LABEL}　•　約 ${words} 字　•　來源約 ${nsrc} 處連結　•　語感自檢：YMYL＋禁 AI 模板　•　${verb}　•　$(date '+%Y-%m-%d')"
-  else
-    gateline="來源約 ${nsrc} 處連結　•　已過 gate：content:audit + build$( [ -n "$(gate_typecheck "$TYPE")" ] && echo " + $(gate_typecheck "$TYPE")" )　•　$(date '+%Y-%m-%d')"
-  fi
+  gateline="來源約 ${nsrc} 處連結　•　已過 gate：content:audit + build$( [ -n "$(gate_typecheck "$TYPE")" ] && echo " + $(gate_typecheck "$TYPE")" )　•　$(date '+%Y-%m-%d')"
 
   ts="$(gate_post_buttons "$CH" "$id" "$LABEL" "$title" "$desc" "$gateline")" || ts=""
   if [ -n "$ts" ]; then
@@ -81,18 +75,32 @@ stage_and_notify() {  # <src_content_file>
   jq -nc \
     --arg id "$id" --arg type "$TYPE" --arg slug "$slug" --arg title "$title" \
     --arg summary "$desc" --arg ch "$CH" --arg ts "${ts:-}" \
-    --arg gate "$( [ "$IS_SCRIPT" = "1" ] && echo "script:語感自檢" || echo "audit+build+typecheck" )" \
     --argjson created "$(date '+%s')" \
-    '{id:$id,type:$type,slug:$slug,title:$title,summary:$summary,gate:$gate,created_ts:$created,channel:$ch,slack_ts:$ts}' \
+    '{id:$id,type:$type,slug:$slug,title:$title,summary:$summary,gate:"audit+build+typecheck",created_ts:$created,channel:$ch,slack_ts:$ts}' \
     > "$stagedir/meta.json"
   echo "[draft] ✅ 已暫存並發按鈕：$LABEL/$slug（ts=${ts:-none}）"
+}
+
+# ── 稿件型（podcast/videos）：把一份稿直接發到頻道當通知（無核准閘、不進 repo、不存 Worker）──
+post_script_file() {  # <md_file>
+  local f="$1" title body
+  title="$(grep -m1 -E '^title:' "$f" | sed -E 's/^title:[[:space:]]*//; s/^["'\'']//; s/["'\'']$//')"
+  [ -z "$title" ] && title="$(basename "$f" .md)"
+  # 去掉 frontmatter（第 2 個 --- 之後為正文）
+  body="$(awk '/^---[[:space:]]*$/{c++; next} c>=2{print}' "$f")"
+  if printf '📝 *%s新稿*：%s\n\n%s' "$LABEL" "$title" "$body" | "$REPO/ops/slack-notify.sh" "$CH" >/dev/null; then
+    printf '%s\t%s\n' "$(date '+%Y-%m-%d')" "$title" >> "$USED_TOPICS_FILE"
+    echo "[draft] ✅ 已發 $LABEL 頻道：$title"
+  else
+    echo "[draft] ⚠️ 發送失敗：$title（未記 used-topics，下次可能重複）"
+  fi
 }
 
 # ── 除錯捷徑：拿既有檔當假草稿，驗證 搬移+Slack+meta+（後續 publish）全流程 ──────────
 if [ -n "$DRAFT_TEST_FILE" ]; then
   echo "[draft] DRAFT_TEST_FILE 模式：以 $DRAFT_TEST_FILE 當假草稿（不跑 claude）"
   [ -f "$DRAFT_TEST_FILE" ] || { echo "[draft] 找不到 $DRAFT_TEST_FILE"; exit 1; }
-  stage_and_notify "$DRAFT_TEST_FILE"
+  if [ "$IS_SCRIPT" = "1" ]; then post_script_file "$DRAFT_TEST_FILE"; else stage_and_notify "$DRAFT_TEST_FILE"; fi
   echo "===== [draft:$TYPE] 結束（測試模式）====="
   exit 0
 fi
@@ -185,13 +193,13 @@ claude -p "$PROMPT" --model claude-sonnet-4-6 --dangerously-skip-permissions 2>&
 
 # ── wrapper 後處理：把成品搬進暫存區 + 發 Slack ──────────────────────────────────
 if [ "$IS_SCRIPT" = "1" ]; then
-  # 稿件型：成品在 repo 外 scratch，不碰 git
+  # 稿件型：成品在 repo 外 scratch，不碰 git；直接發頻道當通知（無核准閘）
   mapfile -t NEW_FILES < <(find "$SCRATCH" -maxdepth 1 -type f -name '*.md' 2>/dev/null | sort)
   if [ ${#NEW_FILES[@]} -eq 0 ]; then
     echo "[draft] 本次無新稿（$SCRATCH 無 .md）"
   else
-    echo "[draft] 偵測到 ${#NEW_FILES[@]} 份新稿，逐一暫存+通知"
-    for f in "${NEW_FILES[@]}"; do stage_and_notify "$f"; done
+    echo "[draft] 產出 ${#NEW_FILES[@]} 份稿，逐一發到 $LABEL 頻道"
+    for f in "${NEW_FILES[@]}"; do post_script_file "$f"; done
   fi
   rm -rf "$SCRATCH"
   echo "===== [draft:$TYPE] $(date '+%F %T %Z') 結束 ====="

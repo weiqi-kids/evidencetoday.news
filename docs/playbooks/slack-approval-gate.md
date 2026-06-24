@@ -1,8 +1,8 @@
 # Playbook：Slack 按鈕核准閘半自動發布（slack-approval-gate）
 
-> 六型內容的「半自動撰寫／選題＋按鈕核准」流程，分兩類：
-> - **頁面型**（news／articles／ingredients／myths）：自動撰寫 → 核准 → **發布上站**。
-> - **稿件型**（podcast／videos）：自動選題＋寫稿 → 核准 → **採用稿件給真人錄/拍**（不進 repo、不建站內頁、不跑 build）。
+> 六型內容分兩類，**機制完全不同**：
+> - **頁面型**（news／articles／ingredients／myths）：自動撰寫 →（暫存 + Slack 按鈕）**核准** → **發布上站**。
+> - **稿件型**（podcast／videos）：自動選題＋寫稿 → **直接把稿發到頻道當通知**（**無核准閘、無按鈕、不進 repo、不建站內頁、不跑 build、不經 publish-approved**）。真人看通知自行錄/拍。
 > 腳本在 repo 內 `ops/`（經 `ops/bootstrap.sh` 由 cron 啟動）；互動端點在 `workers/ai-suggest/`（Cloudflare Worker）。
 > 機密與執行期狀態在主機 `$CONF_DIR`（預設 `/root/.config/evidencetoday-news`）：`slack-bot-token`、`pending/`、`awaiting-live/`、`reports/`、`used-topics-<type>.txt`、`*-ledger.jsonl`。見 `ops/README.md`。
 > 情境分流屬 **B（內容與曝光）**，但頁面型 publish 端會 commit/push 故發布前仍守全 gate。
@@ -15,10 +15,10 @@
 | 文章 articles (`C0BCVEYG5HS`) | 選題＋撰寫 | **先擴寫有牽引力叢集**（melatonin 等），新題為輔 | 週一 11:30｜1–2 篇 | audit+build | ✅→自動發布 |
 | 成分解析 ingredients (`C0BCRS08DMG`) | 選題＋撰寫 | **站內連結缺口優先**（常被提到卻無成分頁） | 週三 11:30｜1–2 篇 | audit+build | ✅→自動發布 |
 | 闢謠 myths (`C0BCKFMLS9Z`) | 選題＋撰寫 | **當下流傳的謠言優先**（社群/搜尋熱） | 週五 11:30｜1–2 篇 | audit+build+check:myths | ✅→自動發布 |
-| Podcast (`C0BCPPE14T0`) | **選題＋寫講稿** | 熱門健康/營養題材、健康為主可踩熱點 | 週二 11:30｜**1 稿** | 語感自檢（YMYL＋禁 AI 模板，**不跑 build**） | ✅→採用，真人照稿錄 |
-| 短影音 videos (`C0BDL4TMTKJ`) | **選題＋寫腳本** | 料理/食材技巧為主、可戳闢謠 | 週四 11:30｜**3 腳本**（批次） | 語感自檢（**不跑 build**） | ✅→採用，真人照腳本拍 |
+| Podcast (`C0BCPPE14T0`) | **選題＋寫講稿** | 熱門健康/營養題材、健康為主可踩熱點 | 週二 11:30｜**1 稿** | 語感自檢（YMYL＋禁 AI 模板，prompt 層；**不跑 build**） | **直接發頻道**（純通知，無核准） |
+| 短影音 videos (`C0BDL4TMTKJ`) | **選題＋寫腳本** | 料理/食材技巧為主、可戳闢謠 | 週四 11:30｜**3 腳本**（批次） | 語感自檢（prompt 層；**不跑 build**） | **直接發頻道**（純通知，無核准） |
 
-稿件型「核准後」≠ 發布上站：✅ 代表「採用這份稿、請真人錄/拍」，標題寫進 `used-topics-<type>.txt` 避免重複選題，真正的站內落地頁（podcasts/videos collection）等錄/拍上架後另開流程。
+稿件型**沒有核准動作**：稿子產出後直接發到頻道（`slack-notify.sh`），標題即時寫進 `used-topics-<type>.txt` 去重。真人看通知自行錄/拍；真正的站內落地頁（podcasts/videos collection，需 Firstory 音檔／youtubeId）等錄/拍上架後另開流程。
 
 ## 0. 它是什麼
 
@@ -87,7 +87,7 @@ publish-approved.sh（主機，每 ~10 分輪詢）
 - **出草稿**：claude 只把「過 gate 的成品」留在 `src/content/<type>/`，**不 commit**；wrapper 偵測未追蹤新檔→搬暫存→`gate_post_buttons`→`gate_put_draft`→寫 meta→清工作樹。news 的 `processed-sources.json` 由 wrapper 單獨 commit+push。
 - **發布**：approved→`cp` 進 src→**重跑 content:audit→型別 gate→build**→任一失敗即還原、回貼「gate 失敗」、meta 標 `.gatefail`（不洗版重試）→pass 才 commit；全部處理完**一次 push**→寫 `awaiting-live` 標記。
 - **等連結生效**：每輪掃 `awaiting-live`，`curl -I` 上線網址回 200→thread 回貼「已上線+連結」+`gate_set_state published`；逾 40 分仍非 200→提醒一次後停止重貼。
-- **稿件型（podcast/videos）**：claude 把稿寫到 repo 外 scratch（`mktemp -d`，不碰 git），wrapper 偵測 `*.md`→搬暫存→發按鈕→存 Worker（供 /gate/preview 渲染）。**不跑 build、不過型別 gate、無 src/content 檔**。publish 端 `approved` 命中 `gate_is_script` 走專屬分支：回貼「已採用，請錄/拍」+把標題寫進 `$CONF_DIR/used-topics-<type>.txt`+`gate_set_state published`+清暫存；**不 cp/build/commit/push、無 awaiting-live**。draft 端讀 used-topics 末 30 筆注入 prompt 去重。Worker 端不需改（草稿存 KV、預覽渲染 markdown 與頁面型共用；核准訊息仍顯示「發佈中」屬已知小瑕疵，由 thread「已採用」回貼修正）。
+- **稿件型（podcast/videos）— 純通知，不走核准閘**：`gate_is_script` 為 true。claude 把稿寫到 repo 外 scratch（`mktemp -d`，不碰 git），wrapper 用 `post_script_file()` 剝 frontmatter→`slack-notify.sh "$CH"` **直接發整篇稿到頻道**（無按鈕、不存 Worker、不進 pending）。發送成功即把標題寫進 `$CONF_DIR/used-topics-<type>.txt`；draft 端下次讀末 30 筆注入 prompt 去重。**完全不經 publish-approved.sh / Worker / build**。debug：`DRAFT_TEST_FILE=<某.md> draft-cron.sh podcast`（會真的發一則到 Podcast 頻道）。
 - **除錯**：`DRAFT_TEST_FILE=<某既有檔> draft-cron.sh <type>` 跳過 claude，拿既有檔當假草稿驗證 搬移+發按鈕+存 Worker（稿件型給 `.md` 檔即可）；`DRY_RUN=1 publish-approved.sh` 只讀狀態不動作。
 
 ## 5. 常見陷阱

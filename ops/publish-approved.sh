@@ -113,17 +113,6 @@ for META in "${PENDING_METAS[@]}"; do
     published)
       [ "$DRY_RUN" != "1" ] && rm -rf "$DIR"; echo "[publish] $LABEL/$SLUG 已是 published，清暫存" ;;
     approved)
-      # 稿件型（podcast/videos）：核准＝「採用此稿，請真人錄/拍」，不發布上站、不碰 repo。
-      if gate_is_script "$TYPE"; then
-        if [ "$DRY_RUN" = "1" ]; then echo "[publish][DRY] 核准稿件 → 會回貼採用、記主題已用、清暫存：$LABEL/$SLUG"; continue; fi
-        VERB="$( [ "$TYPE" = "podcast" ] && echo "錄製" || echo "拍攝" )"
-        reply_thread "$CH" "$STS" ":white_check_mark: *已採用* — 請依此稿${VERB}。稿件不入站，正式落地頁待${VERB}上架後另開流程。"
-        printf '%s\t%s\n' "$(date '+%Y-%m-%d')" "$TITLE" >> "$CONF_DIR/used-topics-$TYPE.txt"
-        gate_set_state "$ID" "published"
-        rm -rf "$DIR"
-        echo "[publish] $LABEL/$SLUG → 已採用（稿件型，不發布）"
-        continue
-      fi
       DEST="$(gate_dir "$TYPE")/$SLUG.$EXT"
       if [ "$DRY_RUN" = "1" ]; then echo "[publish][DRY] 核准 → 會發布到 $DEST"; continue; fi
       cp "$CONTENT" "$DEST"
