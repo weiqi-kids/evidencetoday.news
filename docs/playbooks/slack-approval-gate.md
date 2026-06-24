@@ -12,11 +12,11 @@
 | 型別 (頻道) | 自動端角色 | 選題第一順位 | 節奏 | 品質 gate | 核准後 |
 |---|---|---|---|---|---|
 | 趨勢 news (`C0BCAC0GKBR`) | 選題＋撰寫 | **門檻制**：五維加權 **≥6.0** 才出，不夠零產出 | 每日 06:17、不保底量 | audit+build+check:news | ✅→自動發布上站 |
-| 文章 articles (`C0BCVEYG5HS`) | 選題＋撰寫 | **先擴寫有牽引力叢集**（melatonin 等），新題為輔 | 週一 11:30｜1–2 篇 | audit+build | ✅→自動發布 |
-| 成分解析 ingredients (`C0BCRS08DMG`) | 選題＋撰寫 | **站內連結缺口優先**（常被提到卻無成分頁） | 週三 11:30｜1–2 篇 | audit+build | ✅→自動發布 |
-| 闢謠 myths (`C0BCKFMLS9Z`) | 選題＋撰寫 | **當下流傳的謠言優先**（社群/搜尋熱） | 週五 11:30｜1–2 篇 | audit+build+check:myths | ✅→自動發布 |
-| Podcast (`C0BCPPE14T0`) | **選題＋寫講稿** | 熱門健康/營養題材、健康為主可踩熱點 | 週二 11:30｜**1 稿** | 語感自檢（YMYL＋禁 AI 模板，prompt 層；**不跑 build**） | **直接發頻道**（純通知，無核准） |
-| 短影音 videos (`C0BDL4TMTKJ`) | **選題＋寫腳本** | 料理/食材技巧為主、可戳闢謠 | 週四 11:30｜**3 腳本**（批次） | 語感自檢（prompt 層；**不跑 build**） | **直接發頻道**（純通知，無核准） |
+| 文章 articles (`C0BCVEYG5HS`) | 選題＋撰寫 | **先擴寫有牽引力叢集**（melatonin 等），新題為輔 | 週一 07:35｜1–2 篇 | audit+build | ✅→自動發布 |
+| 成分解析 ingredients (`C0BCRS08DMG`) | 選題＋撰寫 | **站內連結缺口優先**（常被提到卻無成分頁） | 週三 07:35｜1–2 篇 | audit+build | ✅→自動發布 |
+| 闢謠 myths (`C0BCKFMLS9Z`) | 選題＋撰寫 | **當下流傳的謠言優先**（社群/搜尋熱） | 週五 07:35｜1–2 篇 | audit+build+check:myths | ✅→自動發布 |
+| Podcast (`C0BCPPE14T0`) | **選題＋寫講稿** | 熱門健康/營養題材、健康為主可踩熱點 | 週二 07:35｜**1 稿** | 語感自檢（YMYL＋禁 AI 模板，prompt 層；**不跑 build**） | **直接發頻道**（純通知，無核准） |
+| 短影音 videos (`C0BDL4TMTKJ`) | **選題＋寫腳本** | 料理/食材技巧為主、可戳闢謠 | 週四 07:35｜**3 腳本**（批次） | 語感自檢（prompt 層；**不跑 build**） | **直接發頻道**（純通知，無核准） |
 
 稿件型**沒有核准動作**：稿子產出後直接發到頻道（`slack-notify.sh`），標題即時寫進 `used-topics-<type>.txt` 去重。真人看通知自行錄/拍；真正的站內落地頁（podcasts/videos collection，需 Firstory 音檔／youtubeId）等錄/拍上架後另開流程。
 
@@ -102,14 +102,19 @@ publish-approved.sh（主機，每 ~10 分輪詢）
 
 ```
 17 22 * * *  ops/bootstrap.sh draft-cron.sh news         # 台北每日 06:17（門檻制≥6.0，不夠零產出）
-30 3  * * 1  ops/bootstrap.sh draft-cron.sh articles     # 台北週一 11:30
-30 3  * * 2  ops/bootstrap.sh draft-cron.sh podcast      # 台北週二 11:30（稿件型，1 份講稿）
-30 3  * * 3  ops/bootstrap.sh draft-cron.sh ingredients  # 台北週三 11:30
-30 3  * * 4  ops/bootstrap.sh draft-cron.sh videos       # 台北週四 11:30（稿件型，3 份短影音腳本）
-30 3  * * 5  ops/bootstrap.sh draft-cron.sh myths        # 台北週五 11:30
+35 23 * * 0  ops/bootstrap.sh draft-cron.sh articles     # 台北週一 07:35
+35 23 * * 1  ops/bootstrap.sh draft-cron.sh podcast      # 台北週二 07:35（稿件型，1 份講稿）
+35 23 * * 2  ops/bootstrap.sh draft-cron.sh ingredients  # 台北週三 07:35
+35 23 * * 3  ops/bootstrap.sh draft-cron.sh videos       # 台北週四 07:35（稿件型，3 份短影音腳本）
+35 23 * * 4  ops/bootstrap.sh draft-cron.sh myths        # 台北週五 07:35
 */10 * * * * ops/bootstrap.sh publish-approved.sh        # 每 10 分輪詢狀態 + 等連結生效回貼
 ```
-稿件型（podcast/videos）走同一條 publish-approved.sh 輪詢；核准後不發布、只回「已採用」並記 used-topics。
+
+**⚠️ 時區陷阱（務必看懂再改）**：cron 以 **UTC** 排程（Vixie 不支援 CRON_TZ）。台北 07:35 = UTC **前一天** 23:35，跨過 UTC 午夜，所以**星期欄要往前移一天**：台北週一→UTC 週日(`0`)、週二→`1`、週三→`2`、週四→`3`、週五→`4`。改時間後一定用 `TZ=Asia/Taipei date -d '<UTC 時間> UTC'` 回驗台北星期幾，別心算。
+
+**為何排 07:35**：讓三個重型 headless claude 工作嚴格序列、不搶資源——news 06:17（→約 07:00 結束）→ 各型草稿 07:35（→約 08:20）→ optimize-cron 10:30。中間 09:00 sitemap／09:30 perf 為輕量。
+
+頁面型走「暫存→按鈕核准→publish-approved 發布」；稿件型（podcast/videos）**不經 publish-approved**，draft-cron 產稿後直接發頻道。
 （路徑前綴 `/root/evidencetoday.news/`。為何經 bootstrap：repo 內腳本不可自我 `git pull`，見 `ops/README.md`。）
 
 ## 相關
