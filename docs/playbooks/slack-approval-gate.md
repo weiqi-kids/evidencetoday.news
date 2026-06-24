@@ -16,12 +16,12 @@ draft-cron.sh <type>（主機，出草稿）
   → 發「帶按鈕訊息」到該型頻道（📄預覽全文 / ✅確認發佈 / ❌退稿）
   → PUT 草稿全文到 Worker KV（state=pending）→ git 清回乾淨
         │
-   （你在頻道：點 📄 跳 modal 看全文 → 點 ✅ 或 ❌）
+   （你在頻道：點 📄 開預覽網頁看全文 → 點 ✅ 或 ❌）
         │
 Worker /slack/interact（按鈕回呼）
   ✅ → KV state=approved + 訊息就地改「已核准，發佈中…」
   ❌ → KV state=rejected + 訊息改「已退稿」
-  📄 → views.open 跳 modal 顯示草稿全文（不改狀態）
+  📄（連結按鈕）→ 瀏覽器開 GET /gate/preview 渲染的草稿 HTML 預覽頁（不改狀態、不塞進 Slack）
         │
 publish-approved.sh（主機，每 ~10 分輪詢）
   GET /gate/state 讀狀態：
@@ -37,7 +37,7 @@ publish-approved.sh（主機，每 ~10 分輪詢）
 
 | 檔案 | 角色 |
 |---|---|
-| `workers/ai-suggest/src/slack-gate.ts` | Worker：驗簽、按鈕互動（預覽 modal／核准／退稿）、KV 狀態機。 |
+| `workers/ai-suggest/src/slack-gate.ts` | Worker：驗簽、按鈕互動（核准／退稿）、/gate/preview 預覽頁、KV 狀態機。 |
 | `workers/ai-suggest/src/index.ts` | 路由：`POST /slack/interact`、`PUT /gate/draft`、`GET/PUT /gate/state`。 |
 | `ops/gate-lib.sh` | 共用：型別→頻道/目錄/副檔名/gate 對應；`gate_post_buttons`、`gate_put_draft`、`gate_get_state`、`gate_set_state`、`WORKER_URL`。 |
 | `ops/draft-cron.sh <type>` | 出草稿：撰寫→原地 gate→搬暫存→發按鈕訊息→存 Worker→記 ts→清工作樹。 |
@@ -59,8 +59,9 @@ publish-approved.sh（主機，每 ~10 分輪詢）
 ## 3. Worker 端（slack-gate.ts）
 
 - `verifySlackSignature`：HMAC-SHA256，basestring `v0:ts:body`，逾 5 分拒（防重放）。
-- `/slack/interact`：解析 `payload`（block_actions）→ 依 action_id 開 modal／改狀態＋`chat.update` 原訊息。
-- KV 紀錄 `GateRecord`：{id,type,slug,title,summary,content,channel,slack_ts,state,by,url}。content 供預覽 modal（切 ≤2900 字/block，最多 ~18 block）。
+- `/slack/interact`：解析 `payload`（block_actions）→ 核准/退稿改狀態＋`chat.update` 原訊息（📄 預覽是連結按鈕、不進此端點）。
+- `/gate/preview?id=`：把 KV 草稿 markdown 渲染成 HTML 預覽頁（noindex、公開、瀏覽器開）。
+- KV 紀錄 `GateRecord`：{id,type,slug,title,summary,content,channel,slack_ts,state,by,url}。content 供 /gate/preview 渲染成 HTML 預覽頁。
 - 需 secret：`SLACK_SIGNING_SECRET`、`SLACK_BOT_TOKEN`（皆 `wrangler secret put`）。沿用 KV binding `GEN_JOBS`，key 前綴 `gate:`。
 
 ## 4. 主機端細節
