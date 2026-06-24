@@ -207,6 +207,7 @@
 - feed item 以 `updatedDate ?? publishDate` 排序，最多輸出 50 筆。
 - Footer RSS 入口與 Base alternate link 都指向 `/rss.xml`。
 - Footer「資源」欄另有「在 Google News 追蹤」外連（出版品 ID `CAowh4bHDA` → `https://news.google.com/publications/CAowh4bHDA`，`target=_blank rel=noopener`）；通過 Publisher Center 後，follower 是 Google News 正向訊號。`resourceLinks` 以 `external?: boolean` 標記是否外連。
+- Footer 字級（皆用既有型階 token，不寫死 px）：欄標題 `--text-lead`（20/18px）；連結、標語、底部版權/免責/揭露皆 `--text-body`（18/17px）。footer 全文字 ≥ 正文級為刻意決策（早期版本連結用 `--text-meta`、底部用 `--text-badge` 過小，已整體上抬）。
 
 ---
 
