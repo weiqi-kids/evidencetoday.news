@@ -129,10 +129,12 @@ if [ "$TYPE" = "news" ] && ! git diff --quiet -- data/processed-sources.json 2>/
     && echo "[draft] processed-sources.json 已提交" || echo "[draft] processed-sources.json 提交/push 失敗"
 fi
 
-# 清工作樹：搬走的草稿、gate 試建殘留、未保留的試改一律清回 HEAD（main 保持乾淨）
-if [ -n "$(git status --porcelain)" ]; then
-  echo "[draft] 清理工作樹殘留（草稿已搬暫存區，src 不留）"
-  git stash push --include-untracked --message draft-cleanup >/dev/null 2>&1 && git stash drop >/dev/null 2>&1 || git checkout -- . 2>/dev/null || true
+# 清工作樹：只還原本腳本會動到的 src/content/（草稿已搬暫存區）與 data/processed-sources.json；
+# 不碰 ops/ workers/ docs/ 等其他未提交變更（避免無差別 stash 吃掉不相關的編輯）。
+if [ -n "$(git status --porcelain -- src/content data/processed-sources.json)" ]; then
+  echo "[draft] 清理 src/content 殘留（草稿已搬暫存區；不動其他未提交變更）"
+  git checkout -- src/content data/processed-sources.json 2>/dev/null || true
+  git clean -fdq -- src/content 2>/dev/null || true
 fi
 
 echo "===== [draft:$TYPE] $(date '+%F %T %Z') 結束 ====="

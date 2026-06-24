@@ -163,9 +163,11 @@ if [ "$PUSHED_ANY" = "1" ] && [ "$DRY_RUN" != "1" ]; then
   fi
 fi
 
-if [ -n "$(git status --porcelain)" ] && [ "$DRY_RUN" != "1" ]; then
-  echo "[publish] 清理未提交殘留"
-  git stash push --include-untracked --message publish-cleanup >/dev/null 2>&1 && git stash drop >/dev/null 2>&1 || git checkout -- . 2>/dev/null || true
+# 只還原本腳本會動到的 src/content/（發布時 cp 的內容檔）；不碰 ops/ workers/ docs/ 等其他未提交變更。
+if [ "$DRY_RUN" != "1" ] && [ -n "$(git status --porcelain -- src/content)" ]; then
+  echo "[publish] 清理 src/content 殘留（不動其他未提交變更）"
+  git checkout -- src/content 2>/dev/null || true
+  git clean -fdq -- src/content 2>/dev/null || true
 fi
 
 echo "===== [publish] $(date '+%F %T %Z') 結束 ====="

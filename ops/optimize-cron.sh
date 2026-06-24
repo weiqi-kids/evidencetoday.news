@@ -107,11 +107,13 @@ claude -p "$PROMPT" \
 # 一律是「沒收斂就結束」的痕跡——DRY_RUN 的試改、gate 失敗 abort、或 no-op 前的試改。
 # 不清掉會污染隔天 git pull --ff-only（衝突）或被下次 run 誤 commit。故統一清回 HEAD。
 # （committed-but-unpushed 的 push 失敗邊例不受影響，因其工作樹已乾淨。）
-if [ -n "$(git status --porcelain)" ]; then
-  echo "[optimize] 清理未提交的工作樹殘留（DRY_RUN / gate-fail abort / no-op 試改）"
-  git stash push --include-untracked --message optimize-cleanup >/dev/null 2>&1 && \
-    git stash drop >/dev/null 2>&1 || git checkout -- . 2>/dev/null || true
-  echo "[optimize] 清理後狀態：$(git status --porcelain | wc -l) 個未提交變更（應為 0）"
+# 只還原本腳本會動到的 src/content/（claude 試改限於內容頁，見 daily-optimize.md）；
+# 不碰 ops/ workers/ docs/ 等其他未提交變更（避免無差別 stash 吃掉不相關的編輯）。
+if [ -n "$(git status --porcelain -- src/content)" ]; then
+  echo "[optimize] 清理 src/content 殘留（DRY_RUN / gate-fail / no-op 試改；不動其他未提交變更）"
+  git checkout -- src/content 2>/dev/null || true
+  git clean -fdq -- src/content 2>/dev/null || true
+  echo "[optimize] 清理後 src/content 殘留：$(git status --porcelain -- src/content | wc -l) 個（應為 0）"
 fi
 
 # ── Slack 通報「優化報報」頻道 ─────────────────────────────────────────────
