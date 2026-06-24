@@ -96,7 +96,11 @@ describe('buildPerson', () => {
     expect(p.jobTitle).toBe('本日有據主編');
     expect(Array.isArray(p.knowsAbout)).toBe(true);
     expect(p.knowsAbout!.length).toBeGreaterThan(0);
-    expect(p.sameAs).toEqual(SITE_SAMEAS);
+    // 羅揚 sameAs = 站台共用 sameAs（實體圖）＋ 其跨站作者身分（Wikidata Person / appi / 樂地滋 / 粉專）
+    expect(p.sameAs).toEqual(expect.arrayContaining([...SITE_SAMEAS]));
+    expect(p.sameAs).toContain('https://www.wikidata.org/wiki/Q140319371');
+    expect(p.sameAs).toContain('https://appi.news/authors/luo-yang/');
+    expect(p.sameAs).toContain('https://lodes.com.tw/');
     expect(p['@id']).toBe('https://evidencetoday.news/authors/luo-yang/#person');
   });
 

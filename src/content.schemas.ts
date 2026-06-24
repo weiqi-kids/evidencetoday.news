@@ -427,6 +427,8 @@ export const newsSchema = z.object({
   source: z.string(),
   sourceUrl: z.string().optional(),
   publishDate: z.coerce.date(),
+  // 選填；有更新時供 NewsArticle 的 dateModified（新鮮度訊號）。未填則 dateModified 退回 publishDate。
+  updatedDate: z.coerce.date().optional(),
   tags: z.array(z.string()),
   summary: z.string(),
   ogShortTitle: z.string().max(40).optional(),

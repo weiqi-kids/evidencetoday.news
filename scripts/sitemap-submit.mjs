@@ -24,7 +24,10 @@ if (!(process.env.PATH || '').split(':').includes('/snap/bin')) {
   process.env.PATH = `/snap/bin:${process.env.PATH || ''}`;
 }
 
-const SITEMAP = 'https://evidencetoday.news/sitemap-index.xml';
+const SITEMAPS = [
+  'https://evidencetoday.news/sitemap-index.xml',
+  'https://evidencetoday.news/sitemap-news.xml', // Google News sitemap（近 48h 新聞）
+];
 const WRITE_SCOPE = 'https://www.googleapis.com/auth/webmasters';
 const checkOnly = process.argv.includes('--check');
 
@@ -40,9 +43,11 @@ const token = writeToken();
 const auth = { Authorization: `Bearer ${token}` };
 
 if (!checkOnly) {
-  const res = await fetch(`${base}/${encodeURIComponent(SITEMAP)}`, { method: 'PUT', headers: auth });
-  if (res.status === 204) console.log(`✅ 已提交 sitemap：${SITEMAP}`);
-  else console.log(`⚠️ 提交回應 ${res.status}：${(await res.text()).slice(0, 300)}`);
+  for (const sitemap of SITEMAPS) {
+    const res = await fetch(`${base}/${encodeURIComponent(sitemap)}`, { method: 'PUT', headers: auth });
+    if (res.status === 204) console.log(`✅ 已提交 sitemap：${sitemap}`);
+    else console.log(`⚠️ 提交回應 ${res.status}：${(await res.text()).slice(0, 300)}`);
+  }
 }
 
 // 回報目前 sitemap 處理狀態

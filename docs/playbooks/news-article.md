@@ -114,6 +114,25 @@
 
 ---
 
+## Google News／結構化資料就緒（2026-06-24 補齊）
+
+> 背景：GSC 實測 `googleNews`/`news`/`discover` 曝光皆為 0。一般 `@astrojs/sitemap` 不含 news 標記、
+> NewsArticle 缺人為查核與新鮮度訊號。以下為讓 /news 具備 Google News「入場資格」的技術件
+> （注意：技術就緒是必要非充分，實際收錄仍受網域權重影響，見記憶 `sitemap-indexation-bottleneck`）。
+
+- **News Sitemap**：`src/pages/sitemap-news.xml.ts` → 產 `/sitemap-news.xml`，**只收近 48 小時** news，
+  每筆含 `<news:publication>`（name=本日有據、language=**zh-tw**）/`<news:publication_date>`/`<news:title>`（用 `getDisplayTitle`）。
+  與一般 sitemap 分開；`public/robots.txt` 已加 `Sitemap:` 行指向它，`pnpm sitemap:submit` 也會一併提交 GSC。
+  站每日重建（news-cron + optimize-cron 會 push）→ 48h 視窗自動滾動；近 48h 無新聞時為合法空 urlset。
+- **NewsArticle schema**（`src/pages/news/[slug].astro`）：`author` 掛**機構「本日有據編輯室」**（趨勢稿由編輯室產製，
+  不謊稱個人親筆）；主編羅揚以 **`editor`（`buildPerson('羅揚')` 完整 Person 實體）** 承載人為查核權責，
+  對齊頁面可見的「主編判讀」區塊（E-E-A-T，避免結構化資料與可見內容 mismatch）；加 `dateModified`
+  （= `updatedDate ?? publishDate`，`updatedDate` 為 newsSchema 新增選填欄位）。
+- **Organization → NewsMediaOrganization**（`src/utils/schema-org.ts`）：向 Google News 表明發布機構身分；
+  `logo` 改用**點陣 PNG** `apple-touch-icon.png`（180×180，Google 不認 SVG logo），不可改回 `favicon.svg`。
+- **改這區任一處都要**：`pnpm build` 後 grep `dist/sitemap-news.xml` 確認有 `<news:news>` 條目、
+  驗 XML well-formed，並 grep 一篇 `dist/news/*/index.html` 確認 `author`/`editor`/`dateModified` 都在。
+
 ## 驗證清單
 
 - [ ] `pnpm build` 通過

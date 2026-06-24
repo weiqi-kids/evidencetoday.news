@@ -14,12 +14,14 @@ export const WEBSITE_ID = `${SITE_URL}/#website`;
 
 /** 完整 Organization 實體（含 @id / logo / sameAs），供首頁 @graph 定義一次。 */
 export const ORGANIZATION = {
-  '@type': 'Organization',
+  // NewsMediaOrganization（Organization 子型別）：向 Google News 表明本站是新聞發布機構。
+  '@type': 'NewsMediaOrganization',
   '@id': ORG_ID,
   name: '本日有據',
   alternateName: 'Evidence Today',
   url: `${SITE_URL}/`,
-  logo: { '@type': 'ImageObject', url: `${SITE_URL}/favicon.svg` },
+  // logo 用點陣 PNG（非 SVG）：Google Organization/Article logo 要求可解析的點陣圖、最小 112×112。
+  logo: { '@type': 'ImageObject', url: `${SITE_URL}/apple-touch-icon.png`, width: 180, height: 180 },
   publishingPrinciples: `${SITE_URL}/editorial-policy/`,
   sameAs: SITE_SAMEAS,
 } as const;
