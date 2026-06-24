@@ -32,18 +32,24 @@ gate_channel() {
     ingredients) echo "C0BCRS08DMG" ;;
     myths)       echo "C0BCKFMLS9Z" ;;
     news)        echo "C0BCAC0GKBR" ;;
+    podcast)     echo "C0BCPPE14T0" ;;
+    videos)      echo "C0BDL4TMTKJ" ;;
     *) return 1 ;;
   esac
 }
 
-# 型別 → src/content 子目錄
+# 稿件型（podcast/videos）：產「給真人錄/拍的稿子」，不進 repo、不建站內頁、不跑 build。
+# 核准後只回「已採用」不發布，與頁面型（news/articles/ingredients/myths）走不同發布行為。
+gate_is_script() { case "$1" in podcast|videos) return 0 ;; *) return 1 ;; esac; }
+
+# 型別 → src/content 子目錄（僅頁面型用）
 gate_dir()   { echo "$REPO/src/content/$1"; }
-# 型別 → 副檔名（articles/ingredients/myths=mdx，news=md）
-gate_ext()   { case "$1" in news) echo "md" ;; articles|ingredients|myths) echo "mdx" ;; *) return 1 ;; esac; }
-# 型別 → 發布前型別專屬 gate（pnpm script 名，無則空）
+# 型別 → 副檔名（頁面型 articles/ingredients/myths=mdx，news=md；稿件型=md）
+gate_ext()   { case "$1" in news|podcast|videos) echo "md" ;; articles|ingredients|myths) echo "mdx" ;; *) return 1 ;; esac; }
+# 型別 → 發布前型別專屬 gate（pnpm script 名，無則空；稿件型無）
 gate_typecheck() { case "$1" in myths) echo "check:myths" ;; news) echo "check:news" ;; *) echo "" ;; esac; }
 # 型別 → 中文顯示名
-gate_label() { case "$1" in articles) echo "文章" ;; ingredients) echo "成分解析" ;; myths) echo "闢謠" ;; news) echo "趨勢" ;; *) echo "$1" ;; esac; }
+gate_label() { case "$1" in articles) echo "文章" ;; ingredients) echo "成分解析" ;; myths) echo "闢謠" ;; news) echo "趨勢" ;; podcast) echo "Podcast 講稿" ;; videos) echo "短影音腳本" ;; *) echo "$1" ;; esac; }
 
 _gate_token() {
   if [ -n "${SLACK_BOT_TOKEN:-}" ]; then printf '%s' "$SLACK_BOT_TOKEN"; return 0; fi
