@@ -136,10 +136,14 @@
   拉到 ≥1200（Google Article/News 建議；頁面顯示仍可用較小尺寸）。新聞管線抓圖時也應優先取 ≥1200 寬的圖庫圖。
 - **改這區任一處都要**：`pnpm build` 後 grep `dist/sitemap-news.xml` 確認有 `<news:news>` 條目、
   驗 XML well-formed，並 grep 一篇 `dist/news/*/index.html` 確認 `author`/`editor`/`dateModified` 都在。
-- **收錄監測**：`pnpm gnews:watch`（`scripts/googlenews-watch.mjs`，純 GSC 查詢）查 googleNews/news/discover
-  曝光、做週對週對比，`googleNews`/`news`「從 0 變正」會回 exit 10（里程碑）。cron 包裝
-  `ops/googlenews-watch.sh` 每週一 09:45 跑、報告存 `reports/gnews-<date>.md`、
+- **收錄監測**：`pnpm gnews:watch`（`scripts/googlenews-watch.mjs`，純 GSC 查詢、無 headless claude）查
+  googleNews/news/discover/web 曝光、做週對週對比，`googleNews`/`news`「從 0 變正」會回 exit 10（里程碑）。
+  cron 包裝 `ops/googlenews-watch.sh` 每週一 09:45 跑、報告存 `reports/gnews-<date>.md`、
   里程碑另寫 `reports/GOOGLENEWS-MILESTONE.md` 旗標。設 `GNEWS_HISTORY` 才會累積歷史與偵測里程碑。
+- **每週 Slack 週報＋推估**：mjs 讀**整段歷史**做確定性趨勢分析（週對週、零連續週數、近 6 週最小二乘斜率、
+  線性推估下週值／約幾週破 100），組繁中摘要寫到 `GNEWS_SLACK_OUT` 指定檔；包裝腳本**每週都**把它發到
+  **優化報報 `C0BCABEBHHD`**（里程碑與否皆發）。要改門檻/文案改 mjs 末段 `analyze()`／`verdict`，發訊頻道改
+  包裝腳本 `GNEWS_CHANNEL`。發訊沿用 `ops/slack-notify.sh`（bot 已在優化報報頻道）。
 
 ## 驗證清單
 

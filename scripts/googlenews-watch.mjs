@@ -14,7 +14,7 @@
  *
  * 退出碼：偵測到 googleNews 或 news 曝光「從 0 變正」的里程碑時回 10（供 cron 包裝判斷是否高亮通知）。
  */
-import { readFileSync, appendFileSync } from 'node:fs';
+import { readFileSync, appendFileSync, writeFileSync } from 'node:fs';
 import { getToken } from './lib/insight-fetch.mjs';
 import { GSC_URL } from './lib/insight-constants.mjs';
 
@@ -77,10 +77,11 @@ for (const type of TYPES) {
 // 里程碑：googleNews 或 news 從 0（上次歷史）變正。
 let milestone = false;
 let prevEntry = null;
+let history = [];
 if (HISTORY) {
   try {
-    const lines = readFileSync(HISTORY, 'utf8').trim().split('\n').filter(Boolean);
-    if (lines.length) prevEntry = JSON.parse(lines[lines.length - 1]);
+    history = readFileSync(HISTORY, 'utf8').trim().split('\n').filter(Boolean).map((l) => JSON.parse(l));
+    if (history.length) prevEntry = history[history.length - 1];
   } catch { /* 無歷史檔，首次執行 */ }
 }
 for (const key of ['googleNews', 'news']) {
@@ -107,6 +108,78 @@ if (HISTORY) {
   } catch (e) {
     console.error(`[gnews-watch] 寫歷史失敗：${e.message}`);
   }
+}
+
+// ── 歷史趨勢分析 + 線性推估（不論里程碑與否，每週都產 Slack 摘要）──────────────────
+// 確定性計算（無 headless claude）：週對週、零連續週數、近 6 週最小二乘斜率、推估下週值/破 100 週數。
+function analyze(series) {
+  const n = series.length;
+  const latest = series[n - 1] ?? 0;
+  const prev = series[n - 2] ?? 0;
+  const wow = latest - prev;
+  let zeroStreak = 0;
+  for (let i = n - 1; i >= 0; i--) { if (series[i] === 0) zeroStreak++; else break; }
+  const k = Math.min(6, n);
+  let slope = 0;
+  if (k >= 2) {
+    const pts = series.slice(n - k);
+    const mx = (k - 1) / 2;
+    const my = pts.reduce((a, b) => a + b, 0) / k;
+    let num = 0, den = 0;
+    for (let i = 0; i < k; i++) { num += (i - mx) * (pts[i] - my); den += (i - mx) ** 2; }
+    slope = den ? num / den : 0;
+  }
+  return { n, latest, prev, wow, zeroStreak, slope, projNext: Math.max(0, Math.round(latest + slope)) };
+}
+
+const allEntries = [...history, result];
+const weeks = allEntries.length;
+const FOCUS = [['googleNews', 'Google News'], ['news', 'News 分頁'], ['discover', 'Discover'], ['web', 'Web 搜尋']];
+const slackLines = [];
+for (const [key, label] of FOCUS) {
+  const series = allEntries.map((e) => e.byType?.[key]?.impressions ?? 0);
+  const a = analyze(series);
+  const arrow = a.wow > 0 ? `▲${a.wow}` : a.wow < 0 ? `▼${-a.wow}` : '＝';
+  let proj;
+  if (a.latest === 0 && a.zeroStreak === a.n) {
+    proj = `連續 ${a.n} 週 0`;
+  } else if (a.slope > 0.5) {
+    proj = `升，推估下週約 ${a.projNext}`;
+    if (a.latest < 100) { const w = Math.ceil((100 - a.latest) / a.slope); if (w > 0 && w < 260) proj += `、約 ${w} 週後破 100`; }
+  } else if (a.slope < -0.5) {
+    proj = `降，推估下週約 ${a.projNext}`;
+  } else {
+    proj = a.latest > 0 ? `持平 ~${a.latest}` : '仍為 0';
+  }
+  slackLines.push(`• ${label}：曝光 ${a.latest}（週對週 ${arrow}）｜推估：${proj}`);
+}
+
+const gnSeries = allEntries.map((e) => e.byType?.googleNews?.impressions ?? 0);
+const nvSeries = allEntries.map((e) => e.byType?.news?.impressions ?? 0);
+let gnZeroWeeks = 0;
+for (let i = gnSeries.length - 1; i >= 0; i--) { if (gnSeries[i] === 0 && nvSeries[i] === 0) gnZeroWeeks++; else break; }
+let verdict;
+if (milestone) {
+  verdict = '🎉 已破 0！Google News／News 分頁開始收錄。建議到 GSC 看進榜頁、確認 sitemap-news 抓取正常，並擴大相關主題產出。';
+} else if ((result.byType.googleNews?.impressions ?? 0) === 0 && (result.byType.news?.impressions ?? 0) === 0) {
+  verdict = `尚未進入 Google News／News（連續 ${gnZeroWeeks} 週 0）。技術件已備齊，瓶頸在網域權重——推估短期仍需靠站外權威引用累積，非站內可翻盤。`;
+} else {
+  verdict = '部分流量面已有曝光，依目前斜率持續監測；若連續成長可考慮加碼相關主題。';
+}
+
+const slackMsg = [
+  `📰 *Google News 監測週報* — ${endDate}`,
+  `視窗：近 7 日 vs 前 7 日｜歷史 ${weeks} 週`,
+  '',
+  ...slackLines,
+  '',
+  `推估：${verdict}`,
+].join('\n');
+console.log('\n' + slackMsg);
+
+const SLACK_OUT = process.env.GNEWS_SLACK_OUT || '';
+if (SLACK_OUT) {
+  try { writeFileSync(SLACK_OUT, slackMsg); } catch (e) { console.error(`[gnews-watch] 寫 Slack 摘要失敗：${e.message}`); }
 }
 
 process.exit(milestone ? 10 : 0);
