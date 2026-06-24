@@ -72,22 +72,86 @@ async function slackCall(env: Env, method: string, body: unknown): Promise<{ ok:
   return (await r.json()) as { ok: boolean; error?: string };
 }
 
-/** 把長文切成 ≤2900 字的 section block（Slack modal 單 block 上限 3000；最多 ~18 塊）。 */
-function contentBlocks(content: string): unknown[] {
-  const blocks: unknown[] = [];
-  let cur = '';
-  for (const line of content.split('\n')) {
-    if (cur.length + line.length + 1 > 2900) {
-      blocks.push({ type: 'section', text: { type: 'mrkdwn', text: cur || ' ' } });
-      cur = line;
-    } else {
-      cur += (cur ? '\n' : '') + line;
-    }
-    if (blocks.length >= 18) break;
+function escapeHtml(s: string): string {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+/** 從 frontmatter 的 references: 區塊抽出 {title,url}。 */
+function extractRefs(content: string): { title: string; url: string }[] {
+  const fm = content.match(/^---\n([\s\S]*?)\n---/);
+  if (!fm) return [];
+  const m = fm[1].match(/\nreferences:\s*\n([\s\S]*?)(?=\n[A-Za-z][\w]*:|$)/);
+  if (!m) return [];
+  const refs: { title: string; url: string }[] = [];
+  // 前置 \n 讓「區塊開頭即 `- `」的第一筆也被切到（否則 slice(1) 會吃掉第一筆）
+  for (const e of ('\n' + m[1]).split(/\n\s*-\s+/).slice(1)) {
+    const t = e.match(/title:\s*["']?(.+?)["']?\s*(?:\n|$)/);
+    const u = e.match(/url:\s*["']?(\S+?)["']?\s*(?:\n|$)/);
+    if (t) refs.push({ title: t[1].trim(), url: u ? u[1].trim() : '' });
   }
-  if (cur && blocks.length < 19) blocks.push({ type: 'section', text: { type: 'mrkdwn', text: cur } });
-  if (!blocks.length) blocks.push({ type: 'section', text: { type: 'mrkdwn', text: '（草稿內容讀取失敗）' } });
-  return blocks;
+  return refs;
+}
+
+/** 極簡 Markdown → HTML（標題/粗體/斜體/行內碼/連結/圖片/清單/引言/分隔線/段落），剝 frontmatter。 */
+function mdToHtml(md: string): string {
+  md = md.replace(/^---\n[\s\S]*?\n---\n?/, '');
+  const inline = (t: string): string =>
+    escapeHtml(t)
+      .replace(/!\[([^\]]*)\]\(([^)\s]+)(?:\s+&quot;[^&]*&quot;)?\)/g, (_m, a, u) => `<img src="${u}" alt="${a}" loading="lazy">`)
+      .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_m, x, u) => `<a href="${u}" target="_blank" rel="noopener">${x}</a>`)
+      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+      .replace(/(^|[^*])\*([^*\s][^*]*?)\*/g, '$1<em>$2</em>')
+      .replace(/`([^`]+)`/g, '<code>$1</code>');
+  let html = '';
+  let inList = false;
+  let para: string[] = [];
+  const flush = () => { if (para.length) { html += `<p>${inline(para.join(' '))}</p>`; para = []; } };
+  const closeList = () => { if (inList) { html += '</ul>'; inList = false; } };
+  for (const raw of md.split('\n')) {
+    const line = raw.replace(/\s+$/, '');
+    const h = line.match(/^(#{1,6})\s+(.*)$/);
+    if (h) { flush(); closeList(); const n = h[1].length; html += `<h${n}>${inline(h[2])}</h${n}>`; continue; }
+    if (/^\s*([-*_])\1{2,}\s*$/.test(line)) { flush(); closeList(); html += '<hr>'; continue; }
+    const li = line.match(/^\s*[-*]\s+(.*)$/);
+    if (li) { flush(); if (!inList) { html += '<ul>'; inList = true; } html += `<li>${inline(li[1])}</li>`; continue; }
+    const bq = line.match(/^\s*>\s?(.*)$/);
+    if (bq) { flush(); closeList(); html += `<blockquote>${inline(bq[1])}</blockquote>`; continue; }
+    if (line.trim() === '') { flush(); closeList(); continue; }
+    para.push(line);
+  }
+  flush(); closeList();
+  return html;
+}
+
+/** 草稿全文 → 完整 HTML 預覽頁（外部瀏覽器開，不塞進 Slack）。 */
+export function renderPreviewHtml(rec: GateRecord): string {
+  const refs = extractRefs(rec.content);
+  const refsHtml = refs.length
+    ? `<h2>📚 引用來源</h2><ul>${refs.map((r) => `<li>${r.url ? `<a href="${r.url}" target="_blank" rel="noopener">${escapeHtml(r.title)}</a>` : escapeHtml(r.title)}</li>`).join('')}</ul>`
+    : '';
+  const label = rec.type === 'news' ? '趨勢' : rec.type === 'myths' ? '闢謠' : rec.type === 'ingredients' ? '成分解析' : '文章';
+  return `<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">
+<title>草稿預覽：${escapeHtml(rec.title)}</title>
+<style>
+:root{color-scheme:light dark}
+body{max-width:740px;margin:0 auto;padding:2rem 1.2rem 4rem;font-family:-apple-system,"Noto Sans TC","PingFang TC",sans-serif;line-height:1.8;color:#1a1a1a;background:#fff}
+.banner{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;padding:.6rem .9rem;border-radius:8px;font-size:.9rem;margin-bottom:1.5rem}
+h1{font-size:1.7rem;line-height:1.35;margin:.2rem 0 1rem}
+h2{font-size:1.25rem;margin:2rem 0 .6rem;padding-top:.4rem;border-top:1px solid #eee}
+img{max-width:100%;height:auto;border-radius:10px;margin:1rem 0}
+a{color:#2563eb}
+blockquote{margin:1.2rem 0;padding:.6rem 1rem;border-left:4px solid #cbd5e1;background:#f8fafc;color:#475569}
+code{background:#f1f5f9;padding:.1em .35em;border-radius:4px;font-size:.9em}
+hr{border:none;border-top:1px solid #e5e7eb;margin:2rem 0}
+ul{padding-left:1.3rem}
+@media(prefers-color-scheme:dark){body{color:#e5e7eb;background:#0b0f17}.banner{background:#3a2a10;border-color:#7c4a12;color:#fcd9b6}blockquote{background:#111827;color:#cbd5e1}code{background:#1f2937}h2{border-color:#1f2937}}
+</style></head><body>
+<div class="banner">📝 ${label}草稿預覽（未發佈）— 審核後請回 Slack 點「✅ 確認發佈」或「❌ 退稿」</div>
+<h1>${escapeHtml(rec.title)}</h1>
+${mdToHtml(rec.content)}
+${refsHtml}
+</body></html>`;
 }
 
 /** 已決議（核准/退稿/已發布）後，把原訊息改成無按鈕的狀態列。 */
@@ -121,21 +185,8 @@ export async function handleSlackInteract(request: Request, env: Env, ctx?: CtxL
   const msgTs: string = payload.container?.message_ts || payload.message?.ts || '';
   const triggerId: string = payload.trigger_id || '';
 
+  // 📄 預覽全文已改為「連結按鈕」（直接開 /gate/preview 網頁），不再走互動；故只處理核准/退稿。
   const rec = await getGate(env, id);
-
-  // 預覽：開 modal（不改狀態）。必須 3 秒內回應，故把 views.open 丟背景、立刻回 200。
-  if (actionId === 'gate_preview') {
-    const view = {
-      type: 'modal',
-      title: { type: 'plain_text', text: (rec?.title || '草稿預覽').slice(0, 24) },
-      close: { type: 'plain_text', text: '關閉' },
-      blocks: rec ? contentBlocks(rec.content) : [{ type: 'section', text: { type: 'mrkdwn', text: '草稿已不存在（可能已發布或過期）。' } }],
-    };
-    const p = slackCall(env, 'views.open', { trigger_id: triggerId, view });
-    if (ctx) ctx.waitUntil(p); else await p;
-    return new Response('', { status: 200 });
-  }
-
   if (!rec) return new Response('', { status: 200 });
 
   if (actionId === 'gate_confirm') {

@@ -75,17 +75,19 @@ _gh_token() { gh auth token 2>/dev/null; }
 # 發「帶按鈕的草稿訊息」到頻道，回傳訊息 ts（核准錨點）。
 # 用法：gate_post_buttons <channel> <id> <label> <title> <summary> <gateline>
 gate_post_buttons() {
-  local ch="$1" id="$2" label="$3" title="$4" summary="$5" gateline="$6" tok payload resp
+  local ch="$1" id="$2" label="$3" title="$4" summary="$5" gateline="$6" tok payload resp preview
   tok="$(_gate_token)" || return 1
+  # 📄 預覽＝連結按鈕，點了在瀏覽器開 Worker 渲染的預覽網頁（不把內容塞進 Slack）
+  preview="$WORKER_URL/gate/preview?id=$(jq -rn --arg s "$id" '$s|@uri')"
   payload="$(jq -nc \
     --arg ch "$ch" --arg id "$id" --arg label "$label" --arg title "$title" \
-    --arg summary "$summary" --arg gateline "$gateline" '
+    --arg summary "$summary" --arg gateline "$gateline" --arg preview "$preview" '
     {channel:$ch, unfurl_links:false, text:("📝 "+$label+"草稿待審："+$title),
      blocks:[
        {type:"section", text:{type:"mrkdwn", text:("*:memo: "+$label+"草稿待審*\n*"+$title+"*\n"+$summary)}},
        {type:"context", elements:[{type:"mrkdwn", text:$gateline}]},
        {type:"actions", elements:[
-         {type:"button", action_id:"gate_preview", value:$id, text:{type:"plain_text", text:"📄 預覽全文"}},
+         {type:"button", url:$preview, text:{type:"plain_text", text:"📄 預覽全文"}},
          {type:"button", action_id:"gate_confirm", value:$id, style:"primary", text:{type:"plain_text", text:"✅ 確認發佈"}},
          {type:"button", action_id:"gate_reject",  value:$id, style:"danger",  text:{type:"plain_text", text:"❌ 退稿"}}
        ]}

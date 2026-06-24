@@ -1,5 +1,5 @@
 import { buildPrompt } from './prompt';
-import { handleSlackInteract, getGate, putGate, type GateRecord } from './slack-gate';
+import { handleSlackInteract, getGate, putGate, renderPreviewHtml, type GateRecord } from './slack-gate';
 
 // 最小結構型別（避免相依 @cloudflare/workers-types，vitest/node 也能編譯；
 // runtime 的真實 KVNamespace / ExecutionContext 結構相容）。
@@ -418,7 +418,17 @@ export async function handle(request: Request, env: Env, ctx?: CtxLike): Promise
     return handleSlackInteract(request, env, ctx);
   }
 
-  // draft-cron 出草稿後存進 KV（供預覽 modal + 狀態機）。以 GitHub push token 認證。
+  // 草稿預覽網頁（從 Slack 的「📄 預覽全文」連結按鈕在瀏覽器開啟）。公開、noindex，不需認證。
+  if (request.method === 'GET' && url.pathname === '/gate/preview') {
+    const id = url.searchParams.get('id') || '';
+    const rec = await getGate(env, id);
+    const html = rec
+      ? renderPreviewHtml(rec)
+      : '<!doctype html><meta charset="utf-8"><body style="font-family:sans-serif;max-width:640px;margin:3rem auto;padding:0 1rem"><h1>草稿不存在</h1><p>這份草稿可能已發佈、已退稿，或已過期。</p></body>';
+    return new Response(html, { status: rec ? 200 : 404, headers: { 'content-type': 'text/html; charset=utf-8' } });
+  }
+
+  // draft-cron 出草稿後存進 KV（供預覽網頁 + 狀態機）。以 GitHub push token 認證。
   if (request.method === 'PUT' && url.pathname === '/gate/draft') {
     const denied = await requirePush(request, env);
     if (denied) return denied;
