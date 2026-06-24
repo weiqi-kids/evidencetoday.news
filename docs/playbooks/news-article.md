@@ -130,6 +130,10 @@
   （= `updatedDate ?? publishDate`，`updatedDate` 為 newsSchema 新增選填欄位）。
 - **Organization → NewsMediaOrganization**（`src/utils/schema-org.ts`）：向 Google News 表明發布機構身分；
   `logo` 改用**點陣 PNG** `apple-touch-icon.png`（180×180，Google 不認 SVG logo），不可改回 `favicon.svg`。
+- **可見 byline**（header `news-article__meta`）：頁面顯示「本日有據編輯室整理 · 主編 羅揚 審定」，
+  羅揚連到 `/authors/luo-yang/`（`rel="author"`）。**務必與 JSON-LD 的 `editor` 一致**（Google 要結構化資料對齊可見內容），且可見署名才真正加 E-E-A-T。
+- **結構化資料圖 ≥1200px**：schema 的 `image` 經 `schemaImageUrl()`（`src/utils/news.ts`）把 pexels/unsplash 的 `w=`
+  拉到 ≥1200（Google Article/News 建議；頁面顯示仍可用較小尺寸）。新聞管線抓圖時也應優先取 ≥1200 寬的圖庫圖。
 - **改這區任一處都要**：`pnpm build` 後 grep `dist/sitemap-news.xml` 確認有 `<news:news>` 條目、
   驗 XML well-formed，並 grep 一篇 `dist/news/*/index.html` 確認 `author`/`editor`/`dateModified` 都在。
 
