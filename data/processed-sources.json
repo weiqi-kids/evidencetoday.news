@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-06-25T06:17:00+08:00",
+  "lastRun": "2026-06-26T06:17:00+08:00",
   "processed": {
     "PMID:42098536": {
       "processedAt": "2026-05-08T12:00:00Z",
@@ -513,6 +513,10 @@
     "https://www.nature.com/articles/s41591-024-02951-6": {
       "processedAt": "2026-06-25T06:17:00+08:00",
       "outputFile": null
+    },
+    "https://www.sciencedaily.com/releases/2026/05/260523103906.htm": {
+      "processedAt": "2026-06-26T06:17:00+08:00",
+      "outputFile": "src/content/news/radar-2026-06-26-06-01.md"
     }
   }
 }
