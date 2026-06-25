@@ -133,10 +133,32 @@ headless claude 中斷，今日未產出。原始數據：\`$RAW\`
     # 有新 commit → 已部署。取 commit 主旨 + 今日 ledger 條目組清單。
     SUBJECT="$(git log -1 --pretty=%s 2>/dev/null)"
     SHORT="$(git rev-parse --short HEAD 2>/dev/null)"
-    # 今日 ledger 行（每行一筆 JSON）轉成 bullet
+    # 今日 ledger 行（每行一筆 JSON）轉成「人話」bullet：
+    # 英文 slug→〈中文文章標題〉（從 frontmatter 取）、來源代號 A–D→中文標籤，避免沒頭沒尾丟 slug。
+    src_label() {  # 來源代號→中文；支援組合碼如 C+A → 站內微優化＋衝索引
+      local s="$1"
+      s="${s//A/衝索引}"; s="${s//B/競品補完}"; s="${s//C/站內微優化}"; s="${s//D/新內容}"; s="${s//+/＋}"
+      echo "$s"
+    }
+    slug_title() {  # ledger slug 多為「集合/檔名」，直接取 src/content/<slug>.md(x) 的 frontmatter title；
+      local f t                       # 退而求其次再跨集合找裸檔名；都找不到回原 slug
+      f=""
+      for c in "src/content/$1.mdx" "src/content/$1.md"; do [ -f "$c" ] && { f="$c"; break; }; done
+      [ -z "$f" ] && f="$(ls src/content/*/"$1".md src/content/*/"$1".mdx 2>/dev/null | head -1)"
+      if [ -n "$f" ]; then
+        t="$(sed -n 's/^title:[[:space:]]*//p' "$f" | head -1 | sed -e 's/^["'\'']//' -e 's/["'\'']$//')"
+      fi
+      [ -n "${t:-}" ] && echo "$t" || echo "$1"
+    }
     ITEMS="$(
-      grep -F "\"date\":\"$DATE\"" "$LEDGER" 2>/dev/null \
-        | jq -r '"• `\(.slug)`（來源 \(.source)）\(.reason)"' 2>/dev/null
+      grep -F "\"date\":\"$DATE\"" "$LEDGER" 2>/dev/null | while IFS= read -r line; do
+        [ -z "$line" ] && continue
+        slug="$(printf '%s' "$line" | jq -r '.slug // empty' 2>/dev/null)"
+        src="$(printf '%s' "$line" | jq -r '.source // empty' 2>/dev/null)"
+        reason="$(printf '%s' "$line" | jq -r '.reason // empty' 2>/dev/null)"
+        [ -z "$slug" ] && continue
+        printf '• 〈%s〉：%s（%s）\n' "$(slug_title "$slug")" "$reason" "$(src_label "$src")"
+      done
     )"
     [ -z "$ITEMS" ] && ITEMS="（ledger 無今日條目，詳見 run-log）"
     MSG=":hammer_and_wrench: *自動優化 $DATE — 已部署*
