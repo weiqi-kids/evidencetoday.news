@@ -37,6 +37,7 @@
 |---|---|---|
 | GA4（無同意橫幅） | `src/utils/analytics.ts`、`src/data/analytics.ts`、`src/layouts/Base.astro` inline script | GA4（`G-5JH83LM8X7`）**每頁載入**蒐集基本流量（page_view）；無底部 Cookie 同意彈窗。`Base.astro` 的 `<script>` 每頁呼叫 `bootstrapAnalytics()`。設 `MEASUREMENT_ID=''` 可全域停用 |
 | 閱讀互動追蹤 | `ReadingEngagement.svelte`（掛 articles/myths/ingredients 單篇頁） | content_view、scroll(25/50/75/90)、read_complete（三閘）、engaged_view（真實投入時間）、select_content（下一篇）、faq_open、reference_click；全走 `trackEvent`，**無同意橫幅後不再 consent-gated**，只要 `MEASUREMENT_ID` 有值即送出 |
+| ~~Subscribe with Google / Reader Revenue Manager~~（**刻意不用**） | — | 曾於 `Base.astro` `<head>` 引入 Google SwG（`swg-basic.js` + `basicSubscriptions.init()`），但它會**全站自動跳出贊助/訂閱彈窗**，破壞閱讀體驗、與站方調性不符（違硬規則 8 商業化勿濫用），已移除。**勿再加回**。電子報訂閱入口未來走自家 Footer 連結 +「訂閱電子報」頁，不靠此腳本 |
 
 > 完整事件分類、自訂維度、GA4 後台設定與報表配方見 **`docs/playbooks/analytics.md`**。
 
