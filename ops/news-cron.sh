@@ -52,7 +52,7 @@ PROMPTEOF
 )"
 
 # headless 自動化：管線需 WebSearch/WebFetch/Bash(git)/Write/Agent/gcloud，故跳過互動式權限詢問
-claude -p "$PROMPT" \
+claude-appi -p "$PROMPT" \
   --model claude-sonnet-4-6 \
   --dangerously-skip-permissions 2>&1
 
