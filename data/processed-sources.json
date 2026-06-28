@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-06-26T06:17:00+08:00",
+  "lastRun": "2026-06-29T06:29:13+08:00",
   "processed": {
     "PMID:42098536": {
       "processedAt": "2026-05-08T12:00:00Z",
@@ -517,6 +517,14 @@
     "https://www.sciencedaily.com/releases/2026/05/260523103906.htm": {
       "processedAt": "2026-06-26T06:17:00+08:00",
       "outputFile": "src/content/news/radar-2026-06-26-06-01.md"
+    },
+    "https://www.nature.com/articles/s41430-026-01778-3": {
+      "processedAt": "2026-06-29T06:29:13+08:00",
+      "outputFile": "src/content/news/radar-2026-06-29-06-01.md"
+    },
+    "https://www.amjmed.com/article/S0002-9343(25)00283-9/abstract": {
+      "processedAt": "2026-06-29T06:29:13+08:00",
+      "outputFile": "src/content/news/radar-2026-06-29-06-01.md"
     }
   }
 }
