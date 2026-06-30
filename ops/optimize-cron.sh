@@ -99,7 +99,7 @@ PROMPTEOF
 # 記下 claude 動工前的 HEAD，事後比對是否真的 commit + push 了
 HEAD_BEFORE="$(git rev-parse HEAD 2>/dev/null || echo unknown)"
 CLAUDE_OK=1
-claude-appi -p "$PROMPT" \
+"$REPO/ops/claude-run.sh" -p "$PROMPT" \
   --model claude-sonnet-4-6 \
   --dangerously-skip-permissions 2>&1 || { CLAUDE_OK=0; echo "[optimize] claude 執行失敗；原始數據仍保存於 $RAW"; }
 

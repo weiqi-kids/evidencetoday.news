@@ -9,13 +9,16 @@
 |---|---|---|
 | **邏輯**（腳本/函式庫）| ✅ 本目錄 `ops/`（repo） | 下表所有 .sh |
 | **機密** | ❌ `$CONF_DIR`（主機，預設 `/root/.config/evidencetoday-news`） | `slack-bot-token` |
-| **執行期狀態** | ❌ `$CONF_DIR`（主機 runtime 資料） | `pending/`、`awaiting-live/`、`reports/`、`*-ledger.jsonl`、`*-history.jsonl`、crontab 備份 |
+| **執行期狀態** | ❌ `$CONF_DIR`（主機 runtime 資料） | `pending/`、`awaiting-live/`、`reports/`、`*-ledger.jsonl`、`*-history.jsonl`、`.rate-limited-until`（額度冷卻旗標）、crontab 備份 |
+| **cron 排程** | ❌ `/etc/cron.d/evidencetoday`（主機，單檔一專案） | 見下方「crontab」 |
+| **cron 日誌** | ❌ `/var/log/evidencetoday/<job>.log`（主機，持久、好稽核） | `draft-news.log`、`optimize.log`… |
 
 ## 腳本一覽
 
 | 檔案 | 角色 | 對應 playbook |
 |---|---|---|
-| `bootstrap.sh` | **所有 cron 的統一入口**：設環境→`git pull`→`exec` 指定腳本。根除「repo 內腳本自我 pull」風險。 | 本檔 |
+| `bootstrap.sh` | **所有 cron 的統一入口**：設環境→`git pull`→**額度冷卻閘**→`exec` 指定腳本。根除「repo 內腳本自我 pull」風險。 | 本檔 |
+| `claude-run.sh` | **所有 headless `claude` 呼叫的統一包裝**（跑 `claude-appi`、偵測 weekly/usage limit→寫冷卻旗標）。draft/news/optimize/perf 皆經此呼叫，勿再直接呼叫 `claude-appi`。 | 本檔 |
 | `gate-lib.sh` | 核准閘共用函式庫（型別對應、Slack/Worker 讀寫）。被 draft/publish source。 | `slack-approval-gate.md` |
 | `slack-notify.sh` | 通用 Slack 發訊（`chat.postMessage`，含 `--thread`）。 | `slack-approval-gate.md` |
 | `draft-cron.sh <type>` | 半自動撰寫出草稿→暫存→發按鈕→存 Worker。 | `slack-approval-gate.md` |
@@ -32,19 +35,25 @@
 2. **機密/狀態走 `$CONF_DIR`**，永不寫進 repo（`slack-bot-token` 是機密；`pending/` 等是 runtime）。
 3. **路徑參數化**：`REPO` 從腳本位置推導（`$(dirname BASH_SOURCE)/..`）、`CONF_DIR` 取 env（預設主機路徑）。勿再 hardcode `/root/evidencetoday.news`。
 4. crontab 一律經 `bootstrap.sh <script> [args]` 呼叫，不直接呼叫個別腳本。
+5. **headless `claude` 一律經 `claude-run.sh` 呼叫**，不直接呼叫 `claude-appi`（否則撞額度時不會寫冷卻旗標、會每趟空跑）。
+6. **子代理模型｜省成本鐵則**：撰寫類 prompt（draft/news）凡用 `Agent` 工具派 sub-agent，**一律顯式帶 `model='sonnet'`**（審核委員會亦同，比照 `docs/news_sop.md` 設計 Sonnet x n）；**嚴禁用預設模型——預設會落到 opus（最貴）**。純機械性檢查（連結驗 200/檔名）才可降 `model='haiku'`。orchestrator 自身由各腳本 `--model claude-sonnet-4-6` 鎖定。
 
-## crontab（系統 TZ=UTC，排程以 UTC 寫；台北＝UTC+8）
+## crontab（在 `/etc/cron.d/evidencetoday`，單檔一專案；系統 TZ=UTC，排程以 UTC 寫，台北＝UTC+8）
+
+> 改排程＝改 `/etc/cron.d/evidencetoday`（**不在** user crontab）。日誌統一在 `/var/log/evidencetoday/<job>.log`。
+> 各行格式含 user 欄位：`分 時 日 月 週  root  /root/evidencetoday.news/ops/bootstrap.sh <script> [args] >> /var/log/evidencetoday/<job>.log 2>&1`
 
 ```
 CRON_TZ=UTC
-17 22 * * *  ops/bootstrap.sh draft-cron.sh news         # 台北每日 06:17 趨勢草稿
-30 3  * * 1  ops/bootstrap.sh draft-cron.sh articles     # 台北週一 11:30
-30 3  * * 3  ops/bootstrap.sh draft-cron.sh ingredients  # 台北週三 11:30
-30 3  * * 5  ops/bootstrap.sh draft-cron.sh myths        # 台北週五 11:30
-*/10 * * * * ops/bootstrap.sh publish-approved.sh        # 每 10 分核准→發佈→回貼
-0 1  */3 * * ops/bootstrap.sh sitemap-submit.sh          # 每 3 天 sitemap+索引覆蓋率
-30 1 */3 * * ops/bootstrap.sh perf-report.sh             # 每 3 天經營建議
-30 2 *   * * ops/bootstrap.sh optimize-cron.sh           # 每日自我優化
-45 1 *   * 1 ops/bootstrap.sh googlenews-watch.sh        # 每週一 Google News 監測
+17 22 * * 0-6  draft-cron.sh news         # 台北每日 06:17 趨勢草稿
+35 23 * * 0    draft-cron.sh articles     # 台北週日→一 07:35
+35 23 * * 2    draft-cron.sh ingredients  # 台北週二→三 07:35
+35 23 * * 4    draft-cron.sh myths        # 台北週四→五 07:35
+35 23 * * 1    draft-cron.sh podcast      # 台北週一→二 07:35（1 份講稿）
+35 23 * * 3    draft-cron.sh videos       # 台北週三→四 07:35（3 份短影音腳本）
+*/10 * * * *   publish-approved.sh        # 每 10 分核准→發佈→回貼
+0 1  */3 * *   sitemap-submit.sh          # 每 3 天 sitemap+索引覆蓋率（台北 09:00）
+30 1 */3 * *   perf-report.sh             # 每 3 天經營建議（台北 09:30）
+30 2 *   * *   optimize-cron.sh           # 每日自我優化（台北 10:30）
+45 1 *   * 1   googlenews-watch.sh        # 每週一 Google News 監測（台北 09:45）
 ```
-（路徑前綴 `/root/evidencetoday.news/`。）

@@ -99,7 +99,7 @@ PROMPT="$(cat <<PROMPTEOF
 PROMPTEOF
 )"
 
-claude-appi -p "$PROMPT" \
+"$REPO/ops/claude-run.sh" -p "$PROMPT" \
   --model claude-sonnet-4-6 \
   --dangerously-skip-permissions 2>&1 || echo "[perf-report] claude 分析失敗；原始數據仍保存於 $RAW"
 

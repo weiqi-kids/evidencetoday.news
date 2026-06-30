@@ -115,7 +115,8 @@ YMYL
 
 # 頁面型專屬撰寫品質（配圖／結構化來源／審核委員會）
 COMMON_RULES_PAGE="$(cat <<RULES
-【撰寫品質｜比照 news 全管線】每篇：①平行撰寫（多篇時各派一個 Agent 同訊息並行）；②配圖每篇 1 封面+2 內文圖，先圖庫後生成、人物一律台灣人，封面寫 frontmatter heroImage/coverAlt/coverImageCredit、內文 2 張嚴格用 \`![<credit>](<full> "<creditUrl>")\`（unsplash/pexels 開頭），URL 先 curl -sI 驗 200，**嚴禁本地行內圖 \`](images/...)\`**（細節見 docs/playbooks/editor-images.md）；③來源鐵律：引用一律寫進 frontmatter 結構化 references（每筆 {title,type,url}，type 用 schema 列舉值，url 為可點 http(s)），至少 1 筆含 url；④動態審核委員會多輪修稿（每角色派 Agent 並行），連續 3 輪未收斂才停。
+【子代理模型｜硬性省成本】凡用 Agent 工具派子代理一律顯式帶 model 參數，**嚴禁用預設模型（會落到 opus、最貴）**：撰寫與審核委員會一律 model='sonnet'（比照 docs/news_sop.md 設計 Sonnet x n）；僅純機械性檢查（連結驗 200、檔名格式）可用 model='haiku'。
+【撰寫品質｜比照 news 全管線】每篇：①平行撰寫（多篇時各派一個 Agent 同訊息並行，每個撰寫 Agent 帶 model='sonnet'）；②配圖每篇 1 封面+2 內文圖，先圖庫後生成、人物一律台灣人，封面寫 frontmatter heroImage/coverAlt/coverImageCredit、內文 2 張嚴格用 \`![<credit>](<full> "<creditUrl>")\`（unsplash/pexels 開頭），URL 先 curl -sI 驗 200，**嚴禁本地行內圖 \`](images/...)\`**（細節見 docs/playbooks/editor-images.md）；③來源鐵律：引用一律寫進 frontmatter 結構化 references（每筆 {title,type,url}，type 用 schema 列舉值，url 為可點 http(s)），至少 1 筆含 url；④動態審核委員會多輪修稿（每角色派 Agent 並行，審核委員 Agent 帶 model='sonnet'），連續 3 輪未收斂才停。
 $COMMON_YMYL
 RULES
 )"
@@ -188,7 +189,7 @@ ${RULES_BLOCK}
 
 ${ENDING_BLOCK}"
 
-claude-appi -p "$PROMPT" --model claude-sonnet-4-6 --dangerously-skip-permissions 2>&1 \
+"$SELF_DIR/claude-run.sh" -p "$PROMPT" --model claude-sonnet-4-6 --dangerously-skip-permissions 2>&1 \
   || echo "[draft] claude 執行失敗（仍續行處理已產出的草稿，如有）"
 
 # ── wrapper 後處理：把成品搬進暫存區 + 發 Slack ──────────────────────────────────
