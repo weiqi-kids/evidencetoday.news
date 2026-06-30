@@ -28,6 +28,12 @@
 | `perf-report.sh` | 每 3 天 GA4+GSC 經營建議（避開 optimize 已做的事，發優化報報）。 | `audience-insights.md` |
 | `sitemap-submit.sh` | 每 3 天對 GSC 重提交 sitemap + 索引覆蓋率快照。 | — |
 | `googlenews-watch.sh` | 每週 Google News 曝光監測。 | — |
+| `cron-status.sh` | **唯讀**狀態速覽：讀 cron.d＋log＋冷卻旗標，印「名稱/台北時間/模型/現況」表。`/etn-cron` skill 的後端。 | — |
+
+## 帳號（headless 跑哪個帳號）
+
+- **全部 cron 自動化跑營運帳號 `claude-appi`**（=vegeta1260，wrapper 在 `/usr/local/bin/claude-appi` 設 `CLAUDE_CONFIG_DIR=~/.claude-appi`，再呼叫同一個 `claude` binary）。`claude`(dev/lightman) 只做互動改碼，不跑 cron。
+- ⚠️ **`claude-appi` 與 appi.news 自動化共用同一個週限額**——撞限額時 evidencetoday 會一起空跑；`claude-run.sh` 偵測到就寫冷卻旗標、`bootstrap.sh` 冷卻期內跳過 claude 型 job（純資料型照跑）。看現況用 `cron-status.sh`／`/etn-cron`。
 
 ## 設計鐵則（改這裡前必讀）
 

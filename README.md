@@ -375,18 +375,19 @@ GitHub Actions 自動執行：build → Pagefind 索引 → 連結檢查 → 部
 
 ## 待補齊項目
 
-### 上線前 Blocker
+### 上線前 Blocker — ✅ 全數完成（2026-06-30 核對）
 
-- [ ] 利益揭露具體內容 — `src/data/policies/disclosure.md`
-- [ ] 隱私權政策正式文案 — `src/pages/privacy.astro`
-- [ ] 使用條款正式文案 — `src/pages/terms.astro`
-- [ ] Email 信箱 — evidencetodaynews@gmail.com（單一聯絡信箱）
-- [ ] 社群連結 — `src/components/blocks/Footer.astro`（已加「在 Google News 追蹤」；其餘社群待補）
-- [ ] Logo SVG — `src/components/blocks/TopNav.astro`
-- [ ] 實際內容量 — 至少 10-15 篇文章 + 5 篇闢謠
+- [x] 利益揭露 — `src/data/policies/disclosure.md`（已有正式文案）
+- [x] 隱私權 / 使用條款正式文案 — `src/pages/privacy.astro` / `terms.astro`
+- [x] Email 信箱 — evidencetodaynews@gmail.com（contact / privacy / terms / about 已用）
+- [x] 社群連結 — Footer 已放「在 Google News 追蹤」；其餘社群依硬規則「不得加入不存在的社群」，有真實帳號才補（**非 blocker**）
+- [x] Logo — TopNav 已用 `/images/brand/logo-icon.png`（SVG 版列為上線後可選迭代）
+- [x] 實際內容量 — 遠超標：文章 83 / 闢謠 34 / 成分 27 / 趨勢 64（要求 ≥10–15 + ≥5）
 
 ### 上線後可迭代
 
+- [ ] `src/data/policies/editorial-policy.md` 目前僅 3 行，可補完整編輯方針
+- [ ] Logo SVG 版本（現為 PNG）
 - [ ] 成分解析頁補齊更多 pathwaySteps 資料
 - [ ] Pagefind 搜尋頁動態載入
 

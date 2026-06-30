@@ -19,12 +19,12 @@ if echo "$rel_path" | grep -qE '^(src/content/|src/data/policies/|public/|docs/|
 fi
 
 # Functional paths trigger the reminder
-if echo "$rel_path" | grep -qE '^(src/(components|layouts|styles|lib|utils)/|src/pages/.*\.(astro|ts|svelte)$|scripts/|\.github/workflows/|astro\.config\.mjs$|src/content\.config\.ts$|package\.json$)'; then
+if echo "$rel_path" | grep -qE '^(src/(components|layouts|styles|lib|utils)/|src/pages/.*\.(astro|ts|svelte)$|scripts/|\.github/workflows/|astro\.config\.mjs$|src/content\.config\.ts$|package\.json$|ops/[^/]+\.sh$)'; then
   cat <<'JSON'
 {
   "hookSpecificOutput": {
     "hookEventName": "PostToolUse",
-    "additionalContext": "[修改紀律] 你動到功能程式碼。請確認同步更新 README.md 或對應的 docs/playbooks/*.md 檔案，否則 CI docs-sync-check 會擋 PR。判斷規則：改 src/components|layouts|styles|lib|utils、src/pages/*.astro|.ts|.svelte、scripts、.github/workflows、astro.config.mjs、src/content.config.ts、package.json 都必須同步 docs。例外請在 PR body 加 [skip docs]。"
+    "additionalContext": "[修改紀律] 你動到功能程式碼。請確認同步更新 README.md 或對應的 docs/playbooks/*.md 檔案，否則 CI docs-sync-check 會擋 PR。判斷規則：改 src/components|layouts|styles|lib|utils、src/pages/*.astro|.ts|.svelte、scripts、.github/workflows、astro.config.mjs、src/content.config.ts、package.json 都必須同步 docs；改 ops/*.sh 要同步 ops/README.md。例外請在 PR body 加 [skip docs]。"
   }
 }
 JSON
