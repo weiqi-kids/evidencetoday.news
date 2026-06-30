@@ -168,6 +168,7 @@ pnpm test                                   # 全套
 
 ## 常見陷阱
 
+- **🛑 gtag shim 必須 push `arguments`，不可 push 陣列（曾導致全站 GA4 靜默歸零）。** `loadGtag` 內建立的 gtag shim 要寫成 `window.gtag = function () { window.dataLayer.push(arguments); }`（Google 官方 canonical 形式）。**禁止**寫成 `(...args) => dataLayer.push(args)` 這種推普通陣列的形式：`gtag.js` 載入後回掃 `dataLayer` 佇列時，只把**原生 `arguments` 物件**當成有效指令，普通陣列會被當 data-layer 資料**靜默忽略**，於是 `config`（含 `send_page_view`）與所有 event 都不會送達 GA4 → 即時報表恆為 0、property 顯示「尚未收到資料」。此坑無 CSP/封鎖徵兆、`gtag/js` 仍回 200，極難從外部察覺；驗證法＝無痕開頁看 GA4 Realtime 是否跳人。測試用 `vi.fn` 取代 `window.gtag`，**不會覆蓋此 shim 分支**，故單元測試綠燈也擋不住——改 shim 後務必以真瀏覽器 Realtime 實測。
 - **禁止**在純函數段（第一段）存取 `window`/`document`/`localStorage`/`gtag`——Node 環境 import 會爆。
 - 副作用層所有全域存取均需 `typeof xxx !== 'undefined'` guard，SSR 不能拋出。
 - `MEASUREMENT_ID` 設為 `''` 可全域停用追蹤，`isTrackable` 回傳 `false`，`loadGtag` 提前返回。
