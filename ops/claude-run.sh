@@ -9,7 +9,7 @@
 #   3) bootstrap.sh 在冷卻期內會直接跳過 claude 型 cron（止血、省 token）。
 #
 # 用法（取代各腳本內的 `claude-appi`）：
-#   "$REPO/ops/claude-run.sh" -p "$PROMPT" --model claude-sonnet-4-6 --dangerously-skip-permissions
+#   "$REPO/ops/claude-run.sh" -p "$PROMPT" --model claude-sonnet-5 --dangerously-skip-permissions
 set -uo pipefail
 
 CONF_DIR="${CONF_DIR:-/root/.config/evidencetoday-news}"

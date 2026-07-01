@@ -100,7 +100,7 @@ PROMPTEOF
 )"
 
 "$REPO/ops/claude-run.sh" -p "$PROMPT" \
-  --model claude-sonnet-4-6 \
+  --model claude-sonnet-5 \
   --dangerously-skip-permissions 2>&1 || echo "[perf-report] claude 分析失敗；原始數據仍保存於 $RAW"
 
 # 把精簡摘要發到「優化報報」頻道（slack-notify.sh 缺 token 自動略過、不中斷）。

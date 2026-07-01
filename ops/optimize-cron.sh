@@ -100,7 +100,7 @@ PROMPTEOF
 HEAD_BEFORE="$(git rev-parse HEAD 2>/dev/null || echo unknown)"
 CLAUDE_OK=1
 "$REPO/ops/claude-run.sh" -p "$PROMPT" \
-  --model claude-sonnet-4-6 \
+  --model claude-sonnet-5 \
   --dangerously-skip-permissions 2>&1 || { CLAUDE_OK=0; echo "[optimize] claude 執行失敗；原始數據仍保存於 $RAW"; }
 
 # 工作樹清理：claude 對「該保留的改動」已自行 commit/push；此刻仍殘留的未提交變更

@@ -54,7 +54,7 @@ PROMPTEOF
 
 # headless 自動化：管線需 WebSearch/WebFetch/Bash(git)/Write/Agent/gcloud，故跳過互動式權限詢問
 "$REPO/ops/claude-run.sh" -p "$PROMPT" \
-  --model claude-sonnet-4-6 \
+  --model claude-sonnet-5 \
   --dangerously-skip-permissions 2>&1
 
 echo "===== [news-cron] $(date '+%F %T %Z') 結束 ====="

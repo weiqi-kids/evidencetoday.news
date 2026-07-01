@@ -189,7 +189,7 @@ ${RULES_BLOCK}
 
 ${ENDING_BLOCK}"
 
-"$SELF_DIR/claude-run.sh" -p "$PROMPT" --model claude-sonnet-4-6 --dangerously-skip-permissions 2>&1 \
+"$SELF_DIR/claude-run.sh" -p "$PROMPT" --model claude-sonnet-5 --dangerously-skip-permissions 2>&1 \
   || echo "[draft] claude 執行失敗（仍續行處理已產出的草稿，如有）"
 
 # ── wrapper 後處理：把成品搬進暫存區 + 發 Slack ──────────────────────────────────
