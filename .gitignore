@@ -61,3 +61,4 @@ public/og/**/*.zip
 
 # Audience insights — 私密經營數據，不 commit、不 deploy
 data/audience-insights.json
+data/seo-daily/
