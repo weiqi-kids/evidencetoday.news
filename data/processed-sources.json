@@ -1,7 +1,15 @@
 {
   "version": 1,
-  "lastRun": "2026-06-29T06:29:13+08:00",
+  "lastRun": "2026-07-03T06:19:28+08:00",
   "processed": {
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC11174647/": {
+      "processedAt": "2026-07-03T06:19:28+08:00",
+      "outputFile": null
+    },
+    "https://www.nature.com/articles/s41598-026-45991-3": {
+      "processedAt": "2026-07-03T06:19:28+08:00",
+      "outputFile": null
+    },
     "PMID:42098536": {
       "processedAt": "2026-05-08T12:00:00Z",
       "outputFile": null
