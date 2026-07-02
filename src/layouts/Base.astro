@@ -86,19 +86,6 @@ const siteGraph = buildSiteGraph();
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="alternate" type="application/rss+xml" title="本日有據 RSS" href="/rss.xml" />
 
-    <!-- Google Reader Revenue Manager / Subscribe with Google basic integration -->
-    <script is:inline async type="application/javascript" src="https://news.google.com/swg/js/v1/swg-basic.js"></script>
-    <script is:inline>
-      (self.SWG_BASIC = self.SWG_BASIC || []).push((basicSubscriptions) => {
-        basicSubscriptions.init({
-          type: 'NewsArticle',
-          isPartOfType: ['Product'],
-          isPartOfProductId: 'CAowh4bHDA:openaccess',
-          clientOptions: { theme: 'light', lang: 'zh-TW' },
-        });
-      });
-    </script>
-
     <JsonLd data={siteGraph} />
     <slot name="head" />
   </head>
