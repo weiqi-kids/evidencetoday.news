@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-07-03T06:19:28+08:00",
+  "lastRun": "2026-07-04T06:20:12+08:00",
   "processed": {
     "https://pmc.ncbi.nlm.nih.gov/articles/PMC11174647/": {
       "processedAt": "2026-07-03T06:19:28+08:00",
@@ -533,6 +533,46 @@
     "https://www.amjmed.com/article/S0002-9343(25)00283-9/abstract": {
       "processedAt": "2026-06-29T06:29:13+08:00",
       "outputFile": "src/content/news/radar-2026-06-29-06-01.md"
+    },
+    "https://www.who.int/news-room/events/detail/2026/01/27/default-calendar/launch-of-the-who-guideline-on-policies-and-interventions-to-create-healthy-school-food-environments": {
+      "processedAt": "2026-07-04T06:20:12+08:00",
+      "outputFile": null
+    },
+    "https://www.who.int/teams/nutrition-and-food-safety/monitoring-nutritional-status-and-food-safety-and-events/foodborne-disease-estimates/2026-edition": {
+      "processedAt": "2026-07-04T06:20:12+08:00",
+      "outputFile": null
+    },
+    "https://www.who.int/news-room/events/detail/2026/06/04/default-calendar/who-estimates-of-the-global-burden-of-foodborne-diseases-2000-2021--key-findings-from-the-2026-edition": {
+      "processedAt": "2026-07-04T06:20:12+08:00",
+      "outputFile": null
+    },
+    "https://clinicaltrials.gov/study/NCT06837246": {
+      "processedAt": "2026-07-04T06:20:12+08:00",
+      "outputFile": null
+    },
+    "https://clinicaltrials.gov/study/NCT06515496": {
+      "processedAt": "2026-07-04T06:20:12+08:00",
+      "outputFile": null
+    },
+    "https://clinicaltrials.gov/study/NCT07421596": {
+      "processedAt": "2026-07-04T06:20:12+08:00",
+      "outputFile": null
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC10225323/": {
+      "processedAt": "2026-07-04T06:20:12+08:00",
+      "outputFile": null
+    },
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8308779/": {
+      "processedAt": "2026-07-04T06:20:12+08:00",
+      "outputFile": null
+    },
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11899439/": {
+      "processedAt": "2026-07-04T06:20:12+08:00",
+      "outputFile": null
+    },
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8215288/": {
+      "processedAt": "2026-07-04T06:20:12+08:00",
+      "outputFile": null
     }
   }
 }
