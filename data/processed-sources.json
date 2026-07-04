@@ -573,6 +573,18 @@
     "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8215288/": {
       "processedAt": "2026-07-04T06:20:12+08:00",
       "outputFile": null
+    },
+    "PMID:41314291": {
+      "processedAt": "2026-07-05T06:25:00+08:00",
+      "outputFile": "src/content/news/radar-2026-07-05-06-01.md"
+    },
+    "PMID:41201844": {
+      "processedAt": "2026-07-05T06:25:00+08:00",
+      "outputFile": null
+    },
+    "https://www.eurekalert.org/news-releases/1130918": {
+      "processedAt": "2026-07-05T06:25:00+08:00",
+      "outputFile": null
     }
   }
 }
