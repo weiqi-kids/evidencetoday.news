@@ -55,8 +55,8 @@ CRON_TZ=UTC
 35 23 * * 0    draft-cron.sh articles     # 台北週日→一 07:35
 35 23 * * 2    draft-cron.sh ingredients  # 台北週二→三 07:35
 35 23 * * 4    draft-cron.sh myths        # 台北週四→五 07:35
-35 23 * * 1    draft-cron.sh podcast      # 台北週一→二 07:35（1 份講稿）
-35 23 * * 3    draft-cron.sh videos       # 台北週三→四 07:35（3 份短影音腳本）
+# 35 23 * * 1  draft-cron.sh podcast      # 【2026-07-07 用戶要求停用】台北週一→二 07:35（1 份講稿）
+# 35 23 * * 3  draft-cron.sh videos       # 【2026-07-07 用戶要求停用】台北週三→四 07:35（3 份短影音腳本）
 */10 * * * *   publish-approved.sh        # 每 10 分核准→發佈→回貼
 0 1  */3 * *   sitemap-submit.sh          # 每 3 天 sitemap+索引覆蓋率（台北 09:00）
 30 1 */3 * *   perf-report.sh             # 每 3 天經營建議（台北 09:30）
