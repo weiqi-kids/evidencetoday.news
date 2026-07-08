@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-07-08T06:30:00+08:00",
+  "lastRun": "2026-07-09T06:30:00+08:00",
   "processed": {
     "https://pmc.ncbi.nlm.nih.gov/articles/PMC11174647/": {
       "processedAt": "2026-07-03T06:19:28+08:00",
@@ -629,6 +629,14 @@
     "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11747194/": {
       "processedAt": "2026-07-08T06:30:00+08:00",
       "outputFile": null
+    },
+    "PMID:37182743": {
+      "processedAt": "2026-07-09T06:30:00+08:00",
+      "outputFile": "src/content/news/radar-2026-07-09-06-01.md"
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC8009750/": {
+      "processedAt": "2026-07-09T06:30:00+08:00",
+      "outputFile": "src/content/news/radar-2026-07-09-06-01.md"
     }
   }
 }
