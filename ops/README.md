@@ -43,6 +43,7 @@
 4. crontab 一律經 `bootstrap.sh <script> [args]` 呼叫，不直接呼叫個別腳本。
 5. **headless `claude` 一律經 `claude-run.sh` 呼叫**，不直接呼叫 `claude-appi`（否則撞額度時不會寫冷卻旗標、會每趟空跑）。
 6. **子代理模型｜省成本鐵則**：撰寫類 prompt（draft/news）凡用 `Agent` 工具派 sub-agent，**一律顯式帶 `model='sonnet'`**（審核委員會亦同，比照 `docs/news_sop.md` 設計 Sonnet x n）；**嚴禁用預設模型——預設會落到 opus（最貴）**。純機械性檢查（連結驗 200/檔名）才可降 `model='haiku'`。orchestrator 自身由各腳本 `--model claude-sonnet-4-6` 鎖定。
+7. **`draft-cron.sh` 與 `publish-approved.sh` 共用 `src/content` 互斥鎖**（`CONTENT_LOCK`，定義在 `gate-lib.sh`）。原因：draft 撰稿期間草稿是 `src/content/<type>/` 下的**未追蹤檔**，還沒搬進暫存區；而 publish 每 10 分鐘一輪，結尾會 `git clean -fdq -- src/content` 清殘留——會把還在寫、耗時 >10 分鐘的草稿整篇洗掉（**2026-07-10 draft-myths 事故**：bone-broth / plant-milk 草稿各被誤刪一次，靠審核 Agent 留底才救回）。約定：**draft 端頁面型撰稿全程持鎖**（`flock -w 600`，等值得，稿件型 podcast/videos 走 repo 外 scratch 不需要）；**publish 端 `flock -n` 搶不到就跳過本輪**（10 分鐘後自動重試，發布延遲可接受、弄丟草稿不可接受）。
 
 ## crontab（在 `/etc/cron.d/evidencetoday`，單檔一專案；系統 TZ=UTC，排程以 UTC 寫，台北＝UTC+8）
 

@@ -25,6 +25,13 @@ GATE_TTL_DAYS="${GATE_TTL_DAYS:-7}"
 SLACK_NOTIFY="$REPO/ops/slack-notify.sh"
 TOKEN_FILE="$CONF_DIR/slack-bot-token"
 
+# draft-cron.sh（在 src/content 原地寫未追蹤草稿）與 publish-approved.sh（cp 進 src/content +
+# 結尾 `git clean -fdq -- src/content`）的共用互斥鎖。用途：避免 publish 的 git clean 誤刪
+# draft-cron 尚未搬進暫存區的未追蹤草稿——撰稿 >10 分鐘就會被每 10 分鐘的 publish cron 洗掉
+# （見 2026-07-10 draft-myths 事故：bone-broth / plant-milk 草稿各被誤刪一次）。
+# 約定：draft 端等鎖（撰稿是重活、等值得）；publish 端搶不到就跳過本輪（10 分鐘後自動重試）。
+CONTENT_LOCK="$CONF_DIR/.content-write.lock"
+
 # 型別 → 頻道 ID（記憶 slack-channels）
 gate_channel() {
   case "$1" in

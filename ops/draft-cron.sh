@@ -189,6 +189,21 @@ ${RULES_BLOCK}
 
 ${ENDING_BLOCK}"
 
+# ── 取得 src/content 互斥鎖（僅頁面型；稿件型只寫 repo 外 scratch，不碰 src/content）─────
+# 與 publish-approved.sh 共用（見 gate-lib.sh CONTENT_LOCK）：撰稿期間未追蹤草稿還沒搬進暫存區，
+# 持鎖擋住 publish 的 `git clean -fdq -- src/content`，否則撰稿 >10 分鐘會被每 10 分鐘的 publish
+# cron 誤刪（2026-07-10 事故）。fd 8 開到本腳本結束才釋放（涵蓋 claude 撰稿→搬暫存→清工作樹全程）。
+# 等鎖上限 600s（publish 單輪通常數分鐘內結束）；等不到就本輪放棄，不無鎖硬寫又被洗掉。
+if [ "$IS_SCRIPT" = "0" ]; then
+  mkdir -p "$CONF_DIR"
+  exec 8>"$CONTENT_LOCK"
+  if ! flock -w 600 8; then
+    echo "[draft] 取 src/content 鎖逾時（publish-approved 仍在跑？），本輪放棄"
+    echo "===== [draft:$TYPE] $(date '+%F %T %Z') 結束（未取得鎖）====="
+    exit 0
+  fi
+fi
+
 "$SELF_DIR/claude-run.sh" -p "$PROMPT" --model claude-sonnet-5 --dangerously-skip-permissions 2>&1 \
   || echo "[draft] claude 執行失敗（仍續行處理已產出的草稿，如有）"
 

@@ -34,6 +34,12 @@ LOCK="$CONF_DIR/.publish.lock"
 exec 9>"$LOCK"
 if ! flock -n 9; then echo "[publish] 上一輪仍在執行，跳過本次"; exit 0; fi
 
+# 與 draft-cron.sh 共用 src/content 互斥鎖（見 gate-lib.sh CONTENT_LOCK）：draft 撰稿中（未追蹤
+# 草稿還沒搬進暫存區）就跳過本輪，否則下方階段 B 的 `git clean -fdq -- src/content` 會誤刪還在寫的
+# 草稿（2026-07-10 事故）。搶不到即跳過，10 分鐘後本 cron 自動重試——發布延遲可接受、弄丟草稿不可接受。
+exec 8>"$CONTENT_LOCK"
+if ! flock -n 8; then echo "[publish] draft-cron 正在撰稿（持 src/content 鎖），跳過本次"; exit 0; fi
+
 mkdir -p "$PENDING_DIR" "$AWAIT_DIR"; touch "$PUBLISHED_LEDGER"
 shopt -s nullglob
 NOW="$(date '+%s')"
