@@ -23,6 +23,9 @@ build (ubuntu-latest)
 ├─ setup pnpm v9
 ├─ setup Node 20 (cache: pnpm)
 ├─ pnpm install --frozen-lockfile
+├─ pnpm check:news        ← 擋部署 gate
+├─ pnpm content:audit     ← 擋部署 gate
+├─ pnpm check:myths       ← 擋部署 gate（2026-07-12 新增）
 ├─ pnpm build
 │   ├─ prebuild: pnpm run sync:youtube      ← fail-loud, no fallback
 │   ├─ astro build
@@ -46,9 +49,10 @@ deploy (ubuntu-latest, needs: build)
 
 ### 內容把關 gate（deploy.yml build job 內，會擋部署）
 
-`deploy.yml` 的 build job 依序跑兩道**會擋部署**的內容 gate（任一失敗 → build 中斷 → 不部署）：
+`deploy.yml` 的 build job 依序跑三道**會擋部署**的內容 gate（任一失敗 → build 中斷 → 不部署）：
 1. `pnpm check:news`：每篇非 draft 的 news 須有可點來源連結。
 2. `pnpm content:audit`：擋 `banned-opening`（模板化第一人稱開頭）+ `ai-phrase`（不是…而是／換句話說／我一直覺得…）+ `vague-reference`（研究顯示／文獻回顧…）；`raw-enum` 僅警告。規範見 `CLAUDE.md` 硬規則 7a 與 `docs/content-guide.md`。
+3. `pnpm check:myths`（2026-07-12 加入 deploy）：已發佈 myths 篇數須等於 `scripts/check-myth-quality.mjs` 的 `EXPECTED_PUBLISHED_COUNT`、8 個固定 body 區塊齊全、藍/紅 reasoningCards 各 ≥2 點、references URL ≥2、固定醫療提醒句等。**增刪已發佈闢謠時務必同步改該常數**，否則此 gate 會擋部署。
 
 > 注意：另有獨立的 `content-audit.yml` workflow（PR/push 時跑，提供行內 annotation），但**真正擋部署的是 deploy.yml 裡這道 step**——獨立 workflow 紅燈不會阻止 Pages 部署，2026-06-23 已把 `content:audit` 加進 deploy build job 補上這個缺口。
 

@@ -45,23 +45,14 @@ const topTags = await getTopTags(12);
 </Base>
 
 <link href="/pagefind/pagefind-ui.css" rel="stylesheet">
-<script is:inline src="/pagefind/pagefind-ui.js"></script>
 <script is:inline>
-  window.addEventListener('DOMContentLoaded', () => {
+  // Pagefind UI 延後到瀏覽器閒置時再載入，避免其 JS 阻擋首屏繪製（搜尋頁的其餘內容不依賴它）。
+  (() => {
     const params = new URLSearchParams(window.location.search);
     const initialQuery = params.get('q') || params.get('query') || '';
 
-    new PagefindUI({
-      element: '#search-container',
-      showSubResults: true,
-      resetStyles: false,
-      translations: {
-        placeholder: '搜尋關鍵字（例如：魚油、Omega-3、三酸甘油酯、薑黃素）',
-      },
-      processResult: (result) => result,
-    });
-
-    if (initialQuery) {
+    function applyInitialQuery() {
+      if (!initialQuery) return;
       requestAnimationFrame(() => {
         const input = document.querySelector(
           '#search-container input[type="text"], #search-container input[type="search"]'
@@ -74,7 +65,33 @@ const topTags = await getTopTags(12);
         }
       });
     }
-  });
+
+    function initPagefind() {
+      new PagefindUI({
+        element: '#search-container',
+        showSubResults: true,
+        resetStyles: false,
+        translations: {
+          placeholder: '搜尋關鍵字（例如：魚油、Omega-3、三酸甘油酯、薑黃素）',
+        },
+        processResult: (result) => result,
+      });
+      applyInitialQuery();
+    }
+
+    function loadPagefind() {
+      const script = document.createElement('script');
+      script.src = '/pagefind/pagefind-ui.js';
+      script.onload = initPagefind;
+      document.head.appendChild(script);
+    }
+
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(loadPagefind, { timeout: 2000 });
+    } else {
+      setTimeout(loadPagefind, 200);
+    }
+  })();
 </script>
 
 <style>

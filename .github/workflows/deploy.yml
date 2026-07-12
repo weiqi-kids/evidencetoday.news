@@ -51,11 +51,12 @@ jobs:
       - name: Content AI-tone gate (blocks deploy on banned-opening / ai-phrase / vague-reference)
         run: pnpm content:audit
 
-      - name: Build Astro
-        run: pnpm build
+      - name: Myths quality gate
+        run: pnpm check:myths
 
-      - name: Build Pagefind index
-        run: npx pagefind --site dist
+      - name: Build Astro
+        # postbuild hook 已跑 pagefind --site dist（見 package.json），不需獨立 step 重跑索引。
+        run: pnpm build
 
       - name: Remove local OG preview artifacts
         run: rm -rf dist/og-preview

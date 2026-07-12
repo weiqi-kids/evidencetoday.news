@@ -3,8 +3,9 @@
     "collect": {
       "url": [
         "http://localhost/",
-        "http://localhost/articles/omega-3-guide/",
-        "http://localhost/ingredients/vitamin-c/"
+        "http://localhost/articles/",
+        "http://localhost/ingredients/",
+        "http://localhost/myths/"
       ]
     },
     "assert": {

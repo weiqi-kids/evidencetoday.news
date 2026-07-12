@@ -212,18 +212,13 @@
 ---
 
 
-## OG 圖生成
+## OG 圖（靜態，每 collection 一張）
 
-- OG 圖由 `pnpm og:generate` 生成到 `public/og/`。
-- `pnpm build` 會在 `prebuild` 透過 `pnpm run sync:youtube && pnpm run og:generate` 自動生成 OG 圖。
-- OG 圖尺寸固定為 1200x630。
-- 生成範圍包含公開 articles / myths / ingredients / podcasts / videos / news。
-- draft 內容不生成。
-- 前台名稱使用「成分解析」，但路徑仍為 `/ingredients/`。
-- generated PNG 不提交到 repo，`public/og/**/*.png` 已由 `.gitignore` 排除。
-- GitHub Pages 部署時會在 build 階段生成 OG 圖並輸出到 `dist`。
-- 不得提交或分享字型檔。
-- OG 圖應遵守 Corporate Identity 規範，不得呈現商品銷售感、醫療恐懼感或十字架元素。
+- 目前採**靜態 OG**：每個 collection 共用一張預先產好的圖 `public/og-static/*.png`（home / articles / myths / ingredients / podcasts / videos / news），由 `src/utils/social-meta.mjs` 的 `ogImageForCollection()` 依 collection 指派，並帶版本查詢字串 `OG_IMAGE_VERSION`（目前 `20260604-static-og-v1`）。
+- **已無 `pnpm og:generate` 指令、也無 `src/pages/og/[...slug].png.ts` endpoint**（早期 satori/sharp 逐頁生成方案已淘汰）。因此社群分享圖為 collection 級、不做逐篇差異化。
+- 若日後要恢復逐篇 OG：satori/sharp 相依仍在 `package.json`；`scripts/generate-author-og.ts` 是現存的一次性作者頁 OG 生成工具，可作參考。
+- OG 圖尺寸 1200x630；前台名稱使用「成分解析」，但路徑仍為 `/ingredients/`。
+- 不得提交或分享字型檔。OG 圖應遵守 Corporate Identity 規範，不得呈現商品銷售感、醫療恐懼感或十字架元素。
 
 ## 快速開始
 
@@ -231,14 +226,13 @@
 # — 開發 / 建置 —
 pnpm install        # 安裝依賴（不是 npm）
 pnpm dev            # 啟動開發伺服器 (localhost:4321)
-pnpm build          # 建置靜態網站 (輸出至 dist/；prebuild 跑 sync:youtube + og:generate)
+pnpm build          # 建置靜態網站 (輸出至 dist/；prebuild 跑 sync:youtube + used-images)
 pnpm preview        # 預覽建置結果
 
 # — 內容品質 gate —
 pnpm content:audit  # 掃描內容的 AI 感句型與模糊引用 / raw enum 外露
 pnpm check:myths    # 闢謠內容品質 gate（發布 myths 前必跑）
 pnpm check:news     # 趨勢新聞來源連結 gate（每篇須有可點 references/sourceUrl/pmid；CI 已接）
-pnpm og:generate    # 生成 OG 圖至 public/og/（1200x630，不提交 repo）
 
 # — 曝光量 / 選題（情境 B）—
 pnpm perf           # 近 28 天 GA4+GSC 效能快照（唯讀，經營決策用；需 gcloud token）
