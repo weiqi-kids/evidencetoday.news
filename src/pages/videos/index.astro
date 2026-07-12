@@ -6,6 +6,7 @@ import { videoItemsSchema, YOUTUBE_CHANNEL_URL } from '@/lib/youtube';
 import { fmtDate } from '@/utils/date';
 import { VIDEO_CATEGORIES, categorizeVideos, type VideoCategorySlug } from '@/utils/videos';
 import { listSocial } from '@/utils/social-meta.mjs';
+import { isPublicEntry } from '@/utils/visibility';
 
 const parsedVideos = videoItemsSchema.safeParse(shortsData);
 const videos = parsedVideos.success ? parsedVideos.data : [];
@@ -29,7 +30,7 @@ const videoCounts = VIDEO_CATEGORIES.reduce<Record<VideoCategorySlug, number>>(
   }
 );
 const visibleCategories = VIDEO_CATEGORIES.filter((category) => videoCounts[category.slug] > 0);
-const curatedVideos = await getCollection('videos', ({ data }) => !data.draft);
+const curatedVideos = await getCollection('videos', ({ data }) => isPublicEntry(data));
 const curatedMap = new Map(curatedVideos.map((entry) => [entry.data.youtubeId, entry]));
 const stripExt = (id: string) => id.replace(/\.[^.]+$/, '');
 const featuredVideoIds = [

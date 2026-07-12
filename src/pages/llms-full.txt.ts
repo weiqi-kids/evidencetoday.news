@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import { stripPodcastSlug } from '@/utils/podcasts';
+import { isPublicEntry } from '@/utils/visibility';
 
 function stripExt(id: string): string {
   return id.replace(/\.[^.]+$/, '');
@@ -12,12 +13,12 @@ function fmtDate(d: Date): string {
 
 export const GET: APIRoute = async () => {
   const [articles, myths, ingredients, podcasts, videos, news] = await Promise.all([
-    getCollection('articles', ({ data }) => !data.draft),
-    getCollection('myths', ({ data }) => !data.draft),
-    getCollection('ingredients', ({ data }) => !data.draft),
-    getCollection('podcasts', ({ data }) => !data.draft),
-    getCollection('videos', ({ data }) => !data.draft),
-    getCollection('news', ({ data }) => !data.draft),
+    getCollection('articles', ({ data }) => isPublicEntry(data)),
+    getCollection('myths', ({ data }) => isPublicEntry(data)),
+    getCollection('ingredients', ({ data }) => isPublicEntry(data)),
+    getCollection('podcasts', ({ data }) => isPublicEntry(data)),
+    getCollection('videos', ({ data }) => isPublicEntry(data)),
+    getCollection('news', ({ data }) => isPublicEntry(data)),
   ]);
 
   const sortByDate = <T extends { data: { publishDate: Date } }>(arr: T[]) =>

@@ -1,5 +1,6 @@
 import { getCollection } from 'astro:content';
 import { stripPodcastSlug } from '@/utils/podcasts';
+import { isPublicEntry } from '@/utils/visibility';
 
 const SITE_URL = 'https://evidencetoday.news';
 const FEED_URL = `${SITE_URL}/rss.xml`;
@@ -47,42 +48,42 @@ export async function GET() {
 
   const items: FeedItem[] = [
     ...articles
-      .filter((entry) => !entry.data.draft && entry.data.title && isValidDate(entry.data.publishDate))
+      .filter((entry) => isPublicEntry(entry.data) && entry.data.title && isValidDate(entry.data.publishDate))
       .map((entry) => {
         const path = `/articles/${stripExt(entry.id)}/`;
         const pubDate = entry.data.updatedDate ?? entry.data.publishDate;
         return { title: entry.data.title, description: ensureDescription(entry.data.description), link: `${SITE_URL}${path}`, guid: `${SITE_URL}${path}`, pubDate, category: '文章' };
       }),
     ...myths
-      .filter((entry) => !entry.data.draft && entry.data.title && isValidDate(entry.data.publishDate))
+      .filter((entry) => isPublicEntry(entry.data) && entry.data.title && isValidDate(entry.data.publishDate))
       .map((entry) => {
         const path = `/myths/${stripExt(entry.id)}/`;
         const pubDate = entry.data.updatedDate ?? entry.data.publishDate;
         return { title: entry.data.title, description: ensureDescription(entry.data.verdictSummary || entry.data.description), link: `${SITE_URL}${path}`, guid: `${SITE_URL}${path}`, pubDate, category: '闢謠' };
       }),
     ...ingredients
-      .filter((entry) => !entry.data.draft && entry.data.title && isValidDate(entry.data.publishDate))
+      .filter((entry) => isPublicEntry(entry.data) && entry.data.title && isValidDate(entry.data.publishDate))
       .map((entry) => {
         const path = `/ingredients/${stripExt(entry.id)}/`;
         const pubDate = entry.data.updatedDate ?? entry.data.publishDate;
         return { title: entry.data.title, description: ensureDescription(entry.data.description), link: `${SITE_URL}${path}`, guid: `${SITE_URL}${path}`, pubDate, category: '成分解析' };
       }),
     ...podcasts
-      .filter((entry) => !entry.data.draft && entry.data.title && isValidDate(entry.data.publishDate))
+      .filter((entry) => isPublicEntry(entry.data) && entry.data.title && isValidDate(entry.data.publishDate))
       .map((entry) => {
         const path = `/podcasts/${stripPodcastSlug(entry.id)}/`;
         const pubDate = entry.data.updatedDate ?? entry.data.publishDate;
         return { title: entry.data.title, description: ensureDescription(entry.data.summary || entry.data.description), link: `${SITE_URL}${path}`, guid: `${SITE_URL}${path}`, pubDate, category: 'Podcast' };
       }),
     ...news
-      .filter((entry) => !entry.data.draft && entry.data.title && isValidDate(entry.data.publishDate))
+      .filter((entry) => isPublicEntry(entry.data) && entry.data.title && isValidDate(entry.data.publishDate))
       .map((entry) => {
         const path = `/news/${stripExt(entry.id)}/`;
         const pubDate = entry.data.publishDate;
         return { title: entry.data.title, description: ensureDescription(entry.data.summary), link: `${SITE_URL}${path}`, guid: `${SITE_URL}${path}`, pubDate, category: '趨勢' };
       }),
     ...videos
-      .filter((entry) => !entry.data.draft && entry.data.title && isValidDate(entry.data.publishDate))
+      .filter((entry) => isPublicEntry(entry.data) && entry.data.title && isValidDate(entry.data.publishDate))
       .map((entry) => {
         const path = `/videos/${stripExt(entry.id)}/`;
         const pubDate = entry.data.updatedDate ?? entry.data.publishDate;

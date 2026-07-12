@@ -3,13 +3,14 @@ import Base from '@/layouts/Base.astro';
 import { getCollection } from 'astro:content';
 import AdminLogin from '@/components/editor/AdminLogin.svelte';
 import NewArticle from '@/components/editor/NewArticle.svelte';
+import { isPublicEntry } from '@/utils/visibility';
 
 const slugOf = (id: string) => id.replace(/\.[^.]+$/, '');
 const pick = (entries: any[], collection: string, n: number) =>
   entries.slice(0, n).map((e) => ({ title: e.data.title, href: `/${collection}/${slugOf(e.id)}/` }));
 
-const articles = pick(await getCollection('articles', ({ data }) => !data.draft), 'articles', 5);
-const myths = pick(await getCollection('myths', ({ data }) => !data.draft), 'myths', 5);
+const articles = pick(await getCollection('articles', ({ data }) => isPublicEntry(data)), 'articles', 5);
+const myths = pick(await getCollection('myths', ({ data }) => isPublicEntry(data)), 'myths', 5);
 const quickLinks = [...articles, ...myths];
 ---
 <Base title="管理登入" description="" noindex={true}>

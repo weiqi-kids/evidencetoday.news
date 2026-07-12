@@ -1,4 +1,5 @@
 import type { CollectionEntry } from 'astro:content';
+import { isPublicEntry } from '@/utils/visibility';
 
 export type PodcastEntry = CollectionEntry<'podcasts'>;
 
@@ -49,7 +50,7 @@ export function getPodcastSortDate(entry: PodcastEntry): Date {
 }
 
 export function getPublishedPodcasts(entries: PodcastEntry[]): PodcastEntry[] {
-  const visible = entries.filter((entry) => !entry.data.draft && entry.data.title && (entry.data.audioUrl || entry.data.embedUrl));
+  const visible = entries.filter((entry) => isPublicEntry(entry.data) && entry.data.title && (entry.data.audioUrl || entry.data.embedUrl));
   const byEpisode = new Map<string, PodcastEntry>();
 
   for (const entry of visible) {

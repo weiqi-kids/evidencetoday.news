@@ -4,8 +4,9 @@ import { getCollection } from 'astro:content';
 import { STATIC_SOCIAL } from '@/utils/social-meta.mjs';
 import JsonLd from '@/components/seo/JsonLd.astro';
 import { buildPerson } from '@/utils/schema-org';
+import { isPublicEntry } from '@/utils/visibility';
 
-const curatedVideos = await getCollection('videos', ({ data }) => !data.draft);
+const curatedVideos = await getCollection('videos', ({ data }) => isPublicEntry(data));
 const featuredVideos = curatedVideos.slice(0, 5);
 const personSchema = { '@context': 'https://schema.org', ...buildPerson('羅揚') };
 ---

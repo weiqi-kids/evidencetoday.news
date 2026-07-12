@@ -11,6 +11,7 @@ import { fmtDate } from '@/utils/date';
 import { stripPodcastSlug } from '@/utils/podcasts';
 import type { MythVerdict } from '@/utils/myths/schema';
 import { tagSocial } from '@/utils/social-meta.mjs';
+import { isPublicEntry } from '@/utils/visibility';
 
 function stripExt(id: string): string {
   return id.replace(/\.[^.]+$/, '');
@@ -24,12 +25,12 @@ type TaggedEntry = {
 };
 
 export async function getStaticPaths() {
-  const allArticles = await getCollection('articles', (e) => !e.data.draft);
-  const allMyths = await getCollection('myths', (e) => !e.data.draft);
-  const allIngredients = await getCollection('ingredients', (e) => !e.data.draft);
-  const allPodcasts = await getCollection('podcasts', (e) => !e.data.draft);
-  const allVideos = await getCollection('videos', (e) => !e.data.draft);
-  const allNews = await getCollection('news', (e) => !e.data.draft);
+  const allArticles = await getCollection('articles', (e) => isPublicEntry(e.data));
+  const allMyths = await getCollection('myths', (e) => isPublicEntry(e.data));
+  const allIngredients = await getCollection('ingredients', (e) => isPublicEntry(e.data));
+  const allPodcasts = await getCollection('podcasts', (e) => isPublicEntry(e.data));
+  const allVideos = await getCollection('videos', (e) => isPublicEntry(e.data));
+  const allNews = await getCollection('news', (e) => isPublicEntry(e.data));
 
   /* Build a map: tag → entries */
   const tagMap = new Map<string, TaggedEntry[]>();
