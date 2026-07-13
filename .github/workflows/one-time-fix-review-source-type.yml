@@ -1,0 +1,66 @@
+name: One-time source type fix
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/one-time-fix-review-source-type.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Apply targeted fixes
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          schema_path = Path('src/content.schemas.ts')
+          schema = schema_path.read_text(encoding='utf-8')
+          old_schema = """    'cross-sectional',
+              'observational',
+              'animal',
+          """
+          new_schema = """    'cross-sectional',
+              'observational',
+              'review',
+              'animal',
+          """
+          if schema.count(old_schema) != 1:
+              raise SystemExit(f'Expected exactly one sourceType enum target, found {schema.count(old_schema)}')
+          schema_path.write_text(schema.replace(old_schema, new_schema, 1), encoding='utf-8')
+
+          myth_path = Path('src/content/myths/sweat-electrolyte-sports-drink-myth.mdx')
+          myth = myth_path.read_text(encoding='utf-8')
+          old_myth = """- title: 'Exercise-Associated Hyponatremia in Marathon Runners (2022). J Clin Med 11(22):6775'
+            url: https://pmc.ncbi.nlm.nih.gov/articles/PMC9699060/
+            type: review
+          """
+          new_myth = """- title: 'Exercise-Associated Hyponatremia in Marathon Runners (2022). J Clin Med 11(22):6775'
+            url: https://pmc.ncbi.nlm.nih.gov/articles/PMC9699060/
+            type: review
+            sourceType: review
+          """
+          if myth.count(old_myth) != 1:
+              raise SystemExit(f'Expected exactly one myth reference target, found {myth.count(old_myth)}')
+          myth_path.write_text(myth.replace(old_myth, new_myth, 1), encoding='utf-8')
+          PY
+
+      - name: Commit fixes
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/content.schemas.ts src/content/myths/sweat-electrolyte-sports-drink-myth.mdx
+          git commit -m "fix(content): add review source type to electrolyte myth"
+          git push
