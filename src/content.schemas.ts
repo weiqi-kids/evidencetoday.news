@@ -46,6 +46,7 @@ const referenceSchema = z.object({
     'case-control',
     'cross-sectional',
     'observational',
+    'review',
     'animal',
     'in-vitro',
     'case-report',
