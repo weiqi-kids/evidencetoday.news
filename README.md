@@ -127,6 +127,7 @@
 
 | 任務 | 看哪份 |
 |---|---|
+| ⭐ 選題／寫新文章前先讀（能贏的文章模子·六基因） | [docs/playbooks/winning-article-formula.md](./docs/playbooks/winning-article-formula.md) |
 | 新增文章 / 闢謠 / 成分解析 / Podcast / 短影音 / 趨勢新聞 | [docs/content-guide.md](./docs/content-guide.md) |
 | 修改、刪除既有內容 | [docs/content-guide.md](./docs/content-guide.md) |
 | 撰寫趨勢新聞 SOP（自動化排程） | [docs/news_sop.md](./docs/news_sop.md)、[AGENTS.md](./AGENTS.md)「撰寫趨勢文章」 |

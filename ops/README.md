@@ -21,7 +21,7 @@
 | `claude-run.sh` | **所有 headless `claude` 呼叫的統一包裝**（跑 `claude-appi`、偵測 weekly/usage limit→寫冷卻旗標）。draft/news/optimize/perf 皆經此呼叫，勿再直接呼叫 `claude-appi`。 | 本檔 |
 | `gate-lib.sh` | 核准閘共用函式庫（型別對應、Slack/Worker 讀寫）。被 draft/publish source。 | `slack-approval-gate.md` |
 | `slack-notify.sh` | 通用 Slack 發訊（`chat.postMessage`，含 `--thread`）。 | `slack-approval-gate.md` |
-| `draft-cron.sh <type>` | 半自動撰寫出草稿→暫存→發按鈕→存 Worker。 | `slack-approval-gate.md` |
+| `draft-cron.sh <type>` | 半自動撰寫出草稿→暫存→發按鈕→存 Worker。**articles 選題受「能贏的文章模子」六基因約束**（SELECT_BLOCK 已注入，見鐵則 8）。 | `slack-approval-gate.md`、`winning-article-formula.md` |
 | `publish-approved.sh` | 讀核准狀態→發佈→等連結生效回貼。 | `slack-approval-gate.md` |
 | `news-cron.sh` | （備援，已停用）原 /news 全自動發布。 | `news_sop.md` |
 | `optimize-cron.sh` | 每日自我優化引擎（改既有頁→部署→發優化報報）。 | `daily-optimize.md` |
@@ -44,6 +44,7 @@
 5. **headless `claude` 一律經 `claude-run.sh` 呼叫**，不直接呼叫 `claude-appi`（否則撞額度時不會寫冷卻旗標、會每趟空跑）。
 6. **子代理模型｜省成本鐵則**：撰寫類 prompt（draft/news）凡用 `Agent` 工具派 sub-agent，**一律顯式帶 `model='sonnet'`**（審核委員會亦同，比照 `docs/news_sop.md` 設計 Sonnet x n）；**嚴禁用預設模型——預設會落到 opus（最貴）**。純機械性檢查（連結驗 200/檔名）才可降 `model='haiku'`。orchestrator 自身由各腳本 `--model claude-sonnet-4-6` 鎖定。
 7. **`draft-cron.sh` 與 `publish-approved.sh` 共用 `src/content` 互斥鎖**（`CONTENT_LOCK`，定義在 `gate-lib.sh`）。原因：draft 撰稿期間草稿是 `src/content/<type>/` 下的**未追蹤檔**，還沒搬進暫存區；而 publish 每 10 分鐘一輪，結尾會 `git clean -fdq -- src/content` 清殘留——會把還在寫、耗時 >10 分鐘的草稿整篇洗掉（**2026-07-10 draft-myths 事故**：bone-broth / plant-milk 草稿各被誤刪一次，靠審核 Agent 留底才救回）。約定：**draft 端頁面型撰稿全程持鎖**（`flock -w 600`，等值得，稿件型 podcast/videos 走 repo 外 scratch 不需要）；**publish 端 `flock -n` 搶不到就跳過本輪**（10 分鐘後自動重試，發布延遲可接受、弄丟草稿不可接受）。
+8. **articles 選題＝「能贏的文章模子」**：`draft-cron.sh` 的 `articles` SELECT_BLOCK 已注入 `docs/playbooks/winning-article-formula.md` 的六基因鐵律（單一具體決定／「現在」觸發點／台灣在地限定／權威站沒寫的角度／切身後果／答案先行＋範圍狠收）。改選題邏輯時，這兩處（SELECT_BLOCK 與 playbook）要一起改，別讓自動管線與方法論分岔。
 
 ## crontab（在 `/etc/cron.d/evidencetoday`，單檔一專案；系統 TZ=UTC，排程以 UTC 寫，台北＝UTC+8）
 
