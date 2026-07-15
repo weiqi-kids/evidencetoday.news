@@ -202,6 +202,17 @@ if [ "$IS_SCRIPT" = "0" ]; then
     echo "===== [draft:$TYPE] $(date '+%F %T %Z') 結束（未取得鎖）====="
     exit 0
   fi
+
+  # 與 seo-ops 反思（台 09:55）/大腦（台 10:30）共用的 per-站鎖（2026-07-15 新增）。
+  # 同 publish-approved.sh 的理由：seo-ops 是第三個寫這個工作樹的人，撞上會互相刪檔。
+  # 本 job 排台 06:17／07:35，離反思有 2 小時多，正常不會撞；但撰稿是 LLM、時長不保證，
+  # 故仍取鎖（等 900s；本 job 一天一次，等一下也不該直接放棄整天的稿）。
+  exec 200>/tmp/seo-claude-evidencetoday.news.lock
+  if ! flock -w 900 200; then
+    echo "[draft] 等 seo-ops（反思/大腦）讓出工作樹逾時（>15 分），本輪放棄"
+    echo "===== [draft:$TYPE] $(date '+%F %T %Z') 結束（未取得 seo 鎖）====="
+    exit 0
+  fi
 fi
 
 "$SELF_DIR/claude-run.sh" -p "$PROMPT" --model claude-sonnet-5 --dangerously-skip-permissions 2>&1 \

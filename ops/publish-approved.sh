@@ -40,6 +40,18 @@ if ! flock -n 9; then echo "[publish] 上一輪仍在執行，跳過本次"; exi
 exec 8>"$CONTENT_LOCK"
 if ! flock -n 8; then echo "[publish] draft-cron 正在撰稿（持 src/content 鎖），跳過本次"; exit 0; fi
 
+# ── 與 seo-ops 反思/大腦共用的 per-站鎖（2026-07-15 新增）───────────────────────────
+# 第三個寫這個工作樹的人：/root/seo-ops 的反思（台 09:55）與大腦（台 10:30）會改本 repo
+# 的經營層/內容檔。本腳本每 10 分鐘跑一次，必然落在反思那 8~10 分鐘內 → 兩邊互相毀滅：
+#   ・本腳本階段 B 的 `git clean -fdq -- src/content` 會刪掉反思還沒 commit 的改動
+#   ・反思的回退（舊版是整棵樹 checkout+clean）會刪掉本腳本剛搬進 src/content 的稿
+# 這正是 2026-07-10 draft/publish 事故的同一個病，只是第三個角色是 seo-ops。
+# 姊妹站 yao.care 已因同一原因讓反思連 5 天全被回退（見 /root/seo-ops/MAINTENANCE.md §二）。
+# 搶不到就跳過本輪，10 分鐘後自動重試——發布延遲可接受，跟反思對撞不可接受。
+# ⚠ 鎖檔名與 fd 必須與 seo-reflect.sh / seo-brain.sh 一致（/tmp/seo-claude-<站>.lock、fd 200）。
+exec 200>/tmp/seo-claude-evidencetoday.news.lock
+if ! flock -n 200; then echo "[publish] seo-ops 反思/大腦正在改工作樹，跳過本次（10 分鐘後重試）"; exit 0; fi
+
 mkdir -p "$PENDING_DIR" "$AWAIT_DIR"; touch "$PUBLISHED_LEDGER"
 shopt -s nullglob
 NOW="$(date '+%s')"
