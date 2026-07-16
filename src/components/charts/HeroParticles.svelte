@@ -20,6 +20,36 @@
       vy: (Math.random() - 0.5) * 0.3,
     }));
 
+    // 只畫一幀（不推進位置）——靜態幀，reduced-motion 時使用
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (const p of particles) {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity})`;
+        ctx.fill();
+      }
+    }
+
+    // Handle resize（靜態與動態皆需重繪）
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        canvas.width = entry.contentRect.width;
+        canvas.height = entry.contentRect.height;
+      }
+      draw();
+    });
+    resizeObserver.observe(canvas.parentElement);
+
+    // 尊重「減少動態」偏好（WCAG 2.3.3）：只畫一張靜態粒子幀，保留裝飾質感但不飄動
+    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion) {
+      draw();
+      return () => {
+        resizeObserver.disconnect();
+      };
+    }
+
     const t = timer(() => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       for (const p of particles) {
@@ -37,15 +67,6 @@
         ctx.fill();
       }
     });
-
-    // Handle resize
-    const resizeObserver = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        canvas.width = entry.contentRect.width;
-        canvas.height = entry.contentRect.height;
-      }
-    });
-    resizeObserver.observe(canvas.parentElement);
 
     return () => {
       t.stop();

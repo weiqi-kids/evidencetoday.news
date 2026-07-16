@@ -329,3 +329,27 @@ img {
     margin-top: 1.5em;
   }
 }
+
+/* ============================================================================
+   Reduced motion — 尊重使用者「減少動態」系統偏好（WCAG 2.3.3）
+
+   說明：此為無障礙業界標準的全域降級 reset。硬規則「禁 !important」的語意是針對
+   版面覆蓋 hack；reduced-motion 降級需可靠覆蓋任意元件的 transition/animation，
+   屬公認例外，僅在此媒體查詢內使用。卡片 hover 位移、平滑捲動、Hero 粒子等一律降級；
+   Hero 粒子另在 HeroParticles.svelte 以 matchMedia 只畫靜態幀。
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

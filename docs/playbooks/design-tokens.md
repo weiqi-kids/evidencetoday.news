@@ -98,6 +98,12 @@
 - [ ] git diff 只動到 tokens.css / typography.css（不誤動別處）
 ```
 
+## 全域動效與無障礙（2026-07-15 介面優化 Phase 1）
+
+- **`prefers-reduced-motion` 全域降級**：`src/styles/global.css` 末端有一段 `@media (prefers-reduced-motion: reduce)` reset，關閉平滑捲動並把所有 `animation`/`transition` 壓到 0.01ms（卡片 hover 位移、Hero 粒子等一律降級）。這是無障礙業界標準 reset（WCAG 2.3.3）。
+- **`!important` 例外**：硬規則「禁 `!important`」的語意是針對版面覆蓋 hack；reduced-motion 降級需可靠覆蓋任意元件的 transition/animation，屬**公認例外**，僅允許出現在這段媒體查詢內，其他地方仍禁用。
+- **d3 島嶼各自把關**：canvas/SVG 動畫（`HeroParticles.svelte`、`TrendBubbles.svelte`）無法只靠 CSS 降級，需在元件內以 `window.matchMedia('(prefers-reduced-motion: reduce)')` 判斷：命中時只畫一張靜態幀、不啟動 `d3-timer`。新增 d3 動畫島嶼一律比照。
+
 ## 相關文件
 
 - 設計 spec：`docs/superpowers/specs/2026-05-07-evidencetoday-design.md`
