@@ -139,6 +139,13 @@
 - **`seoTitle`（articles 限定，覆寫 `<title>`，不影響頁面 H1）**：`src/content.schemas.ts` 的 `articlesSchema` 提供 `seoTitle`（`max(60)`），`src/pages/articles/[slug].astro` 以 `seoTitle={data.seoTitle ?? social.title}` 帶入 `Article.astro`。用途是把搜尋查詢關鍵詞**前置**到 SERP 標題，解決編輯式長標題不對題、CTR 低的問題（依 GSC 真實查詢調整，見 `docs/playbooks/audience-insights.md`）。**需自帶品牌後綴**（如「｜本日有據」，因為走的不是 `social.title` 那條會自動加雙重後綴的路徑）；SERP 中文約 28–30 字會截斷，宜精簡並把關鍵詞放最前。未填時維持原本 `social.title`（機器推導短標）行為，不影響其他文章。`socialTitle`（OG 標題）不受 `seoTitle` 影響，仍走 `social.title`。
 - 標籤頁的標題與描述會依 tag 個別產生，但共用 `/og/tags/index.png`，避免 build 前產生數百張低差異圖片。
 
+## 詳情頁封面圖與證據標籤（2026-07-15 介面優化 Phase 1）
+
+- **`Article.astro` 詳情頁主視覺**：新增 `coverImage` / `coverAlt` / `coverImageCredit` 三個可選 prop。當 `coverImage` 有效時（外連 http(s)，或本地 `/…` 且 `public` 下確實存在，判斷同 `ArticleCard` 的 `safeCover`），在 header 之後、`.article-grid` 之前渲染 `<figure class="article-cover">`：固定 `aspect-ratio:16/9`＋`max-height:24rem`＋`object-fit:cover`＋`--radius-card`，攝影者以 `.article-cover__credit`（沿用 figure credit 樣式）呈現「圖片／{credit}」。這是元件級 `<img src>`，**非**行內 markdown `](images/`，不觸犯幽靈圖片硬規則。`articles/[slug].astro` 與 `ingredients/[slug].astro` 皆傳入 `data.coverImage/coverAlt/coverImageCredit`。myths 不傳、故 cards variant 無封面（維持刻意簡化）。
+- **成分頁「重點摘要」修正**：`ingredients/[slug].astro` 原本傳 `tldr={data.introduction}`，但 `Article.astro` 只認 `citationAnswer`（無 `tldr` prop）→ introduction 被靜默丟棄、成分頁沒有重點摘要區塊。已改為 `citationAnswer={data.introduction}`。
+- **參考文獻證據類型中文化**：`ReferenceList.astro` 原本直接輸出 `ref.type` 英文 enum（`meta-analysis`、`rct`…，屬 `content:audit` 會抓的 raw enum 外露）。改用 `src/utils/evidence-labels.ts` 的 `referenceTypeLabel()`（涵蓋 referenceSchema.type 全 14 值＋ animal/in-vitro/case-report；用詞對齊 myths 的 sourceTypeLabels）。未知值原樣回傳、不吞資料。
+- **`IngredientCard` 缺圖 fallback**：原本 `{coverImage && <img>}`，缺圖時完全不渲染媒體區、同一 grid 高度參差、也無檔案存在守衛。已比照 `ArticleCard` 加 `safeCoverImage` 守衛，缺圖時渲染 `.ingredient-card__thumb--fallback`（cat-ingredient 類色漸層＋「本日有據」佔位，`aria-hidden`），維持 16/9 比例讓卡片高度一致。
+
 ## Articles 文章 JSON-LD 審閱欄位規則（2026-06-14）
 
 `src/pages/articles/[slug].astro` 的 `articleSchema` 採 `['Article', 'MedicalWebPage']` 多型別，審閱相關欄位遵循以下邏輯：

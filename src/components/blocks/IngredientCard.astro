@@ -1,4 +1,6 @@
 ---
+import { existsSync } from 'node:fs';
+
 interface Props {
   title: string;
   titleEn?: string;
@@ -11,6 +13,15 @@ interface Props {
 }
 
 const { title, titleEn, description, href, coverImage, coverAlt, uses, tags = [] } = Astro.props;
+
+// 封面安全守衛：外連 http(s) 直接採用；本地 `/…` 須確認 public 下存在，缺圖或路徑非法時退回品牌佔位。
+const safeCoverImage =
+  typeof coverImage === 'string' &&
+  (coverImage.startsWith('http://') ||
+    coverImage.startsWith('https://') ||
+    (coverImage.startsWith('/') && existsSync(new URL(`../../../public${coverImage}`, import.meta.url))))
+    ? coverImage
+    : undefined;
 
 const evidenceLabels: Record<string, string> = {
   'meta-analysis': '系統性回顧／統合分析',
@@ -29,8 +40,10 @@ const topTags = tags.slice(0, 3);
 
 <a href={href} class="ingredient-card">
   <div class="ingredient-card__bar"></div>
-  {coverImage && (
-    <img class="ingredient-card__thumb" src={coverImage} alt={coverAlt || `${title} 成分解析縮圖`} loading="lazy" />
+  {safeCoverImage ? (
+    <img class="ingredient-card__thumb" src={safeCoverImage} alt={coverAlt || `${title} 成分解析縮圖`} loading="lazy" />
+  ) : (
+    <div class="ingredient-card__thumb ingredient-card__thumb--fallback" aria-hidden="true">本日有據</div>
   )}
   <div class="ingredient-card__body">
     <h3 class="ingredient-card__title">{title}</h3>
@@ -84,6 +97,20 @@ const topTags = tags.slice(0, 3);
     display: block;
     min-width: 0;
     border-bottom: 1px solid var(--color-fog);
+  }
+
+  .ingredient-card__thumb--fallback {
+    background: linear-gradient(
+      160deg,
+      color-mix(in oklch, var(--color-cat-ingredient) 16%, white),
+      color-mix(in oklch, var(--color-fog) 45%, white)
+    );
+    display: grid;
+    place-items: center;
+    color: color-mix(in oklch, var(--color-ink) 55%, transparent);
+    font-family: var(--font-ui);
+    font-size: var(--text-meta);
+    letter-spacing: 0.04em;
   }
 
   .ingredient-card__body {
