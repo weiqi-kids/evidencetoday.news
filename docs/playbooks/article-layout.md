@@ -145,6 +145,7 @@
 - **成分頁「重點摘要」修正**：`ingredients/[slug].astro` 原本傳 `tldr={data.introduction}`，但 `Article.astro` 只認 `citationAnswer`（無 `tldr` prop）→ introduction 被靜默丟棄、成分頁沒有重點摘要區塊。已改為 `citationAnswer={data.introduction}`。
 - **參考文獻證據類型中文化**：`ReferenceList.astro` 原本直接輸出 `ref.type` 英文 enum（`meta-analysis`、`rct`…，屬 `content:audit` 會抓的 raw enum 外露）。改用 `src/utils/evidence-labels.ts` 的 `referenceTypeLabel()`（涵蓋 referenceSchema.type 全 14 值＋ animal/in-vitro/case-report；用詞對齊 myths 的 sourceTypeLabels）。未知值原樣回傳、不吞資料。
 - **`IngredientCard` 缺圖 fallback**：原本 `{coverImage && <img>}`，缺圖時完全不渲染媒體區、同一 grid 高度參差、也無檔案存在守衛。已比照 `ArticleCard` 加 `safeCoverImage` 守衛，缺圖時渲染 `.ingredient-card__thumb--fallback`（cat-ingredient 類色漸層＋「本日有據」佔位，`aria-hidden`），維持 16/9 比例讓卡片高度一致。
+- **闢謠頁頂端判定徽章**：`myths/[slug].astro` 的「30 秒快速結論」左欄（`.quick-panel`）加 `<VerdictBadge verdict={d.verdict} size="lg" />`＋`<span class="pill evidence">證據強度：{d.evidenceLevel}</span>`（evidenceLevel 已是中文 enum 高／中／低）。重用原本閒置的 `.quick-badges/.pill/.evidence` CSS，並清掉真正無用的 dead CSS（`.claim/.verdict/.quick-summary/.belief`）。徽章顏色由 verdict tone 決定（對→綠、錯→紅、不足→藍），天然情緒中立。`VerdictBadge` 的 lg 標籤改用 `displayVerdict()`（需謹慎→須謹慎）。此為既有簡化版型內的強化、非新增內容區塊。
 
 ## Articles 文章 JSON-LD 審閱欄位規則（2026-06-14）
 

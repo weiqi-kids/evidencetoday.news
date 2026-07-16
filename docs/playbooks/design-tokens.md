@@ -98,6 +98,12 @@
 - [ ] git diff 只動到 tokens.css / typography.css（不誤動別處）
 ```
 
+## 弱化文字語意色 --color-ink-muted（2026-07-15 介面優化 Phase 1）
+
+- 新增兩個弱化文字 token（`tokens.css`，屬合法新增、未動既有 oklch 值）：`--color-ink-muted`（`color-mix(ink 72%, paper)`，對 paper 約 4.8:1 過 WCAG AA）與 `--color-ink-subtle`（60%，僅用於大字/非必要註記）。
+- **meta／署名／圖片署名等淡字一律改吃 `--color-ink-muted`**，混合基底統一用 `paper`（非 `transparent`，以免疊在深/彩底時對比失準）。已把公開面散落的 `color-mix(... var(--color-ink) 55% ...)`（約 3.4:1、未達 AA）收斂成此 token；`src/components/editor/*`（admin 後台，非公開面）暫不動。
+- 之後新增淡字一律用這兩個 token，不要再臨場寫 `ink 55%` 之類的 color-mix。
+
 ## 全域動效與無障礙（2026-07-15 介面優化 Phase 1）
 
 - **`prefers-reduced-motion` 全域降級**：`src/styles/global.css` 末端有一段 `@media (prefers-reduced-motion: reduce)` reset，關閉平滑捲動並把所有 `animation`/`transition` 壓到 0.01ms（卡片 hover 位移、Hero 粒子等一律降級）。這是無障礙業界標準 reset（WCAG 2.3.3）。

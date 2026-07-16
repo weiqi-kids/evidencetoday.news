@@ -33,6 +33,13 @@
   --color-teal-hover: color-mix(in oklch, var(--color-teal) 85%, black);
   --color-coral-hover: color-mix(in oklch, var(--color-coral) 85%, black);
 
+  /* ---- Muted ink（弱化文字語意色，達 WCAG AA）----
+     meta / 署名 / 圖片署名等淡字統一用這兩個 token（混合基底一律 paper，非 transparent，
+     以免疊在深/彩底時對比失準）。--color-ink-muted 對 paper 約 4.8:1（過 AA 正常字重），
+     --color-ink-subtle 較淡、僅用於大字或非必要註記。取代先前散落的 ink 55% 臨場 color-mix。 */
+  --color-ink-muted: color-mix(in oklch, var(--color-ink) 72%, var(--color-paper));
+  --color-ink-subtle: color-mix(in oklch, var(--color-ink) 60%, var(--color-paper));
+
   /* ---- Dark background text system ---- */
   --color-on-dark-heading: oklch(1.00 0 0);
   --color-on-dark-body: oklch(0.85 0.01 220);
