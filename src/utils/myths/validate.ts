@@ -6,8 +6,10 @@ export function validateMythArticle(article: CollectionEntry<'myths'>): string[]
 
   if (!d.references || d.references.length === 0) errors.push('references 不可為空。');
   d.references.forEach((ref, idx) => {
-    if (!ref.title || !ref.url || !ref.sourceType) {
-      errors.push(`references[${idx}] 缺少 title/url/sourceType。`);
+    // 證據類型接受必填的 `type` 或選填的 `sourceType`（schema 中 sourceType 為 optional，
+    // 早期部分闢謠只填了 type；排程稿到期發布時才會被這個執行期驗證器擋下，故放寬為兩者取一）。
+    if (!ref.title || !ref.url || !(ref.type || ref.sourceType)) {
+      errors.push(`references[${idx}] 缺少 title/url/type。`);
     }
   });
 

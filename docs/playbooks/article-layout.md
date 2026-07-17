@@ -129,6 +129,12 @@
 - `scripts/check-myth-quality.mjs` 需同步檢查 27 篇 published myths、快速結論至少 2 點、必要正文區塊、藍紅雙框、References 至少 2 個 URL，以及禁止套版句與已移除的舊區塊標題。
 - myths 單篇 `<head>` 同時輸出 `Article` 與 `ClaimReview` 兩個 JSON-LD 物件（array 形式，透過 `JsonLd.astro`）。ClaimReview 由 `src/utils/schema-org.ts` 的 `buildClaimReview()` 組裝，使用 `mythClaim`、`verdict`、`verdictSummary`、`publishDate`、`updatedDate`、`url`、`name`（fact-check 標題，帶 `social.title`）欄位。`reviewRating.alternateName` 用 `displayVerdict()`（`src/utils/myths/schema.ts`）修正 `需謹慎 → 須謹慎`，與頁面卡片顯示一致；該 helper 同時供前台卡片使用。不得新增前台可見區塊。
 
+## Myth references 驗證器放寬（2026-07-17）
+
+- `src/utils/myths/validate.ts`（執行期頁面驗證，`myths/[slug].astro` 於 build 時呼叫）原本要求每筆 reference 都有 `sourceType`，但 `content.schemas.ts` 的 `referenceSchema` 中 **`sourceType` 為 optional、`type` 才是必填**。早期部分闢謠只填了 `type`，能過 schema 與 `check:myths`，卻在**排程稿到期發布、首次被 build 渲染時**被這個執行期驗證器擋下（`references[N] 缺少 title/url/sourceType`），連帶整個 deploy build 失敗。
+- 已放寬為「`type` 或 `sourceType` 取一即可」：`!(ref.type || ref.sourceType)`。因 `type` 為 schema 必填、每筆 reference 必有，此改動**嚴格更寬鬆**（原本會過的照過、原本因缺 sourceType 而爆的現在也過），不會讓任何闢謠新壞。references 的 `sourceType` 顯示仍為選填（前台 `（類型：…）` 有值才顯示）。
+- 教訓：闢謠排程稿因未來日期不會在當下 build 被 render，`type`-only 這類問題要到發布當天才引爆；新增闢謠時 references 建議同時填 `type` 與 `sourceType`（`sourceType` 用「論文/官方資料/新聞/其他」等中文標籤，`type` 用 enum）。
+
 ## 全站 SEO / OG 分享預覽規則（2026-06-02）
 
 - 全站分享標題、描述與 OG 圖路徑集中在 `src/utils/social-meta.mjs` 維護；頁面請優先使用 `STATIC_SOCIAL`、`listSocial()`、`contentSocial()` 或 `tagSocial()`，不要在各頁零散拼接 `og:title` / `og:description`。
