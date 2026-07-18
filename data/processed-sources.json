@@ -1,7 +1,35 @@
 {
   "version": 1,
-  "lastRun": "2026-07-18T06:28:46+08:00",
+  "lastRun": "2026-07-19T06:30:00+08:00",
   "processed": {
+    "https://www.sciencedaily.com/releases/2026/07/260718010154.htm": {
+      "processedAt": "2026-07-19T06:30:00+08:00",
+      "outputFile": "src/content/news/radar-2026-07-19-06-01.md"
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/39775037/": {
+      "processedAt": "2026-07-19T06:30:00+08:00",
+      "outputFile": "src/content/news/radar-2026-07-19-06-01.md"
+    },
+    "https://www.sciencedaily.com/releases/2026/07/260716023605.htm": {
+      "processedAt": "2026-07-19T06:30:00+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41883858/": {
+      "processedAt": "2026-07-19T06:30:00+08:00",
+      "outputFile": null
+    },
+    "https://www.who.int/news-room/events/detail/2026/07/06/default-calendar/forty-ninth-session-of-the-fao-who-codex-alimentarius-commission-adopts-new-standards": {
+      "processedAt": "2026-07-19T06:30:00+08:00",
+      "outputFile": null
+    },
+    "https://www.eurekalert.org/news-releases/1133002": {
+      "processedAt": "2026-07-19T06:30:00+08:00",
+      "outputFile": null
+    },
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9603567/": {
+      "processedAt": "2026-07-19T06:30:00+08:00",
+      "outputFile": null
+    },
     "https://pmc.ncbi.nlm.nih.gov/articles/PMC11174647/": {
       "processedAt": "2026-07-03T06:19:28+08:00",
       "outputFile": null
