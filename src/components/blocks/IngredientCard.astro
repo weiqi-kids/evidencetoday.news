@@ -1,5 +1,6 @@
 ---
 import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 
 interface Props {
   title: string;
@@ -15,11 +16,14 @@ interface Props {
 const { title, titleEn, description, href, coverImage, coverAlt, uses, tags = [] } = Astro.props;
 
 // 封面安全守衛：外連 http(s) 直接採用；本地 `/…` 須確認 public 下存在，缺圖或路徑非法時退回品牌佔位。
+// 用 process.cwd() 而非 import.meta.url 相對路徑：production build 打包後元件的 import.meta.url
+// 會指向 bundle chunk 位置而非原始 src 路徑，`../../../public` 這類相對推算會失準（本地圖片
+// 全數誤判不存在、退回佔位卡）；astro build 執行時 cwd 恆為專案根目錄，兩種環境都可靠。
 const safeCoverImage =
   typeof coverImage === 'string' &&
   (coverImage.startsWith('http://') ||
     coverImage.startsWith('https://') ||
-    (coverImage.startsWith('/') && existsSync(new URL(`../../../public${coverImage}`, import.meta.url))))
+    (coverImage.startsWith('/') && existsSync(join(process.cwd(), 'public', coverImage))))
     ? coverImage
     : undefined;
 

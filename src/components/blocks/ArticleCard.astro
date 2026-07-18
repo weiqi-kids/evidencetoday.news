@@ -1,6 +1,7 @@
 ---
 import CategoryTag from '../ui/CategoryTag.astro';
 import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 
 interface Props {
   title: string;
@@ -17,11 +18,14 @@ interface Props {
 }
 
 const { title, description, href, category, author, date, coverImage, coverAlt, topicLabel, aeoLabel } = Astro.props;
+// process.cwd() 而非 import.meta.url 相對路徑：production build 打包後元件的 import.meta.url
+// 會指向 bundle chunk 位置而非原始 src 路徑，`../../../public` 這類相對推算會失準（本地圖片
+// 全數誤判不存在、退回佔位卡）；astro build 執行時 cwd 恆為專案根目錄，兩種環境都可靠。
 const safeCoverImage =
   typeof coverImage === 'string' &&
   (coverImage.startsWith('http://') ||
     coverImage.startsWith('https://') ||
-    (coverImage.startsWith('/') && existsSync(new URL(`../../../public${coverImage}`, import.meta.url))))
+    (coverImage.startsWith('/') && existsSync(join(process.cwd(), 'public', coverImage))))
     ? coverImage
     : undefined;
 ---

@@ -11,6 +11,7 @@ import FaqAccordion from '@/components/blocks/FaqAccordion.astro';
 import ReferenceList from '@/components/blocks/ReferenceList.astro';
 import MedicalDisclaimer from '@/components/blocks/MedicalDisclaimer.astro';
 import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 
 interface Props {
   title: string;
@@ -69,12 +70,15 @@ const {
 } = Astro.props;
 
 // 封面圖安全守衛：外連 http(s) 直接採用；本地 `/…` 路徑須確認 public 下真的存在，
-// 避免填錯路徑在詳情頁露破圖（與 ArticleCard 同一套判斷）。
+// 避免填錯路徑在詳情頁露破圖（與 ArticleCard 同一套判斷）。用 process.cwd() 而非
+// import.meta.url 相對路徑：production build 打包後元件的 import.meta.url 會指向 bundle
+// chunk 位置而非原始 src 路徑，相對推算的 `../` 層數會失準；astro build 執行時 cwd 恆為
+// 專案根目錄，兩種環境都可靠。
 const safeCover =
   typeof coverImage === 'string' &&
   (coverImage.startsWith('http://') ||
     coverImage.startsWith('https://') ||
-    (coverImage.startsWith('/') && existsSync(new URL(`../../public${coverImage}`, import.meta.url))))
+    (coverImage.startsWith('/') && existsSync(join(process.cwd(), 'public', coverImage))))
     ? coverImage
     : undefined;
 ---
