@@ -298,13 +298,14 @@ padding: 2rem;
 
 ### 4. 禁止事項 — 設計規範 v2（2026-07-20 全站統一，`scripts/check-design.mjs` 自動守門）
 
-`pnpm build` 會先跑 `node scripts/check-design.mjs`（亦可單獨 `pnpm check:design`），掃 `src/` 全部 `.css/.astro/.svelte`，違規直接 build fail（CI 同步擋部署）。五條規則：
+`pnpm build` 會先跑 `node scripts/check-design.mjs`（亦可單獨 `pnpm check:design`），掃 `src/` 全部 `.css/.astro/.svelte`，違規直接 build fail（CI 同步擋部署）。六條規則：
 
 1. **禁 `px` 定義 font-size**（一律 `var(--text-*)` 階梯；`clamp()` 內的 px 邊界暫不在掃描範圍）
 2. **顏色（hex / rgb() / hsl()）只准出現在 `src/styles/variables.css`**（元件一律 `var(--color-*)`）
 3. **禁 `!important`**（⚠️ 遷移期遞延中：存量 26 處在 global.css，見 check-design.mjs 檔頭 TODO，清零後啟用）
 4. **禁外部 CDN**（fonts.googleapis / cdnjs / unpkg / jsdelivr；字體用 @fontsource 自託管，不受影響）
 5. **css 檔白名單**：`src/` 下的 `.css` 只准 `src/styles/{variables,global}.css`，元件樣式寫 scoped `<style>`
+6. **`--text-*` 字級下限**：每個 token 值一律 **≥18px（1.125rem）**，`clamp()` 以最小值計；`checkLadder()` 掃 `src/styles/variables.css`（字級階梯定義處）強制，禁止用 token 值開小門繞過 18px 下限
 
 另沿用本站慣例：
 

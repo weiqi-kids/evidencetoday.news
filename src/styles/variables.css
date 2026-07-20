@@ -61,6 +61,21 @@
   --shadow-card: 0 1px 3px oklch(0 0 0 / 0.08);
   --shadow-card-hover: 0 4px 12px oklch(0 0 0 / 0.12);
 
+  /* ---- Fluid type scale ----
+     check-design 規則 6：每個 --text-* 值一律 ≥18px（1.125rem）；clamp() 以最小值計，
+     禁止用 token 值「開小門」繞過 18px 下限。字級階梯集中於本檔（token 唯一真實來源），
+     由 scripts/check-design.mjs 的 checkLadder() 掃描本檔強制。
+     ── meta / caption / badge 原為 12–14px，2026-07-20 收斂到 18px 下限；三者現同值，
+        僅語意命名保留（差異靠字重/顏色），既有 var(--text-*) 引用不需改動。 */
+  --text-h1: clamp(2rem, 1.5rem + 2vw, 3rem);
+  --text-h2: clamp(1.625rem, 1.25rem + 1.5vw, 2rem);
+  --text-h3: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);
+  --text-body: 1.125rem;
+  --text-lead: clamp(1.125rem, 1rem + 0.5vw, 1.25rem);
+  --text-meta: 1.125rem;
+  --text-caption: 1.125rem;
+  --text-badge: 1.125rem;
+
   /* ==== 遷移集中色（2026-07-20 check-design v2 導入）====
      以下為原本散落元件/頁面的硬編色，「值原樣搬入、零視覺變動」集中於本檔
      （規範：顏色只准出現在 variables.css）。後續應收斂進上方 oklch 語意系統；

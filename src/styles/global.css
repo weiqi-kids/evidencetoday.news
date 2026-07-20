@@ -20,15 +20,9 @@
   --font-ui: 'Inter', 'Noto Sans TC', sans-serif;
   --font-display: 'Source Serif 4', 'Noto Serif TC', serif;
 
-  /* ---- Fluid type scale ---- */
-  --text-h1: clamp(2rem, 1.5rem + 2vw, 3rem);
-  --text-h2: clamp(1.625rem, 1.25rem + 1.5vw, 2rem);
-  --text-h3: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);
-  --text-body: clamp(1.0625rem, 1rem + 0.25vw, 1.125rem);
-  --text-lead: clamp(1.125rem, 1rem + 0.5vw, 1.25rem);
-  --text-meta: clamp(0.8125rem, 0.78rem + 0.15vw, 0.875rem);
-  --text-caption: 0.875rem;
-  --text-badge: 0.75rem;
+  /* ---- Fluid type scale ----
+     字級階梯已移至 src/styles/variables.css（token 唯一真實來源，供 check-design
+     規則 6「--text-* ≥18px」掃描）。此處僅保留字型堆疊。 */
 }
 
 /* ============================================================================

@@ -7,6 +7,8 @@
 // 4. 禁外部 CDN（fonts.googleapis / cdnjs / unpkg / jsdelivr）
 // 5. 統一 css 檔案：src/ 下的 .css 只准 src/styles/ 白名單那幾檔，新增即 fail
 //    （元件樣式寫 Astro/Svelte scoped <style> 或進 global.css）
+// 6. --text-* 階梯下限：token 值一律 ≥18px（1.125rem）；clamp() 以最小值計，
+//    禁止用 token 值「開小門」繞過 18px 下限（掃 TOKEN_FILE，見 checkLadder()）。
 //
 // ── 本站遷移期遞延（TODO 2026-07-20 導入時凍結，禁再擴充；清完即移除）──
 // A. 規則 3（禁 !important）暫不掃：存量 26 處全在 global.css——
@@ -61,12 +63,31 @@ function scan(file) {
   });
 }
 
+// 規則 6：--text-* 階梯每個 token 值一律 ≥18px（1.125rem）；clamp() 以最小值計。
+// 掃 TOKEN_FILE（variables.css，token 唯一真實來源）——禁止用 token 值開小門繞過下限。
+function checkLadder() {
+  let css;
+  try { css = readFileSync(TOKEN_FILE, "utf8"); }
+  catch { violations.push(`${TOKEN_FILE} 不存在（token 檔必備）`); return; }
+  const re = /--text-[\w-]+\s*:\s*([^;]+);/g;
+  let m;
+  while ((m = re.exec(css))) {
+    const raw = m[1].trim();
+    const first = raw.startsWith("clamp(") ? raw.slice(6).split(",")[0].trim() : raw;
+    const num = parseFloat(first);
+    const px = /px\s*$/.test(first) ? num : /rem\s*$/.test(first) ? num * 16 : NaN;
+    if (!Number.isNaN(px) && px < 18)
+      violations.push(`${TOKEN_FILE} 字級階梯低於 18px：${m[0].split(":")[0].trim()} = ${raw}（最小 1.125rem）`);
+  }
+}
+
 walk(ROOT);
+checkLadder();
 if (violations.length) {
   console.error(`設計規範違規 ${violations.length} 處：\n` + violations.join("\n"));
   process.exit(1);
 }
 console.log(
-  "設計規範檢查通過：css 白名單、無 px 字級、無 token 外顏色、無外部 CDN。" +
+  "設計規範檢查通過：css 白名單、無 px 字級、階梯 ≥18px、無 token 外顏色、無外部 CDN。" +
     (SKIP_IMPORTANT ? "（!important 規則遷移期遞延中，見檔頭 TODO）" : "無 !important。")
 );

@@ -49,7 +49,7 @@ deploy (ubuntu-latest, needs: build)
 
 ### 設計規範 gate（2026-07-20 加入，會擋部署）
 
-`pnpm build` 現為 `node scripts/check-design.mjs && astro build`——build 前先跑設計規範守門 v2（五條：禁 px 字級／顏色只准 `src/styles/variables.css`／禁 `!important`（遷移期遞延，見該檔 TODO）／禁外部 CDN／css 白名單 `src/styles/{variables,global}.css`），違規即 build fail、不部署。規則詳見 README「CSS / RWD 通用規範」。
+`pnpm build` 現為 `node scripts/check-design.mjs && astro build`——build 前先跑設計規範守門 v2（六條：禁 px 字級／顏色只准 `src/styles/variables.css`／禁 `!important`（遷移期遞延，見該檔 TODO）／禁外部 CDN／css 白名單 `src/styles/{variables,global}.css`／`--text-*` 值 ≥18px），違規即 build fail、不部署。規則詳見 README「CSS / RWD 通用規範」。
 
 ### 失敗告警（notify-failure job，2026-07-20 加入）
 
