@@ -47,13 +47,13 @@ const social = listSocial('articles');
   totalItems={categorizedArticles.length}
 >
   <nav class="article-tabs" aria-label="文章分類">
-    <a class="article-tab" href="/articles/" data-category="all" aria-selected="true">
+    <button type="button" class="article-tab" data-category="all" aria-selected="true">
       全部 <span>{categorizedArticles.length}</span>
-    </a>
+    </button>
     {visibleCategories.map((category) => (
-      <a class="article-tab" href={`/articles/?category=${category.slug}`} data-category={category.slug} aria-selected="false">
+      <button type="button" class="article-tab" data-category={category.slug} aria-selected="false">
         {category.label} <span>{articleCounts[category.slug]}</span>
-      </a>
+      </button>
     ))}
   </nav>
 
@@ -169,8 +169,10 @@ const social = listSocial('articles');
     padding: 0.4rem 0.85rem;
     color: var(--color-ink);
     text-decoration: none;
+    font: inherit;
     font-size: var(--text-meta);
     background: #fff;
+    cursor: pointer;
   }
 
   .article-tab span {
