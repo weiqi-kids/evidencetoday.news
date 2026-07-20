@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-07-20T06:30:00+08:00",
+  "lastRun": "2026-07-21T06:28:13+08:00",
   "processed": {
     "https://www.sciencedaily.com/releases/2026/07/260718010154.htm": {
       "processedAt": "2026-07-19T06:30:00+08:00",
@@ -745,6 +745,18 @@
     "https://www.eurekalert.org/news-releases/1133679": {
       "processedAt": "2026-07-20T06:30:00+08:00",
       "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/ooYAHNIiy663uxESIp_GrA?typeid=9": {
+      "processedAt": "2026-07-21T06:28:13+08:00",
+      "outputFile": "src/content/news/radar-2026-07-21-06-01.md"
+    },
+    "https://www.cna.com.tw/news/ahel/202606160173.aspx": {
+      "processedAt": "2026-07-21T06:28:13+08:00",
+      "outputFile": "src/content/news/radar-2026-07-21-06-01.md"
+    },
+    "https://newtalk.tw/news/view/2026-07-20/1048298": {
+      "processedAt": "2026-07-21T06:28:13+08:00",
+      "outputFile": "src/content/news/radar-2026-07-21-06-01.md"
     }
   }
 }
