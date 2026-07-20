@@ -4,8 +4,10 @@
 
 任務涉及以下任一情況：
 
-- 修改 `src/styles/tokens.css` 任何一行
-- 修改 `src/styles/typography.css` 字體 stack 或 fluid type scale
+> **2026-07-20 檔案整併（check-design v2 導入）**：`tokens.css` 改名 `variables.css`；`typography.css`（字體 stack + fluid type scale）與 `rwd-fixes.css` 併入 `global.css`（載入順序不變）。`pnpm build` 會先跑 `scripts/check-design.mjs` 五條規則守門（見 README「CSS / RWD 通用規範」），顏色 hex/rgb/hsl 只准出現在 `variables.css`（含檔末「遷移集中色」區——原元件硬編色原樣搬入，禁再擴充）。
+
+- 修改 `src/styles/variables.css` 任何一行
+- 修改 `src/styles/global.css（typography 變數區，原 typography.css 已併入）` 字體 stack 或 fluid type scale
 - 新增 brand color、category color、verdict color
 - 換掉 Noto Serif TC / Noto Sans TC / Inter / Source Serif 4 任一字體
 - 改 `--space-*` 或 `--radius-*`、`--shadow-*`
@@ -95,12 +97,12 @@
 - [ ] 改了 fluid scale → @375 與 @1280 兩端視覺檢查
 - [ ] pnpm build 零錯誤
 - [ ] Lighthouse CI a11y ≥ 95（對比度不降）
-- [ ] git diff 只動到 tokens.css / typography.css（不誤動別處）
+- [ ] git diff 只動到 variables.css / global.css（不誤動別處）
 ```
 
 ## 弱化文字語意色 --color-ink-muted（2026-07-15 介面優化 Phase 1）
 
-- 新增兩個弱化文字 token（`tokens.css`，屬合法新增、未動既有 oklch 值）：`--color-ink-muted`（`color-mix(ink 72%, paper)`，對 paper 約 4.8:1 過 WCAG AA）與 `--color-ink-subtle`（60%，僅用於大字/非必要註記）。
+- 新增兩個弱化文字 token（`variables.css`，屬合法新增、未動既有 oklch 值）：`--color-ink-muted`（`color-mix(ink 72%, paper)`，對 paper 約 4.8:1 過 WCAG AA）與 `--color-ink-subtle`（60%，僅用於大字/非必要註記）。
 - **meta／署名／圖片署名等淡字一律改吃 `--color-ink-muted`**，混合基底統一用 `paper`（非 `transparent`，以免疊在深/彩底時對比失準）。已把公開面散落的 `color-mix(... var(--color-ink) 55% ...)`（約 3.4:1、未達 AA）收斂成此 token；`src/components/editor/*`（admin 後台，非公開面）暫不動。
 - 之後新增淡字一律用這兩個 token，不要再臨場寫 `ink 55%` 之類的 color-mix。
 
@@ -113,13 +115,13 @@
 ## 相關文件
 
 - 設計 spec：`docs/superpowers/specs/2026-05-07-evidencetoday-design.md`
-- 字體變數定義：`src/styles/typography.css`
+- 字體變數定義：`src/styles/global.css（typography 變數區，原 typography.css 已併入）`
 - CSS / RWD 通用規範：[../../README.md](../../README.md)
 - 全域 CSS 規則：`src/styles/global.css`
 
 ## OG 圖品牌系統維護規則
 
-`scripts/generate-og.mjs` 是全站分享圖的生成來源，因 satori 不支援 `oklch()`，OG 圖可以使用 `src/styles/tokens.css` 的 hex 近似值，但不得自行發展脫離本站 CI 的新色系。全站 OG 應視為品牌門面：乾淨、字大、字粗、清楚，優先讓手機聊天縮圖可讀。
+`scripts/generate-og.mjs` 是全站分享圖的生成來源，因 satori 不支援 `oklch()`，OG 圖可以使用 `src/styles/variables.css` 的 hex 近似值，但不得自行發展脫離本站 CI 的新色系。全站 OG 應視為品牌門面：乾淨、字大、字粗、清楚，優先讓手機聊天縮圖可讀。
 
 ### 版型與安全區
 
@@ -141,7 +143,7 @@
 
 ### 品牌與禁用元素
 
-- 色彩只能來自 `src/styles/tokens.css` 的品牌／分類色近似值：paper、paperWarm、white、ink、navy、teal 與各 category color。
+- 色彩只能來自 `src/styles/variables.css` 的品牌／分類色近似值：paper、paperWarm、white、ink、navy、teal 與各 category color。
 - 左上角固定「本日有據」，右下角固定 `Evidence Today`；正式 OG 不出現「健康議題編輯平台」、「手機優先分享圖」或任何內部設計說明文字。
 - 禁止在 OG 圖裡放手機、平板、裝置框、preview mockup、AI 海報式素材或無助於辨識的大型裝飾。只保留品牌外框與兩段 CI 色角線。
 

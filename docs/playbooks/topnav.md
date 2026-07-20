@@ -19,7 +19,7 @@
 
 | 屬性 | 值 | 出處 |
 |---|---|---|
-| font-family | `var(--font-serif)` (Noto Serif TC, fallback Source Serif 4) | `src/styles/typography.css` |
+| font-family | `var(--font-serif)` (Noto Serif TC, fallback Source Serif 4) | `src/styles/global.css（typography 變數區，原 typography.css 已併入）` |
 | font-size | `clamp(1.05rem, 1.8vw, 1.45rem)` | 跟 brand-zh 同 |
 | font-weight | `700` | 跟 brand-zh 與 h1 預設同 |
 | line-height | `1.2` | 跟 brand-zh 同（baseline 對齊必要） |
@@ -144,4 +144,4 @@
 
 - 設計 token：[design-tokens.md](./design-tokens.md)
 - CSS / RWD 通用規範：[../../README.md#css--rwd-修改規範](../../README.md)
-- 字體變數定義：`src/styles/typography.css`
+- 字體變數定義：`src/styles/global.css（typography 變數區，原 typography.css 已併入）`

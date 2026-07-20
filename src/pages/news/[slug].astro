@@ -381,8 +381,8 @@ const breadcrumbSchema = {
     inset: 0;
     pointer-events: none;
     background:
-      linear-gradient(180deg, rgb(255 255 255 / 0.08), transparent 46%),
-      radial-gradient(circle at 65% 22%, rgb(255 255 255 / 0.22), transparent 34%);
+      linear-gradient(180deg, var(--overlay-white-08), transparent 46%),
+      radial-gradient(circle at 65% 22%, var(--overlay-white-22), transparent 34%);
     mix-blend-mode: soft-light;
   }
 
@@ -403,7 +403,7 @@ const breadcrumbSchema = {
     font-family: var(--font-ui);
     font-size: var(--text-badge);
     color: white;
-    background: rgb(0 0 0 / 0.45);
+    background: var(--overlay-black-45);
     border-top-left-radius: var(--radius-sm);
   }
 

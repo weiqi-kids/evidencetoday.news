@@ -47,6 +47,14 @@ deploy (ubuntu-latest, needs: build)
 
 若 prebuild sync 失敗 → `pnpm build` 整個中斷 → 後續 step（lighthouse / upload / deploy）不會跑 → CI 紅燈通知。詳見 [external-apis.md](./external-apis.md) 的 fail-loud 設計。
 
+### 設計規範 gate（2026-07-20 加入，會擋部署）
+
+`pnpm build` 現為 `node scripts/check-design.mjs && astro build`——build 前先跑設計規範守門 v2（五條：禁 px 字級／顏色只准 `src/styles/variables.css`／禁 `!important`（遷移期遞延，見該檔 TODO）／禁外部 CDN／css 白名單 `src/styles/{variables,global}.css`），違規即 build fail、不部署。規則詳見 README「CSS / RWD 通用規範」。
+
+### 失敗告警（notify-failure job，2026-07-20 加入）
+
+`deploy.yml` 末段有 `notify-failure` job（`needs: [build, deploy]`、`if: failure()`）：build 或 deploy 任一 fail 就發 Slack 到站台頻道要求修正，修正 push 後 workflow 自動重跑＝重審。需 repo secrets `SLACK_BOT_TOKEN`、`SLACK_CHANNEL_ID`；**secrets 未設時靜默略過（不影響管線）**。
+
 ### 內容把關 gate（deploy.yml build job 內，會擋部署）
 
 `deploy.yml` 的 build job 依序跑三道**會擋部署**的內容 gate（任一失敗 → build 中斷 → 不部署）：

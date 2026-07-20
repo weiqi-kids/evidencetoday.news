@@ -60,4 +60,41 @@
   /* ---- Shadows ---- */
   --shadow-card: 0 1px 3px oklch(0 0 0 / 0.08);
   --shadow-card-hover: 0 4px 12px oklch(0 0 0 / 0.12);
+
+  /* ==== 遷移集中色（2026-07-20 check-design v2 導入）====
+     以下為原本散落元件/頁面的硬編色，「值原樣搬入、零視覺變動」集中於本檔
+     （規範：顏色只准出現在 variables.css）。後續應收斂進上方 oklch 語意系統；
+     元件端禁止再新增硬編色。 */
+
+  /* 純白（卡片底、深色區反白字；paper 為米白，兩者刻意不同） */
+  --color-white: #fff;
+
+  /* 深色 hero 遮罩/光暈與新聞卡陰影（news/[slug]、news/index） */
+  --overlay-white-08: rgb(255 255 255 / 0.08);
+  --overlay-white-22: rgb(255 255 255 / 0.22);
+  --overlay-black-45: rgb(0 0 0 / 0.45);
+  --shadow-news-card: 0 0.35rem 1rem rgb(0 0 0 / 0.14);
+
+  /* 圖片署名漸層底（ImagePicker） */
+  --overlay-photo-credit: rgb(0 0 0 / 0.7);
+
+  /* 闢謠方卡視覺（MythSquareCardVisual 主題盤） */
+  --myth-lemon-grad-a: #fffdf4;
+  --myth-lemon-grad-b: #edf7f0;
+  --myth-lemon-shape: #f4dd7c;
+  --myth-vitamin-grad-a: #fff9f0;
+  --myth-vitamin-grad-b: #fffdf7;
+  --myth-vitamin-shape: #ffcc80;
+  --myth-default-grad-a: #f8fafc;
+  --myth-default-grad-b: #eef2ff;
+  --myth-default-shape: #bfd3ff;
+  --myth-verdict-bg: #fff1db;
+  --myth-verdict-fg: #7a4b08;
+  --myth-evidence-bg: #e7efff;
+  --myth-evidence-fg: #1e3a8a;
+
+  /* 後台編輯器工具列（BodyEditor 注入 toast-ui 的 AI 按鈕） */
+  --editor-icon: #555;
+  --editor-hover-bg: #f4f4f4;
+  --editor-hover-border: #e5e5e5;
 }

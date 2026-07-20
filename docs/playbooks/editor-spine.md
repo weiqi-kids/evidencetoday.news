@@ -185,10 +185,10 @@ EditorPanel 的 SEO 主分頁正文不再是純 textarea，改用 `BodyEditor.sv
 
 ## 樣式規範（editor UI 必須遵守站上 CSS 規範）
 
-編輯器元件的 `<style>` **一律用設計 token，禁止寫死 hex/rgba/字級**（同 README「CSS / RWD 通用規範」與 `src/styles/tokens.css`）：
+編輯器元件的 `<style>` **一律用設計 token，禁止寫死 hex/rgba/字級**（同 README「CSS / RWD 通用規範」與 `src/styles/variables.css`）：
 
 - 顏色：`var(--color-teal|coral|ink|fog|paper|verdict-*)` 與 `color-mix(in oklch, …)`；`white` 可直接用（同站上慣例），但**禁 `#fff`/hex fallback**。
-- 字級：`var(--text-body|meta|caption|badge|h3)`（`src/styles/typography.css`），禁寫死 rem。
+- 字級：`var(--text-body|meta|caption|badge|h3)`（`src/styles/global.css（typography 變數區，原 typography.css 已併入）`），禁寫死 rem。
 - 圓角：`var(--radius-pill|card|sm)`；按鈕比照 `Button.astro`（`min-height:44px`、`--radius-pill`、`--font-ui`、`--text-meta`、`font-weight:600`、`:focus-visible` outline）。
 - 間距用 `clamp()` fluid（禁寫死 px + media query 覆蓋）。
 - 樣式留在各元件 scoped `<style>`，**不抽全域 CSS**（避免匿名訪客也載入，破壞 EditButton→EditorPanel 的 lazy-load）。

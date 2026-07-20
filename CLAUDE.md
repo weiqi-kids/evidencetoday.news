@@ -59,6 +59,7 @@ pnpm preview        # 預覽建置結果
 pnpm content:audit  # 掃描內容 AI 感句型 / 模糊引用 / raw enum 外露
 pnpm check:myths    # 闢謠內容品質 gate（發布 myths 前必跑）
 pnpm check:news     # 趨勢新聞來源連結 gate（每篇須有可點 references/sourceUrl/pmid；CI 已接）
+pnpm check:design   # 設計規範守門 v2（pnpm build 自動先跑；五條規則見「CSS / RWD 規範」）
 pnpm perf           # 近 28 天 GA4+GSC 效能快照（唯讀，經營決策用；需 gcloud token）
 pnpm insights       # GA4/GSC 驅動 /news 選題（吐三桶 JSON 給新聞管線）
 ```
@@ -125,7 +126,7 @@ src/
   components/{ui,blocks,charts,seo}/
   layouts/            # Base / Article(prose|cards) / Media / List / Policy
   pages/              # 路由
-  styles/             # tokens.css(oklch) / typography.css / global.css
+  styles/             # variables.css(oklch tokens) / global.css（typography/rwd-fixes 已併入）
   utils/
 data/                 # news-automation-config.json、processed-sources.json
 docs/                 # architecture / content-guide / news_sop / playbooks/
@@ -139,7 +140,7 @@ docs/                 # architecture / content-guide / news_sop / playbooks/
 - **Spacing 用 `clamp()` fluid**，禁止寫死 px 再用 media query 分段覆蓋。
 - **Layout 管骨架（grid/sidebar），Page 管皮膚（背景/padding/圓角）**；不要用 `:global()` 覆蓋 layout class，改用 variant prop。
 - Article.astro variant：`prose`（白底卡片+雙欄 sidebar，用於 articles/ingredients）、`cards`（透明背景+`max-width:none`，用於 myths）。
-- 禁：`!important`、px 定 font-size、新增外部 CDN（全站自託管字體）、直接改 `tokens.css` oklch 色值。
+- **設計規範 v2（2026-07-20 全站統一，`scripts/check-design.mjs` 守門，`pnpm build` 自動先跑、違規即 fail）五條**：① 禁 px 定 font-size（用 `var(--text-*)`）② 顏色只准出現在 `src/styles/variables.css`（元件用 `var(--color-*)`）③ 禁 `!important`（遷移期遞延中，見 check-design.mjs 檔頭 TODO）④ 禁外部 CDN（@fontsource 自託管不受影響）⑤ css 檔白名單只准 `src/styles/{variables,global}.css`（元件樣式用 scoped `<style>`）。另：不得直接改 `variables.css` oklch 色值（4 輪審查定案）。
 - 改完 CSS 必在 375px / 768px / 1280px 三寬度確認 + `pnpm build` 零錯誤。
 
 ---

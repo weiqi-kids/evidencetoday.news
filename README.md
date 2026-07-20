@@ -234,6 +234,7 @@ pnpm preview        # 預覽建置結果
 pnpm content:audit  # 掃描內容的 AI 感句型與模糊引用 / raw enum 外露
 pnpm check:myths    # 闢謠內容品質 gate（發布 myths 前必跑）
 pnpm check:news     # 趨勢新聞來源連結 gate（每篇須有可點 references/sourceUrl/pmid；CI 已接）
+pnpm check:design   # 設計規範守門 v2（pnpm build 會自動先跑；規則見「CSS / RWD 通用規範」）
 
 # — 曝光量 / 選題（情境 B）—
 pnpm perf           # 近 28 天 GA4+GSC 效能快照（唯讀，經營決策用；需 gcloud token）
@@ -295,13 +296,20 @@ padding: 2rem;
 - 不要在全域 CSS 中加頁面特定的樣式
 - 詳細 variant 系統見 [Article.astro playbook](./docs/playbooks/article-layout.md)
 
-### 4. 禁止事項
+### 4. 禁止事項 — 設計規範 v2（2026-07-20 全站統一，`scripts/check-design.mjs` 自動守門）
+
+`pnpm build` 會先跑 `node scripts/check-design.mjs`（亦可單獨 `pnpm check:design`），掃 `src/` 全部 `.css/.astro/.svelte`，違規直接 build fail（CI 同步擋部署）。五條規則：
+
+1. **禁 `px` 定義 font-size**（一律 `var(--text-*)` 階梯；`clamp()` 內的 px 邊界暫不在掃描範圍）
+2. **顏色（hex / rgb() / hsl()）只准出現在 `src/styles/variables.css`**（元件一律 `var(--color-*)`）
+3. **禁 `!important`**（⚠️ 遷移期遞延中：存量 26 處在 global.css，見 check-design.mjs 檔頭 TODO，清零後啟用）
+4. **禁外部 CDN**（fonts.googleapis / cdnjs / unpkg / jsdelivr；字體用 @fontsource 自託管，不受影響）
+5. **css 檔白名單**：`src/` 下的 `.css` 只准 `src/styles/{variables,global}.css`，元件樣式寫 scoped `<style>`
+
+另沿用本站慣例：
 
 - 不要把整個 `<style>` 壓成一行（不可讀、不可維護）
-- 不要用 `!important`
-- 不要用 `px` 定義 font-size（用 `clamp()` 或 CSS custom properties）
-- 不要新增外部 CDN（字體、CSS framework）— 本站全部自託管
-- 不要直接修改 `tokens.css` 的 oklch 色值（經 4 輪審查定案，見 [design-tokens playbook](./docs/playbooks/design-tokens.md)）
+- 不要直接修改 `variables.css` 的 oklch 色值（經 4 輪審查定案，見 [design-tokens playbook](./docs/playbooks/design-tokens.md)）
 
 ### 5. 修改前自檢
 
@@ -336,9 +344,8 @@ src/
     Policy.astro             # 政策頁
   pages/                     # 路由
   styles/
-    tokens.css               # oklch design tokens
-    typography.css           # 字體 + fluid type scale
-    global.css               # reset + prose + container
+    variables.css            # oklch design tokens + 字體/字級變數的色彩 token 檔（原 tokens.css，2026-07-20 改名）
+    global.css               # typography 變數 + reset + prose + container + RWD fixes（2026-07-20 併入 typography.css/rwd-fixes.css）
   utils/                     # 共用工具
 public/                      # 靜態資源（含 CNAME、favicon、images）
 data/

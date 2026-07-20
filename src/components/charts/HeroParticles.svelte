@@ -20,14 +20,22 @@
       vy: (Math.random() - 0.5) * 0.3,
     }));
 
+    // 粒子色取自設計 token（--color-on-dark-heading＝純白 oklch），透明度用 globalAlpha，
+    // 不在元件內硬編顏色（check-design v2）。
+    const particleColor =
+      getComputedStyle(document.documentElement).getPropertyValue('--color-on-dark-heading').trim() ||
+      'white';
+
     // 只畫一幀（不推進位置）——靜態幀，reduced-motion 時使用
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       for (const p of particles) {
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity})`;
+        ctx.globalAlpha = p.opacity;
+        ctx.fillStyle = particleColor;
         ctx.fill();
+        ctx.globalAlpha = 1;
       }
     }
 
@@ -63,8 +71,10 @@
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity})`;
+        ctx.globalAlpha = p.opacity;
+        ctx.fillStyle = particleColor;
         ctx.fill();
+        ctx.globalAlpha = 1;
       }
     });
 

@@ -1,4 +1,7 @@
 export const SITE_NAME = '本日有據';
+// <meta name="theme-color"> 是 HTML 屬性、吃不到 CSS var，故以常數存放（--color-navy 系深青，
+// 對應 src/styles/variables.css 色系；check-design v2 只掃 .css/.astro/.svelte 的樣式硬編色）。
+export const THEME_COLOR = '#103B44';
 export const SITE_SUFFIX = '本日有據';
 export const DEFAULT_DESCRIPTION = '從研究到日常判斷，整理真正值得注意的健康資訊';
 

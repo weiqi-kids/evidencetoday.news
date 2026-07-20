@@ -60,7 +60,7 @@
 | YouTube 嵌入 | 使用 iframe lazy embed，非直接載入 |
 | Astro 靜態輸出 | 零 JS baseline，只有互動元件產生 JS bundle |
 | d3.js 按需引入 | 只引入 d3-timer、d3-scale 等子模組 |
-| font-display: swap | `src/styles/typography.css` 所有 `@font-face` 已設定 `font-display: swap` |
+| font-display: swap | 字體經 `@fontsource/*`（Base.astro 匯入）自託管，其 `@font-face` 內建 `font-display: swap`（字級/字體變數在 `src/styles/global.css` typography 區） |
 
 ## 容易搞混的元件
 
