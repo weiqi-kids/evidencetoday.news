@@ -1,119 +1,72 @@
-#!/usr/bin/env node
-// IndexNow 通知：把本次 deploy「異動到的內容頁」即時推送給 Bing/Yandex/Seznam/Naver/DuckDuckGo。
-// ChatGPT 搜尋接地走 Bing 索引，故這條主要加速 /news 等時效內容進入 ChatGPT search 的可被引用範圍。
-// 注意：Google 不支援 IndexNow，Google/Gemini 一路仍靠 sitemap + GSC。
-//
-// 用法：deploy.yml 用 git diff 算出異動檔清單，從 stdin（每行一個檔案路徑）餵進來。
-//   只送「真的存在於 build 後 sitemap」的 URL（自動排除 draft / 轉址 / slug 不符），並去重。
-//
-// 環境變數：
-//   INDEXNOW_KEY  公開金鑰（非機密），需與 public/<KEY>.txt 檔名與內容一致。
-//   INDEXNOW_DRY_RUN=1  只印出要送的 URL，不實際 POST（本機測試用）。
+// IndexNow 提交（Bing / Yandex / Seznam / Naver 共用即時收錄協定）。
+// ⚠ Google 不吃 IndexNow——Google 靠 robots.txt 的 Sitemap 行 + GSC 提交自行爬。
+// 預設：抓 $SITE_URL 的 sitemap，把全部 URL 批次 POST 給 api.indexnow.org。
+// 由 deploy.yml 的 indexnow job 在「部署後」呼叫（見 docs/playbooks/ci-cd.md）。
+// 用法：
+//   node scripts/indexnow-submit.mjs                 # 送 sitemap 全部 URL
+//   node scripts/indexnow-submit.mjs <url|/path>...  # 只送指定 URL（相對路徑補成正式網址）
+//   加 --dry 只印不送。
+// 環境變數：SITE_URL（含 https://）、INDEXNOW_KEY（32 hex，對應 public/<key>.txt）。
+// 任何失敗都 exit 0，不擋部署。
 
-import { readFileSync } from 'node:fs';
+const args = process.argv.slice(2);
+const dry = args.includes("--dry");
+const urlArgs = args.filter((a) => a !== "--dry");
 
-const HOST = 'evidencetoday.news';
-const ORIGIN = `https://${HOST}`;
-const SITEMAP = 'dist/sitemap-0.xml';
-const ENDPOINT = 'https://api.indexnow.org/indexnow';
-// 內容集合目錄名 == 前台路由前綴；slug == 檔名去副檔名（含 podcasts，見 stripPodcastSlug）。
-const COLLECTIONS = new Set(['articles', 'myths', 'ingredients', 'podcasts', 'videos', 'news']);
+const SITE_URL = process.env.SITE_URL;
+const KEY = process.env.INDEXNOW_KEY;
+if (!SITE_URL || !KEY) {
+  console.error("缺 SITE_URL 或 INDEXNOW_KEY，略過 IndexNow。");
+  process.exit(0);
+}
+const site = new URL(SITE_URL);
+const locs = (xml) => [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
 
-function readStdin() {
+async function sitemapUrls() {
+  let maps = [];
   try {
-    return readFileSync(0, 'utf8');
-  } catch {
-    return '';
+    const r = await fetch(new URL("sitemap-index.xml", site).href);
+    if (r.ok) maps = locs(await r.text());
+  } catch {}
+  if (!maps.length) maps = [new URL("sitemap-0.xml", site).href];
+  const urls = [];
+  for (const m of maps) {
+    try {
+      const r = await fetch(m);
+      if (r.ok) urls.push(...locs(await r.text()));
+    } catch {}
   }
+  return [...new Set(urls)];
 }
 
-function sitemapUrls() {
-  let xml = '';
-  try {
-    xml = readFileSync(SITEMAP, 'utf8');
-  } catch {
-    console.error(`[indexnow] 找不到 ${SITEMAP}，跳過。`);
-    return null;
-  }
-  const set = new Set();
-  for (const m of xml.matchAll(/<loc>([^<]+)<\/loc>/g)) {
-    set.add(m[1].trim().replace(/\/$/, ''));
-  }
-  return set;
+const toUrl = (a) => (/^https?:\/\//.test(a) ? a : new URL(a.replace(/^\.?\//, ""), site).href);
+
+const urlList = urlArgs.length ? urlArgs.map(toUrl) : await sitemapUrls();
+if (!urlList.length) {
+  console.log("無 URL 可送。");
+  process.exit(0);
 }
 
-function changedFilesToUrls(files) {
-  const urls = new Set();
-  for (const raw of files) {
-    const file = raw.trim();
-    // 形如 src/content/<collection>/<slug>.md|mdx
-    const match = file.match(/^src\/content\/([^/]+)\/(.+)\.(md|mdx)$/);
-    if (!match) continue;
-    const [, collection, slug] = match;
-    if (!COLLECTIONS.has(collection)) continue;
-    urls.add(`${ORIGIN}/${collection}/${slug}`);
-  }
-  return urls;
+const payload = {
+  host: site.host,
+  key: KEY,
+  keyLocation: new URL(`/${KEY}.txt`, site).href,
+  urlList,
+};
+console.log(`IndexNow：${urlList.length} 個 URL → ${payload.keyLocation}`);
+if (dry) {
+  console.log(JSON.stringify(payload, null, 2));
+  process.exit(0);
 }
 
-async function main() {
-  const key = process.env.INDEXNOW_KEY;
-  if (!key) {
-    console.error('[indexnow] 未設定 INDEXNOW_KEY，跳過。');
-    return;
-  }
-
-  const files = readStdin().split('\n').filter(Boolean);
-  if (files.length === 0) {
-    console.log('[indexnow] 無異動檔，跳過。');
-    return;
-  }
-
-  const candidates = changedFilesToUrls(files);
-  if (candidates.size === 0) {
-    console.log('[indexnow] 異動檔不含內容頁，跳過。');
-    return;
-  }
-
-  const live = sitemapUrls();
-  if (live === null) return;
-
-  // 只送真的存在於 sitemap 的 URL（draft / 轉址 / slug 不符自動排除）。
-  const urlList = [...candidates]
-    .filter((u) => live.has(u))
-    .map((u) => `${u}/`);
-
-  if (urlList.length === 0) {
-    console.log('[indexnow] 異動頁皆不在 sitemap（可能是 draft），跳過。');
-    return;
-  }
-
-  console.log(`[indexnow] 準備送出 ${urlList.length} 個 URL：`);
-  for (const u of urlList) console.log(`  - ${u}`);
-
-  if (process.env.INDEXNOW_DRY_RUN === '1') {
-    console.log('[indexnow] DRY_RUN，不實際送出。');
-    return;
-  }
-
-  const res = await fetch(ENDPOINT, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json; charset=utf-8' },
-    body: JSON.stringify({
-      host: HOST,
-      key,
-      keyLocation: `${ORIGIN}/${key}.txt`,
-      urlList,
-    }),
+try {
+  const res = await fetch("https://api.indexnow.org/indexnow", {
+    method: "POST",
+    headers: { "Content-Type": "application/json; charset=utf-8" },
+    body: JSON.stringify(payload),
   });
-
-  // IndexNow 成功回 200 或 202；其他狀態印出但不讓 deploy 失敗。
-  console.log(`[indexnow] 回應狀態：${res.status} ${res.statusText}`);
-  if (res.status !== 200 && res.status !== 202) {
-    console.error('[indexnow] 非預期狀態，請查 key 是否已上線、URL 是否同網域。');
-  }
+  console.log(`IndexNow 回應：${res.status}（200/202 為受理）`);
+} catch (e) {
+  console.error(`IndexNow 送出失敗（不擋部署）：${e.message}`);
 }
-
-main().catch((err) => {
-  console.error('[indexnow] 例外（不阻擋 deploy）：', err.message);
-});
+process.exit(0);

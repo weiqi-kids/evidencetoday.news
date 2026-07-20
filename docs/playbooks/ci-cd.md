@@ -15,7 +15,7 @@
 
 ## 鎖定參數（動之前必看）
 
-### 當前 deploy pipeline（build → deploy 兩個 job）
+### 當前 deploy pipeline（build → deploy → indexnow 三個 job）
 
 ```
 build (ubuntu-latest)
@@ -37,7 +37,15 @@ build (ubuntu-latest)
 
 deploy (ubuntu-latest, needs: build)
 └─ deploy-pages@v5
+
+indexnow (ubuntu-latest, needs: deploy)   ← 2026-07-20 加入，搜尋引擎收錄
+├─ if: push || workflow_dispatch（排除每小時 schedule，避免洗版）
+├─ checkout + setup Node 22
+├─ sleep 20（等 Pages CDN 傳播）
+└─ node scripts/indexnow-submit.mjs（抓上線 sitemap 全量 URL → POST IndexNow；失敗 exit 0 不擋）
 ```
+
+> `indexnow` job 的 `SITE_URL` / `INDEXNOW_KEY` 走 job `env`（金鑰非機密，明碼；同步 `public/<KEY>.txt`）。乾跑：`SITE_URL=https://evidencetoday.news INDEXNOW_KEY=<key> node scripts/indexnow-submit.mjs --dry`。細節見 `docs/playbooks/geo-offsite.md`「IndexNow」。
 
 ### Build artifacts produced by sync (不入 repo)
 
@@ -53,7 +61,7 @@ deploy (ubuntu-latest, needs: build)
 
 ### 失敗告警（notify-failure job，2026-07-20 加入）
 
-`deploy.yml` 末段有 `notify-failure` job（`needs: [build, deploy]`、`if: failure()`）：build 或 deploy 任一 fail 就發 Slack 到站台頻道要求修正，修正 push 後 workflow 自動重跑＝重審。需 repo secrets `SLACK_BOT_TOKEN`、`SLACK_CHANNEL_ID`；**secrets 未設時靜默略過（不影響管線）**。
+`deploy.yml` 末段有 `notify-failure` job（`needs: [build, deploy, indexnow]`、`if: failure()`）：build/deploy/indexnow 任一 fail 就發 Slack 到站台頻道要求修正，修正 push 後 workflow 自動重跑＝重審。需 repo secrets `SLACK_BOT_TOKEN`、`SLACK_CHANNEL_ID`；**secrets 未設時靜默略過（不影響管線）**。
 
 ### 內容把關 gate（deploy.yml build job 內，會擋部署）
 
