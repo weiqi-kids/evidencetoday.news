@@ -1,1 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="鋅"><rect width="1600" height="900" fill="#EEF7FF"/><text x="800" y="500" dominant-baseline="middle" text-anchor="middle" fill="#1F6F8B" font-family="Noto Sans TC, Inter, Arial, sans-serif" font-size="220" font-weight="700">鋅</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="鋅"><rect width="1600" height="900" fill="#EEF7FF"/><ellipse cx="800" cy="482" rx="420" ry="250" fill="#1F6F8B" opacity="0.07"/><g transform="translate(800,450)">
+    <g transform="translate(0,-14)">
+      <path d="M-206,18 C-128,-96 128,-96 206,18 C150,50 -150,50 -206,18 Z" fill="#B7AE96"/>
+      <path d="M-206,18 C-128,-88 128,-88 206,18 C120,84 -120,84 -206,18 Z" fill="#CBC3AC"/>
+      <g stroke="#A69C82" stroke-width="7" fill="none" opacity="0.9">
+        <path d="M0,72 C-70,-34 -150,-46 -196,10"/><path d="M0,72 C-52.5,-34 -112.5,-46 -147,10"/><path d="M0,72 C-35,-34 -75,-46 -98,10"/><path d="M0,72 C-17.5,-34 -37.5,-46 -49,10"/><path d="M0,72 C0,-34 0,-46 0,10"/><path d="M0,72 C17.5,-34 37.5,-46 49,10"/><path d="M0,72 C35,-34 75,-46 98,10"/><path d="M0,72 C52.5,-34 112.5,-46 147,10"/><path d="M0,72 C70,-34 150,-46 196,10"/>
+      </g>
+      <ellipse cx="0" cy="26" rx="126" ry="56" fill="#E4B58F"/>
+      <ellipse cx="-6" cy="20" rx="94" ry="42" fill="#F0D2B8"/>
+      <ellipse cx="24" cy="12" rx="34" ry="24" fill="#FBEEE0"/>
+    </g></g></svg>

@@ -1,1 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="肌酸"><rect width="1600" height="900" fill="#EEF7FF"/><text x="800" y="500" dominant-baseline="middle" text-anchor="middle" fill="#1F6F8B" font-family="Noto Sans TC, Inter, Arial, sans-serif" font-size="220" font-weight="700">肌酸</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="肌酸"><rect width="1600" height="900" fill="#EEF7FF"/><ellipse cx="800" cy="482" rx="420" ry="250" fill="#1F6F8B" opacity="0.07"/><g transform="translate(800,450)">
+    <g transform="translate(30,0)">
+      <path d="M-150,0 L-236,-78 L-208,0 L-236,78 Z" fill="#8593A0"/>
+      <path d="M-170,0 C-100,-96 130,-96 200,0 C130,96 -100,96 -170,0 Z" fill="#AEB9C2"/>
+      <path d="M-120,-20 C-40,-70 120,-70 176,-14" fill="none" stroke="#D6DDE3" stroke-width="14" stroke-linecap="round"/>
+      <circle cx="140" cy="-16" r="15" fill="#2E3A44"/>
+    </g></g></svg>

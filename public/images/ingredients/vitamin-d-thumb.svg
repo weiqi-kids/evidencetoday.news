@@ -1,1 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="Vitamin D"><rect width="1600" height="900" fill="#FFF7D6"/><text x="800" y="500" dominant-baseline="middle" text-anchor="middle" fill="#A16207" font-family="Noto Sans TC, Inter, Arial, sans-serif" font-size="220" font-weight="700">Vitamin D</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="維生素 D"><rect width="1600" height="900" fill="#FFF7D6"/><ellipse cx="800" cy="482" rx="420" ry="250" fill="#A16207" opacity="0.07"/><g transform="translate(800,450)">
+    <g transform="translate(0,-40)">
+      <line x1="110.0" y1="0.0" x2="168.0" y2="0.0" stroke="#FBC02D" stroke-width="18" stroke-linecap="round"/><line x1="95.3" y1="55.0" x2="145.5" y2="84.0" stroke="#FBC02D" stroke-width="18" stroke-linecap="round"/><line x1="55.0" y1="95.3" x2="84.0" y2="145.5" stroke="#FBC02D" stroke-width="18" stroke-linecap="round"/><line x1="0.0" y1="110.0" x2="0.0" y2="168.0" stroke="#FBC02D" stroke-width="18" stroke-linecap="round"/><line x1="-55.0" y1="95.3" x2="-84.0" y2="145.5" stroke="#FBC02D" stroke-width="18" stroke-linecap="round"/><line x1="-95.3" y1="55.0" x2="-145.5" y2="84.0" stroke="#FBC02D" stroke-width="18" stroke-linecap="round"/><line x1="-110.0" y1="0.0" x2="-168.0" y2="0.0" stroke="#FBC02D" stroke-width="18" stroke-linecap="round"/><line x1="-95.3" y1="-55.0" x2="-145.5" y2="-84.0" stroke="#FBC02D" stroke-width="18" stroke-linecap="round"/><line x1="-55.0" y1="-95.3" x2="-84.0" y2="-145.5" stroke="#FBC02D" stroke-width="18" stroke-linecap="round"/><line x1="-0.0" y1="-110.0" x2="-0.0" y2="-168.0" stroke="#FBC02D" stroke-width="18" stroke-linecap="round"/><line x1="55.0" y1="-95.3" x2="84.0" y2="-145.5" stroke="#FBC02D" stroke-width="18" stroke-linecap="round"/><line x1="95.3" y1="-55.0" x2="145.5" y2="-84.0" stroke="#FBC02D" stroke-width="18" stroke-linecap="round"/>
+      <circle r="92" fill="#FBC02D"/>
+      <circle r="92" fill="none" stroke="#F0A800" stroke-width="6"/>
+    </g>
+    <g transform="translate(0,150)">
+      <path d="M-120,0 L-172,-40 L-156,0 L-172,40 Z" fill="#E85D2A"/>
+      <path d="M-134,0 C-84,-52 90,-52 148,0 C90,52 -84,52 -134,0 Z" fill="#FB7A45"/>
+      <circle cx="104" cy="-10" r="11" fill="#3A2417"/>
+    </g></g></svg>
