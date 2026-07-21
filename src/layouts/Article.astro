@@ -10,6 +10,7 @@ import TldrBox from '@/components/blocks/TldrBox.astro';
 import FaqAccordion from '@/components/blocks/FaqAccordion.astro';
 import ReferenceList from '@/components/blocks/ReferenceList.astro';
 import MedicalDisclaimer from '@/components/blocks/MedicalDisclaimer.astro';
+import ShareButtons from '@/components/blocks/ShareButtons.astro';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 
@@ -68,6 +69,10 @@ const {
   queryPatternLabel,
   showMedicalDisclaimer = true,
 } = Astro.props;
+
+// 分享列：用 canonical 絕對網址。myths 單篇刻意極簡（見 CLAUDE.md 與 myths playbook），不加分享列。
+const shareUrl = new URL(Astro.url.pathname, Astro.site).href;
+const showShare = category !== 'myth';
 
 // 封面圖安全守衛：外連 http(s) 直接採用；本地 `/…` 路徑須確認 public 下真的存在，
 // 避免填錯路徑在詳情頁露破圖（與 ArticleCard 同一套判斷）。用 process.cwd() 而非
@@ -131,6 +136,7 @@ const safeCover =
           </section>
         )}
         {showMedicalDisclaimer && <MedicalDisclaimer />}
+        {showShare && <ShareButtons url={shareUrl} title={title} />}
         <slot name="after-content" />
       </div>
       <aside class="article-sidebar">

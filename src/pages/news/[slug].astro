@@ -9,12 +9,14 @@ import MythCard from '@/components/blocks/MythCard.astro';
 import IngredientCard from '@/components/blocks/IngredientCard.astro';
 import VideoCard from '@/components/blocks/VideoCard.astro';
 import PodcastCard from '@/components/blocks/PodcastCard.astro';
+import ShareButtons from '@/components/blocks/ShareButtons.astro';
 import { fmtDate } from '@/utils/date';
 import { getDisplayTitle, getNewsCategory, getNewsHeroImage, schemaImageUrl } from '@/utils/news';
 import { stripPodcastSlug } from '@/utils/podcasts';
 import { contentSocial } from '@/utils/social-meta.mjs';
 import { buildCitations, buildPerson, PUBLISHER_REF, WEBSITE_REF } from '@/utils/schema-org';
 import { isPublicEntry } from '@/utils/visibility';
+import { getAutoRelated } from '@/utils/related';
 
 function stripExt(id: string): string {
   return id.replace(/\.[^.]+$/, '');
@@ -85,24 +87,37 @@ const references = data.references ?? [];
 const hasStructuredReferences = references.length > 0;
 const hasSimpleSource = Boolean(data.pmid || data.sourceUrl);
 
-const relatedArticles = data.relatedArticles
+const manualArticles = data.relatedArticles
   ? (await Promise.all(data.relatedArticles.map((id) => getEntry('articles', id)))).filter(Boolean)
   : [];
-const relatedMyths = data.relatedMyths
+const manualMyths = data.relatedMyths
   ? (await Promise.all(data.relatedMyths.map((id) => getEntry('myths', id)))).filter(Boolean)
   : [];
-const relatedIngredients = data.relatedIngredients
+const manualIngredients = data.relatedIngredients
   ? (await Promise.all(data.relatedIngredients.map((id) => getEntry('ingredients', id)))).filter(Boolean)
   : [];
-const relatedVideos = data.relatedVideos
+const manualVideos = data.relatedVideos
   ? (await Promise.all(data.relatedVideos.map((id) => getEntry('videos', id)))).filter(Boolean)
   : [];
-const relatedPodcasts = data.relatedPodcasts
+const manualPodcasts = data.relatedPodcasts
   ? (await Promise.all(data.relatedPodcasts.map((id) => getEntry('podcasts', id)))).filter(Boolean)
   : [];
+const hasManual = manualArticles.length > 0 || manualMyths.length > 0 || manualIngredients.length > 0 || manualVideos.length > 0 || manualPodcasts.length > 0;
+
+/* 手動全空 → 用 tag 重疊自動補相關內容（見 src/utils/related.ts） */
+const auto = hasManual
+  ? { articles: [], myths: [], ingredients: [], videos: [], podcasts: [] }
+  : await getAutoRelated({ tags: data.tags ?? [], perBucket: 2 });
+
+const relatedArticles = hasManual ? manualArticles : auto.articles;
+const relatedMyths = hasManual ? manualMyths : auto.myths;
+const relatedIngredients = hasManual ? manualIngredients : auto.ingredients;
+const relatedVideos = hasManual ? manualVideos : auto.videos;
+const relatedPodcasts = hasManual ? manualPodcasts : auto.podcasts;
 
 const hasRelated = relatedArticles.length > 0 || relatedMyths.length > 0 || relatedIngredients.length > 0 || relatedVideos.length > 0 || relatedPodcasts.length > 0;
 const metaDesc = (data.subtitle || data.summary || '').slice(0, 140);
+const shareUrl = new URL(Astro.url.pathname, Astro.site).href;
 
 const newsCitations = buildCitations(references);
 const articleSchema = {
@@ -246,6 +261,8 @@ const breadcrumbSchema = {
           <p class="source-ref__link">{data.sourcePendingReason || '原始來源連結尚未補上'}</p>
         )}
       </footer>
+
+      <ShareButtons url={shareUrl} title={displayTitle} />
     </article>
 
     {hasRelated && (

@@ -1,0 +1,81 @@
+---
+/**
+ * 社群分享列：LINE / Facebook / X / 複製連結。
+ * 純連結 + 一段輕量 clipboard script，無外部 SDK、無追蹤像素，符合本站「不引入外部 CDN」原則。
+ * 樣式沿用站內 design tokens（oklch），不寫死色值。
+ */
+interface Props {
+  /** 要分享的絕對網址 */
+  url: string;
+  /** 分享標題（X 會帶入文字） */
+  title: string;
+}
+const { url, title } = Astro.props;
+const enc = encodeURIComponent;
+const lineHref = `https://social-plugins.line.me/lineit/share?url=${enc(url)}`;
+const fbHref = `https://www.facebook.com/sharer/sharer.php?u=${enc(url)}`;
+const xHref = `https://twitter.com/intent/tweet?url=${enc(url)}&text=${enc(title)}`;
+---
+
+<div class="share" data-url={url}>
+  <span class="share__label">分享這篇</span>
+  <a class="share__btn" href={lineHref} target="_blank" rel="noopener noreferrer" aria-label="分享到 LINE">LINE</a>
+  <a class="share__btn" href={fbHref} target="_blank" rel="noopener noreferrer" aria-label="分享到 Facebook">Facebook</a>
+  <a class="share__btn" href={xHref} target="_blank" rel="noopener noreferrer" aria-label="分享到 X">X</a>
+  <button class="share__btn share__copy" type="button">複製連結</button>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.share').forEach((el) => {
+    const btn = el.querySelector<HTMLButtonElement>('.share__copy');
+    const url = el.dataset.url ?? location.href;
+    btn?.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(url);
+        const orig = btn.textContent;
+        btn.textContent = '已複製 ✓';
+        setTimeout(() => (btn.textContent = orig), 1600);
+      } catch {
+        /* clipboard 不可用時忽略 */
+      }
+    });
+  });
+</script>
+
+<style>
+  .share {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-block: 1.75rem 0;
+  }
+
+  .share__label {
+    font-family: var(--font-ui);
+    font-size: var(--text-meta);
+    font-weight: 600;
+    color: color-mix(in oklch, var(--color-ink) 55%, transparent);
+    margin-right: 0.25rem;
+  }
+
+  .share__btn {
+    font-family: var(--font-ui);
+    font-size: var(--text-meta);
+    line-height: 1;
+    padding: 0.45rem 0.9rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--color-fog);
+    background-color: white;
+    color: color-mix(in oklch, var(--color-ink) 75%, transparent);
+    text-decoration: none;
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+  }
+
+  .share__btn:hover {
+    border-color: var(--color-teal);
+    color: var(--color-teal);
+    background-color: var(--color-teal-subtle);
+  }
+</style>

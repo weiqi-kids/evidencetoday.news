@@ -47,7 +47,7 @@ const topTags = tags.slice(0, 3);
   {safeCoverImage ? (
     <img class="ingredient-card__thumb" src={safeCoverImage} alt={coverAlt || `${title} 成分解析縮圖`} loading="lazy" />
   ) : (
-    <div class="ingredient-card__thumb ingredient-card__thumb--fallback" aria-hidden="true">本日有據</div>
+    <img class="ingredient-card__thumb" src="/og-thumb/ingredients.webp" alt="" aria-hidden="true" loading="lazy" />
   )}
   <div class="ingredient-card__body">
     <h3 class="ingredient-card__title">{title}</h3>
@@ -101,20 +101,6 @@ const topTags = tags.slice(0, 3);
     display: block;
     min-width: 0;
     border-bottom: 1px solid var(--color-fog);
-  }
-
-  .ingredient-card__thumb--fallback {
-    background: linear-gradient(
-      160deg,
-      color-mix(in oklch, var(--color-cat-ingredient) 16%, white),
-      color-mix(in oklch, var(--color-fog) 45%, white)
-    );
-    display: grid;
-    place-items: center;
-    color: var(--color-ink-muted);
-    font-family: var(--font-ui);
-    font-size: var(--text-meta);
-    letter-spacing: 0.04em;
   }
 
   .ingredient-card__body {

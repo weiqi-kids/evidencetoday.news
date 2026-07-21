@@ -16,8 +16,11 @@
 ### 結構區塊（從上到下）
 
 1. **Hero**：HeroParticles canvas + catch phrase + CTA buttons
+1.5. **編輯精選**（`#editors-pick`）：圖像導向，主焦點大圖 + 側欄縮圖清單（取代舊的 Hero 右側焦點卡）
 2. **熱門分類**：6 個分類卡（最新文章、迷思破解、認識主編 等）
 3. **熱門趨勢**：TrendBubbles d3-force 視覺化 + 最新文章列表
+
+> **RWD 一律 mobile-first**：首頁所有區塊（hero/編輯精選/各 grid）只用 `min-width` 斷點（640/768/1024），預設單欄、往上加欄。不要再用 `max-width` media query（已於 2026-06 全面改為 min-width，符合 CSS 鐵律）。
 4. **最新文章**：3-6 篇 ArticleCard
 5. **熱門闢謠**：MythCard
 6. **熱門原料**：IngredientCard
@@ -34,21 +37,21 @@
 
 ### Hero 細節
 
-### Hero 右側焦點卡（首頁編輯層級）
+> Hero 已收斂為**單欄品牌報頭**（`hero__inner` 單欄、mobile-first）：只有左側 catch phrase + CTA + trust cards，**不再內嵌右側焦點卡**。焦點內容改放下方獨立的「編輯精選」區。
 
-- `featuredItems[0]`：主焦點卡（本週焦點）
-- `featuredItems.slice(1, 3)`：次焦點卡（最多 2 張）
-- 資料不足時要安全降級：
-  - 0 筆：不渲染右側焦點區
-  - 1 筆：只渲染主焦點
-  - 2 筆：1 主 + 1 次
-  - 3 筆以上：1 主 + 2 次
-- 主焦點可顯示補充 meta（例如 myth verdict、podcast 集數/時長、article 主編把關）但不可改動資料來源邏輯。
+### 編輯精選區（首頁編輯層級，圖像導向）
+
+抽自舊「Hero 右側焦點卡」，獨立成 Hero 下方的 `#editors-pick`（`.editors-pick`），改為圖像導向：
+
+- `featuredItems[0]`：主焦點 `.ep-main`，含 16:9 封面大圖（article 用 `coverImage`，無圖→品牌漸層 fallback）+「本週焦點」角標。
+- `featuredItems.slice(1, 3)`：側欄 `.ep-side__item`，4:3 縮圖（最多 2 筆）。桌機（≥1024）「主圖 + 金色左線側欄」雙欄，手機單欄。
+- 安全降級：0 筆不渲染整區；1 筆只渲染主焦點；2–3 筆 1 主 +（最多）2 側。
+- 主焦點可顯示補充 meta（myth verdict、article 主編把關）但不改資料來源邏輯。
 
 - **catch phrase**：Hero 主標題固定以兩個 `.hero__title-line` 分行呈現：「把健康議題講得有根據」／「也講得讓人看得懂」，行尾不加標點。
 - **HeroParticles**：canvas 全幅，desktop only（mobile 不渲染以省電）
 - **CTA buttons**：「最新文章」「迷思破解」「認識主編」
-- **Hero trust cards**：固定三張等寬卡片「來源透明」「白話解讀」「編輯獨立」；桌機 3 欄、平板 2 欄、手機 1 欄，禁止使用透明文字或 `::before` 覆蓋文案的 hack。
+- **Hero trust cards**：固定三張等寬卡片「來源透明」「白話解讀」「編輯獨立」；mobile-first——手機 1 欄、`≥640` 3 欄，禁止使用透明文字或 `::before` 覆蓋文案的 hack。
 - **JSON-LD**：`@type: "WebSite"` + `Organization` 結構化資料，用於 Google Knowledge Graph
 
 ### SEO / AEO

@@ -53,6 +53,7 @@ type FeaturedItem = {
   description: string;
   date: Date;
   href: string;
+  cover?: string;
   extra?: Record<string, unknown>;
 };
 
@@ -64,6 +65,7 @@ const featuredItems: FeaturedItem[] = [
     description: a.data.description,
     date: a.data.publishDate,
     href: `/articles/${stripExt(a.id)}/`,
+    cover: a.data.coverImage,
     extra: { author: a.data.author, editorReviewed: a.data.editorReviewed },
   })),
   ...allMyths.filter((m) => m.data.featured).map((m) => ({
@@ -93,6 +95,9 @@ const featuredItems: FeaturedItem[] = [
     extra: { episodeNumber: p.data.episodeNumber, duration: p.data.duration },
   })),
 ].sort((a, b) => b.date.getTime() - a.date.getTime()).slice(0, 3);
+
+const typeLabel = (t: FeaturedItem['type']) =>
+  t === 'article' ? '文章' : t === 'myth' ? '闢謠' : t === 'ingredient' ? '成分解析' : t === 'podcast' ? 'Podcast' : '短影音';
 const primaryFeatured = featuredItems[0];
 const secondaryFeatured = featuredItems.slice(1, 3);
 
@@ -230,56 +235,66 @@ const categories = [
           </div>
         </div>
       </div>
-      {featuredItems.length > 0 && (
-        <div class="hero__right hero__focus">
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!--  1.5 編輯精選（圖像導向：主圖 + 側欄清單）                        -->
+  <!-- ============================================================== -->
+  {featuredItems.length > 0 && (
+    <section id="editors-pick" class="section-editors-pick">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">編輯精選</h2>
+          <Button variant="secondary" href="/all/">看全部內容</Button>
+        </div>
+        <div class="editors-pick">
           {primaryFeatured && (
-            <a href={primaryFeatured.href} class="hero__focus-primary">
-              <span class="hero__focus-kicker">本週焦點</span>
-              <span class="hero__focus-type">{
-                primaryFeatured.type === 'article' ? '文章' :
-                primaryFeatured.type === 'myth' ? '闢謠' :
-                primaryFeatured.type === 'ingredient' ? '成分解析' :
-                primaryFeatured.type === 'podcast' ? 'Podcast' : '短影音'
-              }</span>
-              <span class="hero__focus-title">{primaryFeatured.title}</span>
-              <span class="hero__focus-desc">{primaryFeatured.description}</span>
-              <span class="hero__focus-meta">
-                <span>{fmtDate(primaryFeatured.date)}</span>
-                {primaryFeatured.type === 'myth' && primaryFeatured.extra?.verdict && (
-                  <span>・判讀：{String(primaryFeatured.extra.verdict)}</span>
+            <a href={primaryFeatured.href} class="ep-main">
+              <span class="ep-main__media">
+                {primaryFeatured.cover ? (
+                  <img class="ep-main__img" src={primaryFeatured.cover} alt={primaryFeatured.title} loading="eager" decoding="async" />
+                ) : (
+                  <span class="ep-main__img ep-main__img--fallback" aria-hidden="true">本日有據</span>
                 )}
-                {primaryFeatured.type === 'podcast' && (primaryFeatured.extra?.episodeNumber || primaryFeatured.extra?.duration) && (
-                  <span>・EP{primaryFeatured.extra?.episodeNumber ? String(primaryFeatured.extra.episodeNumber) : '?'}{primaryFeatured.extra?.duration ? `・${String(primaryFeatured.extra.duration)}` : ''}</span>
-                )}
-                {primaryFeatured.type === 'article' && primaryFeatured.extra?.editorReviewed && (
-                  <span>・主編把關</span>
-                )}
+                <span class="ep-kicker">本週焦點</span>
               </span>
-              <span class="hero__focus-cta">查看內容 →</span>
+              <span class="ep-main__body">
+                <span class="ep-type">{typeLabel(primaryFeatured.type)}</span>
+                <span class="ep-main__title">{primaryFeatured.title}</span>
+                <span class="ep-main__desc">{primaryFeatured.description}</span>
+                <span class="ep-meta">
+                  <span>{fmtDate(primaryFeatured.date)}</span>
+                  {primaryFeatured.type === 'article' && primaryFeatured.extra?.editorReviewed && <span>・主編把關</span>}
+                  {primaryFeatured.type === 'myth' && primaryFeatured.extra?.verdict && <span>・判讀：{String(primaryFeatured.extra.verdict)}</span>}
+                </span>
+              </span>
             </a>
           )}
-
           {secondaryFeatured.length > 0 && (
-            <div class="hero__focus-secondary-list">
+            <div class="ep-side">
               {secondaryFeatured.map((item) => (
-                <a href={item.href} class="hero__focus-secondary">
-                  <span class="hero__focus-type">{
-                    item.type === 'article' ? '文章' :
-                    item.type === 'myth' ? '闢謠' :
-                    item.type === 'ingredient' ? '成分解析' :
-                    item.type === 'podcast' ? 'Podcast' : '短影音'
-                  }</span>
-                  <span class="hero__focus-secondary-title">{item.title}</span>
-                  <span class="hero__focus-secondary-desc">{item.description}</span>
-                  <span class="hero__focus-meta">{fmtDate(item.date)} <span aria-hidden="true">→</span></span>
+                <a href={item.href} class="ep-side__item">
+                  <span class="ep-side__thumb">
+                    {item.cover ? (
+                      <img class="ep-side__img" src={item.cover} alt={item.title} loading="lazy" decoding="async" />
+                    ) : (
+                      <span class="ep-side__img ep-side__img--fallback" aria-hidden="true"></span>
+                    )}
+                  </span>
+                  <span class="ep-side__body">
+                    <span class="ep-type">{typeLabel(item.type)}</span>
+                    <span class="ep-side__title">{item.title}</span>
+                    <span class="ep-meta">{fmtDate(item.date)}</span>
+                  </span>
                 </a>
               ))}
             </div>
           )}
         </div>
-      )}
-    </div>
-  </section>
+      </div>
+    </section>
+  )}
 
   <!-- ============================================================== -->
   <!--  2. Category Grid                                               -->
@@ -556,15 +571,14 @@ const categories = [
     position: relative;
     z-index: 1;
     display: grid;
-    grid-template-columns: 55% 45%;
-    gap: 2rem;
-    align-items: center;
+    gap: 1.5rem;
   }
 
   .hero__left {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+    max-width: 52rem;
   }
 
   .hero__badge {
@@ -618,8 +632,14 @@ const categories = [
 
   .hero__trust {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: 1fr;
     gap: 0.75rem;
+  }
+
+  @media (min-width: 640px) {
+    .hero__trust {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
   }
 
   .hero__trust-card {
@@ -647,143 +667,195 @@ const categories = [
     color: oklch(1 0 0 / 0.7);
   }
 
-  .hero__right {
-    min-width: 0;
+  /* ==========================================================================
+     1.5 編輯精選（圖像導向；mobile-first）
+     ========================================================================== */
+
+  .section-editors-pick {
+    padding: var(--space-section-gap) 0 0;
   }
 
-  .hero__focus {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    min-width: 0;
+  .editors-pick {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 
-  .hero__focus-primary,
-  .hero__focus-secondary {
+  .ep-main {
     display: flex;
     flex-direction: column;
     text-decoration: none;
-    color: white;
-    min-width: 0;
-    border: 1px solid oklch(1 0 0 / 0.14);
-    background-color: oklch(1 0 0 / 0.08);
-    backdrop-filter: blur(6px);
-    transition: background-color 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
-  }
-
-  .hero__focus-primary {
-    gap: 0.6rem;
-    padding: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+    color: inherit;
     border-radius: var(--radius-card);
+    overflow: hidden;
+    border: 1px solid var(--color-fog);
+    background-color: white;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
 
-  .hero__focus-primary:hover,
-  .hero__focus-secondary:hover {
-    color: white;
-    background-color: oklch(1 0 0 / 0.14);
-    border-color: oklch(1 0 0 / 0.22);
+  .ep-main:hover {
     transform: translateY(-2px);
+    box-shadow: var(--shadow-card-hover);
+    color: inherit;
   }
 
-  .hero__focus-secondary-list {
+  .ep-main__media {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background-color: var(--color-paper);
+  }
+
+  .ep-main__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .ep-main__img--fallback,
+  .ep-side__img--fallback {
     display: grid;
-    gap: 0.75rem;
-    min-width: 0;
-  }
-
-  .hero__focus-secondary {
-    gap: 0.45rem;
-    padding: 1.05rem 1.1rem;
-    border-radius: calc(var(--radius-card) - 2px);
-  }
-
-  .hero__focus-kicker {
+    place-items: center;
+    background: linear-gradient(160deg,
+      color-mix(in oklch, var(--color-teal) 16%, white),
+      color-mix(in oklch, var(--color-fog) 45%, white));
+    color: color-mix(in oklch, var(--color-ink) 55%, transparent);
     font-family: var(--font-ui);
-    font-size: var(--text-badge);
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: oklch(1 0 0 / 0.72);
-  }
-
-  .hero__focus-type {
-    font-family: var(--font-ui);
-    font-size: var(--text-badge);
-    font-weight: 600;
+    font-size: var(--text-meta);
     letter-spacing: 0.04em;
-    color: var(--color-on-dark-link);
   }
 
-  .hero__focus-title {
-    font-family: var(--font-serif);
-    font-size: clamp(1.25rem, 1rem + 1vw, 1.8rem);
-    line-height: 1.35;
-  }
-
-  .hero__focus-secondary-title {
-    font-size: clamp(1rem, 0.94rem + 0.35vw, 1.15rem);
+  .ep-kicker {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    padding: 0.25rem 0.7rem;
+    border-radius: var(--radius-pill);
+    background-color: var(--color-coral);
+    color: white;
+    font-family: var(--font-ui);
+    font-size: var(--text-badge);
     font-weight: 700;
-    line-height: 1.4;
+    letter-spacing: 0.04em;
   }
 
-  .hero__focus-desc,
-  .hero__focus-secondary-desc {
+  .ep-main__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: clamp(1.1rem, 0.8rem + 1vw, 1.6rem);
+  }
+
+  .ep-type {
+    font-family: var(--font-ui);
+    font-size: var(--text-badge);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--color-teal);
+  }
+
+  .ep-main__title {
+    font-family: var(--font-serif);
+    font-size: clamp(1.35rem, 1.1rem + 1vw, 1.9rem);
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--color-ink);
+  }
+
+  .ep-main__desc {
     font-size: var(--text-meta);
     line-height: 1.7;
-    color: oklch(1 0 0 / 0.78);
+    color: color-mix(in oklch, var(--color-ink) 70%, transparent);
     display: -webkit-box;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
 
-  .hero__focus-desc {
-    -webkit-line-clamp: 3;
-  }
-
-  .hero__focus-secondary-desc {
-    -webkit-line-clamp: 2;
-  }
-
-  .hero__focus-meta {
+  .ep-meta {
     font-family: var(--font-ui);
     font-size: var(--text-badge);
-    color: oklch(1 0 0 / 0.68);
+    color: color-mix(in oklch, var(--color-ink) 55%, transparent);
     display: flex;
     flex-wrap: wrap;
     gap: 0.15rem;
     align-items: center;
   }
 
-  .hero__focus-cta {
-    margin-top: 0.2rem;
-    font-family: var(--font-ui);
-    font-size: var(--text-meta);
-    font-weight: 600;
-    color: oklch(1 0 0 / 0.9);
-  }
-  /* Hero mobile */
-  @media (max-width: 1024px) {
-    .hero__inner {
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-    }
-
-    .hero__focus-secondary-list {
-      grid-template-columns: 1fr;
-    }
-
-    .hero__trust {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
+  .ep-side {
+    display: flex;
+    flex-direction: column;
   }
 
-  @media (max-width: 768px) {
-    .hero__inner {
-      grid-template-columns: 1fr;
+  .ep-side__item {
+    display: flex;
+    gap: 0.85rem;
+    align-items: center;
+    padding: 0.85rem 0;
+    text-decoration: none;
+    color: inherit;
+    border-bottom: 1px solid var(--color-fog);
+  }
+
+  .ep-side__item:first-child {
+    padding-top: 0;
+  }
+
+  .ep-side__item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .ep-side__item:hover .ep-side__title {
+    color: var(--color-teal);
+  }
+
+  .ep-side__thumb {
+    flex: 0 0 92px;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background-color: var(--color-paper);
+  }
+
+  .ep-side__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .ep-side__body {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .ep-side__title {
+    font-family: var(--font-serif);
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--color-ink);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    transition: color 0.15s ease;
+  }
+
+  @media (min-width: 1024px) {
+    .editors-pick {
+      grid-template-columns: 1.6fr 1fr;
+      align-items: start;
     }
 
-    .hero__trust {
-      grid-template-columns: 1fr;
+    .ep-side {
+      border-left: 3px solid var(--color-coral);
+      padding-left: 1.5rem;
     }
   }
 
@@ -832,7 +904,7 @@ const categories = [
 
   .category-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1fr;
     gap: var(--space-card-gap);
   }
 
@@ -929,15 +1001,15 @@ const categories = [
     font-weight: 600;
   }
 
-  @media (max-width: 1024px) {
+  @media (min-width: 640px) {
     .category-grid {
       grid-template-columns: repeat(2, 1fr);
     }
   }
 
-  @media (max-width: 640px) {
+  @media (min-width: 1024px) {
     .category-grid {
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(3, 1fr);
     }
   }
 
@@ -951,7 +1023,7 @@ const categories = [
 
   .topics-home-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1fr;
     gap: var(--space-card-gap);
   }
 
@@ -995,15 +1067,15 @@ const categories = [
     color: var(--color-teal);
   }
 
-  @media (max-width: 1024px) {
+  @media (min-width: 640px) {
     .topics-home-grid {
       grid-template-columns: repeat(2, 1fr);
     }
   }
 
-  @media (max-width: 640px) {
+  @media (min-width: 1024px) {
     .topics-home-grid {
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(3, 1fr);
     }
   }
 
@@ -1018,19 +1090,19 @@ const categories = [
 
   .latest-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: 1fr;
     gap: var(--space-card-gap);
   }
 
-  @media (max-width: 1024px) {
+  @media (min-width: 640px) {
     .latest-grid {
       grid-template-columns: repeat(2, 1fr);
     }
   }
 
-  @media (max-width: 640px) {
+  @media (min-width: 1024px) {
     .latest-grid {
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(4, 1fr);
     }
   }
 
@@ -1047,9 +1119,15 @@ const categories = [
   .podcast-layout {
     display: grid;
     min-width: 0;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 2.5rem;
     align-items: center;
+  }
+
+  @media (min-width: 1024px) {
+    .podcast-layout {
+      grid-template-columns: 1fr 1fr;
+    }
   }
 
   .podcast-layout__left {
@@ -1108,12 +1186,6 @@ const categories = [
     gap: 1rem;
   }
 
-  @media (max-width: 1024px) {
-    .podcast-layout {
-      grid-template-columns: 1fr;
-    }
-  }
-
   /* ==========================================================================
      5. Myth Block
      ========================================================================== */
@@ -1125,19 +1197,19 @@ const categories = [
 
   .myths-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1fr;
     gap: var(--space-card-gap);
   }
 
-  @media (max-width: 1024px) {
+  @media (min-width: 640px) {
     .myths-grid {
       grid-template-columns: repeat(2, 1fr);
     }
   }
 
-  @media (max-width: 640px) {
+  @media (min-width: 1024px) {
     .myths-grid {
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(3, 1fr);
     }
   }
 
@@ -1152,19 +1224,19 @@ const categories = [
 
   .ingredients-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: 1fr;
     gap: var(--space-card-gap);
   }
 
-  @media (max-width: 1024px) {
+  @media (min-width: 640px) {
     .ingredients-grid {
       grid-template-columns: repeat(2, 1fr);
     }
   }
 
-  @media (max-width: 640px) {
+  @media (min-width: 1024px) {
     .ingredients-grid {
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(4, 1fr);
     }
   }
 
@@ -1179,7 +1251,7 @@ const categories = [
 
   .trends-layout {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 2.5rem;
     align-items: start;
   }
@@ -1190,8 +1262,7 @@ const categories = [
   }
 
   .trends-layout__right {
-    position: sticky;
-    top: 2rem;
+    position: static;
   }
 
   .trends-link {
@@ -1207,13 +1278,14 @@ const categories = [
     text-underline-offset: 0.15em;
   }
 
-  @media (max-width: 768px) {
+  @media (min-width: 768px) {
     .trends-layout {
-      grid-template-columns: 1fr;
+      grid-template-columns: 1fr 1fr;
     }
 
     .trends-layout__right {
-      position: static;
+      position: sticky;
+      top: 2rem;
     }
   }
 </style>

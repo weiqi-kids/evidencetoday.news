@@ -221,6 +221,17 @@
 - OG 圖尺寸 1200x630；前台名稱使用「成分解析」，但路徑仍為 `/ingredients/`。
 - 不得提交或分享字型檔。OG 圖應遵守 Corporate Identity 規範，不得呈現商品銷售感、醫療恐懼感或十字架元素。
 
+## 效能：字型子集化（繁中）
+
+- `src/layouts/Base.astro` 只 import **子集進入點**（繁中 `@fontsource/noto-sans-tc/chinese-traditional-*.css`、Latin `@fontsource/inter/latin-*.css` 等），不要改回完整版 `noto-sans-tc/400.css`（會帶進 ~350 條 render-blocking `@font-face`）。
+- `postbuild` 先跑 `node scripts/subset-fonts.mjs`，掃 `dist` 全站實際用字，把繁中權重（Noto Sans TC 400/700、Noto Serif TC 700）依碼位切成 woff2 切片並改寫 CSS（`unicode-range` + `font-display:optional`），再交給 pagefind。純邏輯在 `scripts/lib/font-slicing.mjs`。
+- 新增/移除繁中字重時，`Base.astro` 的 import 與 `subset-fonts.mjs` 的 `WEIGHTS` 要同步。依賴 `subset-font`。量測：完整版 ~351 條 `@font-face` / 8.4MB woff2 → 切塊後 ~50 條 / 1.7MB，且每頁只下載命中的切片。詳見 [docs/playbooks/ci-cd.md](docs/playbooks/ci-cd.md)。
+
+## 社群分享
+
+- `src/components/blocks/ShareButtons.astro`（LINE / Facebook / X / 複製連結，無外部 SDK）由 `Article.astro` 在內容尾端自動渲染（articles / ingredients），news 內頁於 `src/pages/news/[slug].astro` 另行引入。
+- **myths 不加**：闢謠單篇刻意極簡且已有原生分享區，由 `showShare = category !== 'myth'` 排除。詳見 [docs/playbooks/article-layout.md](docs/playbooks/article-layout.md)。
+
 ## 快速開始
 
 ```bash

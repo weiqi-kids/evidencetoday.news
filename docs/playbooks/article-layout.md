@@ -46,6 +46,30 @@
 
 > **歷史踩坑**：cards variant 第一版遺漏 `max-width: none`，blocks 被 68ch 限死（記憶：2026-05-13 RWD 修正）。
 
+### 內建社群分享列（ShareButtons）
+
+`Article.astro` 在內容區尾端（medical disclaimer 之後、`after-content` slot 之前）渲染 `src/components/blocks/ShareButtons.astro`（LINE / Facebook / X / 複製連結，無外部 SDK）。
+
+- **myths 不渲染**：`showShare = category !== 'myth'`。myths 單篇刻意極簡，且自己的頁面已有原生分享區（`#share-btn` / `#copy-btn`），由 Article 再加會重複。**勿移除這個 gate**。
+- 分享網址用 `new URL(Astro.url.pathname, Astro.site).href`（canonical 絕對網址）。
+- articles / ingredients 走 Article 自帶這條；**news 內頁不走 Article**，已在 `src/pages/news/[slug].astro` 另行 import 並放在 `<footer class="source-ref">` 之後。
+
+### 相關內容：手動優先 + 自動 fallback
+
+文章與趨勢內頁的「相關內容」採兩段式（`src/utils/related.ts` 的 `getAutoRelated`）：
+
+- **手動 `relatedX` 優先**（frontmatter 的 `relatedArticles/Myths/Ingredients/Videos/Podcasts`）：hub↔spoke 內鏈結構，有填就完全用手動。
+- **手動全空才自動補**：用 tag 重疊度（articles/news 的 `tags`、myths 另含 `topicTags`）跨 collection 推薦，避免相關區整片空白。評分＝共享 tag 數，同分取新者。
+- 行為刻意「全有或全無自動」：只要任一手動桶有填就不混入自動，維持編輯可控。要改推薦邏輯改 `related.ts` 單一處即可。
+
+### 列表卡片無封面 → 分類 OG 縮圖 fallback
+
+`ArticleCard` / `IngredientCard` 沒有 `coverImage` 時，改用對應分類的 **OG 壓縮縮圖** 當底圖，避免列表開天窗：
+
+- 縮圖在 `public/og-thumb/{category}.webp`（640px 寬、webp、~10KB），由 `scripts/generate-og-thumbs.mjs`（`pnpm og:thumbs`）從 `public/og-static/*.png`（1200×630、~1MB）壓縮產生。
+- **產物 commit 進 repo**（小且穩定、衍生自已 commit 的 og-static），所以 dev / build 不依賴此腳本即時跑；**更新 og-static 後要手動 `pnpm og:thumbs` 重生並提交**。
+- 千萬別直接拿 1MB 的 `og-static/*.png` 當卡片縮圖（會吃掉字型子集化的效能）。Myth 卡刻意無圖、Video 卡用 YouTube 縮圖，皆不套此 fallback。
+
 ## 修改流程
 
 1. **辨識 variant**：先用 `git grep "variant=" src/pages/articles src/pages/myths src/pages/ingredients` 找各頁傳什麼 variant
