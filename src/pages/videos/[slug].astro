@@ -75,7 +75,7 @@ const videoJsonLd = {
   dateModified: (data.updatedDate ?? data.publishDate).toISOString(),
   embedUrl: `https://www.youtube.com/embed/${data.youtubeId}`,
   contentUrl: `https://www.youtube.com/watch?v=${data.youtubeId}`,
-  inLanguage: 'zh-TW',
+  inLanguage: 'zh-Hant-TW',
   duration: data.duration ? parseDurationToIsoDuration(data.duration) : undefined,
   publisher: {
     '@type': 'Organization',

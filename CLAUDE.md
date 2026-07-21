@@ -150,7 +150,8 @@ docs/                 # architecture / content-guide / news_sop / playbooks/
 - tags 含 `/` → build 失敗。
 - 內容插入不存在的行內圖 `](images/` → Rollup 解析失敗、全站部署連續 fail。
 - Article.astro `cards` variant 曾遺漏 `max-width: none` → blocks 被限制在 68ch。
-- myths 單篇版型是**刻意簡化**：只渲染固定區塊，勿再加「更新與更正紀錄」「延伸閱讀」等（playbook 把關，check-myth-quality 掃不到模板層）。
+- myths 單篇版型是**刻意簡化**：只渲染固定區塊，勿再加「更新與更正紀錄」「延伸閱讀」等（playbook 把關，check-myth-quality 掃不到模板層）。**例外：FAQ 是刻意保留的固定區塊**（48 篇 frontmatter 皆手寫 4 組 Q&A，前台渲染 + FAQPage JSON-LD）。2026-07-21 前 `mythsSchema` 漏宣告 `faq` 欄，Zod 靜默剝除 → FAQ 從未顯示、FAQPage 也無法輸出；補欄位後生效，勿再移除。
+- **Astro 5 content-layer 快取**：改 `content.schemas.ts` 欄位後，本機 `pnpm build` 可能沿用 `.astro/data-store.json` 舊解析結果（新欄位仍被剝除、前台看不到）。驗證 schema 改動請先 `rm -rf .astro dist` 再 build。CI 每次全新 checkout 無此問題。
 - Podcast 連結 slug 一律用 `stripPodcastSlug()`，不可用 `stripExt()`。
 - **排程稿可見性只有 HTML 路由套 `isPublicEntry`，`.txt`／RSS／`llms-full.txt`／tags 頁曾只濾 `!data.draft`** → 未來日期排程稿會提前洩全文（2026-07-12 修，全站公開面統一改用 `isPublicEntry`）。新增前台讀 collection 的路由**一律用 `isPublicEntry(data)`，禁裸 `!data.draft`**；`src/utils/visibility.test.ts` 有防回歸測試會擋。
 - 遠端 CCR 環境 WebFetch 被沙箱封鎖（PubMed/RSS 403），新聞管線為 WebSearch-only，用 `site:` 定向搜尋。

@@ -38,6 +38,7 @@ const articleLd = {
   '@id': `${canonical}#article`,
   headline: social.title,
   description: social.description,
+  inLanguage: 'zh-Hant-TW',
   image: [social.image],
   datePublished: d.publishDate.toISOString(),
   dateModified: d.updatedDate.toISOString(),
@@ -76,14 +77,38 @@ const sourceTypeLabels: Record<string, string> = {
   'case-report': '個案報告',
 };
 const healthReminder = '本文為健康資訊與迷思查證，不提供個人診斷或治療建議。若你已被診斷疾病、正在服藥、懷孕、哺乳，或症狀持續未改善，請諮詢醫師、藥師或營養師。';
+
+// 麵包屑：其他內容型皆有 BreadcrumbList，闢謠頁原本缺，補上並帶「迷思查證」中間層。
+const mythBreadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: '首頁', item: 'https://evidencetoday.news/' },
+    { '@type': 'ListItem', position: 2, name: '迷思查證', item: 'https://evidencetoday.news/myths/' },
+    { '@type': 'ListItem', position: 3, name: d.title, item: canonical },
+  ],
+};
+
+// FAQPage：闢謠頁已渲染可見 Q&A（下方 d.faq 區塊），比照文章頁輸出 FAQPage，取得 rich result 資格。
+const mythFaqSchema = d.faq && d.faq.length > 0
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: d.faq.map((item) => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: { '@type': 'Answer', text: item.answer },
+      })),
+    }
+  : null;
 ---
 
-<Article title={d.title} description={social.description} seoTitle={social.title} socialTitle={social.title} socialDescription={social.description} ogImage={social.image} category="myth" variant="cards" showMedicalDisclaimer={false} publishDate={d.publishDate} updatedDate={d.updatedDate} tags={d.topicTags} breadcrumbItems={[{ label: '首頁', href: '/' }, { label: d.title }]}>
+<Article title={d.title} description={social.description} seoTitle={social.title} socialTitle={social.title} socialDescription={social.description} ogImage={social.image} category="myth" variant="cards" showMedicalDisclaimer={false} publishDate={d.publishDate} updatedDate={d.updatedDate} tags={d.topicTags} breadcrumbItems={[{ label: '首頁', href: '/' }, { label: '迷思查證', href: '/myths/' }, { label: d.title }]}>
   <Fragment slot="head">
     <meta property="article:published_time" content={d.publishDate.toISOString()} />
     <meta property="article:modified_time" content={d.updatedDate.toISOString()} />
     <meta property="article:author" content={d.author} />
-    <JsonLd data={[articleLd, claimReview]} />
+    <JsonLd data={[articleLd, claimReview, mythBreadcrumbSchema, ...(mythFaqSchema ? [mythFaqSchema] : [])]} />
   </Fragment>
 
   <section class="block quick">

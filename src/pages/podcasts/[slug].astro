@@ -57,7 +57,7 @@ const podcastEpisodeSchema = compactJsonLd({
   dateModified: (data.updatedDate ?? data.publishDate).toISOString(),
   episodeNumber: data.episodeNumber,
   duration: isoDuration,
-  inLanguage: 'zh-TW',
+  inLanguage: 'zh-Hant-TW',
   partOfSeries: {
     '@type': 'PodcastSeries',
     name: '喜聞樂健',

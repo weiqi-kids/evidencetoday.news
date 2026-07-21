@@ -264,6 +264,17 @@ export const mythsSchema = z.object({
   deleteCandidate: z.boolean().optional(),
   correctionLog: z.array(z.object({ date: z.string(), description: z.string() })).default([]),
   medicalDisclaimer: z.string(),
+  // 48 篇 myths 皆已於 frontmatter 手寫 faq（各約 4 組 Q&A），但過去 mythsSchema 未宣告此欄，
+  // Zod 會把它整個剝除 → 前台 FAQ 區塊（[slug].astro 的 d.faq 渲染）與 FAQPage JSON-LD 都無法出現。
+  // 補上欄位後，可見 FAQ 與 FAQPage 一併生效（FAQPage rich result 要求答案在頁面可見）。
+  faq: z
+    .array(
+      z.object({
+        question: z.string(),
+        answer: z.string(),
+      }),
+    )
+    .optional(),
   references: z.array(referenceSchema).min(1),
   relatedArticles: z.array(z.string()).optional(),
   relatedIngredients: z.array(z.string()).optional(),
