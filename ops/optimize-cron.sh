@@ -81,7 +81,7 @@ PROMPT="$(cat <<PROMPTEOF
  (C) 站內微優化：執行 insights 的 siteOptimizations 桶（rank 5–15 query 的 title/「重點摘要」/FAQ 小修、補結構化資料缺口）。
  (D) 選題/新內容：僅限常青文章（articles/ingredients/myths，**不是 news**，news 歸 news-cron），有明確缺口才做、低頻。
 
-【執行】先讀完整檔再 Edit（硬規則2）。列既有檔用 ls/Glob 勿用 Read 讀目錄。日期一律台灣時間——本機 cron 已 TZ=Asia/Taipei，系統時鐘即台灣時間，**切勿再 +8**。守 YMYL 鐵律：台灣繁體中文禁中國用語、無醫療承諾/具體醫療建議、禁聳動、tags 禁含「/」、**嚴禁本地行內圖 ](images/...)（破壞 build）**、禁 AI 模板開頭（我一直覺得/老實講…）與 AI 句型（不是…而是/換句話說…）。起步階段**不應動到 src/**；萬一動到，必同步 README 或對應 playbook（否則 docs-sync-check fail）。
+【執行】先讀完整檔再 Edit（硬規則2）。列既有檔用 ls/Glob 勿用 Read 讀目錄。日期一律台灣時間——本機 cron 已 TZ=Asia/Taipei，系統時鐘即台灣時間，**切勿再 +8**。守 YMYL 鐵律：台灣繁體中文禁中國用語、無醫療承諾/具體醫療建議、禁聳動、tags 禁含「/」、**嚴禁本地行內圖 ](images/...)（破壞 build）**、守統一去 AI 味禁用句型（8 類，權威清單見 docs/content-guide.md「鐵則」，各生成端一致）：① 禁「不是X，而是Y」下定義與「不僅…更/還」「不只是…而是/更是」「並非…而是」排比（對比用「是Y，而非X」）；② 禁「值得注意的是/值得一提的是/換句話說」；③ 禁空泛收束（總的來說/綜上所述/總而言之/歸根結底/整體而言）；④ 禁「真正的問題/關鍵是…」拔高與「隨著…的發展/普及」「在…的今天」開場公式；⑤ 禁「至關重要/不可或缺/舉足輕重」；⑥ 禁模糊引用（研究顯示/有研究指出/專家認為/學者認為/普遍認為）——要嘛附具體可點來源、要嘛不寫；⑦ 禁破折號（——）下定義；⑧ 禁模板化第一人稱開場（以「我」起句、我一直覺得/老實講/朋友最常問我/最近有讀者/我發現/我觀察），開頭第一句直接給具體價值。起步階段**不應動到 src/**；萬一動到，必同步 README 或對應 playbook（否則 docs-sync-check fail）。
 
 【過 gate｜硬性，任一不過一律 abort 不 commit】依序：pnpm content:audit（命中必改到 pass）→ 動到 myths 跑 pnpm check:myths、動到 news 跑 pnpm check:news →最後 pnpm build 零錯誤。
 
