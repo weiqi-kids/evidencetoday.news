@@ -1,7 +1,27 @@
 {
   "version": 1,
-  "lastRun": "2026-07-21T06:28:13+08:00",
+  "lastRun": "2026-07-22T06:18:00+08:00",
   "processed": {
+    "https://clinicaltrials.gov/study/NCT04067921": {
+      "processedAt": "2026-07-22T06:18:00+08:00",
+      "outputFile": null
+    },
+    "https://clinicaltrials.gov/study/NCT06714162": {
+      "processedAt": "2026-07-22T06:18:00+08:00",
+      "outputFile": null
+    },
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9036084/": {
+      "processedAt": "2026-07-22T06:18:00+08:00",
+      "outputFile": null
+    },
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7872721/": {
+      "processedAt": "2026-07-22T06:18:00+08:00",
+      "outputFile": null
+    },
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9178172/": {
+      "processedAt": "2026-07-22T06:18:00+08:00",
+      "outputFile": null
+    },
     "https://www.sciencedaily.com/releases/2026/07/260718010154.htm": {
       "processedAt": "2026-07-19T06:30:00+08:00",
       "outputFile": "src/content/news/radar-2026-07-19-06-01.md"
