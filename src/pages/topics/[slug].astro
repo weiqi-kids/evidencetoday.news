@@ -168,6 +168,8 @@ const breadcrumbSchema = {
               description={i.data.description}
               href={`/ingredients/${stripExt(i.id)}/`}
               uses={i.data.uses}
+              coverImage={i.data.coverImage}
+              coverAlt={i.data.coverAlt}
             />
           ))}
         </div>
@@ -204,6 +206,7 @@ const breadcrumbSchema = {
               href={`/podcasts/${stripPodcastSlug(p.id)}/`}
               episodeNumber={p.data.episodeNumber}
               duration={p.data.duration}
+              publishDate={p.data.publishDate}
             />
           ))}
           {videos.map((v) => (

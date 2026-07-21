@@ -34,6 +34,8 @@ const latestArticles = (await getCollection('articles', (e) => isPublicEntry(e.d
               description={a.data.description}
               href={`/articles/${stripExt(a.id)}/`}
               category="article"
+              coverImage={a.data.coverImage}
+              coverAlt={a.data.coverAlt}
               author={a.data.author}
               date={fmtDate(a.data.publishDate)}
               editorReviewed={a.data.editorReviewed}

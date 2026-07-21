@@ -94,6 +94,8 @@ const social = tagSocial(tag);
             description={d.description as string}
             href={`/articles/${stripExt(item.id)}/`}
             category="article"
+            coverImage={d.coverImage as string | undefined}
+            coverAlt={d.coverAlt as string | undefined}
             author={d.author as string}
             date={fmtDate(item.date)}
             editorReviewed={d.editorReviewed as boolean}
@@ -118,6 +120,8 @@ const social = tagSocial(tag);
             description={d.description as string}
             href={`/ingredients/${stripExt(item.id)}/`}
             uses={d.uses as Array<{ evidenceLevel: string }>}
+            coverImage={d.coverImage as string | undefined}
+            coverAlt={d.coverAlt as string | undefined}
           />
         );
       }
@@ -129,6 +133,7 @@ const social = tagSocial(tag);
             href={`/podcasts/${stripPodcastSlug(item.id)}/`}
             episodeNumber={d.episodeNumber as number}
             duration={d.duration as string}
+            publishDate={item.date}
           />
         );
       }
