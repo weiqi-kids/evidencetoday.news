@@ -86,6 +86,8 @@ const articleSchema = {
   mainEntityOfPage: `https://evidencetoday.news/articles/${slug}/`,
   headline: data.title,
   description: data.description,
+  inLanguage: 'zh-Hant-TW',
+  ...(data.coverImage ? { image: new URL(data.coverImage, 'https://evidencetoday.news').href } : {}),
   author: buildPerson(data.author),
   ...(reviewedBy ? { reviewedBy, lastReviewed: data.updatedDate.toISOString() } : {}),
   medicalAudience: { '@type': 'MedicalAudience', audienceType: 'Patient' },

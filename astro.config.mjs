@@ -65,7 +65,7 @@ export default defineConfig({
     svelte(),
     // /admin 是隱藏管理頁；/tags/* 是 thin 自動分類頁（noindex,follow），皆不應進 sitemap
     sitemap({
-      filter: (page) => !page.includes('/admin') && !page.includes('/tags/'),
+      filter: (page) => !page.includes('/admin') && !page.includes('/tags/') && !page.includes('/search') && !page.includes('/404'),
       // 對每篇內容頁輸出 lastmod（updatedDate ?? publishDate）。靜態頁（首頁/分類/政策頁）
       // 不在內容 frontmatter 中，無對應日期時不強加 lastmod。
       serialize(item) {

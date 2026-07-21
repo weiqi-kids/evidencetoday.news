@@ -112,6 +112,7 @@ const articleSchema = {
   mainEntityOfPage: `https://evidencetoday.news/news/${slug}/`,
   headline: displayTitle,
   description: metaDesc,
+  inLanguage: 'zh-Hant-TW',
   image: schemaImageUrl(new URL(heroImage, 'https://evidencetoday.news').href),
   // 趨勢稿由編輯室產製（frontmatter source=本日有據編輯室），故 author 掛機構、不謊稱個人親筆；
   // 主編羅揚以 editor（Person 完整實體）承載人為查核與權責，對齊頁面可見的「主編判讀」區塊（E-E-A-T）。

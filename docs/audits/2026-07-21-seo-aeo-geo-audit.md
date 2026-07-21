@@ -115,3 +115,20 @@
 | videos/[slug] | VideoObject、Breadcrumb | 佳 |
 | topics/[slug] | CollectionPage+ItemList、FAQPage、Breadcrumb | ItemList 只含文章 |
 | 首頁 | Organization + WebSite | 無 ItemList/WebPage |
+
+---
+
+## 實作紀錄（P0 已完成，2026-07-21）
+
+本輪把 P0 六項一次做完並驗證（`pnpm build` 零錯誤、`check:myths`/`content:audit` 通過）：
+
+1. ✅ **文章／成分 JSON-LD 補 `image`**：取 frontmatter `coverImage`，以 `new URL(...)` 轉絕對網址（成分多為 `/images/...` 相對路徑，schema.org 需絕對）。103 文章＋41 成分全數帶 image。
+2. ✅ **闢謠頁補 BreadcrumbList + 補「迷思查證」中間層**（`myths/[slug].astro`）。
+3. ✅ **闢謠頁補 FAQPage** —— 過程中發現**潛在 bug**：`mythsSchema` 從未宣告 `faq` 欄，48 篇手寫的 Q&A 被 Zod 靜默剝除，導致前台 FAQ 區塊（模板早已寫好）與 FAQPage **從來沒出現過**。補上 schema 欄位後，42 篇公開闢謠的可見 FAQ 與 FAQPage 一併生效（FAQPage rich result 要求答案頁面可見，兩者必須同時）。
+4. ✅ **內容頁 schema 補 `inLanguage: zh-Hant-TW`**，並把 podcasts/videos 原本的 `zh-TW` 統一。
+5. ✅ **`/search`、`/404` 移出 sitemap** filter。
+6. ⏸ **填 `aiAnswer` 短答**：屬 103 檔逐篇編輯內容（非程式），機械量產會踩 YMYL／AI 味鐵則，留待正式內容批次處理，未納入本輪。
+
+> 註：改 `content.schemas.ts` 欄位後本機需 `rm -rf .astro dist` 再 build，否則 content-layer 快取會沿用舊解析（新欄位仍被剝除）。CI 全新 checkout 無此問題。
+
+P1／P2 仍待處理（掛名醫療審閱、27 篇補引用、AI 味改寫等），見上方清單。
