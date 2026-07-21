@@ -19,7 +19,7 @@
 
 | 屬性 | 值 | 出處 |
 |---|---|---|
-| font-family | `var(--font-serif)` (Noto Serif TC, fallback Source Serif 4) | `src/styles/typography.css` |
+| font-family | `var(--font-serif)` (Noto Serif TC, fallback Source Serif 4) | `src/styles/global.css（typography 變數區，原 typography.css 已併入）` |
 | font-size | `clamp(1.05rem, 1.8vw, 1.45rem)` | 跟 brand-zh 同 |
 | font-weight | `700` | 跟 brand-zh 與 h1 預設同 |
 | line-height | `1.2` | 跟 brand-zh 同（baseline 對齊必要） |
@@ -38,8 +38,8 @@
 | 屬性 | 值 |
 |---|---|
 | navbar min-height | `4.35rem`（≈69.6px）|
-| nav 顯示斷點 | `≥900px`（mobile-first）|
-| `<900px` 行為 | nav 隱藏、hamburger 顯示 |
+| nav 顯示斷點 | `≥1024px`（mobile-first；2026-07-15 由 900px 改為核准斷點 1024，見下方 Phase 1 註記）|
+| `<1024px` 行為 | nav 隱藏、hamburger 顯示 |
 | 點擊區 | `.topnav__link` 必須 `height: 100%` 撐滿 li |
 
 ### Hover / Active
@@ -48,8 +48,15 @@
 |---|---|
 | hover | `background-color: var(--color-teal-subtle)` + `color: var(--color-teal)` |
 | transition | `background-color .15s ease, color .15s ease` |
-| `.is-active` | `color: var(--color-teal)` |
+| `.is-active` | `color: var(--color-teal)` + `box-shadow: inset 0 -3px 0 var(--color-teal)`（底部指示條，非顏色相依）|
 
+## 介面優化 Phase 1（2026-07-15）
+
+- **斷點回歸核准值**：三處桌機切換由非法的 `min-width:900px` 改為 `min-width:1024px`（硬規則①只允許 640/768/1024/1280）。padding-bottom 的 clamp 公式維持不變，量測基準改在 1024–1280 兩端評估（900px 已不再顯示 nav）。
+- **移除 `!important`**：`.topnav__mobile` 桌機隱藏原用 `display:none !important`，改為靠 Astro scoped 選擇器（`.topnav__mobile[data-astro-cid]` 特異度高於 UA `[hidden]`）自然生效，已符合硬規則③。
+- **目前頁指示**：`.is-active` 除變 teal 色外加底部 3px 指示條（非顏色相依，符合 WCAG 1.4.1）；active 連結（桌機與行動版）加 `aria-current="page"`。
+- **跨斷點關閉選單**：`<script>` 加 `matchMedia('(min-width:1024px)')` 監聽，跨到桌機時重置 `aria-expanded=false` 並 `hidden=true`，修「開著選單放大視窗後 aria 狀態殘留」。
+- **SearchBar 修為可送出表單**（`src/components/ui/SearchBar.astro`）：原為裸 `<input>`（404 頁按 Enter 無反應），改為 `<form role="search" method="get" action="/search/">`＋`<input name="q">`；`/search/` 已支援讀 `?q=`。
 
 ## 可維護性格式規範（TopNav.astro）
 
@@ -137,4 +144,4 @@
 
 - 設計 token：[design-tokens.md](./design-tokens.md)
 - CSS / RWD 通用規範：[../../README.md#css--rwd-修改規範](../../README.md)
-- 字體變數定義：`src/styles/typography.css`
+- 字體變數定義：`src/styles/global.css（typography 變數區，原 typography.css 已併入）`

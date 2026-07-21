@@ -6,6 +6,7 @@ import { videoItemsSchema, YOUTUBE_CHANNEL_URL } from '@/lib/youtube';
 import { fmtDate } from '@/utils/date';
 import { VIDEO_CATEGORIES, categorizeVideos, type VideoCategorySlug } from '@/utils/videos';
 import { listSocial } from '@/utils/social-meta.mjs';
+import { isPublicEntry } from '@/utils/visibility';
 
 const parsedVideos = videoItemsSchema.safeParse(shortsData);
 const videos = parsedVideos.success ? parsedVideos.data : [];
@@ -29,7 +30,7 @@ const videoCounts = VIDEO_CATEGORIES.reduce<Record<VideoCategorySlug, number>>(
   }
 );
 const visibleCategories = VIDEO_CATEGORIES.filter((category) => videoCounts[category.slug] > 0);
-const curatedVideos = await getCollection('videos', ({ data }) => !data.draft);
+const curatedVideos = await getCollection('videos', ({ data }) => isPublicEntry(data));
 const curatedMap = new Map(curatedVideos.map((entry) => [entry.data.youtubeId, entry]));
 const stripExt = (id: string) => id.replace(/\.[^.]+$/, '');
 const featuredVideoIds = [
@@ -258,7 +259,7 @@ const social = listSocial('videos');
     border-radius: calc(var(--radius-card) + 0.35rem);
     background:
       radial-gradient(circle at top left, color-mix(in oklch, var(--color-cat-video) 20%, transparent), transparent 34%),
-      linear-gradient(135deg, #fff 0%, color-mix(in oklch, var(--color-cat-video) 8%, var(--color-paper)) 100%);
+      linear-gradient(135deg, var(--color-white) 0%, color-mix(in oklch, var(--color-cat-video) 8%, var(--color-paper)) 100%);
   }
 
   .videos-hero::after {
@@ -367,7 +368,7 @@ const social = listSocial('videos');
     border: 1px solid color-mix(in oklch, var(--color-teal) 22%, var(--color-fog));
     border-radius: var(--radius-card);
     padding: clamp(1rem, 2.5vw, 1.5rem);
-    background: linear-gradient(135deg, color-mix(in oklch, var(--color-teal) 8%, #fff), #fff 64%);
+    background: linear-gradient(135deg, color-mix(in oklch, var(--color-teal) 8%, var(--color-white)), var(--color-white) 64%);
   }
 
   .curated__header {
@@ -403,7 +404,7 @@ const social = listSocial('videos');
     border: 1px solid color-mix(in oklch, var(--color-fog) 84%, white);
     border-radius: calc(var(--radius-card) - 0.1rem);
     color: var(--color-ink);
-    background: #fff;
+    background: var(--color-white);
     text-decoration: none;
     transition:
       transform 0.16s ease,
@@ -456,7 +457,7 @@ const social = listSocial('videos');
     width: 3.25rem;
     height: 3.25rem;
     border-radius: 999px;
-    color: #fff;
+    color: var(--color-white);
     background: oklch(0 0 0 / 0.48);
     font-size: 1.35rem;
     transform: translate(-50%, -50%);
@@ -552,7 +553,7 @@ const social = listSocial('videos');
     font-family: var(--font-ui);
     font-size: var(--text-meta);
     font-weight: 650;
-    background: #fff;
+    background: var(--color-white);
     box-shadow: 0 1px 2px oklch(0 0 0 / 0.04);
   }
 
@@ -588,7 +589,7 @@ const social = listSocial('videos');
     overflow: hidden;
     border: 1px solid color-mix(in oklch, var(--color-fog) 88%, white);
     border-radius: var(--radius-card);
-    background: #fff;
+    background: var(--color-white);
     transition:
       transform 0.16s ease,
       box-shadow 0.16s ease,
@@ -689,7 +690,7 @@ const social = listSocial('videos');
     border: 1px dashed var(--color-fog);
     border-radius: var(--radius-card);
     color: color-mix(in oklch, var(--color-ink) 70%, transparent);
-    background: #fff;
+    background: var(--color-white);
   }
 
   .fallback a {

@@ -77,9 +77,9 @@
     aiBtn.type = 'button';
     aiBtn.setAttribute('aria-label', 'AI 生成 / 找圖庫 / 上傳 / 既有圖庫');
     aiBtn.title = 'AI 生成 / 找圖庫 / 上傳 / 既有圖庫';
-    aiBtn.style.cssText = 'width:32px;height:32px;margin:0 5px;padding:0;border:1px solid transparent;border-radius:3px;background:transparent;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;color:#555;';
+    aiBtn.style.cssText = 'width:32px;height:32px;margin:0 5px;padding:0;border:1px solid transparent;border-radius:3px;background:transparent;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;color:var(--editor-icon);';
     aiBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.9 6.1L20 10l-6.1 1.9L12 18l-1.9-6.1L4 10l6.1-1.9z"/><path d="M18.5 13.5l.8 2.4 2.4.8-2.4.8-.8 2.4-.8-2.4-2.4-.8 2.4-.8z" opacity=".65"/></svg>';
-    aiBtn.addEventListener('mouseenter', () => { aiBtn.style.background = '#f4f4f4'; aiBtn.style.borderColor = '#e5e5e5'; });
+    aiBtn.addEventListener('mouseenter', () => { aiBtn.style.background = 'var(--editor-hover-bg)'; aiBtn.style.borderColor = 'var(--editor-hover-border)'; });
     aiBtn.addEventListener('mouseleave', () => { aiBtn.style.background = 'transparent'; aiBtn.style.borderColor = 'transparent'; });
     aiBtn.addEventListener('click', () => { showPicker = true; });
 

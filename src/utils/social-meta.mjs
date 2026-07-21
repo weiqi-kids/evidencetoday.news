@@ -1,4 +1,7 @@
 export const SITE_NAME = '本日有據';
+// <meta name="theme-color"> 是 HTML 屬性、吃不到 CSS var，故以常數存放（--color-navy 系深青，
+// 對應 src/styles/variables.css 色系；check-design v2 只掃 .css/.astro/.svelte 的樣式硬編色）。
+export const THEME_COLOR = '#103B44';
 export const SITE_SUFFIX = '本日有據';
 export const DEFAULT_DESCRIPTION = '從研究到日常判斷，整理真正值得注意的健康資訊';
 
@@ -193,11 +196,11 @@ export const STATIC_SOCIAL = {
   },
   'author-luo-yang': {
     path: '/authors/luo-yang/',
-    ogPath: DEFAULT_OG_IMAGE,
-    image: DEFAULT_OG_IMAGE,
+    ogPath: versionedOgImage('/og-static/author-luo-yang.png'),
+    image: versionedOgImage('/og-static/author-luo-yang.png'),
     template: 'static',
-    title: '羅揚｜本日有據主編',
-    description: '認識本日有據主編羅揚，以及他整理健康資訊、Podcast、文章與短影音內容的背景與方向。',
+    title: '羅揚｜拆解保健成分與行銷話術的健康主編',
+    description: '本日有據主編羅揚，長年身處營養保健產業，習慣把成分、研究與行銷話術之間的落差拆給你看。主持 Podcast《喜聞樂健》，談營養、預防醫學與熟齡健康。',
     ogBadge: '作者',
     ogTitle: '羅揚',
     ogSubtitle: '本日有據主編',

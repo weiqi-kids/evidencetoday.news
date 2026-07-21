@@ -127,6 +127,7 @@
 
 | 任務 | 看哪份 |
 |---|---|
+| ⭐ 選題／寫新文章前先讀（能贏的文章模子·六基因） | [docs/playbooks/winning-article-formula.md](./docs/playbooks/winning-article-formula.md) |
 | 新增文章 / 闢謠 / 成分解析 / Podcast / 短影音 / 趨勢新聞 | [docs/content-guide.md](./docs/content-guide.md) |
 | 修改、刪除既有內容 | [docs/content-guide.md](./docs/content-guide.md) |
 | 撰寫趨勢新聞 SOP（自動化排程） | [docs/news_sop.md](./docs/news_sop.md)、[AGENTS.md](./AGENTS.md)「撰寫趨勢文章」 |
@@ -206,22 +207,19 @@
 - Podcast slug 必須使用 `stripPodcastSlug()`。
 - feed item 以 `updatedDate ?? publishDate` 排序，最多輸出 50 筆。
 - Footer RSS 入口與 Base alternate link 都指向 `/rss.xml`。
+- Footer「資源」欄另有「在 Google News 追蹤」外連（出版品 ID `CAowh4bHDA` → `https://news.google.com/publications/CAowh4bHDA`，`target=_blank rel=noopener`）；通過 Publisher Center 後，follower 是 Google News 正向訊號。`resourceLinks` 以 `external?: boolean` 標記是否外連。
+- Footer 字級（皆用既有型階 token，不寫死 px）：欄標題 `--text-lead`（20/18px）；連結、標語、底部版權/免責/揭露皆 `--text-body`（18/17px）。footer 全文字 ≥ 正文級為刻意決策（早期版本連結用 `--text-meta`、底部用 `--text-badge` 過小，已整體上抬）。
 
 ---
 
 
-## OG 圖生成
+## OG 圖（靜態，每 collection 一張）
 
-- OG 圖由 `pnpm og:generate` 生成到 `public/og/`。
-- `pnpm build` 會在 `prebuild` 透過 `pnpm run sync:youtube && pnpm run og:generate` 自動生成 OG 圖。
-- OG 圖尺寸固定為 1200x630。
-- 生成範圍包含公開 articles / myths / ingredients / podcasts / videos / news。
-- draft 內容不生成。
-- 前台名稱使用「成分解析」，但路徑仍為 `/ingredients/`。
-- generated PNG 不提交到 repo，`public/og/**/*.png` 已由 `.gitignore` 排除。
-- GitHub Pages 部署時會在 build 階段生成 OG 圖並輸出到 `dist`。
-- 不得提交或分享字型檔。
-- OG 圖應遵守 Corporate Identity 規範，不得呈現商品銷售感、醫療恐懼感或十字架元素。
+- 目前採**靜態 OG**：每個 collection 共用一張預先產好的圖 `public/og-static/*.png`（home / articles / myths / ingredients / podcasts / videos / news），由 `src/utils/social-meta.mjs` 的 `ogImageForCollection()` 依 collection 指派，並帶版本查詢字串 `OG_IMAGE_VERSION`（目前 `20260604-static-og-v1`）。
+- **已無 `pnpm og:generate` 指令、也無 `src/pages/og/[...slug].png.ts` endpoint**（早期 satori/sharp 逐頁生成方案已淘汰）。因此社群分享圖為 collection 級、不做逐篇差異化。
+- 若日後要恢復逐篇 OG：satori/sharp 相依仍在 `package.json`；`scripts/generate-author-og.ts` 是現存的一次性作者頁 OG 生成工具，可作參考。
+- OG 圖尺寸 1200x630；前台名稱使用「成分解析」，但路徑仍為 `/ingredients/`。
+- 不得提交或分享字型檔。OG 圖應遵守 Corporate Identity 規範，不得呈現商品銷售感、醫療恐懼感或十字架元素。
 
 ## 效能：字型子集化（繁中）
 
@@ -240,14 +238,14 @@
 # — 開發 / 建置 —
 pnpm install        # 安裝依賴（不是 npm）
 pnpm dev            # 啟動開發伺服器 (localhost:4321)
-pnpm build          # 建置靜態網站 (輸出至 dist/；prebuild 跑 sync:youtube + og:generate)
+pnpm build          # 建置靜態網站 (輸出至 dist/；prebuild 跑 sync:youtube + used-images)
 pnpm preview        # 預覽建置結果
 
 # — 內容品質 gate —
 pnpm content:audit  # 掃描內容的 AI 感句型與模糊引用 / raw enum 外露
 pnpm check:myths    # 闢謠內容品質 gate（發布 myths 前必跑）
 pnpm check:news     # 趨勢新聞來源連結 gate（每篇須有可點 references/sourceUrl/pmid；CI 已接）
-pnpm og:generate    # 生成 OG 圖至 public/og/（1200x630，不提交 repo）
+pnpm check:design   # 設計規範守門 v2（pnpm build 會自動先跑；規則見「CSS / RWD 通用規範」）
 
 # — 曝光量 / 選題（情境 B）—
 pnpm perf           # 近 28 天 GA4+GSC 效能快照（唯讀，經營決策用；需 gcloud token）
@@ -309,13 +307,21 @@ padding: 2rem;
 - 不要在全域 CSS 中加頁面特定的樣式
 - 詳細 variant 系統見 [Article.astro playbook](./docs/playbooks/article-layout.md)
 
-### 4. 禁止事項
+### 4. 禁止事項 — 設計規範 v2（2026-07-20 全站統一，`scripts/check-design.mjs` 自動守門）
+
+`pnpm build` 會先跑 `node scripts/check-design.mjs`（亦可單獨 `pnpm check:design`），掃 `src/` 全部 `.css/.astro/.svelte`，違規直接 build fail（CI 同步擋部署）。六條規則：
+
+1. **禁 `px` 定義 font-size**（一律 `var(--text-*)` 階梯；`clamp()` 內的 px 邊界暫不在掃描範圍）
+2. **顏色（hex / rgb() / hsl()）只准出現在 `src/styles/variables.css`**（元件一律 `var(--color-*)`）
+3. **禁 `!important`**（⚠️ 遷移期遞延中：存量 26 處在 global.css，見 check-design.mjs 檔頭 TODO，清零後啟用）
+4. **禁外部 CDN**（fonts.googleapis / cdnjs / unpkg / jsdelivr；字體用 @fontsource 自託管，不受影響）
+5. **css 檔白名單**：`src/` 下的 `.css` 只准 `src/styles/{variables,global}.css`，元件樣式寫 scoped `<style>`
+6. **`--text-*` 字級下限**：每個 token 值一律 **≥18px（1.125rem）**，`clamp()` 以最小值計；`checkLadder()` 掃 `src/styles/variables.css`（字級階梯定義處）強制，禁止用 token 值開小門繞過 18px 下限
+
+另沿用本站慣例：
 
 - 不要把整個 `<style>` 壓成一行（不可讀、不可維護）
-- 不要用 `!important`
-- 不要用 `px` 定義 font-size（用 `clamp()` 或 CSS custom properties）
-- 不要新增外部 CDN（字體、CSS framework）— 本站全部自託管
-- 不要直接修改 `tokens.css` 的 oklch 色值（經 4 輪審查定案，見 [design-tokens playbook](./docs/playbooks/design-tokens.md)）
+- 不要直接修改 `variables.css` 的 oklch 色值（經 4 輪審查定案，見 [design-tokens playbook](./docs/playbooks/design-tokens.md)）
 
 ### 5. 修改前自檢
 
@@ -350,9 +356,8 @@ src/
     Policy.astro             # 政策頁
   pages/                     # 路由
   styles/
-    tokens.css               # oklch design tokens
-    typography.css           # 字體 + fluid type scale
-    global.css               # reset + prose + container
+    variables.css            # oklch design tokens + 字體/字級變數的色彩 token 檔（原 tokens.css，2026-07-20 改名）
+    global.css               # typography 變數 + reset + prose + container + RWD fixes（2026-07-20 併入 typography.css/rwd-fixes.css）
   utils/                     # 共用工具
 public/                      # 靜態資源（含 CNAME、favicon、images）
 data/
@@ -384,18 +389,19 @@ GitHub Actions 自動執行：build → Pagefind 索引 → 連結檢查 → 部
 
 ## 待補齊項目
 
-### 上線前 Blocker
+### 上線前 Blocker — ✅ 全數完成（2026-06-30 核對）
 
-- [ ] 利益揭露具體內容 — `src/data/policies/disclosure.md`
-- [ ] 隱私權政策正式文案 — `src/pages/privacy.astro`
-- [ ] 使用條款正式文案 — `src/pages/terms.astro`
-- [ ] Email 信箱 — evidencetodaynews@gmail.com（單一聯絡信箱）
-- [ ] 社群連結 — `src/components/blocks/Footer.astro`
-- [ ] Logo SVG — `src/components/blocks/TopNav.astro`
-- [ ] 實際內容量 — 至少 10-15 篇文章 + 5 篇闢謠
+- [x] 利益揭露 — `src/data/policies/disclosure.md`（已有正式文案）
+- [x] 隱私權 / 使用條款正式文案 — `src/pages/privacy.astro` / `terms.astro`
+- [x] Email 信箱 — evidencetodaynews@gmail.com（contact / privacy / terms / about 已用）
+- [x] 社群連結 — Footer 已放「在 Google News 追蹤」；其餘社群依硬規則「不得加入不存在的社群」，有真實帳號才補（**非 blocker**）
+- [x] Logo — TopNav 已用 `/images/brand/logo-icon.png`（SVG 版列為上線後可選迭代）
+- [x] 實際內容量 — 遠超標：文章 83 / 闢謠 34 / 成分 27 / 趨勢 64（要求 ≥10–15 + ≥5）
 
 ### 上線後可迭代
 
+- [ ] `src/data/policies/editorial-policy.md` 目前僅 3 行，可補完整編輯方針
+- [ ] Logo SVG 版本（現為 PNG）
 - [ ] 成分解析頁補齊更多 pathwaySteps 資料
 - [ ] Pagefind 搜尋頁動態載入
 

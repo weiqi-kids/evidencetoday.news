@@ -4,8 +4,12 @@
 
 任務涉及以下任一情況：
 
-- 修改 `src/styles/tokens.css` 任何一行
-- 修改 `src/styles/typography.css` 字體 stack 或 fluid type scale
+> **2026-07-20 檔案整併（check-design v2 導入）**：`tokens.css` 改名 `variables.css`；`typography.css`（字體 stack + fluid type scale）與 `rwd-fixes.css` 併入 `global.css`（載入順序不變）。`pnpm build` 會先跑 `scripts/check-design.mjs` 規則守門（見 README「CSS / RWD 通用規範」），顏色 hex/rgb/hsl 只准出現在 `variables.css`（含檔末「遷移集中色」區——原元件硬編色原樣搬入，禁再擴充）。
+>
+> **2026-07-20 追加規則 6（字級下限）＋ fluid type scale 遷回 `variables.css`**：`--text-*` 階梯從 `global.css` 移進 `variables.css`（token 唯一真實來源），`global.css` 只保留字型堆疊。check-design 新增第 6 條：**每個 `--text-*` 值一律 ≥18px（1.125rem），`clamp()` 以最小值計**，`checkLadder()` 掃 `variables.css` 強制，禁止用 token 值開小門繞過下限。`--text-body/meta/caption/badge` 已收斂到 18px 下限（meta/caption/badge 原 12–14px）。
+
+- 修改 `src/styles/variables.css` 任何一行（含色彩、spacing、fluid type scale）
+- 修改 `src/styles/global.css` 字體 stack（`--font-*`；fluid type scale 已遷回 `variables.css`）
 - 新增 brand color、category color、verdict color
 - 換掉 Noto Serif TC / Noto Sans TC / Inter / Source Serif 4 任一字體
 - 改 `--space-*` 或 `--radius-*`、`--shadow-*`
@@ -41,16 +45,25 @@
 
 ### Fluid type scale
 
+定義於 `src/styles/variables.css`（不是 global.css）。
+
 ```
 --text-h1: clamp(2rem, 1.5rem + 2vw, 3rem)
 --text-h2: clamp(1.625rem, 1.25rem + 1.5vw, 2rem)
 --text-h3: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem)
---text-body: clamp(1.0625rem, 1rem + 0.25vw, 1.125rem)
+--text-body: 1.125rem
 --text-lead: clamp(1.125rem, 1rem + 0.5vw, 1.25rem)
---text-meta: clamp(0.8125rem, 0.78rem + 0.15vw, 0.875rem)
+--text-meta: 1.125rem
+--text-caption: 1.125rem
+--text-badge: 1.125rem
 ```
 
 **禁止用 `px` 寫死 font-size**。永遠用 token 或 `clamp()`。
+
+**規則 6：每個 `--text-*` 值一律 ≥18px（1.125rem）；`clamp()` 以最小值計。** 由
+`scripts/check-design.mjs` 的 `checkLadder()` 掃 `variables.css` 強制，違規即 build fail。
+不得用 token 值「開小門」繞過 18px 下限（例：`clamp(0.75rem, …)` 的最小值 12px 會被擋）。
+`--text-meta/caption/badge` 三者現同為 18px（原 12–14px），差異靠字重/顏色而非字級。
 
 ### Spacing scale
 
@@ -95,19 +108,31 @@
 - [ ] 改了 fluid scale → @375 與 @1280 兩端視覺檢查
 - [ ] pnpm build 零錯誤
 - [ ] Lighthouse CI a11y ≥ 95（對比度不降）
-- [ ] git diff 只動到 tokens.css / typography.css（不誤動別處）
+- [ ] git diff 只動到 variables.css / global.css（不誤動別處）
 ```
+
+## 弱化文字語意色 --color-ink-muted（2026-07-15 介面優化 Phase 1）
+
+- 新增兩個弱化文字 token（`variables.css`，屬合法新增、未動既有 oklch 值）：`--color-ink-muted`（`color-mix(ink 72%, paper)`，對 paper 約 4.8:1 過 WCAG AA）與 `--color-ink-subtle`（60%，僅用於大字/非必要註記）。
+- **meta／署名／圖片署名等淡字一律改吃 `--color-ink-muted`**，混合基底統一用 `paper`（非 `transparent`，以免疊在深/彩底時對比失準）。已把公開面散落的 `color-mix(... var(--color-ink) 55% ...)`（約 3.4:1、未達 AA）收斂成此 token；`src/components/editor/*`（admin 後台，非公開面）暫不動。
+- 之後新增淡字一律用這兩個 token，不要再臨場寫 `ink 55%` 之類的 color-mix。
+
+## 全域動效與無障礙（2026-07-15 介面優化 Phase 1）
+
+- **`prefers-reduced-motion` 全域降級**：`src/styles/global.css` 末端有一段 `@media (prefers-reduced-motion: reduce)` reset，關閉平滑捲動並把所有 `animation`/`transition` 壓到 0.01ms（卡片 hover 位移、Hero 粒子等一律降級）。這是無障礙業界標準 reset（WCAG 2.3.3）。
+- **`!important` 例外**：硬規則「禁 `!important`」的語意是針對版面覆蓋 hack；reduced-motion 降級需可靠覆蓋任意元件的 transition/animation，屬**公認例外**，僅允許出現在這段媒體查詢內，其他地方仍禁用。
+- **d3 島嶼各自把關**：canvas/SVG 動畫（`HeroParticles.svelte`、`TrendBubbles.svelte`）無法只靠 CSS 降級，需在元件內以 `window.matchMedia('(prefers-reduced-motion: reduce)')` 判斷：命中時只畫一張靜態幀、不啟動 `d3-timer`。新增 d3 動畫島嶼一律比照。
 
 ## 相關文件
 
 - 設計 spec：`docs/superpowers/specs/2026-05-07-evidencetoday-design.md`
-- 字體變數定義：`src/styles/typography.css`
+- 字體變數定義：`src/styles/global.css（typography 變數區，原 typography.css 已併入）`
 - CSS / RWD 通用規範：[../../README.md](../../README.md)
 - 全域 CSS 規則：`src/styles/global.css`
 
 ## OG 圖品牌系統維護規則
 
-`scripts/generate-og.mjs` 是全站分享圖的生成來源，因 satori 不支援 `oklch()`，OG 圖可以使用 `src/styles/tokens.css` 的 hex 近似值，但不得自行發展脫離本站 CI 的新色系。全站 OG 應視為品牌門面：乾淨、字大、字粗、清楚，優先讓手機聊天縮圖可讀。
+`scripts/generate-og.mjs` 是全站分享圖的生成來源，因 satori 不支援 `oklch()`，OG 圖可以使用 `src/styles/variables.css` 的 hex 近似值，但不得自行發展脫離本站 CI 的新色系。全站 OG 應視為品牌門面：乾淨、字大、字粗、清楚，優先讓手機聊天縮圖可讀。
 
 ### 版型與安全區
 
@@ -129,7 +154,7 @@
 
 ### 品牌與禁用元素
 
-- 色彩只能來自 `src/styles/tokens.css` 的品牌／分類色近似值：paper、paperWarm、white、ink、navy、teal 與各 category color。
+- 色彩只能來自 `src/styles/variables.css` 的品牌／分類色近似值：paper、paperWarm、white、ink、navy、teal 與各 category color。
 - 左上角固定「本日有據」，右下角固定 `Evidence Today`；正式 OG 不出現「健康議題編輯平台」、「手機優先分享圖」或任何內部設計說明文字。
 - 禁止在 OG 圖裡放手機、平板、裝置框、preview mockup、AI 海報式素材或無助於辨識的大型裝飾。只保留品牌外框與兩段 CI 色角線。
 

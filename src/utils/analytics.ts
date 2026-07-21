@@ -242,8 +242,14 @@ function loadGtag(): void {
   if (typeof window !== 'undefined') {
     window.dataLayer = window.dataLayer || [];
     if (typeof window.gtag !== 'function') {
-      window.gtag = function (...args: unknown[]) {
-        window.dataLayer!.push(args);
+      // gtag.js recognises queued commands ONLY when each entry is the native
+      // `arguments` object. Pushing a plain array (e.g. `(...a) => push(a)`)
+      // makes gtag.js treat it as data-layer data and silently ignore it, so
+      // the `config` command — and every event — never reaches GA4 (page_view
+      // stays 0). Keep the canonical Google snippet form: push `arguments`.
+      window.gtag = function () {
+        // eslint-disable-next-line prefer-rest-params
+        window.dataLayer!.push(arguments);
       };
     }
   }

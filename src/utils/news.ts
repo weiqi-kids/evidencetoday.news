@@ -198,3 +198,25 @@ export function getNewsThumbnail(
   if (heroImage?.trim()) return heroImage.trim();
   return getFallbackImage(tags, category, meta);
 }
+
+/**
+ * 供結構化資料（NewsArticle.image）用的高解析圖網址：把圖庫圖（pexels/unsplash）的寬度參數
+ * 拉到 minWidth。Google Article/News 建議圖 ≥1200px 才有大圖/Top stories 待遇；頁面顯示仍可用較小尺寸。
+ * 非圖庫網址（本地 fallback SVG 等）原樣返回，不強加參數。
+ */
+export function schemaImageUrl(url: string, minWidth = 1200): string {
+  try {
+    const u = new URL(url);
+    if (u.hostname.includes('pexels.com') || u.hostname.includes('unsplash.com')) {
+      const w = Number(u.searchParams.get('w'));
+      if (!w || w < minWidth) {
+        u.searchParams.set('w', String(minWidth));
+        u.searchParams.delete('h'); // 移除高度，讓圖庫等比縮放、不變形
+      }
+      return u.toString();
+    }
+  } catch {
+    /* 相對路徑或非標準 URL：原樣返回 */
+  }
+  return url;
+}

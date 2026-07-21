@@ -1,0 +1,115 @@
+/* ==========================================================================
+   Design Tokens — Evidence Today (本日有據)
+   oklch color system, spacing, radius, and shadows.
+   Values are FINAL — validated through 4 rounds of review.
+   ========================================================================== */
+
+:root {
+  /* ---- Brand colors ---- */
+  --color-teal: oklch(0.38 0.08 200);
+  --color-navy: oklch(0.25 0.03 245);
+  --color-paper: oklch(0.96 0.01 90);
+  --color-ink: oklch(0.22 0.01 260);
+  --color-fog: oklch(0.89 0.01 220);
+  --color-coral: oklch(0.56 0.18 28);
+
+  /* ---- Category colors ---- */
+  --color-cat-article: oklch(0.45 0.09 195);
+  --color-cat-myth: oklch(0.48 0.14 30);
+  --color-cat-ingredient: oklch(0.48 0.10 140);
+  --color-cat-podcast: oklch(0.45 0.10 280);
+  --color-cat-video: oklch(0.45 0.12 65);
+  --color-cat-news: oklch(0.42 0.08 230);
+
+  /* ---- Verdict colors ---- */
+  --color-verdict-true: oklch(0.48 0.12 160);
+  --color-verdict-false: oklch(0.42 0.14 25);
+  --color-verdict-insufficient: oklch(0.50 0.05 240);
+  --color-verdict-contextual: oklch(0.50 0.10 75);
+
+  /* ---- Derived colors using color-mix() ---- */
+  --color-teal-subtle: color-mix(in oklch, var(--color-teal) 8%, var(--color-paper));
+  --color-teal-light: color-mix(in oklch, var(--color-teal) 14%, var(--color-paper));
+  --color-teal-hover: color-mix(in oklch, var(--color-teal) 85%, black);
+  --color-coral-hover: color-mix(in oklch, var(--color-coral) 85%, black);
+
+  /* ---- Muted ink（弱化文字語意色，達 WCAG AA）----
+     meta / 署名 / 圖片署名等淡字統一用這兩個 token（混合基底一律 paper，非 transparent，
+     以免疊在深/彩底時對比失準）。--color-ink-muted 對 paper 約 4.8:1（過 AA 正常字重），
+     --color-ink-subtle 較淡、僅用於大字或非必要註記。取代先前散落的 ink 55% 臨場 color-mix。 */
+  --color-ink-muted: color-mix(in oklch, var(--color-ink) 72%, var(--color-paper));
+  --color-ink-subtle: color-mix(in oklch, var(--color-ink) 60%, var(--color-paper));
+
+  /* ---- Dark background text system ---- */
+  --color-on-dark-heading: oklch(1.00 0 0);
+  --color-on-dark-body: oklch(0.85 0.01 220);
+  --color-on-dark-meta: oklch(0.75 0.01 220);
+  --color-on-dark-link: oklch(0.75 0.15 28);
+
+  /* ---- Spacing ---- */
+  --space-page-x: clamp(1rem, 0.5rem + 2vw, 2rem);
+  --space-page-y: clamp(2rem, 1.5rem + 2vw, 3rem);
+  --space-card-gap: clamp(0.75rem, 0.5rem + 1vw, 1.25rem);
+  --space-section-gap: clamp(2.5rem, 2rem + 2vw, 4rem);
+
+  /* ---- Border radius ---- */
+  --radius-pill: 9999px;
+  --radius-card: 1.5rem;
+  --radius-sm: 0.5rem;
+
+  /* ---- Shadows ---- */
+  --shadow-card: 0 1px 3px oklch(0 0 0 / 0.08);
+  --shadow-card-hover: 0 4px 12px oklch(0 0 0 / 0.12);
+
+  /* ---- Fluid type scale ----
+     check-design 規則 6：每個 --text-* 值一律 ≥18px（1.125rem）；clamp() 以最小值計，
+     禁止用 token 值「開小門」繞過 18px 下限。字級階梯集中於本檔（token 唯一真實來源），
+     由 scripts/check-design.mjs 的 checkLadder() 掃描本檔強制。
+     ── meta / caption / badge 原為 12–14px，2026-07-20 收斂到 18px 下限；三者現同值，
+        僅語意命名保留（差異靠字重/顏色），既有 var(--text-*) 引用不需改動。 */
+  --text-h1: clamp(2rem, 1.5rem + 2vw, 3rem);
+  --text-h2: clamp(1.625rem, 1.25rem + 1.5vw, 2rem);
+  --text-h3: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);
+  --text-body: 1.125rem;
+  --text-lead: clamp(1.125rem, 1rem + 0.5vw, 1.25rem);
+  --text-meta: 1.125rem;
+  --text-caption: 1.125rem;
+  --text-badge: 1.125rem;
+
+  /* ==== 遷移集中色（2026-07-20 check-design v2 導入）====
+     以下為原本散落元件/頁面的硬編色，「值原樣搬入、零視覺變動」集中於本檔
+     （規範：顏色只准出現在 variables.css）。後續應收斂進上方 oklch 語意系統；
+     元件端禁止再新增硬編色。 */
+
+  /* 純白（卡片底、深色區反白字；paper 為米白，兩者刻意不同） */
+  --color-white: #fff;
+
+  /* 深色 hero 遮罩/光暈與新聞卡陰影（news/[slug]、news/index） */
+  --overlay-white-08: rgb(255 255 255 / 0.08);
+  --overlay-white-22: rgb(255 255 255 / 0.22);
+  --overlay-black-45: rgb(0 0 0 / 0.45);
+  --shadow-news-card: 0 0.35rem 1rem rgb(0 0 0 / 0.14);
+
+  /* 圖片署名漸層底（ImagePicker） */
+  --overlay-photo-credit: rgb(0 0 0 / 0.7);
+
+  /* 闢謠方卡視覺（MythSquareCardVisual 主題盤） */
+  --myth-lemon-grad-a: #fffdf4;
+  --myth-lemon-grad-b: #edf7f0;
+  --myth-lemon-shape: #f4dd7c;
+  --myth-vitamin-grad-a: #fff9f0;
+  --myth-vitamin-grad-b: #fffdf7;
+  --myth-vitamin-shape: #ffcc80;
+  --myth-default-grad-a: #f8fafc;
+  --myth-default-grad-b: #eef2ff;
+  --myth-default-shape: #bfd3ff;
+  --myth-verdict-bg: #fff1db;
+  --myth-verdict-fg: #7a4b08;
+  --myth-evidence-bg: #e7efff;
+  --myth-evidence-fg: #1e3a8a;
+
+  /* 後台編輯器工具列（BodyEditor 注入 toast-ui 的 AI 按鈕） */
+  --editor-icon: #555;
+  --editor-hover-bg: #f4f4f4;
+  --editor-hover-border: #e5e5e5;
+}

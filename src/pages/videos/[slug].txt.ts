@@ -1,8 +1,9 @@
 import type { APIRoute, GetStaticPaths } from 'astro';
 import { getCollection } from 'astro:content';
+import { isPublicEntry } from '@/utils/visibility';
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const entries = await getCollection('videos', ({ data }) => !data.draft);
+  const entries = await getCollection('videos', ({ data }) => isPublicEntry(data));
   return entries.map((entry) => ({
     params: { slug: entry.id.replace(/\.[^.]+$/, '') },
     props: { entry },

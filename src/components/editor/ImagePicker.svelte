@@ -311,7 +311,7 @@
   .ip-panel {
     background: white; border-radius: var(--radius-card, 8px);
     width: min(720px, 100%); max-height: 90vh; overflow: auto;
-    box-shadow: var(--shadow-card-hover, 0 10px 40px rgba(0, 0, 0, 0.3));
+    box-shadow: var(--shadow-card-hover);
   }
   .ip-head { display: flex; align-items: center; gap: 1rem; padding: 0.75rem 1rem; border-bottom: 1px solid var(--color-fog); }
   .ip-head strong { font-family: var(--font-ui); }
@@ -347,7 +347,7 @@
   .ip-cell { position: relative; border: 2px solid transparent; border-radius: var(--radius-sm); padding: 0; background: none; cursor: pointer; line-height: 0; overflow: hidden; }
   .ip-cell.sel { border-color: var(--color-coral); }
   .ip-cell img { width: 100%; height: 110px; object-fit: cover; display: block; }
-  .ip-credit { position: absolute; left: 0; right: 0; bottom: 0; padding: 2px 6px; font-family: var(--font-ui); font-size: 0.62rem; line-height: 1.3; color: white; background: linear-gradient(transparent, rgba(0,0,0,0.7)); text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ip-credit { position: absolute; left: 0; right: 0; bottom: 0; padding: 2px 6px; font-family: var(--font-ui); font-size: 0.62rem; line-height: 1.3; color: white; background: linear-gradient(transparent, var(--overlay-photo-credit)); text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .ip-up-preview { width: 100%; max-height: 300px; object-fit: contain; border: 1px solid var(--color-fog); border-radius: var(--radius-sm); background: color-mix(in oklch, var(--color-paper) 60%, white); }
   .ip-big { width: 100%; max-height: 46vh; object-fit: contain; border: 1px solid var(--color-fog); border-radius: var(--radius-sm); background: color-mix(in oklch, var(--color-paper) 60%, white); }
 </style>

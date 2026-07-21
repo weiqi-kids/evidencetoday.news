@@ -7,7 +7,7 @@ const { class: className } = Astro.props;
 const classes = `search-bar${className ? ` ${className}` : ''}`;
 ---
 
-<div class={classes}>
+<form class={classes} role="search" method="get" action="/search/">
   <svg
     class="search-bar__icon"
     xmlns="http://www.w3.org/2000/svg"
@@ -26,11 +26,12 @@ const classes = `search-bar${className ? ` ${className}` : ''}`;
   </svg>
   <input
     type="search"
+    name="q"
     class="search-bar__input"
     placeholder="搜尋健康議題、迷思、原料"
     aria-label="搜尋健康議題、迷思、原料"
   />
-</div>
+</form>
 
 <style>
   .search-bar {

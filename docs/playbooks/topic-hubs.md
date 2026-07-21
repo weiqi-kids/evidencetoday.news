@@ -12,6 +12,17 @@
 | `src/pages/topics/[slug].astro` | 各主題頁，依 `matchKeywords` 自動收斂內容 + FAQPage JSON-LD |
 | `src/pages/index.astro` | 首頁「健康專題」區塊（讀 `TOPICS` 渲染卡片） |
 | `src/components/blocks/Footer.astro` | 頁尾「健康專題」連結 |
+| `src/components/blocks/TopNav.astro` | 導覽列「健康專題」→ `/topics/`（全站內鏈入口） |
+| `src/pages/articles/[slug].astro` | 文章頁 spoke→hub 回鏈：用 `matchesTopic()` 自動列出「所屬健康專題」 |
+
+### 目前的 hubs（11 個）
+`omega-3` / `lutein` / `calcium-vitamin-d` / `supplement-guide` / `blood-lipids` / `blood-sugar` / `liver-kidney-test`，
+以及 2026-07-12 新增：`sleep`（睡眠與助眠）/ `womens-health`（更年期與女性健康）/ `sports-nutrition`（運動營養與肌肉）/ `gut-health`（腸道健康與菌相）。
+新增這四個是為了補「已達 5+ 篇卻沒有 pillar page 的最大內容群」，其中睡眠是站上最大叢集。
+
+### hub↔spoke 雙向內鏈
+- **hub→spoke**：`/topics/<slug>/` 依 `matchKeywords` 自動收斂內容（既有機制）。
+- **spoke→hub**：文章單篇頁（`articles/[slug].astro`）用同一個 `matchesTopic()` 反查本文所屬專題，渲染「所屬健康專題」膠囊連結；零手工維護、新文章自動生效。
 
 ## 修改流程
 
@@ -31,7 +42,7 @@
 - 各區塊只在「真的有比對到內容」時渲染，避免空區塊。
 
 ## 常見陷阱
-- **關鍵字太廣**會把不相關內容掃進來（例如單一個「鈣」字）。優先用較專一的詞，並以 `title + tags` 為比對範圍（不掃內文，降低雜訊）。
+- **關鍵字太廣**會把不相關內容掃進來（例如單一個「鈣」字）。優先用較專一的詞，並以 `title + tags` 為比對範圍（不掃內文，降低雜訊）。2026-07-12 已把 `supplement-guide` 過廣的「行銷／誇大／偽科學」關鍵字移除（原本掃進 50+ 篇稀釋主題性），改留專一詞＋補「堆疊／交互作用」。
 - **未來 publishDate / draft / under-review** 內容不會進主題頁（共用 `isPublicEntry`，見 `src/utils/visibility.ts`）。
 - 新增主題後務必確認 sitemap（`dist/sitemap-0.xml`）有 `/topics/<slug>/`。
 

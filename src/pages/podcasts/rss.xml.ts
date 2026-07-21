@@ -2,13 +2,14 @@ import rss from '@astrojs/rss';
 import type { APIContext } from 'astro';
 import { getCollection } from 'astro:content';
 import { stripPodcastSlug } from '@/utils/podcasts';
+import { isPublicEntry } from '@/utils/visibility';
 
 function stripExt(id: string): string {
   return id.replace(/\.[^.]+$/, '');
 }
 
 export async function GET(context: APIContext) {
-  const podcasts = await getCollection('podcasts', ({ data }) => !data.draft);
+  const podcasts = await getCollection('podcasts', ({ data }) => isPublicEntry(data));
 
   return rss({
     title: '本日有據 — Podcast',

@@ -13,6 +13,7 @@ import { fmtDate } from '@/utils/date';
 import { stripPodcastSlug } from '@/utils/podcasts';
 import type { MythVerdict } from '@/utils/myths/schema';
 import { contentSocial } from '@/utils/social-meta.mjs';
+import { isPublicEntry } from '@/utils/visibility';
 
 function stripExt(id: string): string {
   return id.replace(/\.[^.]+$/, '');
@@ -39,7 +40,7 @@ function parseDurationToIsoDuration(value: string): string | undefined {
 }
 
 export async function getStaticPaths() {
-  const entries = await getCollection('videos', ({ data }) => !data.draft);
+  const entries = await getCollection('videos', ({ data }) => isPublicEntry(data));
   return entries.map((entry) => ({ params: { slug: entry.id.replace(/\.[^.]+$/, '') }, props: { entry } }));
 }
 
@@ -57,7 +58,7 @@ const relatedPodcasts = data.relatedPodcasts ? (await Promise.all(data.relatedPo
 
 const requestedRelatedVideos = data.relatedVideos ? (await Promise.all(data.relatedVideos.map((id) => getEntry('videos', id)))).filter(Boolean).filter((video) => stripExt(video.id) !== slug) : [];
 const fallbackVideos = requestedRelatedVideos.length === 0
-  ? (await getCollection('videos', ({ data: videoData }) => !videoData.draft))
+  ? (await getCollection('videos', ({ data: videoData }) => isPublicEntry(videoData)))
       .filter((video) => stripExt(video.id) !== slug)
       .filter((video) => video.data.tags.some((tag) => data.tags.includes(tag)))
       .slice(0, 3)

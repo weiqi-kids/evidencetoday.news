@@ -15,7 +15,7 @@
 
 ## 鎖定參數（動之前必看）
 
-### 當前 deploy pipeline（build → deploy 兩個 job）
+### 當前 deploy pipeline（build → deploy → indexnow 三個 job）
 
 ```
 build (ubuntu-latest)
@@ -23,6 +23,9 @@ build (ubuntu-latest)
 ├─ setup pnpm v9
 ├─ setup Node 20 (cache: pnpm)
 ├─ pnpm install --frozen-lockfile
+├─ pnpm check:news        ← 擋部署 gate
+├─ pnpm content:audit     ← 擋部署 gate
+├─ pnpm check:myths       ← 擋部署 gate（2026-07-12 新增）
 ├─ pnpm build
 │   ├─ prebuild: pnpm run sync:youtube      ← fail-loud, no fallback
 │   ├─ astro build
@@ -34,7 +37,15 @@ build (ubuntu-latest)
 
 deploy (ubuntu-latest, needs: build)
 └─ deploy-pages@v5
+
+indexnow (ubuntu-latest, needs: deploy)   ← 2026-07-20 加入，搜尋引擎收錄
+├─ if: push || workflow_dispatch（排除每小時 schedule，避免洗版）
+├─ checkout + setup Node 22
+├─ sleep 20（等 Pages CDN 傳播）
+└─ node scripts/indexnow-submit.mjs（抓上線 sitemap 全量 URL → POST IndexNow；失敗 exit 0 不擋）
 ```
+
+> `indexnow` job 的 `SITE_URL` / `INDEXNOW_KEY` 走 job `env`（金鑰非機密，明碼；同步 `public/<KEY>.txt`）。乾跑：`SITE_URL=https://evidencetoday.news INDEXNOW_KEY=<key> node scripts/indexnow-submit.mjs --dry`。細節見 `docs/playbooks/geo-offsite.md`「IndexNow」。
 
 ### Build artifacts produced by sync (不入 repo)
 
@@ -52,6 +63,23 @@ deploy (ubuntu-latest, needs: build)
 - `postbuild` 先跑 `node scripts/subset-fonts.mjs`：掃 `dist` 全站 HTML 實際用字，把每個繁中權重（Noto Sans TC 400/700、Noto Serif TC 700）依碼位切成 ~200 字一段的 woff2，改寫 `_astro/*.css` 的 `@font-face`（帶 `unicode-range` + `font-display:optional`），並刪掉舊整包 woff2/woff。純邏輯在 `scripts/lib/font-slicing.mjs`（有 vitest 可測）。
 - **新增/移除繁中字重時**：同步改 `Base.astro` 的 import 與 `subset-fonts.mjs` 的 `WEIGHTS` 陣列，兩邊要一致，否則該權重不會被切塊（會 fallback 到整包或缺字）。
 - 依賴 `subset-font`（package.json）。基線量測：完整版約 351 條 `@font-face` / 339 個 woff2 / 8.4MB；切塊後約 50 條 / 50 檔 / 1.7MB，且每頁只下載 `unicode-range` 命中的切片。
+
+### 設計規範 gate（2026-07-20 加入，會擋部署）
+
+`pnpm build` 現為 `node scripts/check-design.mjs && astro build`——build 前先跑設計規範守門 v2（六條：禁 px 字級／顏色只准 `src/styles/variables.css`／禁 `!important`（遷移期遞延，見該檔 TODO）／禁外部 CDN／css 白名單 `src/styles/{variables,global}.css`／`--text-*` 值 ≥18px），違規即 build fail、不部署。規則詳見 README「CSS / RWD 通用規範」。
+
+### 失敗告警（notify-failure job，2026-07-20 加入）
+
+`deploy.yml` 末段有 `notify-failure` job（`needs: [build, deploy, indexnow]`、`if: failure()`）：build/deploy/indexnow 任一 fail 就發 Slack 到站台頻道要求修正，修正 push 後 workflow 自動重跑＝重審。需 repo secrets `SLACK_BOT_TOKEN`、`SLACK_CHANNEL_ID`；**secrets 未設時靜默略過（不影響管線）**。
+
+### 內容把關 gate（deploy.yml build job 內，會擋部署）
+
+`deploy.yml` 的 build job 依序跑三道**會擋部署**的內容 gate（任一失敗 → build 中斷 → 不部署）：
+1. `pnpm check:news`：每篇非 draft 的 news 須有可點來源連結。
+2. `pnpm content:audit`：擋 `banned-opening`（模板化第一人稱開頭）+ `ai-phrase`（不是…而是／換句話說／我一直覺得…）+ `vague-reference`（研究顯示／文獻回顧…）；`raw-enum` 僅警告。規範見 `CLAUDE.md` 硬規則 7a 與 `docs/content-guide.md`。
+3. `pnpm check:myths`（2026-07-12 加入 deploy）：已發佈 myths 篇數須等於 `scripts/check-myth-quality.mjs` 的 `EXPECTED_PUBLISHED_COUNT`、8 個固定 body 區塊齊全、藍/紅 reasoningCards 各 ≥2 點、references URL ≥2、固定醫療提醒句等。**增刪已發佈闢謠時務必同步改該常數**，否則此 gate 會擋部署。
+
+> 注意：另有獨立的 `content-audit.yml` workflow（PR/push 時跑，提供行內 annotation），但**真正擋部署的是 deploy.yml 裡這道 step**——獨立 workflow 紅燈不會阻止 Pages 部署，2026-06-23 已把 `content:audit` 加進 deploy build job 補上這個缺口。
 
 ### Action 版本鎖定
 

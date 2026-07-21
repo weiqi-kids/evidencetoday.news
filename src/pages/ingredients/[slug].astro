@@ -92,6 +92,9 @@ const ingredientBreadcrumbSchema = {
   socialTitle={social.title}
   socialDescription={social.description}
   ogImage={social.image}
+  coverImage={data.coverImage}
+  coverAlt={data.coverAlt}
+  coverImageCredit={data.coverImageCredit}
   category="ingredient"
   publishDate={data.publishDate}
   updatedDate={data.updatedDate}
@@ -102,7 +105,7 @@ const ingredientBreadcrumbSchema = {
     { label: data.title },
   ]}
   references={data.references}
-  tldr={data.introduction}
+  citationAnswer={data.introduction}
 >
   <Fragment slot="head">
     <JsonLd data={ingredientArticleSchema} />

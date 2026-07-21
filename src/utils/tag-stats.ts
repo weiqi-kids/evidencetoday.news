@@ -1,4 +1,5 @@
 import { getCollection } from 'astro:content';
+import { isPublicEntry } from '@/utils/visibility';
 
 const COLLECTIONS = ['articles', 'myths', 'ingredients', 'podcasts', 'videos', 'news'] as const;
 
@@ -12,7 +13,7 @@ export async function getTopTags(limit = 20): Promise<TagCount[]> {
     await Promise.all(COLLECTIONS.map((c) => getCollection(c)))
   )
     .flat()
-    .filter((e: any) => !e.data.draft);
+    .filter((e: any) => isPublicEntry(e.data));
 
   const tagCounts = new Map<string, number>();
   for (const entry of allEntries) {

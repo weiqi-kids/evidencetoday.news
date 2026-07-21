@@ -1,6 +1,7 @@
 ---
 const navLinks = [
   { label: '文章', href: '/articles/' },
+  { label: '健康專題', href: '/topics/' },
   { label: 'Podcast', href: '/podcasts/' },
   { label: '短影音', href: '/videos/' },
   { label: '闢謠', href: '/myths/' },
@@ -34,6 +35,7 @@ const currentPath = Astro.url.pathname;
                 'topnav__link',
                 { 'is-active': currentPath.startsWith(link.href) },
               ]}
+              aria-current={currentPath.startsWith(link.href) ? 'page' : undefined}
             >
               {link.label}
             </a>
@@ -74,6 +76,7 @@ const currentPath = Astro.url.pathname;
               'topnav__mobile-link',
               { 'is-active': currentPath.startsWith(link.href) },
             ]}
+            aria-current={currentPath.startsWith(link.href) ? 'page' : undefined}
           >
             {link.label}
           </a>
@@ -92,6 +95,15 @@ const currentPath = Astro.url.pathname;
       const isOpen = hamburger.getAttribute('aria-expanded') === 'true';
       hamburger.setAttribute('aria-expanded', String(!isOpen));
       mobileMenu.hidden = isOpen;
+    });
+
+    // 跨到桌機斷點時重置行動選單狀態（避免「開著選單放大視窗後 aria 狀態殘留」）
+    const desktopQuery = window.matchMedia('(min-width: 1024px)');
+    desktopQuery.addEventListener('change', (e) => {
+      if (e.matches) {
+        hamburger.setAttribute('aria-expanded', 'false');
+        mobileMenu.hidden = true;
+      }
     });
   }
 </script>
@@ -144,7 +156,7 @@ const currentPath = Astro.url.pathname;
     display: none;
   }
 
-  @media (min-width: 900px) {
+  @media (min-width: 1024px) {
     .topnav__nav {
       display: block;
       align-self: stretch;
@@ -182,6 +194,8 @@ const currentPath = Astro.url.pathname;
 
   .topnav__link.is-active {
     color: var(--color-teal);
+    /* 非顏色相依的目前頁指示（底部指示條），不影響連結高度 */
+    box-shadow: inset 0 -3px 0 var(--color-teal);
   }
 
   .topnav__actions {
@@ -227,7 +241,7 @@ const currentPath = Astro.url.pathname;
     background-color: var(--color-teal-subtle);
   }
 
-  @media (min-width: 900px) {
+  @media (min-width: 1024px) {
     .topnav__hamburger {
       display: none;
     }
@@ -239,9 +253,9 @@ const currentPath = Astro.url.pathname;
     background-color: var(--color-paper);
   }
 
-  @media (min-width: 900px) {
+  @media (min-width: 1024px) {
     .topnav__mobile {
-      display: none !important;
+      display: none;
     }
   }
 

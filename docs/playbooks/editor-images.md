@@ -113,7 +113,32 @@
 - `SeoFields.svelte` 的 `date` 欄位曾因 js-yaml 把 `publishDate` 解析成 **Date 物件**而顯示空白，使用者一觸碰即寫回 `''` → `z.coerce.date('')` 驗證失敗 → **整筆 `save()` 中止、連封面一起沒 commit**。已用 `toDateInputValue()` 修掉（細節見 [editor-spine.md「常見陷阱」](./editor-spine.md)）。**任何新增的 `date` 型欄位都要走 `toDateInputValue()`**。
 - 教訓：存檔是「全有全無」的單一 commit（`EditorPanel.save()`）。**任一必填欄位驗證失敗，封面圖就一起被丟**。排查封面沒上時，先確認 Zod gate 有沒有默默擋下。
 
-### C. 用 `gh` token 直接呼叫 `/stock` worker 批次補封面（headless）
+### C. 本地封面路徑在 production build 全數判定「不存在」的根因（2026-07-18 修）
+
+- `ArticleCard.astro`／`IngredientCard.astro`／`Article.astro` 的封面安全守衛，對本地 `/…` 路徑原本用
+  `existsSync(new URL('../../../public${coverImage}', import.meta.url))` 判斷檔案是否存在。這段相對路徑
+  數學是拿**元件原始 src 檔案的目錄深度**去推算 `public/` 在哪；`astro dev` 下每個元件各自是一個 Vite
+  模組，`import.meta.url` 忠實反映原始 src 路徑，因此開發模式測不出問題。
+- 但 **production build（`astro build`，`pnpm dev` 之外的路徑）會把元件打包進 Rollup chunk**，多個原本
+  分散的 src 檔案合併後共用同一個 chunk 檔的 `import.meta.url`；元件原始目錄深度與 chunk 實際落點不再
+  對應，`../../../public` 這類相對推算因而失準——**本地封面路徑因此全數被誤判為不存在，退回品牌灰底
+  佔位卡**。外部 `http(s)` 網址不受影響（該分支不會走到 `existsSync`），這正是「近期外連圖網址的文章都
+  正常、舊有本地 SVG 封面的成分解析全數空白」的真正原因，實測影響線上 27 篇成分解析（幾乎全部本地
+  SVG 封面）＋當時新增卻漏填封面的 10 篇文章／成分解析。三處元件的相對層數也彼此不一致
+  （`ArticleCard`/`IngredientCard` 用 `../../../`、`Article.astro` 用 `../../`），巧合下 `Article.astro`
+  在此次事故當下仍矇對，但屬同一個脆弱寫法、遲早會因下次重構打包深度改變而跟著壞。
+- **修法**：改用 `existsSync(join(process.cwd(), 'public', coverImage))`（`node:path` 的 `join`）。
+  `astro build` 執行時的行程 cwd 恆為專案根目錄（本機 `pnpm build`、GitHub Actions checkout 後都是），
+  不受 Rollup 怎麼打包、chunk 落在哪個虛擬路徑影響，dev/build 兩種環境一致可靠。**日後任何要用
+  `existsSync` 判斷 `public/` 下檔案是否存在的地方，一律用 `process.cwd()` 為基準，不要用
+  `import.meta.url` 做相對路徑推算。**
+- 驗證方式：`pnpm build` 後用 python/node 腳本正確切開每張卡片（`grep -c` 對單行 minified HTML
+  不可靠、只會數「有幾行含關鍵字」而非「出現幾次」），統計 `dist/articles/index.html` 與
+  `dist/ingredients/index.html` 裡 `--fallback` 卡片數是否歸零；並對照 `curl` 抓正式站 HTML 走同一套
+  統計，本機與正式站數字若不一致，代表本機建置環境（如 Windows 開發機）跟 CI 有落差，須以正式站
+  `curl` 結果為準。
+
+### D. 用 `gh` token 直接呼叫 `/stock` worker 批次補封面（headless）
 
 不想一篇篇開前台編輯器時，可直接打 AI worker 的 `/stock`（與編輯器同一來源，回真實 Unsplash/Pexels）：
 
@@ -133,7 +158,7 @@ curl -s -X POST https://evidencetoday-ai-suggest.lightman-chang.workers.dev/stoc
 5. 寫進 frontmatter 三欄：`coverAlt` / `coverImage`(=full) / `coverImageCredit`(=credit)。`pnpm build` 後確認佔位圖歸零。
 6. 尊重「有選的用選的圖」：**已有 `coverImage` 的文章不要覆蓋**；只補真的空的。若 rebase 撞到使用者前台剛存的封面，保留對方（theirs）。
 
-### D. 部署行為：`cancelled` ≠ 失敗
+### E. 部署行為：`cancelled` ≠ 失敗
 
 GitHub Pages 部署有 concurrency group，**同時只跑一個**。連續 push（例如使用者在前台連存幾次）會讓新部署**取消**還在跑的舊部署 → `gh run list` 看到一排 `cancelled` 是正常的，不是 build fail。只要最新 commit 是目標的祖先，**等最後一筆 `success` 即全部上線**；停止 push 約 5–6 分鐘（含 Pagefind 索引＋連結檢查）會自然完成。等待用 `until gh run list --workflow "Deploy to GitHub Pages" --limit 1 | grep -q completed; do sleep 20; done`。
 

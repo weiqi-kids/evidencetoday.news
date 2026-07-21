@@ -1,4 +1,5 @@
 import { buildPrompt } from './prompt';
+import { handleSlackInteract, getGate, putGate, renderPreviewHtml, type GateRecord } from './slack-gate';
 
 // 最小結構型別（避免相依 @cloudflare/workers-types，vitest/node 也能編譯；
 // runtime 的真實 KVNamespace / ExecutionContext 結構相容）。
@@ -36,6 +37,9 @@ export interface Env {
   // 非同步生圖工單暫存 + 工作佇列
   GEN_JOBS?: KvLike;
   GEN_QUEUE?: QueueLike;
+  // Slack ✅ 核准閘（按鈕互動）：驗簽 + 呼叫 Slack API。皆為 wrangler secret。
+  SLACK_SIGNING_SECRET?: string;
+  SLACK_BOT_TOKEN?: string;
 }
 
 export default {
@@ -406,6 +410,62 @@ export async function handle(request: Request, env: Env, ctx?: CtxLike): Promise
     const ai = (await aiRes.json()) as { content?: { type: string; text: string }[] };
     const suggestion = ai.content?.find((c) => c.type === 'text')?.text ?? '';
     return json({ suggestion }, 200, env);
+  }
+
+  // ── Slack ✅ 核准閘 ───────────────────────────────────────────────────────
+  // Slack 按鈕互動回呼（驗簽在 handler 內，不走 requirePush/CORS）。
+  if (request.method === 'POST' && url.pathname === '/slack/interact') {
+    return handleSlackInteract(request, env, ctx);
+  }
+
+  // 草稿預覽網頁（從 Slack 的「📄 預覽全文」連結按鈕在瀏覽器開啟）。公開、noindex，不需認證。
+  if (request.method === 'GET' && url.pathname === '/gate/preview') {
+    const id = url.searchParams.get('id') || '';
+    const rec = await getGate(env, id);
+    const html = rec
+      ? renderPreviewHtml(rec)
+      : '<!doctype html><meta charset="utf-8"><body style="font-family:sans-serif;max-width:640px;margin:3rem auto;padding:0 1rem"><h1>草稿不存在</h1><p>這份草稿可能已發佈、已退稿，或已過期。</p></body>';
+    return new Response(html, { status: rec ? 200 : 404, headers: { 'content-type': 'text/html; charset=utf-8' } });
+  }
+
+  // draft-cron 出草稿後存進 KV（供預覽網頁 + 狀態機）。以 GitHub push token 認證。
+  if (request.method === 'PUT' && url.pathname === '/gate/draft') {
+    const denied = await requirePush(request, env);
+    if (denied) return denied;
+    const b = (await request.json()) as Partial<GateRecord>;
+    if (!b.id || !b.channel || !b.slack_ts) return json({ error: '缺少 id/channel/slack_ts' }, 400, env);
+    const rec: GateRecord = {
+      id: b.id, type: b.type || '', slug: b.slug || '', title: b.title || b.slug || '',
+      summary: b.summary || '', content: b.content || '', channel: b.channel, slack_ts: b.slack_ts,
+      state: 'pending', updated: 0,
+    };
+    await putGate(env, rec);
+    return json({ ok: true }, 200, env);
+  }
+
+  // 主機 publish-approved 輪詢草稿狀態。以 GitHub push token 認證。
+  if (request.method === 'GET' && url.pathname === '/gate/state') {
+    const denied = await requirePush(request, env);
+    if (denied) return denied;
+    const id = url.searchParams.get('id');
+    if (!id) return json({ error: '缺少 id' }, 400, env);
+    const rec = await getGate(env, id);
+    if (!rec) return json({ state: 'unknown' }, 200, env);
+    return json({ state: rec.state, by: rec.by ?? null, title: rec.title }, 200, env);
+  }
+
+  // 主機發布完成後把狀態收斂為 published（含上線網址）；或退稿/過期清除後設 terminal。
+  if (request.method === 'PUT' && url.pathname === '/gate/state') {
+    const denied = await requirePush(request, env);
+    if (denied) return denied;
+    const { id, state, url: liveUrl } = (await request.json()) as { id?: string; state?: GateRecord['state']; url?: string };
+    if (!id || !state) return json({ error: '缺少 id/state' }, 400, env);
+    const rec = await getGate(env, id);
+    if (!rec) return json({ ok: true, note: 'gone' }, 200, env);
+    rec.state = state;
+    if (liveUrl) rec.url = liveUrl;
+    await putGate(env, rec);
+    return json({ ok: true }, 200, env);
   }
 
   return new Response('not found', { status: 404, headers: cors(env) });

@@ -1,10 +1,10 @@
 ---
-import { VERDICT_META, type MythVerdict } from '@/utils/myths/schema';
+import { VERDICT_META, displayVerdict, type MythVerdict } from '@/utils/myths/schema';
 interface Props { verdict: MythVerdict; size?: 'sm'|'lg'; class?: string; }
 const { verdict, size='sm', class: className } = Astro.props;
 const meta = VERDICT_META[verdict];
 ---
-<span class={`verdict verdict--${meta.tone} verdict--${size}${className ? ` ${className}` : ''}`} aria-label={`判讀結果：${verdict}，${meta.description}`}><span aria-hidden="true">{meta.icon}</span>{size==='sm'?meta.shortLabel:verdict}</span>
+<span class={`verdict verdict--${meta.tone} verdict--${size}${className ? ` ${className}` : ''}`} aria-label={`判讀結果：${displayVerdict(verdict)}，${meta.description}`}><span aria-hidden="true">{meta.icon}</span>{size==='sm'?meta.shortLabel:displayVerdict(verdict)}</span>
 <style>
 .verdict {
   display: inline-flex;

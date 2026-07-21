@@ -20,7 +20,8 @@
 |------|---------|------|
 | 結構化資料實體圖（@id） | `src/layouts/Base.astro` + `src/utils/schema-org.ts` | **每頁**由 Base layout 輸出 `@graph`：`Organization`（`@id` `…/#organization`，含 logo / `SITE_SAMEAS`）+ `WebSite`（`@id` `…/#website`，含 SearchAction）。內容頁的 `publisher` / `isPartOf` 只以 `{ '@id': … }` 參照，讓搜尋引擎與 AI 跨頁合併實體。常數與 builder 集中在 `schema-org.ts`（`ORG_ID` / `WEBSITE_ID` / `PUBLISHER_REF` / `WEBSITE_REF` / `buildSiteGraph`）。 |
 | Schema.org JSON-LD（內容頁） | 每個頁面的 `<head>` | Article+MedicalWebPage（multi-type，帶 `@id …#article`、`mainEntityOfPage`）、FAQPage、VideoObject、BreadcrumbList；文章/闢謠頁 author 透過 `buildPerson()` 帶 `@id`（`…/#person`）與 sameAs；publisher→`ORG_ID`、isPartOf→`WEBSITE_ID`；`references` 透過 `buildCitations()` 輸出 schema.org `citation`（CreativeWork：name/url/publisher/date/genre/doi）；成分解析頁 author/reviewedBy/publisher 皆為 `ORG_ID` 參照，含 `lastReviewed`、`medicalAudience`（Patient）；myths 頁額外輸出 ClaimReview（`buildClaimReview`）；健康專題頁（`/topics/`）輸出 CollectionPage + ItemList + FAQPage；作者頁輸出 Person（`buildPerson`，**羅揚為牙醫學學歷背景，非執業牙醫師，無 `hasCredential` 執照宣稱**） |
-| Open Graph + Twitter Card | `src/layouts/Base.astro` | og:title, og:description, og:type, twitter:card |
+| Open Graph + Twitter Card | `src/layouts/Base.astro` | og:title, og:description, og:type, twitter:card；og:image 用各頁 `/og-static/*.png`（分類圖手動上傳；作者頁專屬 `author-luo-yang.png` 由 `scripts/generate-author-og.ts` 經 satori→sharp 一次性生成，文案/版面變更時重跑、commit 入 git） |
+| 靜態頁 SERP title / description | `src/utils/social-meta.mjs`（`STATIC_SOCIAL`） | 首頁/政策頁/聯絡/**作者頁**的 `<title>`、`<meta description>`、OG 皆取自 `STATIC_SOCIAL`；作者頁 `src/pages/authors/luo-yang/index.astro` 直連 `Base`、**無 articles 的 `seoTitle` 機制**，改 snippet ＝改此處字串。**作者頁文案 COI 鐵則**：權威錨定「實務經驗」（長年身處營養保健產業、看穿行銷話術），**禁把「樂地滋負責人」當招牌、禁證照/牙醫式宣稱**；COI 以經驗化敘述＋ `/disclosure` 處理（見 commit 203172a） |
 | Canonical URL | `src/layouts/Base.astro` | 每頁自動設定 |
 | sitemap.xml | `@astrojs/sitemap` + `serialize` | 每篇內容頁輸出 `lastmod`（`updatedDate ?? publishDate`，來源 `scripts/lib/content-dates.mjs` 掃 frontmatter）；`/admin`、`/tags/*`（noindex,follow）以 `filter` 排除；舊 slug 轉址不進 sitemap |
 | 前台可見性（draft / 未來 publishDate / under-review） | `src/utils/visibility.ts`（`isPublicEntry`） | 首頁分類數字、各分類列表、內容頁 `getStaticPaths`、健康專題頁共用單一判斷，確保數字一致且不外露未發布內容 |
@@ -59,7 +60,7 @@
 | YouTube 嵌入 | 使用 iframe lazy embed，非直接載入 |
 | Astro 靜態輸出 | 零 JS baseline，只有互動元件產生 JS bundle |
 | d3.js 按需引入 | 只引入 d3-timer、d3-scale 等子模組 |
-| font-display: swap | `src/styles/typography.css` 所有 `@font-face` 已設定 `font-display: swap` |
+| font-display: swap | 字體經 `@fontsource/*`（Base.astro 匯入）自託管，其 `@font-face` 內建 `font-display: swap`（字級/字體變數在 `src/styles/global.css` typography 區） |
 
 ## 容易搞混的元件
 

@@ -5,6 +5,7 @@ import JsonLd from '@/components/seo/JsonLd.astro';
 import { buildClaimReview, buildPerson, buildCitations, PUBLISHER_REF, WEBSITE_REF } from '@/utils/schema-org';
 import { isPublicEntry } from '@/utils/visibility';
 import MythSquareCardVisual from '@/components/myths/MythSquareCardVisual.astro';
+import VerdictBadge from '@/components/ui/VerdictBadge.astro';
 import { validateMythArticle } from '@/utils/myths/validate';
 import { displayVerdict } from '@/utils/myths/schema';
 import { contentSocial } from '@/utils/social-meta.mjs';
@@ -86,8 +87,12 @@ const healthReminder = '本文為健康資訊與迷思查證，不提供個人�
   </Fragment>
 
   <section class="block quick">
-    <div>
+    <div class="quick-panel">
       <h2>30 秒快速結論</h2>
+      <div class="quick-badges">
+        <VerdictBadge verdict={d.verdict} size="lg" />
+        <span class="pill evidence">證據強度：{d.evidenceLevel}</span>
+      </div>
     </div>
     <div>
       <ul>{quickItems.map((item) => <li>{item}</li>)}</ul>
@@ -165,10 +170,6 @@ document.getElementById('copy-btn')?.addEventListener('click', async () => { awa
     margin: 0 0 12px;
   }
 
-  .claim p {
-    font-size: 1.05rem;
-  }
-
   /* Quick conclusion — single column on mobile */
   .quick {
     background: color-mix(in oklch, var(--color-teal) 8%, white);
@@ -178,9 +179,16 @@ document.getElementById('copy-btn')?.addEventListener('click', async () => { awa
     gap: 1rem;
   }
 
+  .quick-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
   .quick-badges {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     gap: 0.6rem;
   }
 
@@ -192,29 +200,14 @@ document.getElementById('copy-btn')?.addEventListener('click', async () => { awa
     font-weight: 700;
   }
 
-  .verdict {
-    background: color-mix(in oklch, var(--color-cat-myth) 14%, white);
-    color: var(--color-cat-myth);
-    border: 1px solid color-mix(in oklch, var(--color-cat-myth) 30%, var(--color-fog));
-  }
-
   .evidence {
     background: color-mix(in oklch, var(--color-teal) 10%, white);
     color: var(--color-teal);
     border: 1px solid color-mix(in oklch, var(--color-teal) 28%, var(--color-fog));
   }
 
-  .quick-summary {
-    font-size: clamp(1rem, 0.9rem + 0.5vw, 1.25rem);
-    font-weight: 600;
-  }
-
   .flow {
     background: color-mix(in oklch, var(--color-paper) 78%, white);
-  }
-
-  .belief {
-    background: color-mix(in oklch, var(--color-cat-myth) 6%, white);
   }
 
   .evidence-list {

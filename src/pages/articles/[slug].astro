@@ -17,6 +17,7 @@ import ReadingEngagement from '@/components/blocks/ReadingEngagement.svelte';
 import { buildPerson, buildCitations, PUBLISHER_REF, WEBSITE_REF } from '@/utils/schema-org';
 import { isPublicEntry } from '@/utils/visibility';
 import { getAutoRelated } from '@/utils/related';
+import { TOPICS, matchesTopic } from '@/data/topics';
 
 function stripExt(id: string): string {
   return id.replace(/\.[^.]+$/, '');
@@ -75,6 +76,9 @@ const relatedVideos = hasManual ? manualVideos : auto.videos;
 const relatedPodcasts = hasManual ? manualPodcasts : auto.podcasts;
 
 const hasRelated = relatedArticles.length > 0 || relatedMyths.length > 0 || relatedIngredients.length > 0 || relatedVideos.length > 0 || relatedPodcasts.length > 0;
+
+/* spoke→hub 回鏈：本文所屬的健康專題（用關鍵字比對 title+tags 自動判斷） */
+const belongingTopics = TOPICS.filter((t) => matchesTopic(t, { title: data.title, tags: data.tags }));
 
 /* JSON-LD structured data */
 const slug = entry.id.replace(/\.[^.]+$/, '');
@@ -136,6 +140,9 @@ const breadcrumbSchema = {
   socialTitle={social.title}
   socialDescription={social.description}
   ogImage={social.image}
+  coverImage={data.coverImage}
+  coverAlt={data.coverAlt}
+  coverImageCredit={data.coverImageCredit}
   category="article"
   publishDate={data.publishDate}
   updatedDate={data.updatedDate}
@@ -169,8 +176,19 @@ const breadcrumbSchema = {
     )}
   </Fragment>
 
-  {hasRelated && (
+  {(hasRelated || belongingTopics.length > 0) && (
     <Fragment slot="after-content">
+      {belongingTopics.length > 0 && (
+        <nav class="topic-hubs" aria-label="所屬健康專題">
+          <h2 class="topic-hubs__title">所屬健康專題</h2>
+          <div class="topic-hubs__links">
+            {belongingTopics.map((t) => (
+              <a class="topic-hubs__link" href={`/topics/${t.slug}/`}>{t.name}</a>
+            ))}
+          </div>
+        </nav>
+      )}
+      {hasRelated && (
       <section class="related-content">
         <h2 class="related-content__title">相關內容</h2>
         <div class="related-content__grid">
@@ -223,6 +241,7 @@ const breadcrumbSchema = {
           ))}
         </div>
       </section>
+      )}
     </Fragment>
   )}
 
@@ -231,6 +250,47 @@ const breadcrumbSchema = {
 </Article>
 
 <style>
+  .topic-hubs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .topic-hubs__title {
+    font-family: var(--font-sans);
+    font-size: var(--text-h3);
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+
+  .topic-hubs__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .topic-hubs__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-family: var(--font-ui);
+    font-size: var(--text-meta);
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--color-teal);
+    background: var(--color-teal-subtle);
+    border-radius: 999px;
+    padding: 0.4rem 0.85rem;
+  }
+
+  .topic-hubs__link::before {
+    content: '專題';
+    font-size: 0.7em;
+    font-weight: 700;
+    opacity: 0.7;
+  }
+
   .related-content {
     display: flex;
     flex-direction: column;

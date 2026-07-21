@@ -1,13 +1,14 @@
 import rss from '@astrojs/rss';
 import type { APIContext } from 'astro';
 import { getCollection } from 'astro:content';
+import { isPublicEntry } from '@/utils/visibility';
 
 function stripExt(id: string): string {
   return id.replace(/\.[^.]+$/, '');
 }
 
 export async function GET(context: APIContext) {
-  const articles = await getCollection('articles', ({ data }) => !data.draft);
+  const articles = await getCollection('articles', ({ data }) => isPublicEntry(data));
 
   return rss({
     title: '本日有據 — 文章',

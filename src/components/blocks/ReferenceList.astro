@@ -1,5 +1,6 @@
 ---
 import Badge from '../ui/Badge.astro';
+import { referenceTypeLabel } from '@/utils/evidence-labels';
 
 interface Props {
   references: Array<{
@@ -26,7 +27,7 @@ const { references } = Astro.props;
             ref.title
           )}
         </span>
-        <Badge variant="evidence">{ref.type}</Badge>
+        <Badge variant="evidence">{referenceTypeLabel(ref.type)}</Badge>
       </li>
     ))}
   </ol>

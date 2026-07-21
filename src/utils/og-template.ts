@@ -133,3 +133,129 @@ export async function generateOgSvg(title: string, collection: string): Promise<
     ],
   });
 }
+
+interface AuthorOgInput {
+  name: string;
+  subtitle: string;
+  badge: string;
+  tagline: string;
+}
+
+// 作者頁專屬文字 OG（人物卡，無人臉）。版面沿用分類模板的 teal 底與品牌頁尾。
+// 由 scripts/generate-author-og.ts 一次性柵格化為 /og-static/author-luo-yang.png。
+export async function generateAuthorOgSvg({ name, subtitle, badge, tagline }: AuthorOgInput): Promise<string> {
+  const fonts = await loadFonts();
+
+  const markup = {
+    type: 'div',
+    props: {
+      style: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        width: '1200px',
+        height: '630px',
+        backgroundColor: TEAL_HEX,
+        padding: '60px 80px',
+      },
+      children: [
+        {
+          type: 'div',
+          props: {
+            style: { display: 'flex', marginBottom: '28px' },
+            children: {
+              type: 'span',
+              props: {
+                style: {
+                  backgroundColor: 'rgba(255, 255, 255, 0.16)',
+                  color: 'white',
+                  padding: '6px 20px',
+                  borderRadius: '9999px',
+                  fontSize: '22px',
+                  fontWeight: 700,
+                },
+                children: badge,
+              },
+            },
+          },
+        },
+        {
+          type: 'div',
+          props: {
+            style: {
+              display: 'flex',
+              color: 'white',
+              fontSize: '104px',
+              fontWeight: 700,
+              lineHeight: 1.1,
+            },
+            children: name,
+          },
+        },
+        {
+          type: 'div',
+          props: {
+            style: {
+              display: 'flex',
+              color: 'rgba(255, 255, 255, 0.92)',
+              fontSize: '40px',
+              fontWeight: 400,
+              marginTop: '20px',
+            },
+            children: subtitle,
+          },
+        },
+        {
+          type: 'div',
+          props: {
+            style: {
+              display: 'flex',
+              color: 'rgba(255, 255, 255, 0.82)',
+              fontSize: '32px',
+              fontWeight: 400,
+              marginTop: '14px',
+            },
+            children: tagline,
+          },
+        },
+        {
+          type: 'div',
+          props: {
+            style: {
+              display: 'flex',
+              marginTop: 'auto',
+              borderTop: '1px solid rgba(255, 255, 255, 0.4)',
+              paddingTop: '20px',
+            },
+            children: {
+              type: 'span',
+              props: {
+                style: { color: 'white', fontSize: '24px', fontWeight: 400 },
+                children: '本日有據 Evidence Today',
+              },
+            },
+          },
+        },
+      ],
+    },
+  };
+
+  return satori(markup as any, {
+    width: 1200,
+    height: 630,
+    fonts: [
+      {
+        name: 'Noto Sans TC',
+        data: fonts.regular,
+        weight: 400,
+        style: 'normal' as const,
+      },
+      {
+        name: 'Noto Sans TC',
+        data: fonts.bold,
+        weight: 700,
+        style: 'normal' as const,
+      },
+    ],
+  });
+}

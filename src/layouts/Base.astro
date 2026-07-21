@@ -3,8 +3,7 @@ import TopNav from '@/components/blocks/TopNav.astro';
 import Footer from '@/components/blocks/Footer.astro';
 import JsonLd from '@/components/seo/JsonLd.astro';
 import '@/styles/global.css';
-import '@/styles/rwd-fixes.css';
-import { DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE } from '@/utils/social-meta.mjs';
+import { DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE, THEME_COLOR } from '@/utils/social-meta.mjs';
 import { buildSiteGraph } from '@/utils/schema-org';
 
 /* Self-hosted fonts via fontsource — 只載入需要的子集進入點：
@@ -59,7 +58,7 @@ const siteGraph = buildSiteGraph();
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#103B44" />
+    <meta name="theme-color" content={THEME_COLOR} />
 
     <title>{title}</title>
     <meta name="description" content={description} />

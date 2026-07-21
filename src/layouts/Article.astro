@@ -11,6 +11,8 @@ import FaqAccordion from '@/components/blocks/FaqAccordion.astro';
 import ReferenceList from '@/components/blocks/ReferenceList.astro';
 import MedicalDisclaimer from '@/components/blocks/MedicalDisclaimer.astro';
 import ShareButtons from '@/components/blocks/ShareButtons.astro';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 
 interface Props {
   title: string;
@@ -19,6 +21,9 @@ interface Props {
   socialTitle?: string;
   socialDescription?: string;
   ogImage?: string;
+  coverImage?: string;
+  coverAlt?: string;
+  coverImageCredit?: string;
   category: 'article' | 'myth' | 'ingredient';
   variant?: 'prose' | 'cards';
   publishDate: Date;
@@ -44,6 +49,9 @@ const {
   socialTitle,
   socialDescription,
   ogImage,
+  coverImage,
+  coverAlt,
+  coverImageCredit,
   category,
   variant = 'prose',
   publishDate,
@@ -65,6 +73,19 @@ const {
 // 分享列：用 canonical 絕對網址。myths 單篇刻意極簡（見 CLAUDE.md 與 myths playbook），不加分享列。
 const shareUrl = new URL(Astro.url.pathname, Astro.site).href;
 const showShare = category !== 'myth';
+
+// 封面圖安全守衛：外連 http(s) 直接採用；本地 `/…` 路徑須確認 public 下真的存在，
+// 避免填錯路徑在詳情頁露破圖（與 ArticleCard 同一套判斷）。用 process.cwd() 而非
+// import.meta.url 相對路徑：production build 打包後元件的 import.meta.url 會指向 bundle
+// chunk 位置而非原始 src 路徑，相對推算的 `../` 層數會失準；astro build 執行時 cwd 恆為
+// 專案根目錄，兩種環境都可靠。
+const safeCover =
+  typeof coverImage === 'string' &&
+  (coverImage.startsWith('http://') ||
+    coverImage.startsWith('https://') ||
+    (coverImage.startsWith('/') && existsSync(join(process.cwd(), 'public', coverImage))))
+    ? coverImage
+    : undefined;
 ---
 
 <Base title={seoTitle ?? `${title}｜本日有據`} description={description} ogTitle={socialTitle} ogDescription={socialDescription ?? description} ogImage={ogImage} ogType="article">
@@ -89,6 +110,13 @@ const showShare = category !== 'myth';
         />
       )}
     </header>
+
+    {safeCover && (
+      <figure class="article-cover">
+        <img src={safeCover} alt={coverAlt || title} loading="eager" />
+        {coverImageCredit && <figcaption class="article-cover__credit">圖片／{coverImageCredit}</figcaption>}
+      </figure>
+    )}
 
     <div class:list={['article-grid', `article-grid--${variant}`]}>
       <div class="article-content">
@@ -150,6 +178,26 @@ const showShare = category !== 'myth';
 
   .article-header h1 {
     max-width: 40ch;
+  }
+
+  /* 詳情頁主視覺封面：固定 16/9、桌機以 max-height 收斂避免過高，object-fit 裁切保比例 */
+  .article-cover {
+    margin-block: 0 clamp(1rem, 0.5rem + 1.5vw, 1.75rem);
+  }
+
+  .article-cover img {
+    width: 100%;
+    max-height: 24rem;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    display: block;
+    border-radius: var(--radius-card);
+  }
+
+  .article-cover__credit {
+    margin-top: 0.5rem;
+    font-size: var(--text-meta);
+    color: var(--color-ink-muted);
   }
 
   .article-grid {

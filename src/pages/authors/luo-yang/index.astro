@@ -4,8 +4,9 @@ import { getCollection } from 'astro:content';
 import { STATIC_SOCIAL } from '@/utils/social-meta.mjs';
 import JsonLd from '@/components/seo/JsonLd.astro';
 import { buildPerson } from '@/utils/schema-org';
+import { isPublicEntry } from '@/utils/visibility';
 
-const curatedVideos = await getCollection('videos', ({ data }) => !data.draft);
+const curatedVideos = await getCollection('videos', ({ data }) => isPublicEntry(data));
 const featuredVideos = curatedVideos.slice(0, 5);
 const personSchema = { '@context': 'https://schema.org', ...buildPerson('羅揚') };
 ---
@@ -33,7 +34,7 @@ const personSchema = { '@context': 'https://schema.org', ...buildPerson('羅揚'
         <p class="hero-summary">主要負責本日有據的健康議題選題、研究資料整理與內容把關，希望把複雜的健康資訊整理成一般人看得懂、也能在生活中使用的內容。</p>
         <ul>
           <li><strong>身分：</strong>本日有據主編</li>
-          <li><strong>學科背景：</strong>牙醫學學歷背景、口腔衛生材料相關研究</li>
+          <li><strong>產業經驗：</strong>長年身處營養保健產業，熟悉成分、研究與行銷話術之間的落差（<a href="/disclosure/">相關商業利益揭露</a>）</li>
           <li><strong>Podcast：</strong>《喜聞樂健》主持人</li>
           <li><strong>關注主題：</strong>健康識讀、營養科學、預防醫學、公共衛生、熟齡健康溝通、保健食品觀念</li>
           <li><strong>聯絡：</strong><a href="mailto:evidencetodaynews@gmail.com">evidencetodaynews@gmail.com</a></li>
@@ -118,9 +119,8 @@ const personSchema = { '@context': 'https://schema.org', ...buildPerson('羅揚'
     <section class="card section-block">
       <h2>專業背景</h2>
       <ul class="plain-list">
-        <li>牙醫學學歷背景</li>
-        <li>口腔衛生材料相關研究背景</li>
-        <li>保健食品產業實務經驗</li>
+        <li>長年身處營養保健產業，熟悉成分、研究與行銷話術之間的落差</li>
+        <li>把產業內的第一線觀察，用於替讀者拆解保健資訊、看穿過度宣稱（相關商業利益揭露見 <a href="/disclosure/">利益揭露頁</a>）</li>
         <li>健康內容主編、Podcast 與健康教育內容製作經驗</li>
         <li>長期關注健康識讀、營養科學、預防醫學、公共衛生與熟齡健康溝通</li>
         <li>擅長將血液檢查、保健食品與營養議題整理成白話內容</li>
@@ -209,7 +209,7 @@ const personSchema = { '@context': 'https://schema.org', ...buildPerson('羅揚'
     padding: clamp(1.15rem, 1rem + 1.25vw, 2rem);
     background:
       radial-gradient(circle at top left, color-mix(in oklch, var(--color-teal) 10%, transparent), transparent 34%),
-      #fff;
+      var(--color-white);
   }
 
   .section-heading {

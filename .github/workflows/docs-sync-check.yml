@@ -41,10 +41,10 @@ jobs:
           echo ""
 
           # Functional paths (match by regex on path)
-          FUNCTIONAL=$(echo "$CHANGED" | grep -E '^(src/(components|layouts|styles|lib|utils)/|src/pages/.*\.(astro|ts|svelte)$|scripts/|\.github/workflows/|astro\.config\.mjs$|src/content\.config\.ts$|package\.json$)' || true)
+          FUNCTIONAL=$(echo "$CHANGED" | grep -E '^(src/(components|layouts|styles|lib|utils)/|src/pages/.*\.(astro|ts|svelte)$|scripts/|\.github/workflows/|astro\.config\.mjs$|src/content\.config\.ts$|package\.json$|ops/[^/]+\.sh$)' || true)
 
-          # Docs paths (README + docs/)
-          DOCS=$(echo "$CHANGED" | grep -E '^(README\.md$|AGENTS\.md$|docs/)' || true)
+          # Docs paths (README + AGENTS + docs/ + ops/README.md)
+          DOCS=$(echo "$CHANGED" | grep -E '^(README\.md$|AGENTS\.md$|docs/|ops/README\.md$)' || true)
 
           if [ -z "$FUNCTIONAL" ]; then
             echo "::notice::No functional code changes, skipping docs sync check."

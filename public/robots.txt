@@ -20,3 +20,4 @@ User-agent: PerplexityBot
 Allow: /
 
 Sitemap: https://evidencetoday.news/sitemap-index.xml
+Sitemap: https://evidencetoday.news/sitemap-news.xml

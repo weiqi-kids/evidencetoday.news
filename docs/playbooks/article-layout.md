@@ -153,6 +153,12 @@
 - `scripts/check-myth-quality.mjs` 需同步檢查 27 篇 published myths、快速結論至少 2 點、必要正文區塊、藍紅雙框、References 至少 2 個 URL，以及禁止套版句與已移除的舊區塊標題。
 - myths 單篇 `<head>` 同時輸出 `Article` 與 `ClaimReview` 兩個 JSON-LD 物件（array 形式，透過 `JsonLd.astro`）。ClaimReview 由 `src/utils/schema-org.ts` 的 `buildClaimReview()` 組裝，使用 `mythClaim`、`verdict`、`verdictSummary`、`publishDate`、`updatedDate`、`url`、`name`（fact-check 標題，帶 `social.title`）欄位。`reviewRating.alternateName` 用 `displayVerdict()`（`src/utils/myths/schema.ts`）修正 `需謹慎 → 須謹慎`，與頁面卡片顯示一致；該 helper 同時供前台卡片使用。不得新增前台可見區塊。
 
+## Myth references 驗證器放寬（2026-07-17）
+
+- `src/utils/myths/validate.ts`（執行期頁面驗證，`myths/[slug].astro` 於 build 時呼叫）原本要求每筆 reference 都有 `sourceType`，但 `content.schemas.ts` 的 `referenceSchema` 中 **`sourceType` 為 optional、`type` 才是必填**。早期部分闢謠只填了 `type`，能過 schema 與 `check:myths`，卻在**排程稿到期發布、首次被 build 渲染時**被這個執行期驗證器擋下（`references[N] 缺少 title/url/sourceType`），連帶整個 deploy build 失敗。
+- 已放寬為「`type` 或 `sourceType` 取一即可」：`!(ref.type || ref.sourceType)`。因 `type` 為 schema 必填、每筆 reference 必有，此改動**嚴格更寬鬆**（原本會過的照過、原本因缺 sourceType 而爆的現在也過），不會讓任何闢謠新壞。references 的 `sourceType` 顯示仍為選填（前台 `（類型：…）` 有值才顯示）。
+- 教訓：闢謠排程稿因未來日期不會在當下 build 被 render，`type`-only 這類問題要到發布當天才引爆；新增闢謠時 references 建議同時填 `type` 與 `sourceType`（`sourceType` 用「論文/官方資料/新聞/其他」等中文標籤，`type` 用 enum）。
+
 ## 全站 SEO / OG 分享預覽規則（2026-06-02）
 
 - 全站分享標題、描述與 OG 圖路徑集中在 `src/utils/social-meta.mjs` 維護；頁面請優先使用 `STATIC_SOCIAL`、`listSocial()`、`contentSocial()` 或 `tagSocial()`，不要在各頁零散拼接 `og:title` / `og:description`。
@@ -162,6 +168,14 @@
 - 內容 frontmatter 可選填 `ogShortTitle`、`socialTitle`、`socialDescription` 作為人工覆寫；未填時會由 title / description / summary 推導短標與分享描述。文案應維持 40–80 個中文字左右，避免「值得關注」「帶你了解」「一篇看懂」等套版語氣。
 - **`seoTitle`（articles 限定，覆寫 `<title>`，不影響頁面 H1）**：`src/content.schemas.ts` 的 `articlesSchema` 提供 `seoTitle`（`max(60)`），`src/pages/articles/[slug].astro` 以 `seoTitle={data.seoTitle ?? social.title}` 帶入 `Article.astro`。用途是把搜尋查詢關鍵詞**前置**到 SERP 標題，解決編輯式長標題不對題、CTR 低的問題（依 GSC 真實查詢調整，見 `docs/playbooks/audience-insights.md`）。**需自帶品牌後綴**（如「｜本日有據」，因為走的不是 `social.title` 那條會自動加雙重後綴的路徑）；SERP 中文約 28–30 字會截斷，宜精簡並把關鍵詞放最前。未填時維持原本 `social.title`（機器推導短標）行為，不影響其他文章。`socialTitle`（OG 標題）不受 `seoTitle` 影響，仍走 `social.title`。
 - 標籤頁的標題與描述會依 tag 個別產生，但共用 `/og/tags/index.png`，避免 build 前產生數百張低差異圖片。
+
+## 詳情頁封面圖與證據標籤（2026-07-15 介面優化 Phase 1）
+
+- **`Article.astro` 詳情頁主視覺**：新增 `coverImage` / `coverAlt` / `coverImageCredit` 三個可選 prop。當 `coverImage` 有效時（外連 http(s)，或本地 `/…` 且 `public` 下確實存在，判斷同 `ArticleCard` 的 `safeCover`），在 header 之後、`.article-grid` 之前渲染 `<figure class="article-cover">`：固定 `aspect-ratio:16/9`＋`max-height:24rem`＋`object-fit:cover`＋`--radius-card`，攝影者以 `.article-cover__credit`（沿用 figure credit 樣式）呈現「圖片／{credit}」。這是元件級 `<img src>`，**非**行內 markdown `](images/`，不觸犯幽靈圖片硬規則。`articles/[slug].astro` 與 `ingredients/[slug].astro` 皆傳入 `data.coverImage/coverAlt/coverImageCredit`。myths 不傳、故 cards variant 無封面（維持刻意簡化）。
+- **成分頁「重點摘要」修正**：`ingredients/[slug].astro` 原本傳 `tldr={data.introduction}`，但 `Article.astro` 只認 `citationAnswer`（無 `tldr` prop）→ introduction 被靜默丟棄、成分頁沒有重點摘要區塊。已改為 `citationAnswer={data.introduction}`。
+- **參考文獻證據類型中文化**：`ReferenceList.astro` 原本直接輸出 `ref.type` 英文 enum（`meta-analysis`、`rct`…，屬 `content:audit` 會抓的 raw enum 外露）。改用 `src/utils/evidence-labels.ts` 的 `referenceTypeLabel()`（涵蓋 referenceSchema.type 全 14 值＋ animal/in-vitro/case-report；用詞對齊 myths 的 sourceTypeLabels）。未知值原樣回傳、不吞資料。
+- **`IngredientCard` 缺圖 fallback**：原本 `{coverImage && <img>}`，缺圖時完全不渲染媒體區、同一 grid 高度參差、也無檔案存在守衛。已比照 `ArticleCard` 加 `safeCoverImage` 守衛，缺圖時渲染 `.ingredient-card__thumb--fallback`（cat-ingredient 類色漸層＋「本日有據」佔位，`aria-hidden`），維持 16/9 比例讓卡片高度一致。
+- **闢謠頁頂端判定徽章**：`myths/[slug].astro` 的「30 秒快速結論」左欄（`.quick-panel`）加 `<VerdictBadge verdict={d.verdict} size="lg" />`＋`<span class="pill evidence">證據強度：{d.evidenceLevel}</span>`（evidenceLevel 已是中文 enum 高／中／低）。重用原本閒置的 `.quick-badges/.pill/.evidence` CSS，並清掉真正無用的 dead CSS（`.claim/.verdict/.quick-summary/.belief`）。徽章顏色由 verdict tone 決定（對→綠、錯→紅、不足→藍），天然情緒中立。`VerdictBadge` 的 lg 標籤改用 `displayVerdict()`（需謹慎→須謹慎）。此為既有簡化版型內的強化、非新增內容區塊。
 
 ## Articles 文章 JSON-LD 審閱欄位規則（2026-06-14）
 
