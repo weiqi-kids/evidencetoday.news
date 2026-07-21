@@ -31,7 +31,8 @@ pnpm install        # 安裝依賴（不是 npm）
 pnpm dev            # 開發伺服器 localhost:4321
 pnpm build          # 建置至 dist/（prebuild 跑 sync:youtube + og:generate）
 pnpm preview        # 預覽建置結果
-pnpm content:audit  # 掃描內容 AI 感句型 / 模糊引用 / raw enum 外露
+pnpm check:content  # 去 AI 味守門（統一引擎 check-content.mjs，= 別名 content:audit）；掃相對 origin/main 變動檔
+pnpm check:content:all  # 全站去 AI 味盤點（恆 exit 0，人工普查用）
 pnpm check:myths    # 闢謠內容品質 gate（發布 myths 前必跑）
 pnpm check:news     # 趨勢新聞來源連結 gate（每篇須有可點 references/sourceUrl/pmid；CI 已接）
 pnpm og:generate    # 生成 OG 圖至 public/og/（1200x630，不提交 repo）

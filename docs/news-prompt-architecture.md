@@ -88,7 +88,7 @@ news 管線的品質把關現有五道：
 |---|---|---|---|
 | **`pnpm check:news`（2026-06-19 新增，已接 deploy.yml）** | ✅ 確定性 | **每篇非 draft 必須有可點來源連結**（references 含 url／sourceUrl／pmid，否則 fail）；references 內非法 url | 來源的**正確性/相關性**（連結存在但內容對不對仍靠審核） |
 | `pnpm build`（Zod `newsSchema`） | ✅ 確定性 | 必填欄位缺、型別錯、tags 含 `/` | references / url / sourceUrl 在 schema 仍 `.optional()`（連結強制改由 check:news 把關，非 schema） |
-| `content:audit`（audit-ai-tone） | ⚠️ warning-only | AI 感句型、模糊引用提示 | 不阻擋 |
+| `check:content`（= `content:audit`，統一引擎 check-content.mjs；已串進 `pnpm build`） | ✅ 兩級判定 | 強 AI 指紋單一命中即擋、軟訊號跨 ≥3 層升級為擋（模板化開頭／AI 句型／模糊引用） | grandfather 只掃變動檔，存量不重掃（提交前 build 擋新文） |
 | CI 連結檢查（deploy.yml） | ✅ 確定性 | HTML 裡**已存在**的連結是否死連 | 純文字來源「根本沒連結」→ check:news 已補上這個破口 |
 | Phase 5/6 AI 審核委員會 | ❌ 非確定性 | 來源正確性、語氣、內容品質 | 會漏；故以 check:news 兜底 |
 

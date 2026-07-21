@@ -45,9 +45,9 @@ jobs:
       - name: Check news source links
         run: pnpm check:news
 
-      - name: Content AI-tone gate (blocks deploy on banned-opening / ai-phrase / vague-reference)
-        run: pnpm content:audit
-
+      # 去 AI 味守門已併入 pnpm build（check-design && check-content && astro build，見 package.json），
+      # 不再需要獨立 step。check-content 預設 grandfather（只掃相對 origin/main 的變動檔）：直推 main 時
+      # CI 掃 0 檔，真正擋點在「提交前 pnpm build」（本地與 cron ops gate 都會跑）與 PR 的 content-audit.yml。
       - name: Myths quality gate
         run: pnpm check:myths
 

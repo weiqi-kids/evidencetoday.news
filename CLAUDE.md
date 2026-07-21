@@ -43,7 +43,7 @@
 5. **tags 禁止含 `/`**（如 `ME/CFS` 會導致 build 失敗）。
 6. **內容禁止幽靈圖片引用** `![...](images/N.png|svg)`：本站慣例不用行內圖，Rollup 無法解析會讓全站 build 失敗。
 7. 語言用台灣繁體中文，禁中國用語；禁聳動用語、具體醫療建議、醫療承諾。
-7a. **禁 AI 量產寫法（YMYL 致命傷，違反會被 Google 拒絕索引）**：禁模板化第一人稱開頭「我一直覺得／我最近／老實講／朋友最常問我／我發現／我觀察」（開頭第一句直接給具體價值，每篇都要不同）；禁 AI 感句型「不是…而是／不只是…更是／換句話說／真正的問題是」。寫／改任何內容後必跑 `pnpm content:audit`，命中 `ai-phrase` 一律改掉。細節見 `docs/content-guide.md`「鐵則」。
+7a. **禁 AI 量產寫法（YMYL 致命傷，違反會被 Google 拒絕索引）**：禁模板化第一人稱開頭「我一直覺得／我最近／老實講／朋友最常問我／我發現／我觀察」（開頭第一句直接給具體價值，每篇都要不同）；禁 AI 感句型「不是…而是／不只是…更是／換句話說／真正的問題是」。守門＝統一引擎 `scripts/check-content.mjs`（2026-07-21 取代舊 `audit-ai-tone.mjs`）：`pnpm check:content`（= 相容別名 `pnpm content:audit`）掃變動檔、`pnpm check:content:all` 全站盤點；已串進 `pnpm build`（`check-design && check-content && astro build`），提交前即擋。寫／改內容後必跑到全綠。細節見 `docs/content-guide.md`「鐵則」。
 8. 不得把網站改成商城 / 診所 / 產品頁 / 政府宣導頁 / AI 模板站；圖像不得自動加十字架元素（除非明確要求）。
 9. `pnpm build` 零錯誤才算通過。
 
@@ -56,7 +56,8 @@ pnpm install        # 安裝依賴（不是 npm）
 pnpm dev            # 開發伺服器 localhost:4321
 pnpm build          # 建置至 dist/（prebuild 會跑 sync:youtube + used-images）
 pnpm preview        # 預覽建置結果
-pnpm content:audit  # 掃描內容 AI 感句型 / 模糊引用 / raw enum 外露
+pnpm check:content  # 去 AI 味守門（統一引擎 check-content.mjs，= 別名 content:audit）；掃相對 origin/main 變動檔
+pnpm check:content:all  # 全站去 AI 味盤點（恆 exit 0，人工普查用）
 pnpm check:myths    # 闢謠內容品質 gate（發布 myths 前必跑）
 pnpm check:news     # 趨勢新聞來源連結 gate（每篇須有可點 references/sourceUrl/pmid；CI 已接）
 pnpm check:design   # 設計規範守門 v2（pnpm build 自動先跑；六條規則見「CSS / RWD 規範」）

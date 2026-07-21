@@ -4,14 +4,14 @@ on:
   pull_request:
     paths:
       - 'src/content/**'
-      - 'scripts/audit-ai-tone.mjs'
+      - 'scripts/check-content.mjs'
       - 'package.json'
       - '.github/workflows/content-audit.yml'
   push:
     branches: [main]
     paths:
       - 'src/content/**'
-      - 'scripts/audit-ai-tone.mjs'
+      - 'scripts/check-content.mjs'
       - 'package.json'
       - '.github/workflows/content-audit.yml'
   schedule:
@@ -42,5 +42,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Run content audit
-        run: pnpm content:audit
+      # 全站去 AI 味普查（--all 恆 exit 0，只出報告不擋）。真正的擋點在 deploy 的 pnpm build
+      # （check-content grandfather）與提交前本地 build；本 workflow 供每週排程/PR 產全站曝光報告。
+      - name: Run content audit (full-site report)
+        run: pnpm check:content:all
