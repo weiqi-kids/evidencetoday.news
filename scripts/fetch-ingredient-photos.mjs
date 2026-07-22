@@ -22,11 +22,11 @@ mkdirSync(OUT_DIR, { recursive: true });
 // 每成分的搜尋關鍵字（「富含該營養素的食物」策劃版；避開會撈到酒吧名/文獻 PDF 的字組）
 const PLAN = {
   astaxanthin:         'cooked shrimp prawns',
-  calcium:             'glass of milk',
+  calcium:             'pouring milk',
   choline:             'chicken eggs',
   'coenzyme-q10':      'peanuts',
   collagen:            'bone broth',
-  creatine:            'herring fish',
+  creatine:            'fresh mackerel',
   'dietary-fiber':     'rolled oats',
   folate:              'spinach leaves',
   ginseng:             'ginseng root',
@@ -46,7 +46,7 @@ const PLAN = {
   'vitamin-c':         'lemons',
   'vitamin-d':         'sardines',
   'vitamin-e':         'almonds',
-  'vitamin-k':         'broccoli',
+  'vitamin-k':         'broccoli head',
   zinc:                'raw oysters',
 };
 
@@ -113,10 +113,15 @@ async function commonsSearch(query) {
   return out;
 }
 
-const manifest = {};
+// 指定 slug 補撈模式：`node scripts/fetch-ingredient-photos.mjs calcium creatine` 只重抓
+// 這幾個並「合併」進既有 manifest（給關鍵字換字重試用；不帶參數＝全量）
+const targets = process.argv.slice(2).filter((s) => PLAN[s]);
+const entries = targets.length ? targets.map((s) => [s, PLAN[s]]) : Object.entries(PLAN);
+let manifest = {};
+try { manifest = JSON.parse((await import('node:fs')).readFileSync(join(OUT_DIR, 'manifest.json'), 'utf8')); } catch {}
 let okCount = 0;
 
-for (const [slug, query] of Object.entries(PLAN)) {
+for (const [slug, query] of entries) {
   try {
     const photos = await commonsSearch(query);
     const picks = photos.slice(0, 4);
@@ -153,5 +158,5 @@ for (const [slug, query] of Object.entries(PLAN)) {
 }
 
 writeFileSync(join(OUT_DIR, 'manifest.json'), JSON.stringify(manifest, null, 2));
-console.log(`\ndone — ${okCount}/${Object.keys(PLAN).length} ok, manifest at ${OUT_DIR}/manifest.json`);
+console.log(`\ndone — ${okCount}/${entries.length} ok, manifest at ${OUT_DIR}/manifest.json`);
 if (okCount === 0) process.exit(1); // 全滅才讓 job 紅；部分成功照樣 commit 供驗收，缺漏下輪補

@@ -34,7 +34,7 @@ jobs:
       - name: Fetch photo candidates
         env:
           GITHUB_TOKEN: ${{ github.token }}
-        run: node scripts/fetch-ingredient-photos.mjs
+        run: node scripts/fetch-ingredient-photos.mjs calcium creatine vitamin-k
 
       - name: Commit candidates back to branch
         run: |
