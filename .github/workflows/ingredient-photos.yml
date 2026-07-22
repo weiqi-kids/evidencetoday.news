@@ -1,0 +1,46 @@
+# 臨時工具 workflow：在 Actions runner（網路不受限）上替成分解析縮圖搜 Unsplash 照片，
+# 每個成分抓 3 張候選圖 + manifest 推回分支，供 CCR session 人工目視驗收後接進 frontmatter。
+# 背景與用法見 docs/playbooks/ingredient-thumbnails.md。
+# 觸發保護：只有 commit message 含 [fetch-photos]（或手動 dispatch）才會跑。
+name: Fetch ingredient photos
+
+on:
+  push:
+    branches: [claude/ingredient-thumbnails-image-logic-e6it91]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ingredient-photos
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[fetch-photos]')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Fetch photo candidates
+        env:
+          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
+        run: node scripts/fetch-ingredient-photos.mjs
+
+      - name: Commit candidates back to branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -f tmp-photo-review/
+          git diff --cached --quiet && echo "nothing to commit" && exit 0
+          git commit -m "photo candidates for review (auto)"
+          git push origin HEAD:${{ github.ref_name }}

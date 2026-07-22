@@ -41,9 +41,24 @@
 - **偏通用、可日後升級（非錯誤）**：`gaba`（手拿膠囊）、`glutathione`（保健品瓶）、`colostrum`（白色粉末）
   未呈現食物來源。若要升級：glutathione→蘆筍/菠菜，gaba→發酵食物/茶/番茄，colostrum→牛乳意象。
 
-## 想把插畫換成真實照片？
+## 自動找照片管線（scripts/fetch-ingredient-photos.mjs + Actions）
 
-雲端 session 的網路政策會擋掉所有圖庫網域，無法在 CCR 環境抓圖；請走站內編輯器
-`ImagePicker`（Unsplash/Pexels，需 worker `UNSPLASH_ACCESS_KEY`，見
-[`editor-images.md`](./editor-images.md)）挑圖，`coverImage` 換成圖庫絕對 URL、`coverAlt` 依實際畫面重寫即可，
-本地 `-thumb.svg` 可保留當備援。
+雲端 CCR session 的網路政策擋掉所有圖庫網域，無法在 session 內直接抓圖；解法是把「搜圖」
+外包給 **GitHub Actions runner（網路不受限）** 跑，流程：
+
+1. `scripts/fetch-ingredient-photos.mjs`：內建 27 個成分的「策劃搜尋關鍵字 + 相關性過濾正則」
+   （放圖邏輯的機器可讀版），搜 Unsplash（有 `UNSPLASH_ACCESS_KEY` secret 走官方 API、
+   否則走網站前端 napi 端點），每個成分抓 3 張 480px 候選圖 + `manifest.json`
+   （正式 hotlink URL、攝影師署名/連結、英文 alt）落到 `tmp-photo-review/`。
+2. `.github/workflows/ingredient-photos.yml`：push 到工作分支且 commit message 含
+   `[fetch-photos]`（或手動 dispatch）才觸發；runner 跑完把 `tmp-photo-review/` 用
+   `GITHUB_TOKEN` 推回同一分支（此類 push 不會再觸發其他 workflow，無迴圈風險）。
+3. 回到 session `git pull`，**逐張目視驗收**候選圖（照片內容必須符合放圖邏輯，禁止不看圖就接線），
+   從 manifest 取 `canonical` URL 填 `coverImage`（與既有 14 篇同參數格式
+   `?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080`）、重寫 `coverAlt` 描述實際畫面、
+   `coverImageCredit` 填攝影師名。
+4. 驗收接線完成後：刪除 `tmp-photo-review/`、`pnpm build` 零錯誤再 push。
+   workflow 屬臨時工具，任務結束後可移除（或留著給未來新成分用，改 branch 名即可）。
+
+另一條人工路：站內編輯器 `ImagePicker`（見 [`editor-images.md`](./editor-images.md)）。
+本地 `-thumb.svg` 插畫保留當備援（`IngredientCard` 對缺圖會退回品牌佔位，不會開天窗）。
