@@ -22,7 +22,7 @@ mkdirSync(OUT_DIR, { recursive: true });
 // 每成分的搜尋關鍵字（「富含該營養素的食物」策劃版；避開會撈到酒吧名/文獻 PDF 的字組）
 const PLAN = {
   astaxanthin:         'cooked shrimp prawns',
-  calcium:             'pouring milk',
+  calcium:             'bottle of milk',
   choline:             'chicken eggs',
   'coenzyme-q10':      'peanuts',
   collagen:            'bone broth',
