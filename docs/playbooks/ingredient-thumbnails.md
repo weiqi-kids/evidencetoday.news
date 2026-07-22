@@ -1,15 +1,16 @@
 # Playbook：成分解析列表縮圖（cover thumbnail）
 
-> 2026-07-21 建立。統一 `/ingredients` 列表卡片縮圖：把 27 篇「純文字」佔位縮圖改成
-> 與該營養素相關的扁平食物插畫；14 篇既有真實照片保留。前台渲染在
+> 2026-07-21 建立、07-22 全面照片化。統一 `/ingredients` 列表卡片縮圖：41 篇全部使用
+> 「與該營養素相關的食物」真實照片（14 篇 Unsplash + 27 篇 Wikimedia Commons）。前台渲染在
 > `src/components/blocks/IngredientCard.astro`（`coverImage` → 16:9 `object-fit:cover`）。
 
 ## 縮圖的兩種來源
 
 | 型態 | 存法（frontmatter `coverImage`） | 檔案 | 誰在用 |
 |---|---|---|---|
-| 本地插畫 SVG | `/images/ingredients/<slug>-thumb.svg` | repo 內 SVG | 27 篇（見下表） |
-| 圖庫照片 | `https://images.unsplash.com/...`（絕對 URL，不下載） | 外連 | 14 篇 |
+| Unsplash 照片 | `https://images.unsplash.com/...`（絕對 URL，不下載） | 外連 | 14 篇 |
+| Wikimedia Commons 照片 | `https://upload.wikimedia.org/.../1024px-...`（絕對 URL，不下載） | 外連 | 27 篇（見下表） |
+| 本地插畫 SVG | `/images/ingredients/<slug>-thumb.svg` | repo 內 SVG | 備援（現無 frontmatter 引用，勿刪） |
 
 - 兩種都合法：`IngredientCard.astro` 的 `safeCoverImage` 守衛對 `http(s)` 直接採用、對 `/…`
   本地路徑會 `existsSync` 檢查 `public/` 下是否存在，缺圖才退回品牌佔位 `/og-thumb/ingredients.webp`。
@@ -25,13 +26,14 @@
 - 要**驗證外觀**：本機無 SVG→PNG 工具時，可用 Playwright 的 headless chromium 對一張含所有縮圖
   的 HTML contact sheet 截圖檢視（`/opt/pw-browsers/.../headless_shell --headless --screenshot`）。
 
-## 27 篇插畫 ↔ 食物對應（放圖邏輯）
+## 27 篇 Commons 照片 ↔ 食物對應（放圖邏輯）
 
-蝦紅素→蝦｜鈣→牛奶｜膽鹼→蛋｜輔酵素Q10→花生（堅果）｜膠原蛋白→大骨湯｜肌酸→魚｜膳食纖維→麥穗穀物｜
-葉酸→深綠葉菜｜人參→人參根｜葡萄糖胺→扇貝殼（甲殼類）｜鐵→紅肉｜葉黃素→玉米｜鎂→黑巧克力｜
-褪黑激素→酸櫻桃+月亮｜水飛薊素→水飛薊花｜Omega-3→鮭魚｜OPC→葡萄（葡萄籽）｜益生菌→發酵蔬菜罐｜
-南瓜籽→南瓜+籽｜薑黃→薑黃根+粉｜維生素A→胡蘿蔔｜維生素B群→全麥麵包｜維生素C→柑橘切片｜
-維生素D→陽光+鮭魚｜維生素E→杏仁｜維生素K→綠花椰菜｜鋅→牡蠣
+蝦紅素→熟蝦｜鈣→玻璃瓶鮮奶｜膽鹼→籃裝雞蛋｜輔酵素Q10→花生｜膠原蛋白→大骨高湯麵｜肌酸→冰鎮鯖魚｜
+膳食纖維→燕麥片｜葉酸→菠菜｜人參→人參根｜葡萄糖胺→螃蟹（甲殼類）｜鐵→生牛肉韃靼｜葉黃素→甜玉米｜
+鎂→黑巧克力｜褪黑激素→櫻桃｜水飛薊素→水飛薊花｜Omega-3→生鮭魚切片｜OPC→紅葡萄｜益生菌→白菜水泡菜｜
+南瓜籽→南瓜籽｜薑黃→薑黃根+粉｜維生素A→彩色胡蘿蔔｜維生素B群→全麥麵包｜維生素C→檸檬｜
+維生素D→漬沙丁魚｜維生素E→杏仁｜維生素K→綠花椰菜｜鋅→生蠔
+（`coverAlt` 描述實際畫面、`coverImageCredit` 記作者+授權；地區版 CC 亦屬有效授權）
 
 ## 14 篇既有照片稽核（2026-07-21）
 
@@ -55,15 +57,18 @@
    push 權驗證吃不了 Actions installation token（`GET /repos` 回應無 `permissions` 欄）→ 403；
    ③ Commons 縮圖寬度會吸附到標準桶值（要 480 回 500px URL），比對縮圖 URL 用 `/\d+px-/` 別寫死；
    ④ `upload.wikimedia.org` 連續下載會 429，需 700ms 間隔 + Retry-After 退避。
-2. `.github/workflows/ingredient-photos.yml`：push 到工作分支且 commit message 含
-   `[fetch-photos]`（或手動 dispatch）才觸發；runner 跑完把 `tmp-photo-review/` 用
-   `GITHUB_TOKEN` 推回同一分支（此類 push 不會再觸發其他 workflow，無迴圈風險）。
+2. 臨時 workflow `ingredient-photos.yml`（**任務完成後已移除**，要重跑從 git 歷史撈：
+   分支 `claude/ingredient-thumbnails-image-logic-e6it91` 的 `.github/workflows/`）：
+   push 且 commit message 含 `[fetch-photos]`（或手動 dispatch）才觸發；runner 跑完把
+   `tmp-photo-review/` 用 `GITHUB_TOKEN` 推回同一分支（此類 push 不會再觸發其他 workflow）。
+   腳本支援 argv 指定 slug 補撈並合併 manifest（`node scripts/fetch-ingredient-photos.mjs calcium`）。
 3. 回到 session `git pull`，**逐張目視驗收**候選圖（照片內容必須符合放圖邏輯，禁止不看圖就接線），
    從 manifest 取 `canonical` URL 填 `coverImage`（與既有 14 篇同參數格式
    `?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080`）、重寫 `coverAlt` 描述實際畫面、
    `coverImageCredit` 填攝影師名。
-4. 驗收接線完成後：刪除 `tmp-photo-review/`、`pnpm build` 零錯誤再 push。
-   workflow 屬臨時工具，任務結束後可移除（或留著給未來新成分用，改 branch 名即可）。
+4. 驗收接線完成後：刪除 `tmp-photo-review/` 與臨時 workflow、`pnpm build` 零錯誤再 push。
+   搜尋關鍵字要防「同名陷阱」：glass of milk→奶玻璃工藝品、peanuts→史努比、crab→蟹狀星雲、
+   broccoli→寶塔花椰菜、cherries→櫻桃木、herring→海鷗叼魚（皆實際踩過，目視驗收不可省）。
 
 另一條人工路：站內編輯器 `ImagePicker`（見 [`editor-images.md`](./editor-images.md)）。
 本地 `-thumb.svg` 插畫保留當備援（`IngredientCard` 對缺圖會退回品牌佔位，不會開天窗）。
