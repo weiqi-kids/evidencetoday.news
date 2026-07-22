@@ -56,7 +56,8 @@
    坑備忘（2026-07 驗證）：① Unsplash 無 key 的 napi 端點回 401；② ai-suggest worker `/stock` 的
    push 權驗證吃不了 Actions installation token（`GET /repos` 回應無 `permissions` 欄）→ 403；
    ③ Commons 縮圖寬度會吸附到標準桶值（要 480 回 500px URL），比對縮圖 URL 用 `/\d+px-/` 別寫死；
-   ④ `upload.wikimedia.org` 連續下載會 429，需 700ms 間隔 + Retry-After 退避；
+   ④ `upload.wikimedia.org` 連續下載會 429，需 700ms 間隔 + Retry-After 退避
+   （deploy.yml 的外連檢查因此把該網域列入 `--exclude`，否則每次部署被限流拖 30 分鐘）；
    ⑤ **（2026-07-22 事故）縮圖 URL 一律以 API 回傳的 thumburl 為準，禁止自行改寫寬度**——
    手改 `/1024px-` 全數 404、前台縮圖全破。事後修復工具 `scripts/fix-ingredient-photo-urls.mjs`
    （runner 上 HEAD 驗證全部 coverImage、壞的向 API 重取合法 thumburl 並驗 200 後改寫 frontmatter；

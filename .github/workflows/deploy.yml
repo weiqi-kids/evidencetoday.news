@@ -67,7 +67,9 @@ jobs:
       - name: Check external links
         uses: lycheeverse/lychee-action@v2
         with:
-          args: --no-progress --exclude-path dist/fonts --exclude-path dist/og-preview dist/
+          # upload.wikimedia.org 排除：成分縮圖 27 條熱連結已由 fix-ingredient-photo-urls.mjs
+          # 逐條 HEAD 200 驗證；lychee 併發打它會被 429 + Retry-After 拖住，曾讓本步卡 30 分鐘以上
+          args: --no-progress --exclude-path dist/fonts --exclude-path dist/og-preview --exclude "upload\.wikimedia\.org" dist/
           fail: false
         continue-on-error: true
 
