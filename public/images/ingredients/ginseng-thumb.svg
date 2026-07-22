@@ -1,1 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="人參"><rect width="1600" height="900" fill="#FFF3E8"/><text x="800" y="500" dominant-baseline="middle" text-anchor="middle" fill="#9A4D1A" font-family="Noto Sans TC, Inter, Arial, sans-serif" font-size="220" font-weight="700">人參</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="人參"><rect width="1600" height="900" fill="#FFF3E8"/><ellipse cx="800" cy="482" rx="420" ry="250" fill="#9A4D1A" opacity="0.07"/><g transform="translate(800,450)">
+    <g transform="translate(0,10)">
+      <path d="M-6,-150 C10,-100 6,-60 4,-30 C40,30 44,110 24,178 C10,150 6,120 -6,90 C-22,130 -50,150 -70,170 C-52,110 -30,60 -14,-20 C-20,-60 -26,-110 -6,-150 Z" fill="#E7CBA0" stroke="#CBA877" stroke-width="6"/>
+      <g stroke="#CBA877" stroke-width="6" stroke-linecap="round" fill="none">
+        <path d="M4,30 q40,10 66,42"/><path d="M-10,70 q-40,10 -60,44"/><path d="M20,120 q30,8 46,36"/>
+      </g>
+      <path d="M-6,-150 q-46,-40 -40,-96 q40,20 40,96z" fill="#57AA46"/>
+      <path d="M-6,-150 q46,-40 40,-96 q-40,20 -40,96z" fill="#4E9A3E"/>
+    </g></g></svg>

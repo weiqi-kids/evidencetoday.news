@@ -1,1 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="鎂"><rect width="1600" height="900" fill="#F3F0FF"/><text x="800" y="500" dominant-baseline="middle" text-anchor="middle" fill="#5B3AAE" font-family="Noto Sans TC, Inter, Arial, sans-serif" font-size="220" font-weight="700">鎂</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="鎂"><rect width="1600" height="900" fill="#F3F0FF"/><ellipse cx="800" cy="482" rx="420" ry="250" fill="#5B3AAE" opacity="0.07"/><g transform="translate(800,450)">
+    <rect x="-152" y="-152" width="304" height="304" rx="26" fill="#5A3A22"/>
+    <g stroke="#7A5230" stroke-width="10">
+      <line x1="-152" y1="-50" x2="152" y2="-50"/><line x1="-152" y1="50" x2="152" y2="50"/>
+      <line x1="-50" y1="-152" x2="-50" y2="152"/><line x1="50" y1="-152" x2="50" y2="152"/>
+    </g>
+    <g fill="#6B4429">
+      <rect x="-142" y="-142" width="82" height="82" rx="8"/><rect x="60" y="60" width="82" height="82" rx="8"/><rect x="-40" y="-40" width="82" height="82" rx="8"/>
+    </g></g></svg>

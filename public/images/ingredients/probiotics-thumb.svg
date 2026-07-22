@@ -1,1 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="益生菌"><rect width="1600" height="900" fill="#EEFDF8"/><text x="800" y="500" dominant-baseline="middle" text-anchor="middle" fill="#0D8A72" font-family="Noto Sans TC, Inter, Arial, sans-serif" font-size="220" font-weight="700">益生菌</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="益生菌"><rect width="1600" height="900" fill="#EEFDF8"/><ellipse cx="800" cy="482" rx="420" ry="250" fill="#0D8A72" opacity="0.07"/><g transform="translate(800,450)">
+    <rect x="-92" y="-162" width="184" height="40" rx="12" fill="#8FD3BE"/>
+    <rect x="-78" y="-146" width="156" height="20" rx="8" fill="#B8E6D6"/>
+    <rect x="-102" y="-120" width="204" height="272" rx="34" fill="#EAFBF4" stroke="#BFE9DB" stroke-width="7"/>
+    <path d="M-95,10 h190 v104 a20,20 0 0 1 -20,20 h-150 a20,20 0 0 1 -20,-20 Z" fill="#EAF6EF" opacity="0.7"/>
+    <g>
+      <circle cx="-40" cy="60" r="30" fill="#E8A13B"/><circle cx="34" cy="40" r="26" fill="#5CB85C"/>
+      <circle cx="52" cy="96" r="24" fill="#7DC96B"/><circle cx="-58" cy="112" r="22" fill="#E85D5D"/>
+      <circle cx="4" cy="100" r="28" fill="#4E9A3E"/><circle cx="-6" cy="-40" r="22" fill="#8FD36B"/>
+    </g></g></svg>

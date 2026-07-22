@@ -1,1 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="鐵"><rect width="1600" height="900" fill="#FFF1F0"/><text x="800" y="500" dominant-baseline="middle" text-anchor="middle" fill="#B33A3A" font-family="Noto Sans TC, Inter, Arial, sans-serif" font-size="220" font-weight="700">鐵</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="鐵"><rect width="1600" height="900" fill="#FFF1F0"/><ellipse cx="800" cy="482" rx="420" ry="250" fill="#B33A3A" opacity="0.07"/><g transform="translate(800,450)">
+    <path d="M-168,-70 C-64,-146 150,-124 182,-28 C208,66 104,124 -18,114 C-158,102 -230,12 -168,-70 Z" fill="#C0392B"/>
+    <path d="M-168,-70 C-64,-146 150,-124 182,-28 C176,-2 150,10 120,4 C60,-8 -60,-20 -150,20 C-170,-14 -172,-44 -168,-70 Z" fill="#D9695C" opacity="0.55"/>
+    <circle cx="150" cy="-44" r="42" fill="#F3E6D0"/><circle cx="150" cy="-44" r="18" fill="#E3CBA6"/>
+    <g stroke="#E6A79E" stroke-width="7" fill="none" stroke-linecap="round">
+      <path d="M-90,30 q40,-20 90,-2"/><path d="M-60,66 q40,-16 88,0"/>
+    </g></g></svg>

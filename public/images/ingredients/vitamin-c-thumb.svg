@@ -1,1 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="Vitamin C"><rect width="1600" height="900" fill="#E9F7F5"/><text x="800" y="500" dominant-baseline="middle" text-anchor="middle" fill="#0F766E" font-family="Noto Sans TC, Inter, Arial, sans-serif" font-size="220" font-weight="700">Vitamin C</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="維生素 C"><rect width="1600" height="900" fill="#E9F7F5"/><ellipse cx="800" cy="482" rx="420" ry="250" fill="#0F766E" opacity="0.07"/><g transform="translate(800,450)">
+    <g transform="translate(-30,20)">
+      <circle r="205" fill="#F2A007"/>
+      <circle r="172" fill="#FFD98A"/>
+      <line x1="0" y1="0" x2="168.0" y2="0.0" stroke="#FFF1D0" stroke-width="14" stroke-linecap="round"/><line x1="0" y1="0" x2="135.9" y2="98.7" stroke="#FFF1D0" stroke-width="14" stroke-linecap="round"/><line x1="0" y1="0" x2="51.9" y2="159.8" stroke="#FFF1D0" stroke-width="14" stroke-linecap="round"/><line x1="0" y1="0" x2="-51.9" y2="159.8" stroke="#FFF1D0" stroke-width="14" stroke-linecap="round"/><line x1="0" y1="0" x2="-135.9" y2="98.7" stroke="#FFF1D0" stroke-width="14" stroke-linecap="round"/><line x1="0" y1="0" x2="-168.0" y2="0.0" stroke="#FFF1D0" stroke-width="14" stroke-linecap="round"/><line x1="0" y1="0" x2="-135.9" y2="-98.7" stroke="#FFF1D0" stroke-width="14" stroke-linecap="round"/><line x1="0" y1="0" x2="-51.9" y2="-159.8" stroke="#FFF1D0" stroke-width="14" stroke-linecap="round"/><line x1="0" y1="0" x2="51.9" y2="-159.8" stroke="#FFF1D0" stroke-width="14" stroke-linecap="round"/><line x1="0" y1="0" x2="135.9" y2="-98.7" stroke="#FFF1D0" stroke-width="14" stroke-linecap="round"/>
+      <circle r="30" fill="#FFC24D"/>
+    </g>
+    <g transform="translate(150,-120) rotate(18)">
+      <ellipse rx="70" ry="90" fill="#FFCB3D"/>
+      <ellipse rx="70" ry="90" fill="none" stroke="#E9A400" stroke-width="6"/>
+    </g>
+    <path d="M110,-190 q60,-40 120,-10 q-40,30 -120,10 z" fill="#5FA451"/></g></svg>
