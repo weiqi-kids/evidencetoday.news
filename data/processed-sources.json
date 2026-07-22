@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-07-22T06:18:00+08:00",
+  "lastRun": "2026-07-23T06:19:53+08:00",
   "processed": {
     "https://clinicaltrials.gov/study/NCT04067921": {
       "processedAt": "2026-07-22T06:18:00+08:00",
@@ -777,6 +777,54 @@
     "https://newtalk.tw/news/view/2026-07-20/1048298": {
       "processedAt": "2026-07-21T06:28:13+08:00",
       "outputFile": "src/content/news/radar-2026-07-21-06-01.md"
+    },
+    "https://www.who.int/publications/m/item/the-state-of-food-security-and-nutrition-in-the-world-2026": {
+      "processedAt": "2026-07-23T06:19:53+08:00",
+      "outputFile": null
+    },
+    "https://www.who.int/teams/nutrition-and-food-safety/monitoring-nutritional-status-and-food-safety-and-events/foodborne-disease-estimates/2nd-edition-(2026)": {
+      "processedAt": "2026-07-23T06:19:53+08:00",
+      "outputFile": null
+    },
+    "https://www.who.int/campaigns/world-food-safety-day/2026": {
+      "processedAt": "2026-07-23T06:19:53+08:00",
+      "outputFile": null
+    },
+    "https://www.mohw.gov.tw/cp-3539-36715-1.html": {
+      "processedAt": "2026-07-23T06:19:53+08:00",
+      "outputFile": null
+    },
+    "https://www.mohw.gov.tw/cp-88-219-1.html": {
+      "processedAt": "2026-07-23T06:19:53+08:00",
+      "outputFile": null
+    },
+    "https://mohw.gov.tw/cp-5269-69826-1.html": {
+      "processedAt": "2026-07-23T06:19:53+08:00",
+      "outputFile": null
+    },
+    "https://www.mohw.gov.tw/cp-4350-46709-1.html": {
+      "processedAt": "2026-07-23T06:19:53+08:00",
+      "outputFile": null
+    },
+    "https://www.mohw.gov.tw/fp-3206-21515-1.html": {
+      "processedAt": "2026-07-23T06:19:53+08:00",
+      "outputFile": null
+    },
+    "https://www.mohw.gov.tw/cp-16-81071-1.html": {
+      "processedAt": "2026-07-23T06:19:53+08:00",
+      "outputFile": null
+    },
+    "https://dep.mohw.gov.tw/pro/cp-2731-86886-120.html": {
+      "processedAt": "2026-07-23T06:19:53+08:00",
+      "outputFile": null
+    },
+    "https://www.mohw.gov.tw/cp-3205-21635-1.html": {
+      "processedAt": "2026-07-23T06:19:53+08:00",
+      "outputFile": null
+    },
+    "https://www.mohw.gov.tw/cp-2627-19174-1.html": {
+      "processedAt": "2026-07-23T06:19:53+08:00",
+      "outputFile": null
     }
   }
 }
