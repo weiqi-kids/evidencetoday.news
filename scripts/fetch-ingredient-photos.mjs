@@ -1,12 +1,14 @@
 // 成分解析縮圖「自動找照片」腳本 — 供 .github/workflows/ingredient-photos.yml 在
 // GitHub Actions runner 上執行（CCR 雲端 session 的網路政策擋圖庫網域，runner 不受限）。
 //
-// 圖源走既有站方基礎設施：ai-suggest worker 的 POST /stock（Unsplash+Pexels 交錯合併，
-// key 配在 worker secret），以 Actions 的 GITHUB_TOKEN 通過 worker 的 push 權驗證
-// （與編輯器 ImagePicker 同一條授權路徑，見 docs/playbooks/editor-images.md）。
+// 圖源：Wikimedia Commons API（免金鑰；Unsplash napi 已 401、ai-suggest worker 的
+// push 權驗證不吃 Actions installation token，兩路皆不通，2026-07 驗證）。
+// 只收 CC0 / Public domain / CC BY / CC BY-SA 授權的 JPEG/PNG，authors 署名記進 manifest
+// 供 coverImageCredit 使用；coverImage 熱連結 upload.wikimedia.org 的 1080px 縮圖
+// （與「圖庫照片存外部絕對 URL、不下載」慣例一致，見 docs/playbooks/editor-images.md）。
 //
-// 行為：對 27 個成分逐一以「策劃關鍵字」搜圖，每個成分抓 3 張候選縮圖到 tmp-photo-review/，
-// 並輸出 manifest.json（正式 hotlink URL、攝影師署名與連結）供人工目視驗收後接進 frontmatter。
+// 行為：對 27 個成分逐一以「策劃關鍵字」搜圖，每個成分抓 3 張 480px 候選縮圖到
+// tmp-photo-review/，並輸出 manifest.json 供人工目視驗收後接進 frontmatter。
 // 放圖邏輯（鐵則）：照片必須呈現「該成分本身」或「富含該營養素的食物」，
 // 詳見 docs/playbooks/ingredient-thumbnails.md。
 
@@ -16,80 +18,99 @@ import { join } from 'node:path';
 const OUT_DIR = 'tmp-photo-review';
 mkdirSync(OUT_DIR, { recursive: true });
 
-const WORKER = 'https://evidencetoday-ai-suggest.lightman-chang.workers.dev';
-const TOKEN = process.env.GITHUB_TOKEN || '';
-if (!TOKEN) { console.error('缺 GITHUB_TOKEN'); process.exit(1); }
-
-// 每成分的圖庫搜尋關鍵字（「富含該營養素的食物」策劃版）
+// 每成分的搜尋關鍵字（「富含該營養素的食物」策劃版；Commons 用學名/英文常拿到較好的圖）
 const PLAN = {
-  astaxanthin:         'fresh shrimp prawns seafood',
-  calcium:             'glass of milk dairy',
-  choline:             'fresh eggs basket',
-  'coenzyme-q10':      'peanuts nuts bowl',
-  collagen:            'bone broth soup bowl',
-  creatine:            'herring mackerel fish market',
-  'dietary-fiber':     'oats whole grains cereal',
-  folate:              'fresh spinach leaves',
+  astaxanthin:         'cooked shrimp prawns',
+  calcium:             'glass of milk',
+  choline:             'chicken eggs',
+  'coenzyme-q10':      'peanuts',
+  collagen:            'bone broth',
+  creatine:            'herring fish',
+  'dietary-fiber':     'rolled oats',
+  folate:              'spinach leaves',
   ginseng:             'ginseng root',
-  glucosamine:         'crab shellfish shell',
-  iron:                'raw beef steak red meat',
-  lutein:              'corn cob fresh',
-  magnesium:           'dark chocolate pieces cacao',
-  melatonin:           'fresh cherries bowl',
-  'milk-thistle':      'milk thistle flower plant',
-  'omega-3':           'salmon fillet fresh',
-  opc:                 'grapes bunch vineyard',
-  probiotics:          'kimchi sauerkraut fermented jar',
+  glucosamine:         'crab',
+  iron:                'raw beef steak',
+  lutein:              'corn cob',
+  magnesium:           'dark chocolate',
+  melatonin:           'sweet cherries',
+  'milk-thistle':      'Silybum marianum flower',
+  'omega-3':           'salmon fillet',
+  opc:                 'grapes bunch',
+  probiotics:          'kimchi',
   'pumpkin-seed':      'pumpkin seeds',
   turmeric:            'turmeric root powder',
-  'vitamin-a':         'fresh carrots bunch',
-  'vitamin-b-complex': 'whole grain bread loaf',
-  'vitamin-c':         'lemons citrus fruits',
-  'vitamin-d':         'sardines fish',
-  'vitamin-e':         'almonds bowl',
-  'vitamin-k':         'broccoli kale fresh',
-  zinc:                'fresh oysters half shell',
+  'vitamin-a':         'carrots',
+  'vitamin-b-complex': 'whole grain bread',
+  'vitamin-c':         'lemons',
+  'vitamin-d':         'sardines',
+  'vitamin-e':         'almonds',
+  'vitamin-k':         'broccoli',
+  zinc:                'oysters half shell',
 };
 
+const OK_LICENSE = /^(cc0|public domain|pd|cc[ -]by(?:[ -]sa)?(?:[ -]\d\.\d)?)$/i;
+const UA = { 'User-Agent': 'evidencetoday-thumb-fetch/1.0 (https://evidencetoday.news; editorial cover sourcing)' };
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const stripHtml = (s) => (s || '').replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
 
-async function stockSearch(keywords) {
-  const res = await fetch(`${WORKER}/stock`, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json', authorization: `Bearer ${TOKEN}` },
-    body: JSON.stringify({ keywords }),
+async function commonsSearch(query) {
+  const api = 'https://commons.wikimedia.org/w/api.php';
+  const params = new URLSearchParams({
+    action: 'query', format: 'json', generator: 'search',
+    gsrsearch: query, gsrnamespace: '6', gsrlimit: '12',
+    prop: 'imageinfo', iiprop: 'url|size|mime|extmetadata', iiurlwidth: '480',
   });
-  if (!res.ok) throw new Error(`/stock ${keywords}: HTTP ${res.status} ${(await res.text()).slice(0, 120)}`);
-  const { photos } = await res.json();
-  return photos ?? [];
-}
-
-// 與既有 14 篇相同的 hotlink 參數格式（Unsplash）；Pexels 直接沿用 worker 給的 full
-function canonicalUrl(p) {
-  if (p.provider === 'unsplash') return `${p.full.split('?')[0]}?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080`;
-  return p.full;
+  const res = await fetch(`${api}?${params}`, { headers: UA });
+  if (!res.ok) throw new Error(`commons ${query}: HTTP ${res.status}`);
+  const json = await res.json();
+  const pages = Object.values(json.query?.pages ?? {});
+  // 依搜尋相關性排序（generator 會把排名放在 page.index）
+  pages.sort((a, b) => (a.index ?? 99) - (b.index ?? 99));
+  const out = [];
+  for (const p of pages) {
+    const ii = p.imageinfo?.[0];
+    if (!ii) continue;
+    if (!/image\/(jpeg|png)/.test(ii.mime ?? '')) continue; // 跳過 SVG/GIF/圖表類
+    if ((ii.width ?? 0) < 1000) continue; // 要能出 1080px 縮圖
+    const meta = ii.extmetadata ?? {};
+    const license = stripHtml(meta.LicenseShortName?.value ?? '');
+    if (!OK_LICENSE.test(license)) continue;
+    const thumb480 = ii.thumburl ?? '';
+    if (!thumb480.includes('/480px-')) continue;
+    out.push({
+      title: p.title,
+      thumb480,
+      hotlink1080: thumb480.replace('/480px-', '/1080px-'),
+      license,
+      artist: stripHtml(meta.Artist?.value ?? ''),
+      descUrl: ii.descriptionurl ?? '',
+    });
+  }
+  return out;
 }
 
 const manifest = {};
 let failures = 0;
 
-for (const [slug, keywords] of Object.entries(PLAN)) {
+for (const [slug, query] of Object.entries(PLAN)) {
   try {
-    const photos = await stockSearch(keywords);
+    const photos = await commonsSearch(query);
     const picks = photos.slice(0, 3);
-    if (picks.length === 0) throw new Error('no results');
+    if (picks.length === 0) throw new Error('no acceptable results');
 
     manifest[slug] = [];
     for (let i = 0; i < picks.length; i++) {
       const p = picks[i];
-      const img = await fetch(p.thumb);
+      const img = await fetch(p.thumb480, { headers: UA });
       if (!img.ok) throw new Error(`download ${slug}-${i + 1}: HTTP ${img.status}`);
       writeFileSync(join(OUT_DIR, `${slug}-${i + 1}.jpg`), Buffer.from(await img.arrayBuffer()));
       manifest[slug].push({
-        provider: p.provider,
-        canonical: canonicalUrl(p),
-        photographer: p.credit,
-        credit_url: p.creditUrl,
+        canonical: p.hotlink1080,
+        title: p.title,
+        license: p.license,
+        artist: p.artist,
+        source_page: p.descUrl,
       });
       await sleep(300);
     }
