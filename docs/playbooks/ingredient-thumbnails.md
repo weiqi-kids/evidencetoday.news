@@ -47,12 +47,14 @@
 外包給 **GitHub Actions runner（網路不受限）** 跑，流程：
 
 1. `scripts/fetch-ingredient-photos.mjs`：內建 27 個成分的策劃搜尋關鍵字（放圖邏輯的機器可讀版），
-   搜 **Wikimedia Commons API**（免金鑰），只收 CC0/PD/CC BY/CC BY-SA 的 JPEG/PNG、原圖寬 ≥1000，
-   每個成分抓 3 張 480px 候選縮圖 + `manifest.json`（1080px hotlink URL、授權、作者、來源頁）落到
-   `tmp-photo-review/`。作者署名接 `coverImageCredit`（CC BY/BY-SA 必須署名）。
-   死路備忘（2026-07 驗證，勿重試）：Unsplash 無 key 的 napi 端點回 401；
-   ai-suggest worker `/stock` 的 push 權驗證吃不了 Actions installation token
-   （`GET /repos` 回應無 `permissions` 欄）→ 403。
+   搜 **Wikimedia Commons API**（免金鑰，`filetype:bitmap` 過濾 PDF/影片），只收自由授權
+   （CC0/PD/CC BY*/CC BY-SA* 含地區版/Attribution/Copyrighted free use/No restrictions）的
+   JPEG/PNG、原圖寬 ≥800，每成分抓 3 張候選縮圖 + `manifest.json`（1024px 標準桶寬 hotlink URL、
+   授權、作者、來源頁）落到 `tmp-photo-review/`。作者署名接 `coverImageCredit`（CC BY/BY-SA 必署名）。
+   坑備忘（2026-07 驗證）：① Unsplash 無 key 的 napi 端點回 401；② ai-suggest worker `/stock` 的
+   push 權驗證吃不了 Actions installation token（`GET /repos` 回應無 `permissions` 欄）→ 403；
+   ③ Commons 縮圖寬度會吸附到標準桶值（要 480 回 500px URL），比對縮圖 URL 用 `/\d+px-/` 別寫死；
+   ④ `upload.wikimedia.org` 連續下載會 429，需 700ms 間隔 + Retry-After 退避。
 2. `.github/workflows/ingredient-photos.yml`：push 到工作分支且 commit message 含
    `[fetch-photos]`（或手動 dispatch）才觸發；runner 跑完把 `tmp-photo-review/` 用
    `GITHUB_TOKEN` 推回同一分支（此類 push 不會再觸發其他 workflow，無迴圈風險）。
