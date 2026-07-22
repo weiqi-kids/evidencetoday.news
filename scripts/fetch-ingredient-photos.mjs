@@ -54,34 +54,44 @@ const UA = { 'User-Agent': 'evidencetoday-thumb-fetch/1.0 (https://evidencetoday
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const stripHtml = (s) => (s || '').replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
 
+let dumpedRaw = false; // 第一個查詢 dump 原始回應前段，供遠端偵錯（CCR session 打不到 Commons）
 async function commonsSearch(query) {
   const api = 'https://commons.wikimedia.org/w/api.php';
   const params = new URLSearchParams({
-    action: 'query', format: 'json', generator: 'search',
+    action: 'query', format: 'json', formatversion: '2', generator: 'search',
     gsrsearch: query, gsrnamespace: '6', gsrlimit: '12',
     prop: 'imageinfo', iiprop: 'url|size|mime|extmetadata', iiurlwidth: '480',
   });
   const res = await fetch(`${api}?${params}`, { headers: UA });
   if (!res.ok) throw new Error(`commons ${query}: HTTP ${res.status}`);
   const json = await res.json();
-  const pages = Object.values(json.query?.pages ?? {});
-  // 依搜尋相關性排序（generator 會把排名放在 page.index）
-  pages.sort((a, b) => (a.index ?? 99) - (b.index ?? 99));
+  if (!dumpedRaw) {
+    dumpedRaw = true;
+    console.log(`[debug] raw(${query}) top keys=${Object.keys(json)} :: ${JSON.stringify(json).slice(0, 1500)}`);
+  }
+  const pages = json.query?.pages ?? [];
+  const list = Array.isArray(pages) ? pages : Object.values(pages); // formatversion 1/2 都相容
+  list.sort((a, b) => (a.index ?? 99) - (b.index ?? 99));
   const out = [];
-  for (const p of pages) {
+  for (const p of list) {
     const ii = p.imageinfo?.[0];
-    if (!ii) continue;
-    if (!/image\/(jpeg|png)/.test(ii.mime ?? '')) continue; // 跳過 SVG/GIF/圖表類
-    if ((ii.width ?? 0) < 1000) continue; // 要能出 1080px 縮圖
+    const reject = (why) => console.log(`  [skip] ${query} :: ${p.title} :: ${why}`);
+    if (!ii) { reject('no imageinfo'); continue; }
+    if (!/image\/(jpeg|png)/.test(ii.mime ?? '')) { reject(`mime=${ii.mime}`); continue; } // 跳過 SVG/GIF
+    if ((ii.width ?? 0) < 800) { reject(`width=${ii.width}`); continue; }
     const meta = ii.extmetadata ?? {};
     const license = stripHtml(meta.LicenseShortName?.value ?? '');
-    if (!OK_LICENSE.test(license)) continue;
-    const thumb480 = ii.thumburl ?? '';
-    if (!thumb480.includes('/480px-')) continue;
+    if (!OK_LICENSE.test(license)) { reject(`license=${license || '(none)'}`); continue; }
+    const thumb480 = ii.thumburl ?? ii.url ?? '';
+    if (!thumb480) { reject('no thumburl/url'); continue; }
+    // 1080px 熱連結：有 <N>px- 縮圖樣式就換寬度；原圖不夠寬則用原圖 URL
+    const hotlink1080 = (ii.width ?? 0) >= 1080 && /\/\d+px-/.test(thumb480)
+      ? thumb480.replace(/\/\d+px-/, '/1080px-')
+      : (ii.url ?? thumb480);
     out.push({
       title: p.title,
       thumb480,
-      hotlink1080: thumb480.replace('/480px-', '/1080px-'),
+      hotlink1080,
       license,
       artist: stripHtml(meta.Artist?.value ?? ''),
       descUrl: ii.descriptionurl ?? '',
