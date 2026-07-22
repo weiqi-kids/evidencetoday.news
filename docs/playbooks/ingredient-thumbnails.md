@@ -59,7 +59,9 @@
    ④ `upload.wikimedia.org` 連續下載會 429，需 700ms 間隔 + Retry-After 退避；
    ⑤ **（2026-07-22 事故）縮圖 URL 一律以 API 回傳的 thumburl 為準，禁止自行改寫寬度**——
    手改 `/1024px-` 全數 404、前台縮圖全破。事後修復工具 `scripts/fix-ingredient-photo-urls.mjs`
-   （runner 上 HEAD 驗證全部 coverImage、壞的向 API 重取合法 thumburl 並驗 200 後改寫 frontmatter）。
+   （runner 上 HEAD 驗證全部 coverImage、壞的向 API 重取合法 thumburl 並驗 200 後改寫 frontmatter；
+   其臨時 workflow 已於修復完成後移除，重跑從 git 歷史撈 `ingredient-photo-fix.yml`）。合法桶值
+   實測為 1280（25 篇）；原圖過小者直接用原圖 URL（2 篇）。
 2. 臨時 workflow `ingredient-photos.yml`（**任務完成後已移除**，要重跑從 git 歷史撈：
    分支 `claude/ingredient-thumbnails-image-logic-e6it91` 的 `.github/workflows/`）：
    push 且 commit message 含 `[fetch-photos]`（或手動 dispatch）才觸發；runner 跑完把
