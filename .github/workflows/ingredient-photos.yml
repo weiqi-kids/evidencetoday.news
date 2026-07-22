@@ -33,7 +33,7 @@ jobs:
 
       - name: Fetch photo candidates
         env:
-          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
+          GITHUB_TOKEN: ${{ github.token }}
         run: node scripts/fetch-ingredient-photos.mjs
 
       - name: Commit candidates back to branch

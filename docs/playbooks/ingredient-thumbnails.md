@@ -46,10 +46,11 @@
 雲端 CCR session 的網路政策擋掉所有圖庫網域，無法在 session 內直接抓圖；解法是把「搜圖」
 外包給 **GitHub Actions runner（網路不受限）** 跑，流程：
 
-1. `scripts/fetch-ingredient-photos.mjs`：內建 27 個成分的「策劃搜尋關鍵字 + 相關性過濾正則」
-   （放圖邏輯的機器可讀版），搜 Unsplash（有 `UNSPLASH_ACCESS_KEY` secret 走官方 API、
-   否則走網站前端 napi 端點），每個成分抓 3 張 480px 候選圖 + `manifest.json`
-   （正式 hotlink URL、攝影師署名/連結、英文 alt）落到 `tmp-photo-review/`。
+1. `scripts/fetch-ingredient-photos.mjs`：內建 27 個成分的策劃搜尋關鍵字（放圖邏輯的機器可讀版），
+   呼叫既有 ai-suggest worker 的 `POST /stock`（Unsplash+Pexels，key 在 worker secret；
+   以 Actions `GITHUB_TOKEN` 通過 worker 的 push 權驗證——與編輯器 ImagePicker 同一條授權路徑），
+   每個成分抓 3 張候選縮圖 + `manifest.json`（正式 hotlink URL、攝影師署名/連結）落到
+   `tmp-photo-review/`。注意：Unsplash 無 key 的 napi 端點已回 401，不可用（2026-07 驗證）。
 2. `.github/workflows/ingredient-photos.yml`：push 到工作分支且 commit message 含
    `[fetch-photos]`（或手動 dispatch）才觸發；runner 跑完把 `tmp-photo-review/` 用
    `GITHUB_TOKEN` 推回同一分支（此類 push 不會再觸發其他 workflow，無迴圈風險）。
