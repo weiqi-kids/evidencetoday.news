@@ -155,8 +155,32 @@
 - [ ] 缺源文章顯示「原始來源連結尚未補上」字樣
 - [ ] 來源缺失清單（`grep -L "^references:\|^pmid:\|^sourceUrl:" src/content/news/*.md`）已列入 PR 描述
 
+## 趨勢卡照片化（2026-07-23：62 篇既有稿回填真實照片）
+
+> 背景：管理者要求 `/news` 全面「插畫 → 照片」，原則比照成分解析縮圖（`ingredient-thumbnails.md`）。
+> 做法：每篇趨勢稿 frontmatter 補 `heroImage`（Wikimedia Commons 自由授權照片熱連結）＋ `coverAlt`＋`coverImageCredit`，
+> 前台 `getNewsThumbnail`／`getNewsHeroImage` 既有優先序即自動改用照片、SVG 只留作最終備援。
+
+- **為何要 runner**：CCR 雲端 session 的網路政策擋掉圖庫網域（Commons／Pexels／Unsplash 皆 403），
+  無法在 session 內抓圖。解法同成分縮圖：把搜圖外包給 **GitHub Actions runner**（網路不受限）。
+- **腳本**：`scripts/fetch-content-photos.mjs`——內建 news／topics 的策劃英文關鍵字（`PLAN`）＋第二輪
+  單一名詞覆寫（`OVERRIDE`），搜 Wikimedia Commons API（免金鑰、只收 CC0/PD/CC BY*/CC BY-SA* 等自由授權
+  的 JPEG/PNG、原圖 ≥800），每項抓 3 張候選 + `manifest.json` 落 `tmp-photo-review/<group>/` 供目視驗收。
+  **canonical 一律用 API 回傳的 `thumburl`（1280 桶）原字串，禁自行改寬度**（比照成分縮圖 2026-07-22 事故）。
+- **臨時 workflow**：搜圖用的 `.github/workflows/content-photos.yml`（push 含 `[fetch-photos]` 觸發、runner 把
+  `tmp-photo-review/` 推回分支）為一次性，**任務完成後已移除**（要重跑從 git 歷史撈，比照 `ingredient-photos.yml`）。
+- **驗收鐵則（禁止不看圖就接線）**：runner 回傳後在 session 用 headless chromium 對候選 contact sheet 截圖
+  逐張目視，關鍵字太窄／撈到古董版畫／同名陷阱（milk glass=乳白玻璃器皿非鮮奶、walking=鶺鴒鳥、
+  cat blood pressure=幫貓量血壓）都要換單一名詞補搜再驗。放圖邏輯：呈現該篇最具體的食物／物件／情境，
+  避開明顯非亞洲人臉與資訊圖表。
+- **接線**：`coverImageCredit` 記作者＋授權（CC BY/BY-SA 必署名）；插入 frontmatter 時**插在收尾 `---` 之前**
+  （頂層 key），勿插在 `summary: >-` 這類 block scalar 與其縮排內文之間（會吃掉 summary）。
+- **link check**：Commons 熱連結網域 `upload.wikimedia.org` 已在 `deploy.yml` 外連檢查 `--exclude`（成分縮圖時加），
+  故大量新增 Commons 圖不會拖垮部署連結檢查。
+
 ### 7. 趨勢圖卡與 fallback 圖片
 - `/news` 列表縮圖優先序固定為 `thumbnail → heroImage → topic fallback → category fallback → default fallback`；詳情頁 hero 固定為 `heroImage → thumbnail → topic fallback → category fallback → default fallback`。
+- 首頁趨勢區與最新內容用的 `NewsItem.astro` 已改為「縮圖＋文字」媒體列（縮圖走同一條 `getNewsThumbnail` 優先序）；細節見 [`home-hero.md`](./home-hero.md)。
 - topic fallback 由 `src/utils/news.ts` 依 `titleDisplay`、`title`、`subtitle`、`summary`、`tags`、`category` 關鍵字判斷，命中後使用 `public/images/news/topics/*.svg`，避免同分類文章全部共用同一張圖。
 - `public/images/news/**/*.svg` 必須是本地、完整 XML，`viewBox="0 0 800 450"`，不可引用外部圖片；主視覺需佔圖面約 45–65%，不可退回中央小 icon 或淡色 placeholder。
 - fallback 圖應以中文健康媒體語氣呈現，避免過小英文裝飾字；若需要文字，只使用足夠辨識的中文短字輔助主視覺。

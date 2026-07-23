@@ -1,4 +1,6 @@
 ---
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import Base from '@/layouts/Base.astro';
 import Button from '@/components/ui/Button.astro';
 import ArticleCard from '@/components/blocks/ArticleCard.astro';
@@ -17,6 +19,7 @@ import { getPublishedPodcasts, stripPodcastSlug } from '@/utils/podcasts';
 import { getPublishedArticles } from '@/utils/articles';
 import { isPublicEntry } from '@/utils/visibility';
 import { TOPICS } from '@/data/topics';
+import { getNewsThumbnail } from '@/utils/news';
 import { resolveTopicCover } from '@/utils/topic-cover';
 import shortsData from '@/data/youtube-shorts.json';
 import { videoItemsSchema } from '@/lib/youtube';
@@ -24,6 +27,15 @@ import type { MythVerdict } from '@/utils/myths/schema';
 
 function stripExt(id: string): string {
   return id.replace(/\.[^.]+$/, '');
+}
+
+// 封面安全守衛（同 IngredientCard）：外連 http(s) 直接採用；本地 `/…` 須確認 public 下存在，
+// 缺圖或路徑非法時回 undefined（讓呼叫端退回品牌佔位，不開天窗、不出破圖）。
+function safeCover(cover?: string): string | undefined {
+  if (typeof cover !== 'string') return undefined;
+  if (cover.startsWith('http://') || cover.startsWith('https://')) return cover;
+  if (cover.startsWith('/') && existsSync(join(process.cwd(), 'public', cover))) return cover;
+  return undefined;
 }
 
 /* ------------------------------------------------------------------ */
@@ -82,6 +94,7 @@ const featuredItems: FeaturedItem[] = [
     description: m.data.verdictSummary,
     date: m.data.publishDate,
     href: `/myths/${stripExt(m.id)}/`,
+    cover: m.data.coverImage,
     extra: { verdict: m.data.verdict },
   })),
   ...allIngredients.filter((i) => i.data.featured).map((i) => ({
@@ -91,6 +104,7 @@ const featuredItems: FeaturedItem[] = [
     description: i.data.description,
     date: i.data.publishDate,
     href: `/ingredients/${stripExt(i.id)}/`,
+    cover: i.data.coverImage,
   })),
   ...allPodcasts.filter((p) => p.data.featured).map((p) => ({
     type: 'podcast' as const,
@@ -99,6 +113,7 @@ const featuredItems: FeaturedItem[] = [
     description: p.data.description,
     date: p.data.publishDate,
     href: `/podcasts/${stripPodcastSlug(p.id)}/`,
+    cover: p.data.coverImage,
     extra: { episodeNumber: p.data.episodeNumber, duration: p.data.duration },
   })),
 ].sort((a, b) => b.date.getTime() - a.date.getTime()).slice(0, 3);
@@ -259,8 +274,8 @@ const categories = [
           {primaryFeatured && (
             <a href={primaryFeatured.href} class="ep-main">
               <span class="ep-main__media">
-                {primaryFeatured.cover ? (
-                  <img class="ep-main__img" src={primaryFeatured.cover} alt={primaryFeatured.title} loading="eager" decoding="async" />
+                {safeCover(primaryFeatured.cover) ? (
+                  <img class="ep-main__img" src={safeCover(primaryFeatured.cover)} alt={primaryFeatured.title} loading="eager" decoding="async" />
                 ) : (
                   <span class="ep-main__img ep-main__img--fallback" aria-hidden="true">本日有據</span>
                 )}
@@ -283,8 +298,8 @@ const categories = [
               {secondaryFeatured.map((item) => (
                 <a href={item.href} class="ep-side__item">
                   <span class="ep-side__thumb">
-                    {item.cover ? (
-                      <img class="ep-side__img" src={item.cover} alt={item.title} loading="lazy" decoding="async" />
+                    {safeCover(item.cover) ? (
+                      <img class="ep-side__img" src={safeCover(item.cover)} alt={item.title} loading="lazy" decoding="async" />
                     ) : (
                       <span class="ep-side__img ep-side__img--fallback" aria-hidden="true"></span>
                     )}
@@ -434,6 +449,8 @@ const categories = [
                 href={`/news/${item.id.replace(/\.[^.]+$/, '')}/`}
                 sourceUrl={d.sourceUrl as string | undefined}
                 tags={d.tags as string[]}
+                image={getNewsThumbnail(d.thumbnail as string | undefined, d.heroImage as string | undefined, (d.tags as string[]) ?? [], d.category as string | undefined, { title: d.title as string, titleDisplay: d.titleDisplay as string | undefined, subtitle: d.subtitle as string | undefined, summary: d.summary as string | undefined })}
+                imageAlt={d.coverAlt as string | undefined}
               />
             );
           }
@@ -542,6 +559,8 @@ const categories = [
               href={`/news/${stripExt(n.id)}/`}
               sourceUrl={n.data.sourceUrl}
               tags={n.data.tags}
+              image={getNewsThumbnail(n.data.thumbnail, n.data.heroImage, n.data.tags ?? [], n.data.category, { title: n.data.title, titleDisplay: n.data.titleDisplay, subtitle: n.data.subtitle, summary: n.data.summary })}
+              imageAlt={n.data.coverAlt}
             />
           ))}
         </div>
