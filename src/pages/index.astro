@@ -154,6 +154,29 @@ const latestNews = allNews.slice(0, 5);
 /* ------------------------------------------------------------------ */
 const topTags = await getTopTags();
 
+// 分類磚的代表圖：取該類最新一篇的封面照片（讓導覽磚有真實圖像、更像內容型網站），
+// 缺照片時退回該類的品牌橫幅 /og-thumb/<name>.webp。
+function firstCover(entries: Array<{ data?: Record<string, unknown> }>, field: string, ogName: string): string {
+  for (const e of entries ?? []) {
+    const v = e?.data?.[field];
+    if (typeof v === 'string' && (v.startsWith('http://') || v.startsWith('https://') || v.startsWith('/'))) {
+      return v;
+    }
+  }
+  return `/og-thumb/${ogName}.webp`;
+}
+const firstVideo = allVideos[0] as { youtubeId?: string } | undefined;
+const categoryCovers = {
+  article: firstCover(allArticles, 'coverImage', 'articles'),
+  myth: firstCover(allMyths, 'coverImage', 'myths'),
+  ingredient: firstCover(allIngredients, 'coverImage', 'ingredients'),
+  podcast: firstCover(allPodcasts, 'coverImage', 'podcasts'),
+  video: firstVideo?.youtubeId
+    ? `https://i.ytimg.com/vi/${firstVideo.youtubeId}/hqdefault.jpg`
+    : '/og-thumb/videos.webp',
+  news: firstCover(allNews, 'heroImage', 'news'),
+} as const;
+
 const categories = [
   {
     key: 'article',
@@ -327,14 +350,17 @@ const categories = [
       <div class="category-grid">
         {categories.map((cat) => (
           <a href={cat.href} class="category-card" style={`--cat-color: ${cat.color}`}>
-            <div class="category-card__head">
+            <div class="category-card__media">
+              <img class="category-card__image" src={categoryCovers[cat.key as keyof typeof categoryCovers]} alt="" aria-hidden="true" loading="lazy" />
               <div class="category-card__icon" set:html={cat.icon} />
-              <span class="category-card__en">{cat.en}</span>
             </div>
-            <h3 class="category-card__title">{cat.zh}</h3>
-            <p class="category-card__desc">{cat.desc}</p>
-            <div class="category-card__footer">
-              <span class="category-card__count">{cat.count} 篇</span>
+            <div class="category-card__body">
+              <span class="category-card__en">{cat.en}</span>
+              <h3 class="category-card__title">{cat.zh}</h3>
+              <p class="category-card__desc">{cat.desc}</p>
+              <div class="category-card__footer">
+                <span class="category-card__count">{cat.count} 篇</span>
+              </div>
             </div>
           </a>
         ))}
@@ -940,11 +966,10 @@ const categories = [
   .category-card {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
-    padding: clamp(1.4rem, 1.1rem + 0.8vw, 1.8rem);
     border-radius: var(--radius-card);
     border: 1px solid var(--color-fog);
     background-color: white;
+    overflow: hidden;
     text-decoration: none;
     color: inherit;
     transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
@@ -957,24 +982,54 @@ const categories = [
     color: inherit;
   }
 
-  .category-card__head {
+  .category-card__media {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background-color: color-mix(in oklch, var(--cat-color) 12%, var(--color-paper));
+  }
+
+  .category-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* 類別色調覆蓋一層淡漸層，讓不同來源的照片視覺統一、圖示更清楚 */
+  .category-card__media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 45%,
+      color-mix(in oklch, var(--cat-color) 55%, transparent) 100%
+    );
+  }
+
+  .category-card__body {
     display: flex;
-    align-items: center;
+    flex-direction: column;
     gap: 0.75rem;
-    min-width: 0;
-    margin-bottom: 0.35rem;
+    padding: clamp(1.4rem, 1.1rem + 0.8vw, 1.8rem);
+    flex: 1;
   }
 
   .category-card__icon {
+    position: absolute;
+    left: clamp(1rem, 0.8rem + 0.6vw, 1.4rem);
+    bottom: clamp(1rem, 0.8rem + 0.6vw, 1.4rem);
+    z-index: 1;
     inline-size: 2.625rem;
     block-size: 2.625rem;
-    flex: 0 0 auto;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: var(--radius-sm);
-    background-color: color-mix(in oklch, var(--cat-color) 12%, var(--color-paper));
+    background-color: white;
     color: var(--cat-color);
+    box-shadow: var(--shadow-card-hover);
   }
 
   .category-card__icon :global(svg) {
