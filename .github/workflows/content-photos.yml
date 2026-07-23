@@ -1,0 +1,44 @@
+# 臨時 workflow：在 GitHub Actions runner（網路不受限）上跑 scripts/fetch-content-photos.mjs，
+# 搜 Wikimedia Commons 候選封面到 tmp-photo-review/，推回本分支供 session 目視驗收後接線。
+# 觸發：push 到本分支且 commit message 含 [fetch-photos]，或手動 workflow_dispatch。
+# 任務完成後連同 scripts/fetch-content-photos.mjs 一併移除（比照 ingredient-photos.yml）。
+name: Fetch content cover photos (temporary)
+
+on:
+  push:
+    branches: [claude/trend-news-image-replacement-qcdbp4]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    # 只在 commit message 明確要求時跑，避免每次 push 都打 Commons
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[fetch-photos]')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Fetch candidate photos from Wikimedia Commons
+        run: node scripts/fetch-content-photos.mjs
+
+      - name: Commit candidates back to branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add tmp-photo-review
+          if git diff --cached --quiet; then
+            echo "no candidate changes to commit"
+          else
+            git commit -m "chore(photos): 搜圖 runner 回傳候選封面供驗收"
+            git push origin HEAD:${{ github.ref_name }}
+          fi
