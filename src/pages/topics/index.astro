@@ -2,21 +2,29 @@
 import Base from '@/layouts/Base.astro';
 import Breadcrumb from '@/components/ui/Breadcrumb.astro';
 import JsonLd from '@/components/seo/JsonLd.astro';
-import { existsSync } from 'node:fs';
-import { join } from 'node:path';
+import { getCollection } from 'astro:content';
+import { isPublicEntry } from '@/utils/visibility';
+import { resolveTopicCover } from '@/utils/topic-cover';
 import { TOPICS } from '@/data/topics';
 import { WEBSITE_REF, PUBLISHER_REF, SITE_URL } from '@/utils/schema-org';
 
-// 封面安全守衛：外連 http(s) 直接採用；本地 `/…` 須存在，否則退回品牌漸層佔位。
-function safeCover(cover?: string): string | undefined {
-  if (typeof cover !== 'string') return undefined;
-  if (cover.startsWith('http://') || cover.startsWith('https://')) return cover;
-  if (cover.startsWith('/') && existsSync(join(process.cwd(), 'public', cover))) return cover;
-  return undefined;
-}
-
 const title = '健康專題｜主題整理 - 本日有據';
 const description = '把同一主題的文章、闢謠、成分解析、Podcast 與短影音整理在一起，幫助讀者快速建立完整理解。';
+
+// 每個專題卡片的代表縮圖：從該主題自動歸入的文章／成分解析裡挑一張封面（新到舊優先），
+// 缺圖退回品牌佔位。零手工維護，新內容配好封面後自動更新。
+const byDate = (a: { data: { publishDate: Date } }, b: { data: { publishDate: Date } }) =>
+  b.data.publishDate.getTime() - a.data.publishDate.getTime();
+const [articles, ingredients] = await Promise.all([
+  getCollection('articles', (e) => isPublicEntry(e.data)),
+  getCollection('ingredients', (e) => isPublicEntry(e.data)),
+]);
+articles.sort(byDate);
+ingredients.sort(byDate);
+const topicCards = TOPICS.map((topic) => ({
+  topic,
+  cover: resolveTopicCover(topic, [articles, ingredients]),
+}));
 
 const collectionSchema = {
   '@context': 'https://schema.org',
@@ -63,20 +71,14 @@ const breadcrumbSchema = {
     </header>
 
     <div class="topics-grid">
-      {TOPICS.map((topic) => (
+      {topicCards.map(({ topic, cover }) => (
         <a class="topic-card" href={`/topics/${topic.slug}/`}>
-          <span class="topic-card__media">
-            {safeCover(topic.image) ? (
-              <img src={safeCover(topic.image)} alt={topic.imageAlt || ''} loading="lazy" decoding="async" />
-            ) : (
-              <span class="topic-card__media--fallback" aria-hidden="true"></span>
-            )}
-          </span>
-          <span class="topic-card__body">
+          <img class="topic-card__image" src={cover.src} alt={cover.alt} aria-hidden={cover.alt === '' ? 'true' : undefined} loading="lazy" />
+          <div class="topic-card__body">
             <h2>{topic.name}</h2>
             <p>{topic.intro}</p>
             <span class="topic-card__cta">查看專題 →</span>
-          </span>
+          </div>
         </a>
       ))}
     </div>
@@ -129,38 +131,21 @@ const breadcrumbSchema = {
     border-color: var(--color-teal);
   }
 
-  .topic-card__media {
-    display: block;
-    aspect-ratio: 16 / 9;
-    overflow: hidden;
-    background-color: color-mix(in oklch, var(--color-teal) 8%, var(--color-paper));
-  }
-
-  .topic-card__media img {
+  .topic-card__image {
     width: 100%;
-    height: 100%;
+    aspect-ratio: 16 / 9;
     object-fit: cover;
     display: block;
-    transition: transform 0.3s ease;
-  }
-
-  .topic-card:hover .topic-card__media img {
-    transform: scale(1.04);
-  }
-
-  .topic-card__media--fallback {
-    display: block;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, var(--color-teal), var(--color-navy));
+    background: color-mix(in oklch, var(--color-fog) 60%, white);
+    border-bottom: 1px solid var(--color-fog);
   }
 
   .topic-card__body {
     display: flex;
     flex-direction: column;
     gap: 0.6rem;
-    flex: 1;
     padding: clamp(1.25rem, 1rem + 0.8vw, 1.75rem);
+    flex: 1;
   }
 
   .topic-card h2 {

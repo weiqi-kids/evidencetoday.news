@@ -16,20 +16,11 @@ export interface Topic {
   matchKeywords: string[];
   /** 常見疑問（自然、貼主題；會輸出 FAQPage JSON-LD） */
   faq: { question: string; answer: string }[];
-  /** 專題卡封面圖（圖庫熱連結；缺則前台退品牌佔位） */
-  image?: string;
-  /** 封面圖無障礙描述 */
-  imageAlt?: string;
-  /** 封面圖出處署名（Wikimedia Commons 作者＋授權；供資料層保留 CC 署名） */
-  imageCredit?: string;
 }
 
 export const TOPICS: Topic[] = [
   {
     slug: 'omega-3',
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Raw_salmon_fillets.jpg/1280px-Raw_salmon_fillets.jpg",
-    imageAlt: "生鮭魚排切片",
-    imageCredit: "FULVIO_TOGNON（CC0）",
     name: 'Omega-3 與魚油',
     intro: '把 Omega-3、魚油、EPA 與 DHA 的相關文章、闢謠與成分解析整理在一起，幫你看懂濃度、劑型與適用對象。',
     thirtySecond: [
@@ -53,9 +44,6 @@ export const TOPICS: Topic[] = [
   },
   {
     slug: 'lutein',
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Spinacia_oleracea_bd-2.jpg/1280px-Spinacia_oleracea_bd-2.jpg",
-    imageAlt: "新鮮菠菜葉",
-    imageCredit: "Kayser Ahmad（CC BY-SA 4.0）",
     name: '葉黃素與護眼營養',
     intro: '整理葉黃素、玉米黃素與護眼相關的成分解析與常見說法，說清楚證據能支持到哪裡。',
     thirtySecond: [
@@ -79,9 +67,6 @@ export const TOPICS: Topic[] = [
   },
   {
     slug: 'calcium-vitamin-d',
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Glass_milk_bottle_cardboard_cap_and_opener.jpg/1280px-Glass_milk_bottle_cardboard_cap_and_opener.jpg",
-    imageAlt: "玻璃瓶裝鮮奶",
-    imageCredit: "Bruce C. Cooper (uploader)（CC BY-SA 4.0）",
     name: '鈣與維生素 D',
     intro: '鈣與維生素 D 常被一起討論。這裡整理它們的角色、補充常見迷思與實際證據。',
     thirtySecond: [
@@ -105,9 +90,6 @@ export const TOPICS: Topic[] = [
   },
   {
     slug: 'supplement-guide',
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Omega_3_capsules_in_white_bottle_%2852715127894%29.jpg/1280px-Omega_3_capsules_in_white_bottle_%2852715127894%29.jpg",
-    imageAlt: "保健食品膠囊與瓶罐",
-    imageCredit: "Jernej Furman from Slovenia（CC BY 2.0）",
     name: '保健食品怎麼選',
     intro: '保健食品標示、劑量、劑型與行銷話術怎麼看？整理常見判讀方式，幫你少花冤枉錢。',
     thirtySecond: [
@@ -131,9 +113,6 @@ export const TOPICS: Topic[] = [
   },
   {
     slug: 'blood-lipids',
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Doctor_taking_blood_sample_for_COVID-19_rapid_testing.png/1280px-Doctor_taking_blood_sample_for_COVID-19_rapid_testing.png",
-    imageAlt: "抽血採檢血液樣本",
-    imageCredit: "Truyền Hình Pháp Luật（CC BY 3.0）",
     name: '血脂與膽固醇',
     intro: '膽固醇、三酸甘油脂、LDL 與 HDL 的報告怎麼讀？整理血脂相關文章、闢謠與飲食討論。',
     thirtySecond: [
@@ -157,9 +136,6 @@ export const TOPICS: Topic[] = [
   },
   {
     slug: 'blood-sugar',
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/%2820250417%29_Blood_glucose_meter_09.jpg/1280px-%2820250417%29_Blood_glucose_meter_09.jpg",
-    imageAlt: "以血糖機檢測指尖血糖",
-    imageCredit: "Roy Zuo（CC BY-SA 4.0）",
     name: '血糖與糖尿風險',
     intro: '空腹血糖、糖化指標與糖尿病前期怎麼理解？整理血糖相關的研究、文章與常見迷思。',
     thirtySecond: [
@@ -183,9 +159,6 @@ export const TOPICS: Topic[] = [
   },
   {
     slug: 'liver-kidney-test',
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Laboratory_Test_Tubes%3B_from_a_medical_laboratory_in_Abuja%2C_Nigeria.jpg/1280px-Laboratory_Test_Tubes%3B_from_a_medical_laboratory_in_Abuja%2C_Nigeria.jpg",
-    imageAlt: "實驗室採血試管",
-    imageCredit: "Frankincense Diala（CC0）",
     name: '肝腎功能檢查',
     intro: '肝指數、腎功能與尿酸等檢查數值代表什麼？整理相關文章與保健成分的證據討論。',
     thirtySecond: [
@@ -209,9 +182,6 @@ export const TOPICS: Topic[] = [
   },
   {
     slug: 'sleep',
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Girl_asleep_with_her_smooth_Collie.JPG/1280px-Girl_asleep_with_her_smooth_Collie.JPG",
-    imageAlt: "在床上熟睡",
-    imageCredit: "David Shankbone（CC BY 3.0）",
     name: '睡眠與助眠',
     intro: '睡不好的原因很多，助眠的選項也不只一種。這裡把褪黑激素、助眠成分、生理時鐘與睡眠品質的相關文章、闢謠與成分解析整理在一起。',
     thirtySecond: [
@@ -235,9 +205,6 @@ export const TOPICS: Topic[] = [
   },
   {
     slug: 'womens-health',
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Practicing_Yoga_%2860123020%29.jpeg/1280px-Practicing_Yoga_%2860123020%29.jpeg",
-    imageAlt: "女性練習瑜伽",
-    imageCredit: "Giuseppe Milo（CC BY 3.0）",
     name: '更年期與女性健康',
     intro: '更年期、經期與女性營養需求，在不同人生階段差異很大。這裡整理更年期症狀管理、經痛、女性營養與相關保健的證據討論。',
     thirtySecond: [
@@ -261,9 +228,6 @@ export const TOPICS: Topic[] = [
   },
   {
     slug: 'sports-nutrition',
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Aluminium_Dumbbell.jpg/1280px-Aluminium_Dumbbell.jpg",
-    imageAlt: "健身啞鈴",
-    imageCredit: "Designproduct（CC BY-SA 4.0）",
     name: '運動營養與肌肉',
     intro: '增肌、補充蛋白質、預防肌少症，年輕人與熟齡族的需求並不一樣。這裡整理運動營養、肌酸、蛋白質與肌肉保養的相關內容。',
     thirtySecond: [
@@ -287,9 +251,6 @@ export const TOPICS: Topic[] = [
   },
   {
     slug: 'gut-health',
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Greek_yoghurt_cucumbers_garlic.jpg/1280px-Greek_yoghurt_cucumbers_garlic.jpg",
-    imageAlt: "希臘優格佐小黃瓜",
-    imageCredit: "Nikodem Nijaki（CC BY-SA 3.0）",
     name: '腸道健康與菌相',
     intro: '益生菌、益生元、後生元與膳食纖維，都是腸道保健的熱門詞。這裡整理腸道菌相、腸腦軸與相關成分的證據，說清楚各自能支持到哪裡。',
     thirtySecond: [

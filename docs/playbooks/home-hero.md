@@ -36,11 +36,10 @@
 - 只調整首頁分類卡時，避免碰 Hero、最新內容、文章列表、短影音、Podcast 或其他卡片元件。
 - **分類卡維持 icon 導向、不配照片**（icon + 英文分類 + 中文標題 + 篇數的三段節奏本身即品牌識別）；要「每個框都有圖」的是內容卡（見下）與健康專題卡，不是這組導覽卡。
 
-### 健康專題卡配圖（2026-07-23）
+### 健康專題卡配圖
 
-- 首頁「健康專題」與 `/topics` 列表卡改為**圖上文下**：`.topic(-home)-card__media`（16:9）+ `.topic(-home)-card__body`。圖來源為 `Topic.image`（`src/data/topics.ts`，Wikimedia Commons 熱連結，另存 `imageAlt`／`imageCredit`）。
-- 兩頁都用各自的 `safeCover()` 守衛；`Topic.image` 缺失時 media 區退 teal→navy 品牌漸層（`--fallback`），不開天窗。
-- 換某專題配圖：改 `src/data/topics.ts` 該物件的 `image`／`imageAlt`／`imageCredit`（放圖邏輯：呈現該主題最具體的食物／物件／情境，避免抽象圖表與明顯非亞洲人臉）。
+- 首頁「健康專題」與 `/topics` 列表卡為**圖上文下**：`.topic(-home)-card__image`（16:9）+ `.topic(-home)-card__body`。
+- 封面來源＝`resolveTopicCover(topic, [articles, ingredients])`（`src/utils/topic-cover.ts`）：從該主題自動歸入的文章／成分解析裡挑一張既有封面（新到舊優先），缺圖退品牌佔位。零手工維護、新內容配好封面即自動更新。**不在 `topics.ts` 手寫每主題圖**。
 
 ### 趨勢（news）列表項配圖
 
