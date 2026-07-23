@@ -29,7 +29,9 @@ jobs:
           node-version: 20
 
       - name: Fetch candidate photos from Wikimedia Commons
-        run: node scripts/fetch-content-photos.mjs
+        # 第二輪：只補搜第一輪 0 命中 / 目視驗收不合格的 slug（單一名詞覆寫關鍵字，見 OVERRIDE），
+        # 合併進既有 manifest（其餘已驗收的候選不動）。全量重搜改回 `node scripts/fetch-content-photos.mjs`。
+        run: node scripts/fetch-content-photos.mjs news:radar-2026-05-08-18-04 news:radar-2026-05-08-18-06 news:radar-2026-05-09-06-03 news:radar-2026-05-10-06-02 news:radar-2026-05-10-06-03 news:radar-2026-05-10-12-01 news:radar-2026-05-10-12-02 news:radar-2026-05-12-12-01 news:radar-2026-05-12-12-03 news:radar-2026-05-12-18-01 news:radar-2026-06-03-01 news:radar-2026-06-04-01 news:radar-2026-06-05-01 news:radar-2026-06-06-01 news:radar-2026-06-08-01 news:radar-2026-06-09-01 news:radar-2026-06-10-01 news:radar-2026-06-12-01 news:radar-2026-07-15-12-01 news:radar-2026-07-16-12-01 news:radar-2026-07-17-12-01 news:radar-2026-07-18-12-01 news:radar-2026-07-21-12-01 news:radar-2026-07-22-12-01 news:radar-2026-07-26-12-01 topics:lutein topics:sports-nutrition topics:gut-health
 
       - name: Commit candidates back to branch
         run: |

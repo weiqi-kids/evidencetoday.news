@@ -98,6 +98,39 @@ const PLANS = {
   },
 };
 
+// 第一輪多字關鍵字太窄（Commons 全文搜 + filetype:bitmap 常 0 命中或撈到古董版畫）；
+// 第二輪對這些 slug 改用單一具體名詞重搜（目視驗收後決定的覆寫關鍵字）。
+const OVERRIDE = {
+  'radar-2026-05-08-18-04': 'milk bottles',
+  'radar-2026-05-08-18-06': 'baby formula',
+  'radar-2026-05-09-06-03': 'alarm clock',
+  'radar-2026-05-10-06-02': 'yoghurt',
+  'radar-2026-05-10-06-03': 'walnuts',
+  'radar-2026-05-10-12-01': 'baby formula bottle',
+  'radar-2026-05-10-12-02': 'alarm clock',
+  'radar-2026-05-12-12-01': 'protein powder',
+  'radar-2026-05-12-12-03': 'alarm clock',
+  'radar-2026-05-12-18-01': 'vegetables',
+  'radar-2026-06-03-01': 'plastic bottles',
+  'radar-2026-06-04-01': 'softgel capsules',
+  'radar-2026-06-05-01': 'stethoscope',
+  'radar-2026-06-06-01': 'creatine',
+  'radar-2026-06-08-01': 'chicken farm',
+  'radar-2026-06-09-01': 'junk food',
+  'radar-2026-06-10-01': 'sphygmomanometer',
+  'radar-2026-06-12-01': 'walking legs',
+  'radar-2026-07-15-12-01': 'alarm clock',
+  'radar-2026-07-16-12-01': 'sphygmomanometer',
+  'radar-2026-07-17-12-01': 'cooking oil',
+  'radar-2026-07-18-12-01': 'capsules pills',
+  'radar-2026-07-21-12-01': 'syringe',
+  'radar-2026-07-22-12-01': 'milk glass',
+  'radar-2026-07-26-12-01': 'alarm clock',
+  lutein: 'spinach',
+  'sports-nutrition': 'dumbbell',
+  'gut-health': 'yoghurt',
+};
+
 const OK_LICENSE = /^(cc0|public domain|pd[\s-]|pd$|attribution|copyrighted free use|no restrictions|cc[ -]by\b|cc[ -]by[ -]sa\b)/i;
 const UA = { 'User-Agent': 'evidencetoday-content-photo-fetch/1.0 (https://evidencetoday.news; editorial cover sourcing)' };
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -174,8 +207,9 @@ for (const group of Object.keys(PLANS)) {
   if (!groupFilter.includes(group)) continue;
   mkdirSync(join(OUT_DIR, group), { recursive: true });
   manifest[group] = manifest[group] ?? {};
-  for (const [slug, query] of Object.entries(PLANS[group])) {
+  for (const [slug, baseQuery] of Object.entries(PLANS[group])) {
     if (slugFilter.size && !slugFilter.has(slug)) continue;
+    const query = OVERRIDE[slug] ?? baseQuery;
     totalCount++;
     try {
       const photos = await commonsSearch(query);
