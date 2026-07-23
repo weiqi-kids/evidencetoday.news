@@ -17,6 +17,7 @@ import { getPublishedPodcasts, stripPodcastSlug } from '@/utils/podcasts';
 import { getPublishedArticles } from '@/utils/articles';
 import { isPublicEntry } from '@/utils/visibility';
 import { TOPICS } from '@/data/topics';
+import { resolveTopicCover } from '@/utils/topic-cover';
 import shortsData from '@/data/youtube-shorts.json';
 import { videoItemsSchema } from '@/lib/youtube';
 import type { MythVerdict } from '@/utils/myths/schema';
@@ -42,6 +43,12 @@ const allVideos = videoItemsSchema.safeParse(shortsData).success ? videoItemsSch
 
 const allNews = (await getCollection('news', (e) => isPublicEntry(e.data)))
   .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
+
+// 健康專題卡片縮圖：從各主題自動歸入的文章／成分解析取代表封面（缺圖退回品牌佔位）。
+const topicCards = TOPICS.map((topic) => ({
+  topic,
+  cover: resolveTopicCover(topic, [allArticles, allIngredients]),
+}));
 
 /* ------------------------------------------------------------------ */
 /*  Featured items for Hero (featured: true)                           */
@@ -331,11 +338,14 @@ const categories = [
       </div>
       <p class="section-subtitle">把同一主題的文章、闢謠、成分解析、Podcast 與短影音整理在一起，幫助讀者快速建立完整理解。</p>
       <div class="topics-home-grid">
-        {TOPICS.map((topic) => (
+        {topicCards.map(({ topic, cover }) => (
           <a href={`/topics/${topic.slug}/`} class="topic-home-card">
-            <h3>{topic.name}</h3>
-            <p>{topic.intro}</p>
-            <span class="topic-home-card__cta">查看專題 →</span>
+            <img class="topic-home-card__image" src={cover.src} alt={cover.alt} aria-hidden={cover.alt === '' ? 'true' : undefined} loading="lazy" />
+            <div class="topic-home-card__body">
+              <h3>{topic.name}</h3>
+              <p>{topic.intro}</p>
+              <span class="topic-home-card__cta">查看專題 →</span>
+            </div>
           </a>
         ))}
       </div>
@@ -1030,11 +1040,10 @@ const categories = [
   .topic-home-card {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    padding: clamp(1.2rem, 1rem + 0.7vw, 1.6rem);
     border: 1px solid var(--color-fog);
     border-radius: var(--radius-card);
     background-color: white;
+    overflow: hidden;
     text-decoration: none;
     color: inherit;
     transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
@@ -1045,6 +1054,23 @@ const categories = [
     box-shadow: var(--shadow-card-hover);
     border-color: var(--color-teal);
     color: inherit;
+  }
+
+  .topic-home-card__image {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    display: block;
+    background-color: color-mix(in oklch, var(--color-fog) 60%, white);
+    border-bottom: 1px solid var(--color-fog);
+  }
+
+  .topic-home-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: clamp(1.2rem, 1rem + 0.7vw, 1.6rem);
+    flex: 1;
   }
 
   .topic-home-card h3 {
