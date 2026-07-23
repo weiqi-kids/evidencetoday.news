@@ -2,8 +2,18 @@
 import Base from '@/layouts/Base.astro';
 import Breadcrumb from '@/components/ui/Breadcrumb.astro';
 import JsonLd from '@/components/seo/JsonLd.astro';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import { TOPICS } from '@/data/topics';
 import { WEBSITE_REF, PUBLISHER_REF, SITE_URL } from '@/utils/schema-org';
+
+// 封面安全守衛：外連 http(s) 直接採用；本地 `/…` 須存在，否則退回品牌漸層佔位。
+function safeCover(cover?: string): string | undefined {
+  if (typeof cover !== 'string') return undefined;
+  if (cover.startsWith('http://') || cover.startsWith('https://')) return cover;
+  if (cover.startsWith('/') && existsSync(join(process.cwd(), 'public', cover))) return cover;
+  return undefined;
+}
 
 const title = '健康專題｜主題整理 - 本日有據';
 const description = '把同一主題的文章、闢謠、成分解析、Podcast 與短影音整理在一起，幫助讀者快速建立完整理解。';
@@ -55,9 +65,18 @@ const breadcrumbSchema = {
     <div class="topics-grid">
       {TOPICS.map((topic) => (
         <a class="topic-card" href={`/topics/${topic.slug}/`}>
-          <h2>{topic.name}</h2>
-          <p>{topic.intro}</p>
-          <span class="topic-card__cta">查看專題 →</span>
+          <span class="topic-card__media">
+            {safeCover(topic.image) ? (
+              <img src={safeCover(topic.image)} alt={topic.imageAlt || ''} loading="lazy" decoding="async" />
+            ) : (
+              <span class="topic-card__media--fallback" aria-hidden="true"></span>
+            )}
+          </span>
+          <span class="topic-card__body">
+            <h2>{topic.name}</h2>
+            <p>{topic.intro}</p>
+            <span class="topic-card__cta">查看專題 →</span>
+          </span>
         </a>
       ))}
     </div>
@@ -95,11 +114,10 @@ const breadcrumbSchema = {
   .topic-card {
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
-    padding: clamp(1.25rem, 1rem + 0.8vw, 1.75rem);
     border: 1px solid var(--color-fog);
     border-radius: var(--radius-card);
     background: white;
+    overflow: hidden;
     text-decoration: none;
     color: inherit;
     transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
@@ -109,6 +127,40 @@ const breadcrumbSchema = {
     transform: translateY(-2px);
     box-shadow: var(--shadow-card-hover);
     border-color: var(--color-teal);
+  }
+
+  .topic-card__media {
+    display: block;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background-color: color-mix(in oklch, var(--color-teal) 8%, var(--color-paper));
+  }
+
+  .topic-card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+
+  .topic-card:hover .topic-card__media img {
+    transform: scale(1.04);
+  }
+
+  .topic-card__media--fallback {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--color-teal), var(--color-navy));
+  }
+
+  .topic-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    flex: 1;
+    padding: clamp(1.25rem, 1rem + 0.8vw, 1.75rem);
   }
 
   .topic-card h2 {

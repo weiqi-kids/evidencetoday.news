@@ -8,6 +8,7 @@ import IngredientCard from '@/components/blocks/IngredientCard.astro';
 import PodcastCard from '@/components/blocks/PodcastCard.astro';
 import VideoCard from '@/components/blocks/VideoCard.astro';
 import NewsItem from '@/components/blocks/NewsItem.astro';
+import { getNewsThumbnail } from '@/utils/news';
 import { getCollection } from 'astro:content';
 import { fmtDate } from '@/utils/date';
 import { stripPodcastSlug } from '@/utils/podcasts';
@@ -189,6 +190,8 @@ const breadcrumbSchema = {
               href={`/news/${stripExt(n.id)}/`}
               sourceUrl={n.data.sourceUrl}
               tags={n.data.tags}
+              image={getNewsThumbnail(n.data.thumbnail, n.data.heroImage, n.data.tags ?? [], n.data.category, { title: n.data.title, titleDisplay: n.data.titleDisplay, subtitle: n.data.subtitle, summary: n.data.summary })}
+              imageAlt={n.data.coverAlt}
             />
           ))}
         </div>

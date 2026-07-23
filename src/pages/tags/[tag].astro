@@ -6,6 +6,7 @@ import IngredientCard from '@/components/blocks/IngredientCard.astro';
 import PodcastCard from '@/components/blocks/PodcastCard.astro';
 import VideoCard from '@/components/blocks/VideoCard.astro';
 import NewsItem from '@/components/blocks/NewsItem.astro';
+import { getNewsThumbnail } from '@/utils/news';
 import { getCollection } from 'astro:content';
 import { fmtDate } from '@/utils/date';
 import { stripPodcastSlug } from '@/utils/podcasts';
@@ -157,6 +158,8 @@ const social = tagSocial(tag);
             href={`/news/${item.id.replace(/\.[^.]+$/, '')}/`}
             sourceUrl={d.sourceUrl as string | undefined}
             tags={d.tags as string[]}
+            image={getNewsThumbnail(d.thumbnail as string | undefined, d.heroImage as string | undefined, (d.tags as string[]) ?? [], d.category as string | undefined, { title: d.title as string, titleDisplay: d.titleDisplay as string | undefined, subtitle: d.subtitle as string | undefined, summary: d.summary as string | undefined })}
+            imageAlt={d.coverAlt as string | undefined}
           />
         );
       }
