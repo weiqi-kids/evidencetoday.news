@@ -31,10 +31,10 @@
 ### 分類卡排版
 
 - 首頁「探索所有內容」分類卡維持 3 欄／2 欄／1 欄 RWD、圓角、邊框與乾淨白底，不改成 dashboard 或功能選單風格。
-- 每張分類卡固定為三段節奏：上方 `.category-card__head` 放「小圖示 + 英文分類」、中段中文分類標題為主視覺、下方描述與篇數。
-- 圖示只做輔助辨識：icon box 約 `2.625rem`、SVG 約 `1.45rem`，不可放大成主視覺或孤立在左上角；英文分類與圖示同列，手機版也應保持同列且可讀。
+- **卡片為「插畫橫幅 + 文字」圖上文下**（2026-07-23 改版，取代先前「純 icon 導向、不配照片」）：`.category-card__image`（16:9）在上、`.category-card__body`（英文分類 → 中文標題 → 描述 → 篇數）在下。
+- **配圖＝品牌插畫組**：6 張手工維護的 SVG 在 `public/images/categories/<key>.svg`（key = article/myth/ingredient/podcast/video/news），同版式、只換品牌色 `--color-cat-*` 與母題（文件／盾牌打勾／燒瓶／麥克風／播放鍵／脈搏雷達），**不含文字**（避免與卡片標題重複）。母題沿用該類 icon 的 path 放大置中，風格參考 `public/images/news/*.svg`。**不自動抓內容封面**（自動抓會冒出廣告感雜圖，已於 2026-07-23 兩度踩雷 revert）。
+- **版面防白洞**：`.category-grid` 用 `align-items: start`（取消等高拉伸）、`.category-card__desc` 固定兩行（`-webkit-line-clamp:2` + `min-height`），六磚等高、圖片下方不留大白。SVG 素材內顏色不受 check-design「顏色只准在 variables.css」限制（比照既有 `images/news/*.svg`）。
 - 只調整首頁分類卡時，避免碰 Hero、最新內容、文章列表、短影音、Podcast 或其他卡片元件。
-- **分類卡維持 icon 導向、不配照片**（icon + 英文分類 + 中文標題 + 篇數的三段節奏本身即品牌識別）；要「每個框都有圖」的是內容卡（見下）與健康專題卡，不是這組導覽卡。
 
 ### 健康專題卡配圖
 

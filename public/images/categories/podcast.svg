@@ -1,0 +1,18 @@
+<svg viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="oklch(0.975 0.015 280)"/>
+      <stop offset="1" stop-color="oklch(0.90 0.055 280)"/>
+    </linearGradient>
+  </defs>
+  <rect width="320" height="180" fill="url(#bg)"/>
+  <circle cx="298" cy="22" r="66" fill="oklch(0.45 0.10 280)" opacity="0.06"/>
+  <path d="M320 66 A66 66 0 0 0 254 0" fill="none" stroke="oklch(0.45 0.10 280)" stroke-width="5" opacity="0.14"/>
+  <circle cx="26" cy="168" r="44" fill="none" stroke="oklch(0.45 0.10 280)" stroke-width="6" opacity="0.08"/>
+  <g transform="translate(124 52) scale(3)" fill="none" stroke="oklch(0.45 0.10 280)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.9">
+    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+    <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+    <line x1="12" y1="19" x2="12" y2="23"/>
+    <line x1="8" y1="23" x2="16" y2="23"/>
+  </g>
+</svg>

@@ -327,14 +327,14 @@ const categories = [
       <div class="category-grid">
         {categories.map((cat) => (
           <a href={cat.href} class="category-card" style={`--cat-color: ${cat.color}`}>
-            <div class="category-card__head">
-              <div class="category-card__icon" set:html={cat.icon} />
+            <img class="category-card__image" src={`/images/categories/${cat.key}.svg`} alt="" aria-hidden="true" loading="lazy" width="320" height="180" />
+            <div class="category-card__body">
               <span class="category-card__en">{cat.en}</span>
-            </div>
-            <h3 class="category-card__title">{cat.zh}</h3>
-            <p class="category-card__desc">{cat.desc}</p>
-            <div class="category-card__footer">
-              <span class="category-card__count">{cat.count} 篇</span>
+              <h3 class="category-card__title">{cat.zh}</h3>
+              <p class="category-card__desc">{cat.desc}</p>
+              <div class="category-card__footer">
+                <span class="category-card__count">{cat.count} 篇</span>
+              </div>
             </div>
           </a>
         ))}
@@ -935,16 +935,17 @@ const categories = [
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--space-card-gap);
+    /* 不用預設 stretch：卡片各自依內容高度，避免短文字卡在圖片下方留大片白 */
+    align-items: start;
   }
 
   .category-card {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
-    padding: clamp(1.4rem, 1.1rem + 0.8vw, 1.8rem);
     border-radius: var(--radius-card);
     border: 1px solid var(--color-fog);
     background-color: white;
+    overflow: hidden;
     text-decoration: none;
     color: inherit;
     transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
@@ -957,30 +958,19 @@ const categories = [
     color: inherit;
   }
 
-  .category-card__head {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    min-width: 0;
-    margin-bottom: 0.35rem;
-  }
-
-  .category-card__icon {
-    inline-size: 2.625rem;
-    block-size: 2.625rem;
-    flex: 0 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: var(--radius-sm);
-    background-color: color-mix(in oklch, var(--cat-color) 12%, var(--color-paper));
-    color: var(--cat-color);
-  }
-
-  .category-card__icon :global(svg) {
+  .category-card__image {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
     display: block;
-    width: 1.45rem;
-    height: 1.45rem;
+    border-bottom: 1px solid var(--color-fog);
+  }
+
+  .category-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: clamp(1.4rem, 1.1rem + 0.8vw, 1.8rem);
   }
 
   .category-card__en {
@@ -1003,18 +993,25 @@ const categories = [
   }
 
   .category-card__desc {
-    max-width: 28ch;
+    max-width: 32ch;
     font-size: var(--text-meta);
     color: color-mix(in oklch, var(--color-ink) 70%, transparent);
     line-height: 1.65;
+    /* 固定兩行：讓六張磚內容等高、底部對齊，長描述截斷 */
+    min-height: 3.3em;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .category-card__footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: auto;
-    padding-top: 1rem;
+    margin-top: 0.35rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid color-mix(in oklch, var(--color-fog) 70%, transparent);
     font-family: var(--font-ui);
     font-size: var(--text-meta);
   }
@@ -1023,11 +1020,6 @@ const categories = [
     font-size: var(--text-meta);
     font-weight: 700;
     color: var(--color-ink-muted);
-  }
-
-  .category-card__link {
-    color: var(--cat-color);
-    font-weight: 600;
   }
 
   @media (min-width: 640px) {
