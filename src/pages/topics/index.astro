@@ -2,11 +2,29 @@
 import Base from '@/layouts/Base.astro';
 import Breadcrumb from '@/components/ui/Breadcrumb.astro';
 import JsonLd from '@/components/seo/JsonLd.astro';
+import { getCollection } from 'astro:content';
+import { isPublicEntry } from '@/utils/visibility';
+import { resolveTopicCover } from '@/utils/topic-cover';
 import { TOPICS } from '@/data/topics';
 import { WEBSITE_REF, PUBLISHER_REF, SITE_URL } from '@/utils/schema-org';
 
 const title = '健康專題｜主題整理 - 本日有據';
 const description = '把同一主題的文章、闢謠、成分解析、Podcast 與短影音整理在一起，幫助讀者快速建立完整理解。';
+
+// 每個專題卡片的代表縮圖：從該主題自動歸入的文章／成分解析裡挑一張封面（新到舊優先），
+// 缺圖退回品牌佔位。零手工維護，新內容配好封面後自動更新。
+const byDate = (a: { data: { publishDate: Date } }, b: { data: { publishDate: Date } }) =>
+  b.data.publishDate.getTime() - a.data.publishDate.getTime();
+const [articles, ingredients] = await Promise.all([
+  getCollection('articles', (e) => isPublicEntry(e.data)),
+  getCollection('ingredients', (e) => isPublicEntry(e.data)),
+]);
+articles.sort(byDate);
+ingredients.sort(byDate);
+const topicCards = TOPICS.map((topic) => ({
+  topic,
+  cover: resolveTopicCover(topic, [articles, ingredients]),
+}));
 
 const collectionSchema = {
   '@context': 'https://schema.org',
@@ -53,11 +71,14 @@ const breadcrumbSchema = {
     </header>
 
     <div class="topics-grid">
-      {TOPICS.map((topic) => (
+      {topicCards.map(({ topic, cover }) => (
         <a class="topic-card" href={`/topics/${topic.slug}/`}>
-          <h2>{topic.name}</h2>
-          <p>{topic.intro}</p>
-          <span class="topic-card__cta">查看專題 →</span>
+          <img class="topic-card__image" src={cover.src} alt={cover.alt} aria-hidden={cover.alt === '' ? 'true' : undefined} loading="lazy" />
+          <div class="topic-card__body">
+            <h2>{topic.name}</h2>
+            <p>{topic.intro}</p>
+            <span class="topic-card__cta">查看專題 →</span>
+          </div>
         </a>
       ))}
     </div>
@@ -95,11 +116,10 @@ const breadcrumbSchema = {
   .topic-card {
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
-    padding: clamp(1.25rem, 1rem + 0.8vw, 1.75rem);
     border: 1px solid var(--color-fog);
     border-radius: var(--radius-card);
     background: white;
+    overflow: hidden;
     text-decoration: none;
     color: inherit;
     transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
@@ -109,6 +129,23 @@ const breadcrumbSchema = {
     transform: translateY(-2px);
     box-shadow: var(--shadow-card-hover);
     border-color: var(--color-teal);
+  }
+
+  .topic-card__image {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    display: block;
+    background: color-mix(in oklch, var(--color-fog) 60%, white);
+    border-bottom: 1px solid var(--color-fog);
+  }
+
+  .topic-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: clamp(1.25rem, 1rem + 0.8vw, 1.75rem);
+    flex: 1;
   }
 
   .topic-card h2 {

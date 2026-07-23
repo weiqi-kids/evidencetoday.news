@@ -8,9 +8,10 @@
 | 檔案 | 角色 |
 |---|---|
 | `src/data/topics.ts` | 主題定義（唯一真相）：`slug` / `name` / `intro` / `thirtySecond` / `matchKeywords` / `faq` |
-| `src/pages/topics/index.astro` | `/topics/` 列表頁（CollectionPage + ItemList JSON-LD） |
+| `src/utils/topic-cover.ts` | `resolveTopicCover()`：從主題自動歸入的內容取代表縮圖（見「專題卡片縮圖」） |
+| `src/pages/topics/index.astro` | `/topics/` 列表頁（CollectionPage + ItemList JSON-LD；卡片帶代表縮圖） |
 | `src/pages/topics/[slug].astro` | 各主題頁，依 `matchKeywords` 自動收斂內容 + FAQPage JSON-LD |
-| `src/pages/index.astro` | 首頁「健康專題」區塊（讀 `TOPICS` 渲染卡片） |
+| `src/pages/index.astro` | 首頁「健康專題」區塊（讀 `TOPICS` 渲染卡片，同帶代表縮圖） |
 | `src/components/blocks/Footer.astro` | 頁尾「健康專題」連結 |
 | `src/components/blocks/TopNav.astro` | 導覽列「健康專題」→ `/topics/`（全站內鏈入口） |
 | `src/pages/articles/[slug].astro` | 文章頁 spoke→hub 回鏈：用 `matchesTopic()` 自動列出「所屬健康專題」 |
@@ -23,6 +24,11 @@
 ### hub↔spoke 雙向內鏈
 - **hub→spoke**：`/topics/<slug>/` 依 `matchKeywords` 自動收斂內容（既有機制）。
 - **spoke→hub**：文章單篇頁（`articles/[slug].astro`）用同一個 `matchesTopic()` 反查本文所屬專題，渲染「所屬健康專題」膠囊連結；零手工維護、新文章自動生效。
+
+### 專題卡片縮圖（資料驅動，零手工維護）
+- 專題**沒有**逐主題圖庫，也不維護 `topics.ts` 圖片欄位。`/topics/` 列表頁與首頁「健康專題」區塊的卡片縮圖，一律由 `resolveTopicCover(topic, [articles, ingredients])`（`src/utils/topic-cover.ts`）**從該主題自動歸入的文章／成分解析取一張封面**（各池先按發佈日新到舊排序，取第一個「有比對到本主題且封面合法」者）。
+- 合法性判定與各 Card 一致：外連 `http(s)://` 直接採用、本地 `/…` 須 `public` 下存在；全數落空時退回品牌佔位 `/og-thumb/home.webp`（`alt=""`＋`aria-hidden`，視為裝飾）。
+- 效果：新內容配好 `coverImage` 後，專題縮圖自動更新，不需手動指派。想換某主題的代表圖 → 讓一篇有理想封面的內容成為該主題「最新一篇」即可。
 
 ## 修改流程
 
@@ -52,3 +58,4 @@
 - [ ] FAQ 自然、無 AI 味、無制式提醒式問題。
 - [ ] `/topics/` 與各 `/topics/<slug>/` 出現在 sitemap。
 - [ ] 首頁「健康專題」區塊與頁尾連結正常。
+- [ ] `/topics/` 與首頁每張專題卡片都有縮圖（多數應命中內容封面而非佔位；全佔位代表關鍵字沒對到任何有封面的內容）。
