@@ -25,6 +25,10 @@ const social = listSocial('ingredients');
   breadcrumbItems={[{ label: '首頁', href: '/' }, { label: '成分解析' }]}
   totalItems={ingredients.length}
 >
+  <p class="ingredients-intro">
+    成分解析逐一檢視保健食品裡常見營養素與成分的實證支持程度：目前研究做到哪個程度、建議劑量大概是多少、有哪些交互作用或副作用需要留意，幫助你在選購前先看懂科學根據。
+  </p>
+
   <div class="ingredients-grid">
     {ingredients.map((i) => (
       <IngredientCard
@@ -42,6 +46,14 @@ const social = listSocial('ingredients');
 </List>
 
 <style>
+  .ingredients-intro {
+    max-width: 60ch;
+    margin: 0 0 1.25rem;
+    font-size: var(--text-body);
+    line-height: 1.8;
+    color: color-mix(in oklch, var(--color-ink) 72%, transparent);
+  }
+
   .ingredients-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));

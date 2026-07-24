@@ -46,6 +46,10 @@ const social = listSocial('articles');
   breadcrumbItems={[{ label: '首頁', href: '/' }, { label: '文章' }]}
   totalItems={categorizedArticles.length}
 >
+  <p class="articles-intro">
+    這裡收錄本站關於保健食品、營養素與日常健康觀念的長篇文章，主題涵蓋維生素礦物質、基礎營養、抗氧化、睡眠與壓力、更年期、食品安全等常見疑問。每篇文章都附上參考來源與查核資訊，你可以用下方分類篩選，或直接搜尋你在意的主題。
+  </p>
+
   <nav class="article-tabs" aria-label="文章分類">
     <button type="button" class="article-tab" data-category="all" aria-selected="true">
       全部 <span>{categorizedArticles.length}</span>
@@ -153,6 +157,14 @@ const social = listSocial('articles');
 </script>
 
 <style>
+  .articles-intro {
+    max-width: 60ch;
+    margin: 0 0 1.25rem;
+    font-size: var(--text-body);
+    line-height: 1.8;
+    color: color-mix(in oklch, var(--color-ink) 72%, transparent);
+  }
+
   .article-tabs {
     display: flex;
     flex-wrap: wrap;
