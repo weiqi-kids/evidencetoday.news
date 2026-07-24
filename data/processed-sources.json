@@ -2,6 +2,18 @@
   "version": 1,
   "lastRun": "2026-07-24T06:19:34+08:00",
   "processed": {
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12862422/": {
+      "processedAt": "2026-07-25T06:24:00+08:00",
+      "outputFile": "src/content/news/radar-2026-07-25-06-01.md"
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41635649/": {
+      "processedAt": "2026-07-25T06:24:00+08:00",
+      "outputFile": "src/content/news/radar-2026-07-25-06-01.md"
+    },
+    "https://onlinelibrary.wiley.com/doi/10.1155/tsm2/5557511": {
+      "processedAt": "2026-07-25T06:24:00+08:00",
+      "outputFile": "src/content/news/radar-2026-07-25-06-01.md"
+    },
     "https://clinicaltrials.gov/study/NCT04067921": {
       "processedAt": "2026-07-22T06:18:00+08:00",
       "outputFile": null
