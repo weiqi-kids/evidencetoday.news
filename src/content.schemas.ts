@@ -113,7 +113,7 @@ export const articlesSchema = z.object({
   citationAnswer: z.string().optional(),
   targetAudience: z.string().optional(),
   evidenceBasis: z.string().optional(),
-  queryPattern: z.enum(['ingredient-explainer','myth-check','taiwan-regulation-market','audience-stage-guide','comparison']).optional(),
+  queryPattern: z.enum(['ingredient-explainer','myth-check','taiwan-regulation-market','audience-stage-guide','comparison','decision-guide']).optional(),
   readingTime: z.number(),
   editorReviewed: z.boolean().default(true),
   featured: z.boolean().default(false),
