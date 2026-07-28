@@ -85,6 +85,25 @@
 > - 一律用**語意化英文短語**、全小寫、連字號分隔，含主關鍵字（例：`menstrual-pain-primary-vs-secondary`、`vitamin-d-beyond-bone-immune-mood-heart`）。
 > - **禁止無語意的數字／來源序號 slug**（如 `appi-news-63`、`lodes-22`）。舊有此類 slug 已於 2026-06 全數改名並在 `astro.config.mjs` 設轉址，新文章不得再產生。
 > - slug 一旦發布即固定；若必須改名，務必同步在 `astro.config.mjs` 的 `redirects` 補一條 `舊 → 新/`，避免斷連結與流失索引權重。
+> - **改名時要一併處理三件事**（漏一件就會斷）：① `astro.config.mjs` 補 `舊 → 新/`；② 檢查**既有轉址的目標**是否指向被改名的舊 slug（`grep "舊slug" astro.config.mjs`），有的話一起改指新 slug，否則會變成 301 到 404；③ 全站搜尋其他內容的 `relatedArticles` / `relatedMyths` 等交叉引用（`grep -rl "舊slug" src/`）一併更新。
+
+---
+
+## 跨站重複內容（duplicate content）處理
+
+本站早期有部分文章與 [appi.news](https://appi.news) 同步刊出（兩站同一作者），導致 Google Search Console 回報「重複網頁」而拒絕索引。**2026-07-28 已完成 15 篇的差異化改寫**，作法記錄於此，供日後再遇到同類問題時沿用。
+
+**判定方式**：以字元 4-gram 比對兩站內文。實務上**逐句共用率（30 字視窗）才是有效判準**，4-gram containment 對同主題中文本來就偏高（同主題但獨立撰寫的文章也有 30~40%）。目標值：逐句共用率壓到 **5% 以下**。
+
+**改寫規格（只調敘述層，不動證據層）**：
+- **保留**：`references` 全部原樣、核心醫學事實、判讀數值、結論與安全警語。
+- **更換**：標題與 `description`（換搜尋意圖框架）、slug、H2 骨架（換組織邏輯，例如把「主題百科」改成「決定流程」）、開場情境、`tldr` 與 `faq`。
+- **補強**：台灣在地錨點與該篇獨有的判讀表／決策表，這是最能拉開差異又同時提升品質的部分。
+- 改寫方向依 [`playbooks/winning-article-formula.md`](./playbooks/winning-article-formula.md) 的六基因，把百科式泛論收斂成單一決定題。
+
+**常見卡點**：改寫時最容易殘留的是**引用段與定義段**（研究結論、法規敘述、機構立場），這些會整句被沿用而拉高共用率。改完務必回頭找長共用片段逐句重寫。另注意舊文可能含現行 `check-content` 禁用語（如「至關重要」「值得注意的是」），不可原樣搬運。
+
+**注意**：改寫是讓兩邊各自成立的作法。若目標只是讓其中一站被索引，Google 對同一擁有者多站刊登的官方解法是在非正本站加 **cross-domain canonical** 或 `noindex`，成本遠低於重寫。兩者擇一即可，不必並行。
 
 ```yaml
 ---
@@ -118,6 +137,19 @@ relatedPodcasts: ["podcast-slug"]
 ```
 
 在 frontmatter 下方撰寫 Markdown 內文（使用 `##` H2 和 `###` H3 標題）。
+
+### `queryPattern`（選填，前台標籤 + GA4 維度）
+
+值定義在 `src/content.schemas.ts` 的 Zod enum，中文標籤對照在 `src/utils/article-query-patterns.ts`。**新增值必須同時改這兩處**，否則 build 會擋（enum 不符）或前台標籤顯示為空。
+
+| 值 | 前台標籤 | 適用 |
+|---|---|---|
+| `ingredient-explainer` | 成分解析 | 單一成分的機制與證據 |
+| `myth-check` | 迷思查證 | 針對某個流傳說法查證 |
+| `taiwan-regulation-market` | 臺灣法規 | 法規、標示、在地買得到什麼 |
+| `audience-stage-guide` | 熟齡族群 | 特定人生階段/族群的整體指引 |
+| `comparison` | 成分比較 | 兩個以上選項的取捨 |
+| `decision-guide` | 判讀決策 | 讀者手上已有一個待決事項（2026-07-28 新增） |
 
 ---
 
