@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-07-28T06:37:00+08:00",
+  "lastRun": "2026-07-29T06:30:00+08:00",
   "processed": {
     "https://pubmed.ncbi.nlm.nih.gov/41999780/": {
       "processedAt": "2026-07-28T06:37:00+08:00",
@@ -884,6 +884,30 @@
     },
     "https://pubmed.ncbi.nlm.nih.gov/40069756/": {
       "processedAt": "2026-07-27T06:35:00+08:00",
+      "outputFile": null
+    },
+    "https://www.eurekalert.org/news-releases/1136476": {
+      "processedAt": "2026-07-29T06:30:00+08:00",
+      "outputFile": "src/content/news/radar-2026-07-29-06-01.md"
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/29466592/": {
+      "processedAt": "2026-07-29T06:30:00+08:00",
+      "outputFile": "src/content/news/radar-2026-07-29-06-01.md"
+    },
+    "https://www.news-medical.net/news/20260727/Genetic-factors-influence-cholesterol-response-to-low-carb-diets.aspx": {
+      "processedAt": "2026-07-29T06:30:00+08:00",
+      "outputFile": "src/content/news/radar-2026-07-29-06-01.md"
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC10824847/": {
+      "processedAt": "2026-07-29T06:30:00+08:00",
+      "outputFile": null
+    },
+    "https://medicalxpress.com/news/2026-07-diet-cholesterol-genes.html": {
+      "processedAt": "2026-07-29T06:30:00+08:00",
+      "outputFile": null
+    },
+    "https://www.medicaldaily.com/low-carb-keto-diet-ldl-cholesterol-lipid-panel-testing-476463": {
+      "processedAt": "2026-07-29T06:30:00+08:00",
       "outputFile": null
     }
   }
