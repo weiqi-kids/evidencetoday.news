@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-07-29T06:30:00+08:00",
+  "lastRun": "2026-07-30T06:30:00+08:00",
   "processed": {
     "https://pubmed.ncbi.nlm.nih.gov/41999780/": {
       "processedAt": "2026-07-28T06:37:00+08:00",
@@ -908,6 +908,70 @@
     },
     "https://www.medicaldaily.com/low-carb-keto-diet-ldl-cholesterol-lipid-panel-testing-476463": {
       "processedAt": "2026-07-29T06:30:00+08:00",
+      "outputFile": null
+    },
+    "https://www.healio.com/news/primary-care/20260728/healthy-diets-lower-risks-regardless-of-processing-levels": {
+      "processedAt": "2026-07-30T06:30:00+08:00",
+      "outputFile": "src/content/news/radar-2026-07-30-06-01.md"
+    },
+    "https://www.eurekalert.org/news-releases/1136477": {
+      "processedAt": "2026-07-30T06:30:00+08:00",
+      "outputFile": "src/content/news/radar-2026-07-30-06-01.md"
+    },
+    "https://www.news-medical.net/news/20260728/Nutritional-quality-matters-more-than-processing-level-for-long-term-health.aspx": {
+      "processedAt": "2026-07-30T06:30:00+08:00",
+      "outputFile": "src/content/news/radar-2026-07-30-06-01.md"
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/40657695/": {
+      "processedAt": "2026-07-30T06:30:00+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/35963372/": {
+      "processedAt": "2026-07-30T06:30:00+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/23891685/": {
+      "processedAt": "2026-07-30T06:30:00+08:00",
+      "outputFile": null
+    },
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12497593/": {
+      "processedAt": "2026-07-30T06:30:00+08:00",
+      "outputFile": null
+    },
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10305393/": {
+      "processedAt": "2026-07-30T06:30:00+08:00",
+      "outputFile": null
+    },
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8230806/": {
+      "processedAt": "2026-07-30T06:30:00+08:00",
+      "outputFile": null
+    },
+    "https://www.medrxiv.org/content/10.1101/2020.02.23.20026898.full.pdf": {
+      "processedAt": "2026-07-30T06:30:00+08:00",
+      "outputFile": null
+    },
+    "https://www.medrxiv.org/content/10.1101/2025.08.07.25333265.full.pdf": {
+      "processedAt": "2026-07-30T06:30:00+08:00",
+      "outputFile": null
+    },
+    "https://medicalxpress.com/news/2026-07-term-health-diet-quality-food.html": {
+      "processedAt": "2026-07-30T06:30:00+08:00",
+      "outputFile": null
+    },
+    "https://www.newswise.com/articles/for-long-term-health-diet-quality-matters-more-than-food-processing-level/?sc=c6311": {
+      "processedAt": "2026-07-30T06:30:00+08:00",
+      "outputFile": null
+    },
+    "https://bioengineer.org/diet-quality-matters-more-than-food-processing-for-long-term-health/": {
+      "processedAt": "2026-07-30T06:30:00+08:00",
+      "outputFile": null
+    },
+    "https://www.mohw.gov.tw/cp-16-61405-1.html": {
+      "processedAt": "2026-07-30T06:30:00+08:00",
+      "outputFile": null
+    },
+    "https://www.mohw.gov.tw/cp-6558-76599-1.html": {
+      "processedAt": "2026-07-30T06:30:00+08:00",
       "outputFile": null
     }
   }
