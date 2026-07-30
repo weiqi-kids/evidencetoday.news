@@ -1,7 +1,19 @@
 {
   "version": 1,
-  "lastRun": "2026-07-30T06:30:00+08:00",
+  "lastRun": "2026-07-31T06:17:00+08:00",
   "processed": {
+    "https://www.eurekalert.org/news-releases/1136409": {
+      "processedAt": "2026-07-31T06:17:00+08:00",
+      "outputFile": "src/content/news/radar-2026-07-31-06-01.md"
+    },
+    "https://www.eurekalert.org/news-releases/1136452": {
+      "processedAt": "2026-07-31T06:17:00+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41991268/": {
+      "processedAt": "2026-07-31T06:17:00+08:00",
+      "outputFile": null
+    },
     "https://pubmed.ncbi.nlm.nih.gov/41999780/": {
       "processedAt": "2026-07-28T06:37:00+08:00",
       "outputFile": "src/content/news/radar-2026-07-28-06-01.md"
