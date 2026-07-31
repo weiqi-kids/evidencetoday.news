@@ -1,7 +1,55 @@
 {
   "version": 1,
-  "lastRun": "2026-07-31T06:17:00+08:00",
+  "lastRun": "2026-08-01T06:34:12+08:00",
   "processed": {
+    "https://www.sciencedaily.com/releases/2026/07/260729010716.htm": {
+      "processedAt": "2026-08-01T06:34:12+08:00",
+      "outputFile": "src/content/news/radar-2026-08-01-06-01.md"
+    },
+    "https://www.eurekalert.org/news-releases/1136435": {
+      "processedAt": "2026-08-01T06:34:12+08:00",
+      "outputFile": "src/content/news/radar-2026-08-01-06-01.md"
+    },
+    "https://www.medicaldaily.com/multivitamin-older-adults-functional-health-cosmos-three-year-2026-476688": {
+      "processedAt": "2026-08-01T06:34:12+08:00",
+      "outputFile": "src/content/news/radar-2026-08-01-06-01.md"
+    },
+    "https://clinicaltrials.gov/study/NCT02422745": {
+      "processedAt": "2026-08-01T06:34:12+08:00",
+      "outputFile": "src/content/news/radar-2026-08-01-06-01.md"
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/37244291/": {
+      "processedAt": "2026-08-01T06:34:12+08:00",
+      "outputFile": "src/content/news/radar-2026-08-01-06-01.md"
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC9971819/": {
+      "processedAt": "2026-08-01T06:34:12+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/36866059/": {
+      "processedAt": "2026-08-01T06:34:12+08:00",
+      "outputFile": null
+    },
+    "https://www.who.int/news/item/28-01-2026-new-who-collaborating-centre-established-to-support-work-on-food-safety-and-healthy-diet": {
+      "processedAt": "2026-08-01T06:34:12+08:00",
+      "outputFile": null
+    },
+    "https://www.eurekalert.org/news-releases/1136411": {
+      "processedAt": "2026-08-01T06:34:12+08:00",
+      "outputFile": null
+    },
+    "https://www.eurekalert.org/news-releases/1122884": {
+      "processedAt": "2026-08-01T06:34:12+08:00",
+      "outputFile": null
+    },
+    "https://www.sciencedaily.com/releases/2026/06/260614012011.htm": {
+      "processedAt": "2026-08-01T06:34:12+08:00",
+      "outputFile": null
+    },
+    "https://www.sciencedaily.com/releases/2026/07/260727012128.htm": {
+      "processedAt": "2026-08-01T06:34:12+08:00",
+      "outputFile": null
+    },
     "https://www.eurekalert.org/news-releases/1136409": {
       "processedAt": "2026-07-31T06:17:00+08:00",
       "outputFile": "src/content/news/radar-2026-07-31-06-01.md"
