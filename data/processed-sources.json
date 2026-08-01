@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-08-01T06:34:12+08:00",
+  "lastRun": "2026-08-02T06:20:05+08:00",
   "processed": {
     "https://www.sciencedaily.com/releases/2026/07/260729010716.htm": {
       "processedAt": "2026-08-01T06:34:12+08:00",
@@ -1032,6 +1032,50 @@
     },
     "https://www.mohw.gov.tw/cp-6558-76599-1.html": {
       "processedAt": "2026-07-30T06:30:00+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/31478479/": {
+      "processedAt": "2026-08-02T06:20:05+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/30294938/": {
+      "processedAt": "2026-08-02T06:20:05+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/37182743/": {
+      "processedAt": "2026-08-02T06:20:05+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/22212388/": {
+      "processedAt": "2026-08-02T06:20:05+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/28137247/": {
+      "processedAt": "2026-08-02T06:20:05+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/37466280/": {
+      "processedAt": "2026-08-02T06:20:05+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/34371975/": {
+      "processedAt": "2026-08-02T06:20:05+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/23886347/": {
+      "processedAt": "2026-08-02T06:20:05+08:00",
+      "outputFile": null
+    },
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11174647/": {
+      "processedAt": "2026-08-02T06:20:05+08:00",
+      "outputFile": null
+    },
+    "https://www.who.int/health-topics/food-safety": {
+      "processedAt": "2026-08-02T06:20:05+08:00",
+      "outputFile": null
+    },
+    "https://www.who.int/teams/nutrition-and-food-safety/monitoring-nutritional-status-and-food-safety-and-events": {
+      "processedAt": "2026-08-02T06:20:05+08:00",
       "outputFile": null
     }
   }
