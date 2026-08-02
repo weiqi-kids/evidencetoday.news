@@ -1,7 +1,35 @@
 {
   "version": 1,
-  "lastRun": "2026-08-02T06:20:05+08:00",
+  "lastRun": "2026-08-03T06:19:00+08:00",
   "processed": {
+    "https://www.cdc.gov.tw/Bulletin/Detail/I6r18LGy_-Y1I2Fj72gO2w?typeid=9": {
+      "processedAt": "2026-08-03T06:19:00+08:00",
+      "outputFile": "src/content/news/radar-2026-08-03-06-01.md"
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/u3YrvIQXQrOtbJXDXxFxQg?typeid=9": {
+      "processedAt": "2026-08-03T06:19:00+08:00",
+      "outputFile": "src/content/news/radar-2026-08-03-06-01.md"
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/HqTIUKC58EK9fO9AVWU3Cg?typeid=9": {
+      "processedAt": "2026-08-03T06:19:00+08:00",
+      "outputFile": "src/content/news/radar-2026-08-03-06-01.md"
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC10824847/": {
+      "processedAt": "2026-08-03T06:19:00+08:00",
+      "outputFile": null
+    },
+    "https://www.who.int/news-room/events/detail/2026/07/06/default-calendar/forty-ninth-session-of-the-fao-who-codex-alimentarius-commission-adopts-new-standards": {
+      "processedAt": "2026-08-03T06:19:00+08:00",
+      "outputFile": null
+    },
+    "https://www.who.int/teams/nutrition-and-food-safety/food-and-nutrition-actions-in-health-systems": {
+      "processedAt": "2026-08-03T06:19:00+08:00",
+      "outputFile": null
+    },
+    "https://www.medrxiv.org/content/10.1101/2025.08.07.25333265.full.pdf": {
+      "processedAt": "2026-08-03T06:19:00+08:00",
+      "outputFile": null
+    },
     "https://www.sciencedaily.com/releases/2026/07/260729010716.htm": {
       "processedAt": "2026-08-01T06:34:12+08:00",
       "outputFile": "src/content/news/radar-2026-08-01-06-01.md"
