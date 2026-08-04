@@ -32,6 +32,11 @@ const {
 ---
 
 <Base title={seoTitle ?? `${title}｜本日有據`} description={description} ogTitle={socialTitle} ogDescription={socialDescription ?? description} ogImage={ogImage} noindex={noindex} robotsFollow={robotsFollow}>
+  {/* 讓列表頁能塞 CollectionPage / ItemList / BreadcrumbList JSON-LD（見 utils/schema-org.ts）。
+      轉傳到 Base 的同名 slot；呼叫端不填就完全不受影響。 */}
+  <Fragment slot="head">
+    <slot name="head" />
+  </Fragment>
   <div class="list-layout container">
     <Breadcrumb items={breadcrumbItems} />
 

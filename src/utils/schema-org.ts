@@ -190,3 +190,69 @@ export function buildPerson(authorName: string): PersonSchema {
       : {}),
   };
 }
+
+/* ------------------------------------------------------------------ */
+/*  列表頁（CollectionPage / ItemList / BreadcrumbList）                */
+/* ------------------------------------------------------------------ */
+//
+// 2026-08-04 新增。此前 6 個 collection 列表頁與首頁都沒有任何結構化資料，
+// 只繼承 Base 的站台圖譜——等於 Google 拿不到「這一頁列了哪些 URL」的明確清單。
+// 在真實索引率僅 11% 的情況下，ItemList 是少數能直接告訴爬蟲「這裡有這些頁」
+// 的低成本手段。builder 從 all/index.astro 與 topics/[slug].astro 的手寫版本抽出。
+
+export interface BreadcrumbItem {
+  label: string;
+  /** 站內路徑（如 `/articles/`）；最後一層通常不給，代表當前頁 */
+  href?: string;
+}
+
+/** 麵包屑 JSON-LD。最後一項若無 href 則不輸出 `item`（schema.org 允許當前頁省略）。 */
+export function buildBreadcrumbList(items: BreadcrumbItem[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((it, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: it.label,
+      ...(it.href ? { item: `${SITE_URL}${it.href}` } : {}),
+    })),
+  };
+}
+
+export interface ListPageInput {
+  /** 頁面路徑，需含前後斜線，如 `/articles/` */
+  path: string;
+  name: string;
+  description: string;
+  /** 依顯示順序排列的項目路徑與標題 */
+  items: { url: string; name: string }[];
+}
+
+/**
+ * 列表頁的 CollectionPage + 內嵌 ItemList。
+ * 合成單一節點（mainEntity）而非兩個獨立 script，讓 ItemList 明確從屬於本頁，
+ * 避免 Google 把它當成孤立清單。
+ */
+export function buildCollectionPage({ path, name, description, items }: ListPageInput) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': `${SITE_URL}${path}#collection`,
+    name,
+    description,
+    url: `${SITE_URL}${path}`,
+    isPartOf: WEBSITE_REF,
+    publisher: PUBLISHER_REF,
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: items.length,
+      itemListElement: items.map((it, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        url: `${SITE_URL}${it.url}`,
+        name: it.name,
+      })),
+    },
+  };
+}

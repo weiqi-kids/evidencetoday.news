@@ -75,13 +75,21 @@ const itemListSchema = {
   isPartOf: WEBSITE_REF,
   publisher: PUBLISHER_REF,
   about: { '@type': 'Thing', name: topic.name },
+  // ItemList 涵蓋本主題頁實際列出的**所有**類型，而非只有文章。
+  // （2026-08-04 前只放 articles，等於對爬蟲隱藏了同頁的闢謠／成分／趨勢連結，
+  //  而那些正是最需要被發現的長尾。）
   mainEntity: {
     '@type': 'ItemList',
-    itemListElement: articles.map((entry, index) => ({
+    itemListElement: [
+      ...articles.map((e) => ({ url: `/articles/${stripExt(e.id)}/`, name: e.data.title })),
+      ...myths.map((e) => ({ url: `/myths/${stripExt(e.id)}/`, name: e.data.title })),
+      ...ingredients.map((e) => ({ url: `/ingredients/${stripExt(e.id)}/`, name: e.data.title })),
+      ...news.map((e) => ({ url: `/news/${stripExt(e.id)}/`, name: e.data.title })),
+    ].map((it, index) => ({
       '@type': 'ListItem',
       position: index + 1,
-      url: `${SITE_URL}/articles/${stripExt(entry.id)}/`,
-      name: entry.data.title,
+      url: `${SITE_URL}${it.url}`,
+      name: it.name,
     })),
   },
 };

@@ -6,6 +6,8 @@ import { getPublishedArticles } from '@/utils/articles';
 import { ARTICLE_CATEGORIES, categorizeArticles, type ArticleCategorySlug } from '@/utils/article-categories';
 import { getArticleQueryPatternLabel } from '@/utils/article-query-patterns';
 import { listSocial } from '@/utils/social-meta.mjs';
+import JsonLd from '@/components/seo/JsonLd.astro';
+import { buildCollectionPage, buildBreadcrumbList } from '@/utils/schema-org';
 
 function stripExt(id: string): string {
   return id.replace(/\.[^.]+$/, '');
@@ -33,6 +35,13 @@ const articleCounts = ARTICLE_CATEGORIES.reduce<Record<ArticleCategorySlug, numb
 );
 const visibleCategories = ARTICLE_CATEGORIES.filter((category) => articleCounts[category.slug] > 0);
 const social = listSocial('articles');
+const listSchema = buildCollectionPage({
+  path: '/articles/',
+  name: '文章',
+  description: social.description,
+  items: articles.map((a) => ({ url: `/articles/${stripExt(a.id)}/`, name: a.data.title })),
+});
+const crumbSchema = buildBreadcrumbList([{ label: '首頁', href: '/' }, { label: '文章' }]);
 ---
 
 <List
@@ -46,6 +55,11 @@ const social = listSocial('articles');
   breadcrumbItems={[{ label: '首頁', href: '/' }, { label: '文章' }]}
   totalItems={categorizedArticles.length}
 >
+  <Fragment slot="head">
+    <JsonLd data={listSchema} />
+    <JsonLd data={crumbSchema} />
+  </Fragment>
+
   <p class="articles-intro">
     這裡收錄本站關於保健食品、營養素與日常健康觀念的長篇文章，主題涵蓋維生素礦物質、基礎營養、抗氧化、睡眠與壓力、更年期、食品安全等常見疑問。每篇文章都附上參考來源與查核資訊，你可以用下方分類篩選，或直接搜尋你在意的主題。
   </p>
