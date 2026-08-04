@@ -29,16 +29,15 @@
 
 ⚠️ `getToken()` 已改為 **async**，呼叫端必須 `await`。新增呼叫點時別忘了。
 
-### 在遠端環境啟用（一次設定，之後每個 session 自動有資料）
+### 在遠端環境啟用
 
-1. 到 GCP Console → IAM 與管理 → 服務帳號 → `ga4-insights@yaocare.iam.gserviceaccount.com` → 金鑰 → 新增金鑰（JSON）。
-2. 轉成 base64（避免換行破壞環境變數）：
-   ```
-   base64 -w0 ~/Downloads/yaocare-xxxx.json
-   ```
-3. 把輸出貼進 Claude Code on the web 的 **環境變數** 設定，變數名 `GOOGLE_SERVICE_ACCOUNT_KEY`。
-   （環境設定說明：https://code.claude.com/docs/en/claude-code-on-the-web）
-4. 之後任何 session 直接 `pnpm perf`、`pnpm insights`、`pnpm index:coverage` 都會有真實數據。
+**逐步操作說明（給非工程背景，含每一個要點的按鈕）：[`docs/setup-google-data-access.md`](../setup-google-data-access.md)**
+
+摘要：GCP Console 產服務帳戶 JSON 金鑰 → GA4「資源存取管理」加該 SA 為檢視者 → GSC「使用者和權限」加該 SA 為完整權限 → 把整份 JSON 貼進 Claude Code on the web 的環境變數 `GOOGLE_SERVICE_ACCOUNT_KEY`。
+
+`GOOGLE_SERVICE_ACCOUNT_KEY` 接受**原始 JSON 直接貼上**（不必先 base64；base64 也支援）。設好之後任何 session 直接 `pnpm perf`、`pnpm insights`、`pnpm index:coverage` 都會有真實數據。
+
+⚠️ 關鍵觀念（最常卡住的一點）：**金鑰不在 GA4 或 GSC 介面裡**，那兩處只負責授權；金鑰要到 **Google Cloud Console** 產生。
 
 **權限需求**：該 SA 需在 GA4 資源有「檢視者」、在 GSC 資源有使用者權限。`sitemap-submit` 另需 `webmasters` **寫入** scope。
 
