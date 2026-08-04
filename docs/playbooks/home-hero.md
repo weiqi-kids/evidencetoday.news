@@ -40,10 +40,25 @@
 - 首頁「健康專題」與 `/topics` 列表卡為**圖上文下**：`.topic(-home)-card__image`（16:9）+ `.topic(-home)-card__body`。
 - 封面來源＝`resolveTopicCover(topic, [articles, ingredients])`（`src/utils/topic-cover.ts`）：從該主題自動歸入的文章／成分解析裡挑一張既有封面（新到舊優先），缺圖退品牌佔位。零手工維護、新內容配好封面即自動更新。**不在 `topics.ts` 手寫每主題圖**。
 
-### 趨勢（news）列表項配圖
+### 趨勢（news）的兩種呈現：NewsCard vs NewsItem — 不可互換
 
-- `NewsItem.astro` 由純文字列改為**縮圖 + 文字**的媒體列（`grid-template-columns: <thumb> 1fr`）。呼叫端（`index.astro` 最新內容／趨勢區、`topics/[slug]`、`tags/[tag]`）用 `getNewsThumbnail(...)` 算縮圖傳 `image` prop；缺圖退品牌佔位 `/og-thumb/news.webp`。
+趨勢新聞有**兩個**呈現元件，用錯會爆版（2026-08-04 首頁「最新內容」即因此破圖）：
+
+| 元件 | 版型 | 只能用在 | 呼叫端 |
+|---|---|---|---|
+| `NewsCard.astro` | **直式卡片**（圖上文下、白底、圓角），與 `ArticleCard` / `MythCard` / `IngredientCard` / `VideoCard` 同族，縮圖 `16/9` | **多欄格線**的卡片區 | `news/index.astro`（`.news-grid`）、`index.astro` 最新內容（`.latest-grid`）、`tags/[tag]`（`.tag-grid`） |
+| `NewsItem.astro` | **橫向媒體列**（縮圖在左、文字在右、只有 `border-bottom` 無卡片底） | **單欄全寬**的列表 | `index.astro` 健康議題雷達側欄（`.trends-layout__left`）、`topics/[slug]`（`.topic-news`） |
+
+**為什麼不能混用**：`NewsItem` 的縮圖軌道是 `clamp(128px, 20vw, 168px) 1fr`，用**視窗**寬度而非容器寬度計算。放進 4 欄格線（每欄約 228–289px）後，168px 縮圖只剩 43–103px 給文字，而 `white-space: nowrap` 的 tag 加 18px 日期需要約 120px → 溢出、日期一字一行。它也沒有白色卡片底，會和鄰居格格不入。
+
+- 兩者的縮圖都走 `getNewsThumbnail(...)`；缺圖退品牌佔位 `/og-thumb/news.webp`。
+- **卡片標題一律用 `getDisplayTitle(d.titleDisplay, d.title)`**：`title` 是給 SEO/schema 的完整學術標題，`titleDisplay` 才是讀者看的口語問句。直接傳 `d.title` 會在前台露出「健康雷達 2026-08-22：…WHI 延伸分析…」這種沒人看得懂的長標。
 - 趨勢文章的實體照片來源與回填流程見 [`news-article.md`](./news-article.md)「趨勢卡照片化」。
+
+### 「最新內容」區塊
+
+- 資料來自 5 個 collection 合併後依 `publishDate` 新到舊取 4 筆（`index.astro` 的 `latestAll`），逐筆依 `item.collection` 分派到對應卡片元件。
+- **鐵則：這一格裡的每一種內容都必須是直式卡片**。新增 collection 時若沒有對應的卡片元件，先做一個，不要拿列表列充數。
 
 ### Hero 細節
 

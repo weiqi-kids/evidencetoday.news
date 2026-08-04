@@ -15,7 +15,7 @@
 | 「主編判讀」優先讀 `editorPoints`，fallback 拆 `editorComment` | 同上 | normalizeEditorPoints() 會嘗試從字串拆出列點 |
 | 來源優先用 `references` 陣列；fallback 到 `pmid` / `sourceUrl` | 同上 | references 是新版正規格式 |
 | 缺源時顯示「原始來源連結尚未補上」字樣 | 同上 | 不能讓來源區塊空白 |
-| 卡片字級：badge ≥ 13px / title ≥ 18px / summary ≥ 15px / date ≥ 13px | `src/pages/news/index.astro` | 卡片要像文章卡而不是資料庫條目 |
+| 卡片字級：badge ≥ 13px / title ≥ 18px / summary ≥ 15px / date ≥ 13px | `src/components/blocks/NewsCard.astro` | 卡片要像文章卡而不是資料庫條目 |
 | TrendBubbles `prefers-reduced-motion` | `src/components/charts/TrendBubbles.svelte` | 偏好減動畫時直接收斂、不晃動 |
 | 分類 fallback 圖必須是情境圖，不可是小 icon | `public/images/news/*.svg` + `src/utils/news.ts` CATEGORY_IMAGES | 管理者明確要求 |
 
@@ -102,7 +102,7 @@
 2. 改完跑 build；在本機開瀏覽器看一篇驗證
 3. 視覺改動同步更新本 playbook
 
-### 改首頁 (`src/pages/news/index.astro`)
+### 改 /news 列表頁 (`src/pages/news/index.astro`，卡片本身在 `src/components/blocks/NewsCard.astro`)
 1. 卡片字級不要再縮小
 2. TrendBubbles 區塊不要再用 `max-height: 50vh + overflow:hidden` 裁切
 
@@ -180,7 +180,7 @@
 
 ### 7. 趨勢圖卡與 fallback 圖片
 - `/news` 列表縮圖優先序固定為 `thumbnail → heroImage → topic fallback → category fallback → default fallback`；詳情頁 hero 固定為 `heroImage → thumbnail → topic fallback → category fallback → default fallback`。
-- 首頁趨勢區與最新內容用的 `NewsItem.astro` 已改為「縮圖＋文字」媒體列（縮圖走同一條 `getNewsThumbnail` 優先序）；細節見 [`home-hero.md`](./home-hero.md)。
+- 趨勢新聞有**兩個**呈現元件，縮圖都走同一條 `getNewsThumbnail` 優先序，但版型與適用情境不同、**不可互換**：`NewsCard.astro`（直式卡片，用於 `/news` 列表、首頁「最新內容」、`tags/[tag]` 等多欄格線）與 `NewsItem.astro`（橫向媒體列，只用於首頁健康議題雷達側欄與 `topics/[slug]` 這類單欄全寬列表）。把 `NewsItem` 放進多欄格線會爆版；細節與原因見 [`home-hero.md`](./home-hero.md)。
 - topic fallback 由 `src/utils/news.ts` 依 `titleDisplay`、`title`、`subtitle`、`summary`、`tags`、`category` 關鍵字判斷，命中後使用 `public/images/news/topics/*.svg`，避免同分類文章全部共用同一張圖。
 - `public/images/news/**/*.svg` 必須是本地、完整 XML，`viewBox="0 0 800 450"`，不可引用外部圖片；主視覺需佔圖面約 45–65%，不可退回中央小 icon 或淡色 placeholder。
 - fallback 圖應以中文健康媒體語氣呈現，避免過小英文裝飾字；若需要文字，只使用足夠辨識的中文短字輔助主視覺。

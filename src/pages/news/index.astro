@@ -6,6 +6,7 @@ import { getDisplayTitle, getNewsCategory, getNewsThumbnail } from '@/utils/news
 import { getTopTags } from '@/utils/tag-stats';
 import { listSocial } from '@/utils/social-meta.mjs';
 import TrendBubbles from '@/components/charts/TrendBubbles.svelte';
+import NewsCard from '@/components/blocks/NewsCard.astro';
 import { isPublicEntry } from '@/utils/visibility';
 
 function stripExt(id: string) { return id.replace(/\.[^.]+$/, ''); }
@@ -45,17 +46,14 @@ const social = listSocial('news');
         });
         const href = `/news/${stripExt(n.id)}/`;
         return (
-          <a href={href} class="news-card">
-            <div class="news-card__img-wrap">
-              <img src={thumb} alt="" loading="lazy" class="news-card__img" />
-              <span class="news-card__badge">{category}</span>
-            </div>
-            <div class="news-card__body">
-              <h2 class="news-card__title">{title}</h2>
-              <p class="news-card__summary">{d.summary}</p>
-              <time class="news-card__date">{fmtDate(d.publishDate)}</time>
-            </div>
-          </a>
+          <NewsCard
+            title={title}
+            summary={d.summary}
+            href={href}
+            image={thumb}
+            category={category}
+            date={fmtDate(d.publishDate)}
+          />
         );
       })}
     </section>
@@ -132,125 +130,8 @@ const social = listSocial('news');
     display: contents;
   }
 
-  /* ---- Card ---- */
-  .news-card {
-    display: flex;
-    flex-direction: column;
-    background: white;
-    border: 1px solid color-mix(in oklch, var(--color-fog) 80%, transparent);
-    border-radius: var(--radius-card);
-    overflow: hidden;
-    text-decoration: none;
-    color: inherit;
-    transition: box-shadow 0.2s ease, transform 0.2s ease;
-  }
+  /* 卡片樣式已抽到 src/components/blocks/NewsCard.astro（scoped style）。 */
 
-  .news-card:hover {
-    box-shadow: var(--shadow-card-hover);
-    transform: translateY(-2px);
-  }
-
-  .news-card:focus-visible {
-    outline: 2px solid var(--color-teal);
-    outline-offset: 2px;
-  }
-
-  /* Image */
-  .news-card__img-wrap {
-    position: relative;
-    aspect-ratio: 16 / 10;
-    overflow: hidden;
-    background:
-      radial-gradient(circle at 72% 28%, color-mix(in oklch, var(--color-teal) 10%, transparent), transparent 38%),
-      color-mix(in oklch, var(--color-fog) 55%, white);
-  }
-
-  .news-card__img-wrap::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background:
-      linear-gradient(180deg, var(--overlay-white-08), transparent 46%),
-      radial-gradient(circle at 65% 22%, var(--overlay-white-22), transparent 34%);
-    mix-blend-mode: soft-light;
-  }
-
-  .news-card__img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transform: scale(1.01);
-    transition: transform 0.25s ease;
-  }
-
-  .news-card:hover .news-card__img {
-    transform: scale(1.035);
-  }
-
-  .news-card__badge {
-    position: absolute;
-    top: 0.75rem;
-    left: 0.75rem;
-    display: inline-flex;
-    align-items: center;
-    padding: 0.3rem 0.7rem;
-    border-radius: var(--radius-pill);
-    font-family: var(--font-ui);
-    font-size: 0.85rem;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-    color: white;
-    background: color-mix(in oklch, var(--color-cat-news) 90%, black);
-    box-shadow: var(--shadow-news-card);
-    z-index: 1;
-  }
-
-  /* Body */
-  .news-card__body {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    padding: 1.15rem 1.35rem 1.35rem;
-  }
-
-  .news-card__title {
-    font-family: var(--font-sans);
-    font-size: clamp(1.125rem, 1rem + 0.3vw, 1.25rem);
-    font-weight: 700;
-    color: var(--color-ink);
-    line-height: 1.5;
-    margin-bottom: 0.6rem;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  .news-card__summary {
-    font-size: 0.98rem;
-    color: color-mix(in oklch, var(--color-ink) 60%, transparent);
-    line-height: 1.7;
-    margin-bottom: auto;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  .news-card__date {
-    display: block;
-    margin-top: 0.85rem;
-    font-family: var(--font-ui);
-    font-size: 0.86rem;
-    color: color-mix(in oklch, var(--color-ink) 40%, transparent);
-  }
-
-  @media (min-width: 1024px) {
-    .news-card__title {
-      font-size: 1.2rem;
-    }
-  }
   @media (max-width: 639px) {
     .trend-section__chart { height: 17rem; }
   }

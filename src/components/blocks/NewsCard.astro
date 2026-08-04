@@ -1,0 +1,152 @@
+---
+// 趨勢新聞的「直式卡片」。與 ArticleCard / MythCard / IngredientCard 同一族，
+// 用在任何以格線排列的卡片區（/news 列表、首頁「最新內容」、/tags/[tag]）。
+//
+// ⚠️ 不要和 NewsItem.astro 搞混：那是**橫向媒體列**（縮圖在左、文字在右），
+// 縮圖軌道以 vw 計算，只能用在單欄全寬的列表情境（首頁「健康議題雷達」側欄、
+// topics/[slug]）。把 NewsItem 放進多欄格線會讓文字軌道被壓到 ~40px 而爆版。
+//
+// props 一律收「已解析好的字串」，解析（getDisplayTitle / getNewsCategory /
+// getNewsThumbnail / fmtDate）留在呼叫端，比照 ArticleCard 的慣例。
+interface Props {
+  title: string;
+  summary: string;
+  href: string;
+  image: string;
+  category: string;
+  date: string;
+}
+
+const { title, summary, href, image, category, date } = Astro.props;
+---
+
+<a href={href} class="news-card">
+  <div class="news-card__img-wrap">
+    <img src={image} alt="" loading="lazy" class="news-card__img" />
+    <span class="news-card__badge">{category}</span>
+  </div>
+  <div class="news-card__body">
+    <h3 class="news-card__title">{title}</h3>
+    <p class="news-card__summary">{summary}</p>
+    <time class="news-card__date">{date}</time>
+  </div>
+</a>
+
+<style>
+  .news-card {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    border: 1px solid color-mix(in oklch, var(--color-fog) 80%, transparent);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .news-card:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-2px);
+  }
+
+  .news-card:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 2px;
+  }
+
+  /* Image：16/9 與 ArticleCard / MythCard / IngredientCard / VideoCard 對齊，
+     混排在同一列格線時縮圖高度才會一致。 */
+  .news-card__img-wrap {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 72% 28%, color-mix(in oklch, var(--color-teal) 10%, transparent), transparent 38%),
+      color-mix(in oklch, var(--color-fog) 55%, white);
+  }
+
+  .news-card__img-wrap::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(180deg, var(--overlay-white-08), transparent 46%),
+      radial-gradient(circle at 65% 22%, var(--overlay-white-22), transparent 34%);
+    mix-blend-mode: soft-light;
+  }
+
+  .news-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.01);
+    transition: transform 0.25s ease;
+  }
+
+  .news-card:hover .news-card__img {
+    transform: scale(1.035);
+  }
+
+  .news-card__badge {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.3rem 0.7rem;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-ui);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: white;
+    background: color-mix(in oklch, var(--color-cat-news) 90%, black);
+    box-shadow: var(--shadow-news-card);
+    z-index: 1;
+  }
+
+  /* Body */
+  .news-card__body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 1.15rem 1.35rem 1.35rem;
+  }
+
+  /* 字級用 clamp 自適應，在 1280px 已解析到約 1.24rem；不要再加
+     @media(min-width:1024px){font-size:1.2rem} 那類覆蓋——那會讓寬螢幕反而變小，
+     且在 4 欄格線裡過大。 */
+  .news-card__title {
+    font-family: var(--font-sans);
+    font-size: clamp(1.125rem, 1rem + 0.3vw, 1.25rem);
+    font-weight: 700;
+    color: var(--color-ink);
+    line-height: 1.5;
+    margin-bottom: 0.6rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .news-card__summary {
+    font-size: 0.98rem;
+    color: color-mix(in oklch, var(--color-ink) 60%, transparent);
+    line-height: 1.7;
+    margin-bottom: auto;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .news-card__date {
+    display: block;
+    margin-top: 0.85rem;
+    font-family: var(--font-ui);
+    font-size: 0.86rem;
+    color: color-mix(in oklch, var(--color-ink) 40%, transparent);
+  }
+</style>

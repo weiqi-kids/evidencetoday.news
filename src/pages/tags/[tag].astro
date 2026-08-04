@@ -5,8 +5,8 @@ import MythCard from '@/components/blocks/MythCard.astro';
 import IngredientCard from '@/components/blocks/IngredientCard.astro';
 import PodcastCard from '@/components/blocks/PodcastCard.astro';
 import VideoCard from '@/components/blocks/VideoCard.astro';
-import NewsItem from '@/components/blocks/NewsItem.astro';
-import { getNewsThumbnail } from '@/utils/news';
+import NewsCard from '@/components/blocks/NewsCard.astro';
+import { getNewsThumbnail, getDisplayTitle, getNewsCategory } from '@/utils/news';
 import { getCollection } from 'astro:content';
 import { fmtDate } from '@/utils/date';
 import { stripPodcastSlug } from '@/utils/podcasts';
@@ -150,16 +150,13 @@ const social = tagSocial(tag);
       }
       if (item.collection === 'news') {
         return (
-          <NewsItem
-            title={d.title as string}
-            source={d.source as string}
-            date={fmtDate(item.date)}
+          <NewsCard
+            title={getDisplayTitle(d.titleDisplay as string | undefined, d.title as string)}
             summary={d.summary as string}
-            href={`/news/${item.id.replace(/\.[^.]+$/, '')}/`}
-            sourceUrl={d.sourceUrl as string | undefined}
-            tags={d.tags as string[]}
+            href={`/news/${stripExt(item.id)}/`}
             image={getNewsThumbnail(d.thumbnail as string | undefined, d.heroImage as string | undefined, (d.tags as string[]) ?? [], d.category as string | undefined, { title: d.title as string, titleDisplay: d.titleDisplay as string | undefined, subtitle: d.subtitle as string | undefined, summary: d.summary as string | undefined })}
-            imageAlt={d.coverAlt as string | undefined}
+            category={getNewsCategory((d.tags as string[]) ?? [], d.category as string | undefined)}
+            date={fmtDate(item.date)}
           />
         );
       }
