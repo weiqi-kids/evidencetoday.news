@@ -16,8 +16,8 @@
  *   pnpm sitemap:submit          # 提交 sitemap-index.xml + 印覆蓋率
  *   pnpm sitemap:submit --check  # 只查狀態與覆蓋率，不提交
  */
-import { execFileSync } from 'node:child_process';
-import { SERVICE_ACCOUNT, GSC_SITE } from './lib/insight-constants.mjs';
+import { GSC_SITE } from './lib/insight-constants.mjs';
+import { getToken } from './lib/insight-fetch.mjs';
 
 // gcloud 常裝在 /snap/bin；非互動環境 PATH 可能缺它。
 if (!(process.env.PATH || '').split(':').includes('/snap/bin')) {
@@ -31,15 +31,13 @@ const SITEMAPS = [
 const WRITE_SCOPE = 'https://www.googleapis.com/auth/webmasters';
 const checkOnly = process.argv.includes('--check');
 
-function writeToken() {
-  return execFileSync('gcloud', [
-    'auth', 'print-access-token', '--account', SERVICE_ACCOUNT, '--scopes', WRITE_SCOPE,
-  ]).toString().trim();
-}
+// 走共用 getToken()（服務帳號金鑰優先、gcloud 後備），只是換成寫入用的 scope。
+// 提交 sitemap 需要 webmasters 寫入權限，唯讀 scope 會被 GSC 回 403。
+const writeToken = () => getToken(WRITE_SCOPE);
 
 const site = encodeURIComponent(GSC_SITE);
 const base = `https://searchconsole.googleapis.com/webmasters/v3/sites/${site}/sitemaps`;
-const token = writeToken();
+const token = await writeToken();
 const auth = { Authorization: `Bearer ${token}` };
 
 if (!checkOnly) {

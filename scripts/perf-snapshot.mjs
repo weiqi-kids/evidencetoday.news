@@ -5,9 +5,11 @@
  * 用途：經營決策用的真實數據面板（流量、搜尋曝光/點擊/排名、Top 頁面與查詢）。
  * 與 `pnpm insights`（為 /news 選題設計）不同：perf 給的是「站整體表現」。
  *
- * 認證沿用 audience-insights 的 service account（見 docs/playbooks/audience-insights.md
- * 與記憶 ga4-insights-auth-setup）：`getToken()` 走 `gcloud auth print-access-token`，
+ * 認證沿用 audience-insights 的 service account（見 docs/playbooks/audience-insights.md）。
+ * `getToken()` 優先用服務帳號金鑰（`GOOGLE_SERVICE_ACCOUNT_KEY` 環境變數）走 JWT-bearer
+ * 換 token，取不到才退回 `gcloud auth print-access-token`。主機 cron 走 gcloud 這條，
  * 因此 PATH 必須含 /snap/bin，否則 gcloud 找不到 → 兩桶空。下方自動補上。
+ * 遠端環境（CCR／CI）沒有 gcloud，靠環境變數那條。
  *
  * GSC 搜尋查詢屬商業內部資訊：只印到 stdout，絕不寫入 repo 檔案。
  */
@@ -18,7 +20,7 @@ if (!(process.env.PATH || '').split(':').includes('/snap/bin')) {
   process.env.PATH = `/snap/bin:${process.env.PATH || ''}`;
 }
 
-const token = getToken();
+const token = await getToken();
 const pad = (d) => d.toISOString().slice(0, 10);
 const today = new Date();
 const gscEnd = new Date(today); gscEnd.setDate(gscEnd.getDate() - 3);   // GSC 資料約 3 天延遲

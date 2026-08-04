@@ -47,7 +47,7 @@ function sum(rows, field) {
   return rows.reduce((acc, row) => acc + Number(row[field] ?? 0), 0);
 }
 
-const token = getToken();
+const token = await getToken();
 if (!token) {
   console.error('[gnews-watch] 取不到 gcloud token（需 ga4-insights SA / PATH 含 /snap/bin）。');
   process.exit(1);

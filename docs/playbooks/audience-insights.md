@@ -16,6 +16,34 @@
 - GA4 property `541692554`、GSC `sc-domain:evidencetoday.news`、SA `ga4-insights@yaocare`
 - 門檻全在 config `audienceInsights.thresholds`，勿散落程式碼
 
+## 認證：兩條路，同一個 `getToken()`（2026-08-04 起）
+
+`scripts/lib/insight-fetch.mjs` 的 `getToken()` 是全部 5 支腳本（`perf-snapshot` / `audience-insights` / `index-coverage` / `googlenews-watch` / `sitemap-submit`）的唯一取 token 入口。優先序：
+
+| 順位 | 來源 | 用在哪 |
+|---|---|---|
+| 1 | **服務帳號金鑰**：`GOOGLE_SERVICE_ACCOUNT_KEY`（原始 JSON 或 base64）或 `GOOGLE_APPLICATION_CREDENTIALS`（金鑰檔路徑） | 遠端環境（Claude Code on the web／CI）——**沒有 gcloud 的地方** |
+| 2 | `gcloud auth print-access-token` | 主機 cron（行為與過去完全相同，未受影響） |
+
+金鑰路徑走 JWT-bearer flow（RFC 7523）：用 `node:crypto` 以 RS256 簽 assertion 換 access token，**不需要任何新相依套件**。取不到 token 一律回 `null`，各腳本自行退化成空輸出，不會 crash。
+
+⚠️ `getToken()` 已改為 **async**，呼叫端必須 `await`。新增呼叫點時別忘了。
+
+### 在遠端環境啟用（一次設定，之後每個 session 自動有資料）
+
+1. 到 GCP Console → IAM 與管理 → 服務帳號 → `ga4-insights@yaocare.iam.gserviceaccount.com` → 金鑰 → 新增金鑰（JSON）。
+2. 轉成 base64（避免換行破壞環境變數）：
+   ```
+   base64 -w0 ~/Downloads/yaocare-xxxx.json
+   ```
+3. 把輸出貼進 Claude Code on the web 的 **環境變數** 設定，變數名 `GOOGLE_SERVICE_ACCOUNT_KEY`。
+   （環境設定說明：https://code.claude.com/docs/en/claude-code-on-the-web）
+4. 之後任何 session 直接 `pnpm perf`、`pnpm insights`、`pnpm index:coverage` 都會有真實數據。
+
+**權限需求**：該 SA 需在 GA4 資源有「檢視者」、在 GSC 資源有使用者權限。`sitemap-submit` 另需 `webmasters` **寫入** scope。
+
+**安全性**：服務帳號私鑰是真憑證。只貼進環境變數設定介面，**不要貼進對話或 commit 進 repo**（本 repo 為 public）。金鑰可隨時在 GCP Console 撤銷、重發。
+
 ## 姊妹指令：`pnpm perf`（站整體效能快照）
 - `scripts/perf-snapshot.mjs` — **唯讀**印出近 28 天 GA4（使用者/工作階段/Top 頁面/流量來源）+ GSC（點擊/曝光/CTR/排名、Top 查詢與著陸頁）。
 - 與 `pnpm insights` 區別：insights 為 **/news 選題** 吐三桶 JSON；perf 給 **經營決策** 看的整體表現面板。

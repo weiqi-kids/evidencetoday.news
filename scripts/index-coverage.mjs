@@ -32,7 +32,7 @@ const SITEMAP_INDEX = 'https://evidencetoday.news/sitemap-index.xml';
 const HISTORY = '/root/.config/evidencetoday-news/index-coverage-history.jsonl';
 const INDEXED = 'Submitted and indexed';
 const save = !process.argv.includes('--no-save');
-const token = getToken();
+const token = await getToken();
 if (!token) { console.error('無法取得 gcloud token（檢查 /snap/bin 與 SA）。'); process.exit(1); }
 
 // ---- 從線上 sitemap 取全部 URL（不依賴本地 dist）----

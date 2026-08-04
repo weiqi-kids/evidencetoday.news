@@ -30,7 +30,7 @@ async function main() {
     writeOut(emptyBucketFile(nowTw(), cfg, '已停用'));
     return;
   }
-  const token = getToken();
+  const token = await getToken();
   if (!token) {
     console.error('[insights] 取不到 gcloud token，輸出空桶、退回現狀');
     writeOut(emptyBucketFile(nowTw(), cfg, '無 token'));
