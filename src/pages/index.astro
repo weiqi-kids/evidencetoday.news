@@ -163,6 +163,7 @@ const categories = [
     count: allArticles.length,
     href: '/articles/',
     color: 'var(--color-cat-article)',
+    image: '/og-thumb/articles.webp',
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>`,
   },
   {
@@ -173,6 +174,7 @@ const categories = [
     count: allMyths.length,
     href: '/myths/',
     color: 'var(--color-cat-myth)',
+    image: '/og-thumb/myths.webp',
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="12" r="10"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`,
   },
   {
@@ -183,6 +185,7 @@ const categories = [
     count: allIngredients.length,
     href: '/ingredients/',
     color: 'var(--color-cat-ingredient)',
+    image: '/og-thumb/ingredients.webp',
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2"/><path d="M8.5 2h7"/></svg>`,
   },
   {
@@ -193,6 +196,7 @@ const categories = [
     count: allPodcasts.length,
     href: '/podcasts/',
     color: 'var(--color-cat-podcast)',
+    image: '/og-thumb/podcasts.webp',
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>`,
   },
   {
@@ -203,6 +207,7 @@ const categories = [
     count: allVideos.length,
     href: '/videos/',
     color: 'var(--color-cat-video)',
+    image: '/og-thumb/videos.webp',
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>`,
   },
   {
@@ -213,6 +218,7 @@ const categories = [
     count: allNews.length,
     href: '/news/',
     color: 'var(--color-cat-news)',
+    image: '/og-thumb/news.webp',
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>`,
   },
 ];
@@ -301,7 +307,7 @@ const categories = [
                     {safeCover(item.cover) ? (
                       <img class="ep-side__img" src={safeCover(item.cover)} alt={item.title} loading="lazy" decoding="async" />
                     ) : (
-                      <span class="ep-side__img ep-side__img--fallback" aria-hidden="true"></span>
+                      <span class="ep-side__img ep-side__img--fallback" aria-hidden="true">本日有據</span>
                     )}
                   </span>
                   <span class="ep-side__body">
@@ -327,14 +333,17 @@ const categories = [
       <div class="category-grid">
         {categories.map((cat) => (
           <a href={cat.href} class="category-card" style={`--cat-color: ${cat.color}`}>
-            <div class="category-card__head">
-              <div class="category-card__icon" set:html={cat.icon} />
-              <span class="category-card__en">{cat.en}</span>
-            </div>
-            <h3 class="category-card__title">{cat.zh}</h3>
-            <p class="category-card__desc">{cat.desc}</p>
-            <div class="category-card__footer">
-              <span class="category-card__count">{cat.count} 篇</span>
+            <img class="category-card__image" src={cat.image} alt="" aria-hidden="true" loading="lazy" />
+            <div class="category-card__body">
+              <div class="category-card__head">
+                <div class="category-card__icon" set:html={cat.icon} />
+                <span class="category-card__en">{cat.en}</span>
+              </div>
+              <h3 class="category-card__title">{cat.zh}</h3>
+              <p class="category-card__desc">{cat.desc}</p>
+              <div class="category-card__footer">
+                <span class="category-card__count">{cat.count} 篇</span>
+              </div>
             </div>
           </a>
         ))}
@@ -814,27 +823,26 @@ const categories = [
   }
 
   .ep-side {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 
   .ep-side__item {
     display: flex;
-    gap: 0.85rem;
-    align-items: center;
-    padding: 0.85rem 0;
+    flex-direction: column;
     text-decoration: none;
     color: inherit;
-    border-bottom: 1px solid var(--color-fog);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    border: 1px solid var(--color-fog);
+    background-color: white;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
 
-  .ep-side__item:first-child {
-    padding-top: 0;
-  }
-
-  .ep-side__item:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
+  .ep-side__item:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card-hover);
   }
 
   .ep-side__item:hover .ep-side__title {
@@ -842,9 +850,8 @@ const categories = [
   }
 
   .ep-side__thumb {
-    flex: 0 0 92px;
-    aspect-ratio: 4 / 3;
-    border-radius: var(--radius-sm);
+    display: block;
+    aspect-ratio: 16 / 9;
     overflow: hidden;
     background-color: var(--color-paper);
   }
@@ -860,12 +867,13 @@ const categories = [
     min-width: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: 0.3rem;
+    padding: 0.9rem 1rem 1.1rem;
   }
 
   .ep-side__title {
     font-family: var(--font-serif);
-    font-size: 1.05rem;
+    font-size: 1.1rem;
     font-weight: 700;
     line-height: 1.4;
     color: var(--color-ink);
@@ -876,15 +884,20 @@ const categories = [
     transition: color 0.15s ease;
   }
 
+  @media (min-width: 640px) {
+    .ep-side {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
   @media (min-width: 1024px) {
     .editors-pick {
-      grid-template-columns: 1.6fr 1fr;
+      grid-template-columns: 1.3fr 1fr;
       align-items: start;
     }
 
     .ep-side {
-      border-left: 3px solid var(--color-coral);
-      padding-left: 1.5rem;
+      grid-template-columns: 1fr;
     }
   }
 
@@ -940,11 +953,10 @@ const categories = [
   .category-card {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
-    padding: clamp(1.4rem, 1.1rem + 0.8vw, 1.8rem);
     border-radius: var(--radius-card);
     border: 1px solid var(--color-fog);
     background-color: white;
+    overflow: hidden;
     text-decoration: none;
     color: inherit;
     transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
@@ -955,6 +967,22 @@ const categories = [
     box-shadow: var(--shadow-card-hover);
     border-color: var(--cat-color);
     color: inherit;
+  }
+
+  .category-card__image {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    display: block;
+    border-bottom: 1px solid var(--color-fog);
+  }
+
+  .category-card__body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 0.75rem;
+    padding: clamp(1.4rem, 1.1rem + 0.8vw, 1.8rem);
   }
 
   .category-card__head {

@@ -22,10 +22,10 @@
 const SKIP_IMPORTANT = true; // TODO(遷移遞延 A)：清完存量後改 false
 const PX_DEFER = new Set(["src/components/charts/PathwayDiagram.svelte"]); // TODO(遷移遞延 B)
 import { readdirSync, readFileSync, statSync } from "node:fs";
-import { join, extname, relative, basename } from "node:path";
+import { join, extname, relative, basename, sep } from "node:path";
 
 const ROOT = "src";
-const TOKEN_FILE = join("src", "styles", "variables.css");
+const TOKEN_FILE = "src/styles/variables.css";
 // 舊站遷移期可暫加既有檔（凍結用，禁再擴充）；新站一律只有這兩檔。
 const STYLE_WHITELIST = new Set(["variables.css", "global.css"]);
 const exts = new Set([".css", ".astro", ".svelte"]);
@@ -40,9 +40,9 @@ function walk(dir) {
 }
 
 function scan(file) {
-  const rel = relative(".", file);
+  const rel = relative(".", file).split(sep).join("/");
   if (extname(file) === ".css") {
-    const inStyles = rel.startsWith(join("src", "styles") + "/");
+    const inStyles = rel.startsWith("src/styles/");
     if (!inStyles || !STYLE_WHITELIST.has(basename(file)))
       violations.push(
         `${rel} css 檔不在白名單（統一 css：src/styles/{${[...STYLE_WHITELIST].join(",")}}；元件樣式用 scoped <style>）`

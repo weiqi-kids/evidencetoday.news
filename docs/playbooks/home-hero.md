@@ -31,10 +31,9 @@
 ### 分類卡排版
 
 - 首頁「探索所有內容」分類卡維持 3 欄／2 欄／1 欄 RWD、圓角、邊框與乾淨白底，不改成 dashboard 或功能選單風格。
-- 每張分類卡固定為三段節奏：上方 `.category-card__head` 放「小圖示 + 英文分類」、中段中文分類標題為主視覺、下方描述與篇數。
-- 圖示只做輔助辨識：icon box 約 `2.625rem`、SVG 約 `1.45rem`，不可放大成主視覺或孤立在左上角；英文分類與圖示同列，手機版也應保持同列且可讀。
+- **2026-08 改為圖上文下**：卡片頂部 `.category-card__image`（16:9，`object-fit: cover`）＋下方 `.category-card__body` 包住原本三段節奏（`.category-card__head` 小圖示＋英文分類、中文標題、描述與篇數）。圖片來源＝各集合既有的 `/og-thumb/{key}.webp` 品牌縮圖（`articles`/`myths`/`ingredients`/`podcasts`/`videos`/`news`），與 `ArticleCard`/`IngredientCard` 缺封面時的 fallback 圖同一批素材，零額外產圖成本。此前「icon 導向、不配照片」是舊決策，因全站色塊/文字比例過重、視覺不夠像新聞網站而汰換。
+- 圖示仍保留、不放大：icon box 約 `2.625rem`、SVG 約 `1.45rem`，與英文分類同列，手機版也應保持同列且可讀。
 - 只調整首頁分類卡時，避免碰 Hero、最新內容、文章列表、短影音、Podcast 或其他卡片元件。
-- **分類卡維持 icon 導向、不配照片**（icon + 英文分類 + 中文標題 + 篇數的三段節奏本身即品牌識別）；要「每個框都有圖」的是內容卡（見下）與健康專題卡，不是這組導覽卡。
 
 ### 健康專題卡配圖
 
@@ -55,7 +54,7 @@
 抽自舊「Hero 右側焦點卡」，獨立成 Hero 下方的 `#editors-pick`（`.editors-pick`），改為圖像導向：
 
 - `featuredItems[0]`：主焦點 `.ep-main`，含 16:9 封面大圖 +「本週焦點」角標。
-- `featuredItems.slice(1, 3)`：側欄 `.ep-side__item`，4:3 縮圖（最多 2 筆）。桌機（≥1024）「主圖 + 金色左線側欄」雙欄，手機單欄。
+- `featuredItems.slice(1, 3)`：側欄 `.ep-side__item`（最多 2 筆）。**2026-08 改版**：側欄項目從「92px 小縮圖＋橫向列表列」改成獨立卡片——16:9 大圖在上、標題在下，卡片本身有邊框/圓角/hover 陰影（與 `.ep-main` 同一套卡片語彙）。桌機（≥1024）「主圖 1.3fr : 側欄 1fr」雙欄、側欄 2 張卡直向堆疊；平板（≥640, <1024）主圖全寬在上、側欄 2 張並排；手機單欄全部堆疊。**改動原因**：舊版 92px 橫向縮圖在主焦點大圖（原 1.6fr）襯托下顯得過小，改成直向卡片後圖片實際渲染寬度大幅提升，且 1.6fr→1.3fr 同時收斂主焦點的視覺壟斷感。
 - 安全降級：0 筆不渲染整區；1 筆只渲染主焦點；2–3 筆 1 主 +（最多）2 側。
 - 主焦點可顯示補充 meta（myth verdict、article 主編把關）但不改資料來源邏輯。
 - **封面來源（2026-07-23 修）**：`featuredItems` 各型別（article／myth／ingredient／podcast）都帶 `cover: data.coverImage`，不再只有 article 有圖。渲染前一律過 `safeCover()` 守衛（外連 http(s) 直採；本地 `/…` 須 `existsSync` 於 `public/`，缺圖回 `undefined` → 主焦點顯示「本日有據」品牌字、側欄顯示漸層佔位，不出破圖）。此前 ingredient/podcast 未傳 cover，導致「編輯精選」中 featured 成分（如維生素 C／E）縮圖開天窗；補傳 cover 後恢復。**新增 featured 型別或封面欄位時，記得同步在 mapping 帶 `cover` 並用 `safeCover()` 包起來。**

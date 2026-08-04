@@ -1,4 +1,6 @@
 ---
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import VerdictBadge from '../ui/VerdictBadge.astro';
 import type { MythVerdict } from '@/utils/myths/schema';
 
@@ -8,12 +10,26 @@ interface Props {
   href: string;
   verdict: MythVerdict;
   date: string;
+  coverImage?: string;
+  coverAlt?: string;
 }
 
-const { title, verdictSummary, href, verdict, date } = Astro.props;
+const { title, verdictSummary, href, verdict, date, coverImage, coverAlt } = Astro.props;
+
+// 封面安全守衛（同 ArticleCard/IngredientCard）：外連 http(s) 直接採用；本地 `/…` 須確認
+// public 下存在；myths 目前無 per-篇封面欄位（見 CLAUDE.md「踩過的坑」，單篇版型刻意簡化），
+// 缺圖時一律退回品牌分類縮圖，不留空白色塊。
+const safeCoverImage =
+  typeof coverImage === 'string' &&
+  (coverImage.startsWith('http://') ||
+    coverImage.startsWith('https://') ||
+    (coverImage.startsWith('/') && existsSync(join(process.cwd(), 'public', coverImage))))
+    ? coverImage
+    : '/og-thumb/myths.webp';
 ---
 
 <a href={href} class="myth-card">
+  <img class="myth-card__image" src={safeCoverImage} alt={coverAlt || ''} aria-hidden={coverAlt ? undefined : 'true'} loading="lazy" />
   <div class="myth-card__bar"></div>
   <div class="myth-card__body">
     <div class="myth-card__top">
@@ -42,6 +58,13 @@ const { title, verdictSummary, href, verdict, date } = Astro.props;
   .myth-card:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-card-hover);
+  }
+
+  .myth-card__image {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    display: block;
   }
 
   .myth-card__bar {
