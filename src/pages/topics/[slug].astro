@@ -37,12 +37,15 @@ export async function getStaticPaths() {
     params: { slug: topic.slug },
     props: {
       topic,
-      articles: articles.filter((e) => matchesTopic(topic, e.data)).sort(byDate).slice(0, 6),
-      myths: myths.filter((e) => matchesTopic(topic, { title: e.data.title, tags: [...e.data.tags, ...e.data.topicTags] })).sort(byDate).slice(0, 4),
-      ingredients: ingredients.filter((e) => matchesTopic(topic, e.data)).sort(byDate).slice(0, 4),
-      news: news.filter((e) => matchesTopic(topic, { title: e.data.title, tags: e.data.tags })).sort(byDate).slice(0, 4),
-      podcasts: podcasts.filter((e) => matchesTopic(topic, e.data)).slice(0, 2),
-      videos: videos.filter((e) => matchesTopic(topic, e.data)).slice(0, 4),
+      // 2026-08-04 調高上限：hub 是全站唯一的爬取權重集中器，收得到卻不顯示
+      // 等於白收（原上限 6/4/4/4/2/4 讓多數 hub 只露出不到一半的命中內容）。
+      // news 刻意維持較低：時效性內容佔版面會排擠常青內容的曝光。
+      articles: articles.filter((e) => matchesTopic(topic, e.data)).sort(byDate).slice(0, 12),
+      myths: myths.filter((e) => matchesTopic(topic, { title: e.data.title, tags: [...e.data.tags, ...e.data.topicTags] })).sort(byDate).slice(0, 10),
+      ingredients: ingredients.filter((e) => matchesTopic(topic, e.data)).sort(byDate).slice(0, 10),
+      news: news.filter((e) => matchesTopic(topic, { title: e.data.title, tags: e.data.tags })).sort(byDate).slice(0, 6),
+      podcasts: podcasts.filter((e) => matchesTopic(topic, e.data)).slice(0, 3),
+      videos: videos.filter((e) => matchesTopic(topic, e.data)).slice(0, 6),
     },
   }));
 }
