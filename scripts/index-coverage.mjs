@@ -35,15 +35,54 @@ const save = !process.argv.includes('--no-save');
 const token = await getToken();
 if (!token) { console.error('無法取得 gcloud token（檢查 /snap/bin 與 SA）。'); process.exit(1); }
 
-// ---- 從線上 sitemap 取全部 URL（不依賴本地 dist）----
+// ---- 取全部 URL：優先線上 sitemap，取不到才退回本地 dist/ ----
+// ⚠️ 遠端沙箱（Claude Code on the web／CCR）的 egress allowlist 不含本站網域，
+// fetch 會回 403 純文字「Host not in allowlist」而**不是丟例外**。舊版沒驗證內容，
+// 於是解析出 0 個 <loc>、照樣往下跑，最後印出「真實索引：0/0（NaN%）」——
+// 看起來像「索引全掛」的災難數字，其實只是抓不到 sitemap。務必保留下方的硬失敗。
 const locs = (xml) => [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
-const idxXml = await (await fetch(SITEMAP_INDEX)).text();
-const subSitemaps = locs(idxXml).filter((u) => u.endsWith('.xml'));
-const urls = [];
-for (const sm of subSitemaps.length ? subSitemaps : [SITEMAP_INDEX]) {
-  urls.push(...locs(await (await fetch(sm)).text()).filter((u) => !u.endsWith('.xml')));
+
+async function fromRemote() {
+  const idxRes = await fetch(SITEMAP_INDEX);
+  const idxXml = await idxRes.text();
+  if (!idxRes.ok || !idxXml.includes('<loc>')) {
+    console.error(`  線上 sitemap 取不到（HTTP ${idxRes.status}）：${idxXml.trim().slice(0, 120)}`);
+    return [];
+  }
+  const subs = locs(idxXml).filter((u) => u.endsWith('.xml'));
+  const out = [];
+  for (const sm of subs.length ? subs : [SITEMAP_INDEX]) {
+    out.push(...locs(await (await fetch(sm)).text()).filter((u) => !u.endsWith('.xml')));
+  }
+  return out;
 }
-console.error(`掃描 ${urls.length} 個 URL（sitemap）...`);
+
+function fromDist() {
+  const idx = 'dist/sitemap-index.xml';
+  if (!existsSync(idx)) return [];
+  const subs = locs(readFileSync(idx, 'utf8')).filter((u) => u.endsWith('.xml'));
+  const out = [];
+  for (const u of subs) {
+    const local = `dist/${u.split('/').pop()}`;
+    if (existsSync(local)) out.push(...locs(readFileSync(local, 'utf8')).filter((x) => !x.endsWith('.xml')));
+  }
+  return out;
+}
+
+let urls = await fromRemote();
+let source = '線上 sitemap';
+if (!urls.length) {
+  urls = fromDist();
+  source = 'dist/ 本地 sitemap';
+}
+if (!urls.length) {
+  console.error('\n❌ 取不到任何 URL，中止（不輸出覆蓋率，避免誤讀成「索引掛掉」）。');
+  console.error('   線上抓不到多半是遠端沙箱封鎖本站網域。兩條路擇一：');
+  console.error('   1. 先跑 pnpm build 產生 dist/，本腳本會自動改讀本地 sitemap');
+  console.error('   2. 把 evidencetoday.news 加進環境的 network egress allowlist');
+  process.exit(1);
+}
+console.error(`掃描 ${urls.length} 個 URL（${source}）...`);
 
 // ---- 逐一打 URL 檢查 API（併發 5，429 退避）----
 const site = GSC_SITE;

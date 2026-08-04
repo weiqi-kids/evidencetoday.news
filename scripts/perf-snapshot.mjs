@@ -49,23 +49,54 @@ if (topPages.length) {
 }
 
 // ---------- GSC ----------
+// ⚠️ rowLimit 必須拉大。GSC searchAnalytics 沒給 orderBy 時是「依點擊排序」，
+// 所以 rowLimit:15 拿到的是「點擊最高的 15 筆」，不是曝光最高的 15 筆。
+// 2026-08-04 實測：那 15 筆合計曝光 122，站台總曝光 4,112——97% 的曝光看不到，
+// 而「有曝光、零點擊」的查詢（正是 CTR 優化對象）會被結構性地全部濾掉。
+// 故一次抓大量列回本地，再依用途各自排序。
+const GSC_ROWS = 1000;
 const start = pad(gscStart), end = pad(gscEnd);
 const [gscTotal] = await gscQuery(token, { dimensions: [], startDate: start, endDate: end });
-const queries = await gscQuery(token, { dimensions: ['query'], startDate: start, endDate: end, rowLimit: 15 });
-const pages = await gscQuery(token, { dimensions: ['page'], startDate: start, endDate: end, rowLimit: 12 });
+const queries = await gscQuery(token, { dimensions: ['query'], startDate: start, endDate: end, rowLimit: GSC_ROWS });
+const pages = await gscQuery(token, { dimensions: ['page'], startDate: start, endDate: end, rowLimit: GSC_ROWS });
+
+const byImpr = (a, b) => b.impressions - a.impressions;
+const path = (p) => String(p).replace('https://evidencetoday.news', '');
+const qLine = (q) => `  c${String(q.clicks).padStart(3)}  i${String(q.impressions).padStart(5)}  p${fix(q.position).padStart(5)}  ${pct(q.ctr).padStart(6)}  ${q.query}`;
+const pLine = (p) => `  c${String(p.clicks).padStart(3)}  i${String(p.impressions).padStart(5)}  p${fix(p.position).padStart(5)}  ${pct(p.ctr).padStart(6)}  ${path(p.page)}`;
 
 console.log(`\n===== GSC ${start} ~ ${end} (sc-domain:evidencetoday.news) =====`);
 console.log(gscTotal
   ? `點擊 ${num(gscTotal.clicks)} ｜ 曝光 ${num(gscTotal.impressions)} ｜ CTR ${pct(gscTotal.ctr)} ｜ 平均排名 ${fix(gscTotal.position)}`
   : '(GSC 無資料 — SA 可能尚未加入資源，或資料未累積)');
+
 if (queries.length) {
-  console.log('\n— Top 搜尋查詢 (clicks / impr / pos) —');
-  queries.sort((a, b) => b.impressions - a.impressions).forEach((q) =>
-    console.log(`  c${String(q.clicks).padStart(3)}  i${String(q.impressions).padStart(4)}  p${fix(q.position).padStart(5)}  ${q.query}`));
+  const shown = queries.reduce((s, q) => s + q.impressions, 0);
+  console.log(`\n（查詢列數 ${queries.length}／涵蓋曝光 ${num(shown)}${gscTotal ? `，佔總曝光 ${((shown / gscTotal.impressions) * 100).toFixed(0)}%` : ''}）`);
+
+  console.log('\n— Top 查詢 · 依曝光 (clicks / impr / pos / CTR) —');
+  [...queries].sort(byImpr).slice(0, 20).forEach((q) => console.log(qLine(q)));
+
+  // 排名 5–20 ＝ 第一頁邊緣到第二頁：標題／重點摘要改寫最容易換到點擊的區間。
+  const near = queries.filter((q) => q.position >= 5 && q.position <= 20 && q.impressions >= 20).sort(byImpr);
+  console.log(`\n— ⭐ 機會查詢：排名 5–20 且曝光 ≥20（差一點進第一頁，共 ${near.length} 筆）—`);
+  near.slice(0, 30).forEach((q) => console.log(qLine(q)));
+  if (!near.length) console.log('  (無)');
+
+  // 已經排在前段卻沒人點 ＝ 標題／描述沒吸引力，不是排名問題。
+  const lowCtr = queries.filter((q) => q.impressions >= 50 && q.position <= 10 && q.ctr < 0.02).sort(byImpr);
+  console.log(`\n— ⚠️ 高曝光低 CTR 查詢：曝光 ≥50、排名 ≤10、CTR <2%（共 ${lowCtr.length} 筆）—`);
+  lowCtr.slice(0, 20).forEach((q) => console.log(qLine(q)));
+  if (!lowCtr.length) console.log('  (無)');
 }
+
 if (pages.length) {
-  console.log('\n— Top 著陸頁 (clicks / impr) —');
-  pages.sort((a, b) => b.impressions - a.impressions).forEach((p) =>
-    console.log(`  c${String(p.clicks).padStart(3)}  i${String(p.impressions).padStart(4)}  ${String(p.page).replace('https://evidencetoday.news', '')}`));
+  console.log('\n— Top 著陸頁 · 依曝光 (clicks / impr / pos / CTR) —');
+  [...pages].sort(byImpr).slice(0, 20).forEach((p) => console.log(pLine(p)));
+
+  const weak = pages.filter((p) => p.impressions >= 50 && p.ctr < 0.02).sort(byImpr);
+  console.log(`\n— ⚠️ 高曝光低 CTR 頁面：曝光 ≥50 且 CTR <2%（共 ${weak.length} 筆）—`);
+  weak.slice(0, 20).forEach((p) => console.log(pLine(p)));
+  if (!weak.length) console.log('  (無)');
 }
 console.log('');

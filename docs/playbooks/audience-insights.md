@@ -51,6 +51,8 @@
 - 共用同一組認證（`getToken()` → `gcloud`），故同樣需要 PATH 含 `/snap/bin`（腳本已自動補上）。
 - 只印 stdout、**不寫任何檔**（GSC 查詢詞屬商業內幕，不落地、不 commit）。
 - **session 啟動慣例**：見 `CLAUDE.md`「§ session 啟動行為」——每次開工先跑 `pnpm perf` 給經營建議。
+- **⚠️ GSC rowLimit 的排序陷阱（2026-08-04 修，會導出完全錯誤的結論）**：`gscQuery()` 沒帶 `orderBy`，GSC `searchAnalytics` 預設**依點擊排序**。舊版 `rowLimit: 15` 拿到的是「點擊最高的 15 筆」而非「曝光最高的 15 筆」，那 15 筆合計曝光僅 122／全站 4,112（3%），且**「有曝光、零點擊」的查詢會被結構性全數濾掉**——那正是 CTR 優化的對象。現在一次抓 `GSC_ROWS = 1000` 列回本地再各自排序，新增「⭐ 機會查詢（排名 5–20 且曝光 ≥20）」與「⚠️ 高曝光低 CTR」兩張表。改 rowLimit 前先想清楚這件事。
+- **GSC 查詢層資料天生殘缺**：即使 rowLimit 拉到 1000，2026-08-04 實測只回 172 列、涵蓋 588 曝光＝**全站 14%**。其餘 86% 是 GSC 為隱私隱藏的稀有查詢，API 拿不到。**故選題與改寫優先序要以「頁面層」為準，查詢層只當佐證**——頁面層沒有這個匿名化缺口。
 
 ## 姊妹指令：`pnpm sitemap:submit`（提交 sitemap + 索引覆蓋率）
 - `scripts/sitemap-submit.mjs` — 把 `sitemap-index.xml` 主動提交給 GSC，並印出 sitemap 處理狀態與「近 28 天有曝光頁數 / sitemap 234 頁」的覆蓋率訊號。`--check` 只查不提交。
@@ -65,6 +67,17 @@
 - **唯讀**：URL 檢查 API 唯讀即可（與 perf/insights 共用唯讀 token，不需 sitemap:submit 的寫入 scope）。
 - **歷史檔**：`/root/.config/evidencetoday-news/index-coverage-history.jsonl`（每行一筆 JSON 快照；僅彙總計數、非機密，存倉庫外不 commit）。掃描約 200+ 個 URL、受 API 速率限制，約 2–3 分鐘。
 - **判讀**：已索引數逐次成長＝多屬時間問題、續觀察；停滯不動＝偏向權重天花板，全力投資站外權威（見 `docs/playbooks/geo-offsite.md`）。⚠️ 易誤判：`Discovered - currently not indexed` 的字串含 "indexed"，計數務必用「精確等於 `Submitted and indexed`」，勿用 `/indexed/` 比對。
+- **URL 來源與遠端沙箱 403（2026-08-04 修）**：優先抓線上 sitemap，取不到才退回 `dist/`。遠端沙箱（Claude Code on the web／CCR）的 egress allowlist 不含本站網域，`fetch` 會回 **403 純文字**「Host not in allowlist」而**不丟例外**——舊版沒驗證內容，解析出 0 個 `<loc>` 仍往下跑，印出「真實索引：0/0（NaN%）」，看起來像索引全掛。現在兩者都取不到會**硬失敗 exit 1**，勿把這個保護拿掉。遠端要跑就先 `pnpm build` 產 `dist/`（GSC API 本身走 googleapis.com，不受 allowlist 影響）。
+
+### 索引率基準線（每次量測請往下追加，不要覆蓋）
+
+| 日期 | 已索引/總 | 索引率 | 備註 |
+|---|---|---|---|
+| 2026-06-23 | 25/233 | 11% | sitemap 當天才首次提交 |
+| 2026-08-04 | 222/326 | **68%** | 6 週後；分項：articles 80/105、news 53/85、myths 43/53、ingredients 25/46、topics 11/17、podcasts 3/4、**videos 0/6** |
+
+判讀：已索引頁數 25→222（9 倍），**「網域權重天花板」假設不成立**，站內動作有效，續做站內。剩餘 82 頁 `Discovered - currently not indexed`、20 頁 `URL is unknown to Google`。
+⚠️ 分母會隨內容量變動（233→326），比較時**看已索引的絕對數**比看百分比可靠。用 `dist/` 當來源時，分母含尚未部署到線上的頁，那些會落在 "unknown to Google"。
 
 ## 修改流程（加新策略）
 1. 在 `insight-strategies.mjs` 加 `(data,cfg)=>Bucket` 純函數，回 `emptyBucket()` 起手
