@@ -13,6 +13,9 @@
   --color-fog: oklch(0.89 0.01 220);
   --color-coral: oklch(0.56 0.18 28);
 
+  /* ---- 外部品牌固定色（非本站設計系統，不可調） ---- */
+  --color-line-brand: #06c755; /* LINE 官方綠，用於「分享到 LINE」按鈕 */
+
   /* ---- Category colors ---- */
   --color-cat-article: oklch(0.45 0.09 195);
   --color-cat-myth: oklch(0.48 0.14 30);

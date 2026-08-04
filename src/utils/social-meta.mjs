@@ -249,12 +249,19 @@ export function normalizeDescription(...candidates) {
   return `${(cutAt >= 36 ? hardStop.slice(0, cutAt) : hardStop.slice(0, 78)).replace(/[，；、。\s]+$/, '')}。`;
 }
 
+// 闢謠單篇有逐篇專屬 OG（/og/myths/{slug}.png，見 src/pages/og/myths/[slug].png.ts），
+// 不用全站共用的 /og-static/myths.png；版本號用 updatedDate 讓內容更新後分享卡自動換圖。
+function mythOgImage(slug, updatedDate) {
+  const version = updatedDate instanceof Date ? updatedDate.getTime() : Date.now();
+  return `/og/myths/${slug}.png?v=${version}`;
+}
+
 export function contentSocial(collection, data = {}, slug = '') {
   const cfg = COLLECTION_SOCIAL[collection];
   const title = cleanText(data.titleDisplay || data.ogTitle || data.socialTitle || data.title || '本日有據');
   const short = cleanText(data.ogShortTitle || shortTitle(title, collection === 'ingredients' ? 14 : 18));
   const description = normalizeDescription(data.socialDescription, data.ogDescription, data.description, data.summary, data.subtitle, data.intro, data.tldr);
-  const image = ogImageForCollection(collection);
+  const image = collection === 'myths' && slug ? mythOgImage(slug, data.updatedDate) : ogImageForCollection(collection);
 
   if (collection === 'podcasts') {
     const ep = data.episodeNumber ? `喜聞樂健 EP${data.episodeNumber}` : '喜聞樂健';

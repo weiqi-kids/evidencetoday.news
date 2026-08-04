@@ -4,7 +4,6 @@ import Article from '@/layouts/Article.astro';
 import JsonLd from '@/components/seo/JsonLd.astro';
 import { buildClaimReview, buildPerson, buildCitations, PUBLISHER_REF, WEBSITE_REF } from '@/utils/schema-org';
 import { isPublicEntry } from '@/utils/visibility';
-import MythSquareCardVisual from '@/components/myths/MythSquareCardVisual.astro';
 import VerdictBadge from '@/components/ui/VerdictBadge.astro';
 import { validateMythArticle } from '@/utils/myths/validate';
 import { displayVerdict } from '@/utils/myths/schema';
@@ -77,6 +76,9 @@ const sourceTypeLabels: Record<string, string> = {
   'case-report': '個案報告',
 };
 const healthReminder = '本文為健康資訊與迷思查證，不提供個人診斷或治療建議。若你已被診斷疾病、正在服藥、懷孕、哺乳，或症狀持續未改善，請諮詢醫師、藥師或營養師。';
+const slugId = entry.id.replace(/\.[^.]+$/, '');
+const squareCardImage = `/og/myths/${slugId}-square.png`;
+const lineShareUrl = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(canonical)}`;
 
 // 麵包屑：其他內容型皆有 BreadcrumbList，闢謠頁原本缺，補上並帶「迷思查證」中間層。
 const mythBreadcrumbSchema = {
@@ -166,7 +168,20 @@ const mythFaqSchema = d.faq && d.faq.length > 0
   {d.whoShouldBeCareful?.length > 0 && <section class="block"><h2>哪些人要特別小心？</h2><ul>{d.whoShouldBeCareful.map((item) => { const carefulItem = splitCarefulItem(item); return <li>{carefulItem.label ? <><strong>{carefulItem.label}：</strong>{carefulItem.text}</> : carefulItem.text}</li>; })}</ul></section>}
   {d.faq?.length > 0 && <section class="block"><h2>FAQ</h2>{d.faq.map((item) => <article><h3>{item.question}</h3><p>{item.answer}</p></article>)}</section>}
 
-  <section class="block share-block"><MythSquareCardVisual title={d.title} verdict={displayVerdict(d.verdict)} evidenceLevel={d.evidenceLevel} summary={d.cardConclusion || d.verdictSummary} theme={entry.id.includes('lemon') ? 'lemon' : 'vitamin'} showTitle={true} /><h2>分享這篇文章</h2><p>覺得這篇有幫助？歡迎分享給身邊也常遇到這類健康說法的人。</p><div class="share"><button id="share-btn" aria-label="分享這篇文章">分享這篇文章</button><button id="copy-btn" aria-label="複製連結">複製連結</button></div><p id="share-status" aria-live="polite"></p></section>
+  <section class="block share-block">
+    <h2>分享這篇文章</h2>
+    <p>覺得這篇有幫助？歡迎分享給身邊也常遇到這類健康說法的人。分享出去會顯示這張卡片：</p>
+    <div class="share-preview">
+      <img src={social.image} width="600" height="315" loading="lazy" decoding="async" alt={`分享卡片預覽：${d.title}，判讀${displayVerdict(d.verdict)}`} />
+    </div>
+    <div class="share">
+      <a id="line-share-btn" class="share-line" href={lineShareUrl} target="_blank" rel="noopener noreferrer" aria-label="分享到 LINE">分享到 LINE</a>
+      <button id="share-btn" aria-label="分享這篇文章">分享這篇文章</button>
+      <button id="copy-btn" aria-label="複製連結">複製連結</button>
+      <a class="download-card" href={squareCardImage} download={`${slugId}-闢謠圖卡.png`} aria-label="下載可直接傳的圖卡">下載圖卡</a>
+    </div>
+    <p id="share-status" aria-live="polite"></p>
+  </section>
   {refs.length > 0 && <section class="block"><h2>References</h2><ol>{refs.map((r) => <li><strong>{r.title}</strong>{r.sourceType ? `（類型：${r.sourceType}）` : ''}{r.evidenceType ? `（證據類型：${r.evidenceType}）` : ''}<br /><a href={r.url} target="_blank" rel="noopener noreferrer">{r.url}</a></li>)}</ol></section>}
   <section class="block health-reminder"><h2>健康資訊提醒</h2><p>{healthReminder}</p></section>
   <EditButton client:idle repoPath={`src/content/myths/${entry.id}`} collection="myths" slug={entry.id.replace(/\.[^.]+$/, '')} />
@@ -267,14 +282,24 @@ document.getElementById('copy-btn')?.addEventListener('click', async () => { awa
     border: 1px solid color-mix(in oklch, var(--color-coral) 30%, var(--color-fog));
   }
 
-  .share-block :global(.myth-visual) {
-    max-width: 560px;
-    margin: 0 auto 0.75rem;
+  .share-preview {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--color-fog);
+    box-shadow: var(--shadow-card);
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .share-preview img {
+    display: block;
+    width: 100%;
+    height: auto;
   }
 
   .share-block,
   .share,
-  .share button {
+  .share :is(button, a) {
     font-size: 1rem;
   }
 
@@ -285,17 +310,30 @@ document.getElementById('copy-btn')?.addEventListener('click', async () => { awa
     margin-top: 1rem;
   }
 
-  .share button {
+  .share :is(button, a) {
     min-height: 44px;
     padding: 0.75rem 1rem;
   }
 
-  button {
+  button,
+  .share a {
     padding: 0.65rem 0.95rem;
     border-radius: 10px;
     border: 1px solid var(--color-fog);
     color: var(--color-ink);
     background: color-mix(in oklch, var(--color-paper) 55%, white);
+    text-align: center;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #line-share-btn {
+    border-color: var(--color-line-brand);
+    background: var(--color-line-brand);
+    color: white;
+    font-weight: 700;
   }
 
   #share-btn {
@@ -304,7 +342,8 @@ document.getElementById('copy-btn')?.addEventListener('click', async () => { awa
     color: white;
   }
 
-  #copy-btn {
+  #copy-btn,
+  .download-card {
     border-color: var(--color-fog);
     background: color-mix(in oklch, var(--color-paper) 55%, white);
     color: var(--color-ink);
@@ -326,7 +365,7 @@ document.getElementById('copy-btn')?.addEventListener('click', async () => { awa
       flex-wrap: wrap;
     }
 
-    .share button {
+    .share :is(button, a) {
       flex: 1 1 160px;
     }
   }

@@ -156,6 +156,7 @@ docs/                 # architecture / content-guide / news_sop / playbooks/
 - Podcast 連結 slug 一律用 `stripPodcastSlug()`，不可用 `stripExt()`。
 - **排程稿可見性只有 HTML 路由套 `isPublicEntry`，`.txt`／RSS／`llms-full.txt`／tags 頁曾只濾 `!data.draft`** → 未來日期排程稿會提前洩全文（2026-07-12 修，全站公開面統一改用 `isPublicEntry`）。新增前台讀 collection 的路由**一律用 `isPublicEntry(data)`，禁裸 `!data.draft`**；`src/utils/visibility.test.ts` 有防回歸測試會擋。
 - 遠端 CCR 環境 WebFetch 被沙箱封鎖（PubMed/RSS 403），新聞管線為 WebSearch-only，用 `site:` 定向搜尋。
+- **OG 圖字型「Bold」曾其實是細體**：`src/assets/fonts/NotoSansTC-Bold-static.ttf` 原檔是可變字型（fvar）直接複製、沒有真的 instance 成 wght=700，satori 渲染時字重等於 Regular（2026-08-04 修，連帶重生 `public/og-static/author-luo-yang.png`）。以後若要更新這兩個 `*-static.ttf`，須用 `fonttools varLib.instancer NotoSansTC-Regular.ttf wght=400/700 -o ...` 產生真正定死權重的靜態實例，不能只是複製可變字型或改檔名；驗證方法：渲染一段 `fontWeight:700` 文字比對是否真的比 400 粗。
 - **headless 派子代理不帶 model＝默默用 opus、燒爆額度**：cron orchestrator 雖 `--model sonnet`，但它派出的撰寫/審核 `Agent` 不帶 model 會落到帳號預設 opus。撰寫委員會一律 `model='sonnet'`（見 `AGENTS.md` 並行紀律、`ops/README.md` 鐵則 6）。談「cron 燒 token」先查子代理 model。
 
 ---
