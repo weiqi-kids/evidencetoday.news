@@ -4,6 +4,10 @@
 
 **總共約 10 分鐘，分成四段。**
 
+> **先選路線**：本文主體（第一～四段）假設你**進得去 GCP 專案 `yaocare`**，能幫既有的服務帳戶 `ga4-insights@yaocare` 產新金鑰。
+> 若你**進不去 yaocare**（例如你是新接手的人、或想用自己的 Google 帳號自建），跳到文末的
+> [附錄：完全自建路線](#附錄完全自建路線不使用-yaocare-服務帳戶)。自建**不需要改任何程式碼**。
+
 ---
 
 ## 先搞懂：為什麼要跑三個網站？
@@ -150,3 +154,107 @@ pnpm perf
 - 認證邏輯在 `scripts/lib/insight-fetch.mjs` 的 `getToken()`，優先序為「服務帳號金鑰 → gcloud」，走 JWT-bearer flow（RFC 7523），無新增相依套件。
 - 主機 cron 仍走 `gcloud auth print-access-token`，這次改動不影響它。
 - 技術細節見 `docs/playbooks/audience-insights.md`。
+
+---
+
+# 附錄：完全自建路線（不使用 yaocare 服務帳戶）
+
+適用於**進不去 GCP 專案 `yaocare`**、想用自己的 Google 帳號從頭建一把鑰匙的人。
+
+## 為什麼不必改程式碼
+
+`getToken()` 走金鑰那條路時，只讀 JSON 裡的 `client_email` 與 `private_key`
+（`scripts/lib/insight-fetch.mjs`）；`insight-constants.mjs` 的 `SERVICE_ACCOUNT` 常數**只在
+gcloud 後備路徑**當 `--account` 參數用。**因此任何 GCP 專案的服務帳戶都能直接使用**，
+只要它在 GA4／GSC 被授權即可。
+
+真正寫死、必須對得上的是這兩個識別碼（`insight-constants.mjs`）：
+
+| 常數 | 值 | 什麼情況才需要改 |
+|---|---|---|
+| `GA4_PROPERTY` | `properties/541692554` | 只有在你**新建 GA4 資源**時（連帶 `src/data/analytics.ts` 的 `MEASUREMENT_ID`） |
+| `GSC_SITE` | `sc-domain:evidencetoday.news` | 只要 GSC 資源類型選「網域」就永遠對得上，不必改 |
+
+## 甲、建立你自己的服務帳戶（Google Cloud Console）
+
+1. 打開 <https://console.cloud.google.com/>，用你要長期使用的 Google 帳號登入
+2. 最上方專案下拉選單 → **新增專案** → 名稱隨意（建議 `evidencetoday`）→ 建立
+3. **啟用兩個 API**（漏掉這步是最常見的失敗原因——金鑰有了但呼叫 API 會被拒）：
+   - <https://console.cloud.google.com/apis/library/analyticsdata.googleapis.com> → **啟用**
+   - <https://console.cloud.google.com/apis/library/searchconsole.googleapis.com> → **啟用**
+   - 兩個都要確認頁面上方顯示的是你剛建的專案
+4. ☰ → **IAM 與管理** → **服務帳戶** → **建立服務帳戶**
+   - 名稱填 `etn-insights`，按「建立並繼續」
+   - **「授予這個服務帳戶專案存取權」那一步直接跳過**（按「繼續」）——權限是在 GA4／GSC 裡給的，不是在 GCP 裡給
+   - 按「完成」
+5. 記下它的 email，格式是 `etn-insights@<你的專案ID>.iam.gserviceaccount.com`，**後面兩段都要貼它**
+6. 點進該服務帳戶 → **金鑰** 分頁 → **新增金鑰** → **建立新的金鑰** → **JSON** → 建立
+   → 瀏覽器自動下載 `.json` 檔
+
+> ⚠️ 這個 `.json` 等同密碼。不要傳到聊天視窗、不要 commit（本 repo 為 public）。
+> 外流時回到同一個「金鑰」分頁刪掉即失效。
+
+## 乙、拿下 Search Console 擁有者權限（靠 DNS，不需要任何人同意）
+
+本站的 GSC 資源是**網域層級**（`sc-domain:`），驗證方式是 DNS TXT。
+**只要你能改 `evidencetoday.news` 的 DNS，你就能自己成為擁有者**，
+而且看得到 Google 保留的全部歷史資料（約 16 個月）——不是從零開始。
+
+1. 打開 <https://search.google.com/search-console>
+2. 左上角資源選單 → **新增資源**
+3. ⚠️ **關鍵**：選**左邊那欄「網域」**，不是右邊的「網址前置字元」。
+   選錯會產生 `https://evidencetoday.news/` 這種資源，識別碼與程式裡的 `sc-domain:` 對不上，腳本會抓不到資料。
+4. 輸入 `evidencetoday.news`（不要加 `https://`、不要加 `www.`）→ 繼續
+5. 畫面給你一段 TXT 紀錄，長得像 `google-site-verification=xxxxxxxx`，複製它
+6. 到你的網域註冊商後台，新增一筆 DNS 紀錄：
+
+   | 欄位 | 填什麼 |
+   |---|---|
+   | 類型 | `TXT` |
+   | 名稱／主機 | `@`（代表根網域；有些後台要留空或填 `evidencetoday.news`） |
+   | 值 | 剛複製的 `google-site-verification=...` 整串 |
+   | TTL | 預設即可 |
+
+   ⚠️ 這是**新增**，不要覆蓋既有的 TXT（SPF、DMARC 等），同一個網域可以有多筆 TXT。
+7. 回 Search Console 按 **驗證**。DNS 生效通常幾分鐘，偶爾要等數小時；失敗就等一下再按一次。
+8. 驗證成功後：左側 **設定** → **使用者和權限** → **新增使用者**
+   → 貼上甲-5 記下的服務帳戶 email → 權限選 **完整**（Full）→ 新增
+   - 為什麼是「完整」不是「受限」：`pnpm sitemap:submit` 需要寫入權限。
+
+> 若這個網域資源**早就存在**（別人建的），你的 DNS 驗證會讓你成為**另一位擁有者**，
+> 看到的是同一份資料，不會產生重複資源，也不會影響原本的人。這正是我們要的結果。
+
+## 丙、GA4（唯一沒有替代方案的一環）
+
+GA4 **沒有** DNS 這種後門。資源 `properties/541692554` 只能由現任**管理員**把人加進去。兩條路：
+
+| 做法 | 代價 | 建議 |
+|---|---|---|
+| **請現任管理員把你加成「管理員」**，你再自己把服務帳戶加成「檢視者」 | 無 | ✅ 推薦。歷史數據完整保留，程式碼零改動 |
+| 自己新建一個 GA4 資源 | **歷史數據歸零**，且要改 `src/data/analytics.ts` 的 `MEASUREMENT_ID` 與 `insight-constants.mjs` 的 `GA4_PROPERTY`，重新部署後才開始累積 | ⚠️ 只有在真的聯絡不到原管理員時才做 |
+
+注意「檢視者」不能再加人——若對方只把你加成檢視者，你仍無法把服務帳戶加進去。
+**要請對方明確給「管理員」**。
+
+拿到管理員權限後：GA4 → 左下角 **⚙️ 管理** → 「資源」欄的 **資源存取管理**
+→ 右上角藍色 **＋** → **新增使用者** → 貼服務帳戶 email → **取消「通知新使用者」勾選**
+→ 角色選 **檢視者** → 新增。
+
+## 丁、把金鑰交給 Claude
+
+與主文第四段完全相同：把甲-6 下載的 `.json` 用記事本打開、全選複製，
+貼進 Claude Code on the web 環境設定的環境變數 `GOOGLE_SERVICE_ACCOUNT_KEY`（值就是整份 JSON）。
+
+## 驗證
+
+新開一個 session 跑 `pnpm perf`：
+
+| 結果 | 代表 |
+|---|---|
+| 兩邊都有數字 | 全部完成 |
+| GA4 有、GSC 沒有 | 乙段沒做完，或資源類型選成「網址前置字元」（第 3 步） |
+| GSC 有、GA4 沒有 | 丙段還沒完成——多半是還沒拿到管理員權限 |
+| 兩邊都沒有 | 甲-3 的兩個 API 沒啟用，或 `GOOGLE_SERVICE_ACCOUNT_KEY` 名稱打錯／JSON 沒貼完整 |
+
+**只完成乙段就已經有價值**：`pnpm perf` 會印出 GSC 那半（曝光、點擊、排名、Top 查詢），
+足以做選題與 SEO 決策；GA4 那半可以之後再補。
