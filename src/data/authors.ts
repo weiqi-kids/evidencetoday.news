@@ -64,4 +64,36 @@ export const AUTHORS: Record<string, AuthorInfo> = {
       { name: '樂地滋有限公司', url: 'https://lodes.com.tw/' },
     ],
   },
+
+  // ⚠️ 獨立醫療審閱者，2026-08-04 建立，**尚未啟用**。
+  //
+  // 這筆資料只有在某篇內容的 frontmatter 填了 `reviewer: 黃子彥` 時才會被輸出成
+  // Person 級 `reviewedBy`（見 articles/[slug].astro 的反自審判斷）。在使用者逐篇
+  // 送審、確認審閱完成之前，**不要**替任何一篇填入 reviewer——`reviewedBy` 是
+  // 「這位具名醫師審閱過這篇」的事實主張，批次蓋章等同不實陳述。
+  //
+  // 上線前仍須由使用者確認下列兩點（本檔目前的內容來自公開網路資料，未經本人確認）：
+  //   1. hasCredential 的正確表述（中醫師？中西醫雙執照？）與證書字號可查性。
+  //   2. description 中的經歷（臺南市立醫院中醫部主任）需一個可點的第一手來源。
+  //
+  // 利益衝突：黃醫師同時任職上一生物醫學（保健食品研發）。本站已有同型前例
+  // （主編羅揚經營樂地滋），處理原則見 docs/playbooks/geo-offsite.md——啟用審閱者
+  // 時必須同步在 /disclosure 揭露其商業關係，且審閱範圍應避開與其產品線直接
+  // 重疊的品項，否則「獨立審閱」的訊號價值會被自身的利益衝突抵銷。
+  黃子彥: {
+    name: '黃子彥',
+    url: 'https://evidencetoday.news/authors/huang-tzu-yen/',
+    jobTitle: '中醫師｜本日有據醫療審閱者',
+    description:
+      '中醫師，中國醫藥大學中西醫學訓練背景，現任社團法人中華民國上醫預防醫學發展協會理事長，長期投入預防醫學與中西醫結合的健康溝通。於本站擔任獨立醫療審閱者，審閱範圍以中醫、中藥與草本相關內容為主。（審閱者相關商業利益揭露見 /disclosure）',
+    knowsAbout: ['中醫', '中藥', '草本療法', '預防醫學', '中西醫結合', '保健食品法規'],
+    hasCredential: {
+      name: '中醫師',
+      credentialCategory: '專門職業及技術人員高等考試中醫師考試及格',
+      recognizedBy: '中華民國衛生福利部',
+    },
+    // sameAs 只放可獨立查證的機構頁，不放人物介紹型的媒體報導。
+    sameAs: ['https://gcm.org.tw/member/'],
+    worksFor: [{ name: '社團法人中華民國上醫預防醫學發展協會', url: 'https://gcm.org.tw/' }],
+  },
 };
