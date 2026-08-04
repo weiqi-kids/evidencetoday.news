@@ -94,44 +94,78 @@ ga4-insights@yaocare.iam.gserviceaccount.com
 
 ## 第四段：把鑰匙交給 Claude
 
-1. 用**記事本**（Windows）或**文字編輯**（Mac）打開第一段下載的那個 `.json` 檔
-   - Mac 小技巧：在檔案上按右鍵 → 開啟檔案 → 其他 → 選「文字編輯」
-   - 內容長這樣（一大串，開頭是 `{`）：
-     ```
-     {
-       "type": "service_account",
-       "project_id": "yaocare",
-       "private_key_id": "...",
-       "private_key": "-----BEGIN PRIVATE KEY-----\n...",
-       "client_email": "ga4-insights@yaocare.iam.gserviceaccount.com",
-       ...
-     }
-     ```
-2. **全選**（Ctrl+A / Cmd+A）→ **複製**（Ctrl+C / Cmd+C）
-   - 要整份，從最前面的 `{` 到最後面的 `}`
-3. 打開 Claude Code on the web 的**環境設定**頁，找到**環境變數**（Environment variables）區塊
-   - 說明文件：<https://code.claude.com/docs/en/claude-code-on-the-web>
-4. 新增一個變數：
+### 4-1. 先把 JSON 轉成單行（base64）
 
-   | 欄位 | 填什麼 |
-   |---|---|
-   | 名稱（Name / Key） | `GOOGLE_SERVICE_ACCOUNT_KEY` |
-   | 值（Value） | 剛剛複製的整份 JSON，直接貼上 |
+環境變數欄位是 **`.env` 格式**（一行一個 `KEY=value`），而下載的 JSON 是**多行**的，直接貼會壞掉。所以要先轉成單行的 base64。
 
-   名稱要一字不差，全大寫、用底線。
+**Mac**：打開「終端機」，貼這一行（檔名換成你的），按 Enter：
+```
+base64 -i ~/Downloads/你的檔名.json | pbcopy
+```
+
+**Windows**：打開 PowerShell，貼這一行（檔名換成你的），按 Enter：
+```
+[Convert]::ToBase64String([IO.File]::ReadAllBytes("$HOME\Downloads\你的檔名.json")) | Set-Clipboard
+```
+
+跑完**結果已經在剪貼簿裡**，畫面不會顯示東西，這是正常的。
+
+### 4-2. 貼進環境變數
+
+⚠️ 官方文件明講這個設定**沒有直接網址**（*There's no settings page or direct URL for the selector*），只能用點的：
+
+1. 開 <https://claude.ai/code>
+2. 看**訊息輸入框正上方那一排**，有一個**雲朵圖示**，上面寫著環境名稱（通常是 **Default**）。**點它。**
+3. 選單跳出後，在 **Cloud** 區塊找到你的環境那一列，**滑鼠移上去**，右邊會出現**齒輪圖示 ⚙️**，點它。
+4. 找到 **Environment variables** 那個框，打上這一行（`=` 後面貼剛剛複製的 base64）：
+   ```
+   GOOGLE_SERVICE_ACCOUNT_KEY=貼上base64
+   ```
+   變數名要一字不差，全大寫、用底線。
 5. 儲存。
+
+### 4-3. 開新 session（最容易漏的一步）
+
+存檔後**必須開一個新的 session**。環境變數只在容器啟動時讀一次，**你目前開著的對話讀不到新設定**。
 
 ✅ 完成。
 
 ---
 
+## ⚠️ 「不要貼在這裡」到底是指哪裡？
+
+這是最容易誤解的一點，說清楚：
+
+| 地方 | 能不能貼金鑰 | 原因 |
+|---|---|---|
+| **和 Claude 對話的視窗** | ❌ 絕對不要 | 對話內容可能被寫進 commit 或 log，而本 repo 是公開的 |
+| **環境變數設定頁**（第四段講的那個） | ✅ 就是要貼這裡 | 不進 repo、不進對話，是這個平台唯一該放憑證的位置 |
+
+兩者是**不同的畫面**。判斷法：**「你打字給 Claude 看」的地方不要貼；「設定頁的欄位」就是該貼的地方。**
+
+### 但要知道它的安全等級
+
+環境變數欄位**不是加密保管庫**。官方文件明講：*"Anyone who uses the environment can read the values, and cloud environments have no dedicated secrets store"*——**任何能使用這個環境的人都讀得到值**。
+
+對本站的實務結論：
+
+- 這把鑰匙只是唯讀分析數據，帳號只有你在用，風險可接受。
+- 想再收斂範圍，就把 GSC 權限從「完整」降成「**受限**」（唯讀）。代價是 `pnpm sitemap:submit` 不能自動提交 sitemap，其餘 `perf` / `insights` / `index:coverage` 全部照常。
+- 金鑰隨時可在 GCP Console 撤銷、重發，發現不對就換一把。
+
+---
+
 ## 怎麼確認成功了？
 
-開一個新的 Claude session，叫它跑：
+設定完環境變數後，**開一個新的 session**（環境變數在容器啟動時注入，舊 session 讀不到），叫它跑：
 
 ```
-pnpm perf
+pnpm check:google
 ```
+
+這支診斷指令會逐項檢查金鑰、token、GA4、GSC，並把每個失敗**直接對應回是哪一段沒做好**，不用你自己猜。全部 ✅ 就代表打通了。
+
+也可以直接跑 `pnpm perf` 看實際數據：
 
 - **成功**：會印出使用者數、工作階段、Top 頁面、搜尋查詢與排名等一堆數字
 - **失敗**：會印「GA4 無回應」「GSC 無資料」
@@ -142,7 +176,7 @@ pnpm perf
 |---|---|
 | GA4 有數字、GSC 沒有 | 第三段沒做，或權限選了「受限」 |
 | GSC 有數字、GA4 沒有 | 第二段沒做 |
-| 兩邊都沒有 | 第四段的變數名稱打錯，或 JSON 沒貼完整（少了頭尾的大括號） |
+| 兩邊都沒有 | 第四段的變數名稱打錯、base64 沒貼完整，或存檔後沒開新 session |
 
 把 `pnpm perf` 的輸出貼給 Claude，它能直接判斷是哪一段的問題。
 
@@ -150,7 +184,7 @@ pnpm perf
 
 ## 附註：給工程背景的人
 
-- 變數也接受 base64（`base64 -w0 key.json`）或 `GOOGLE_APPLICATION_CREDENTIALS` 檔案路徑。
+- 變數接受 base64（`base64 -w0 key.json`）、原始 JSON、或 `GOOGLE_APPLICATION_CREDENTIALS` 檔案路徑。在 Claude Code on the web 的設定欄位**只能用 base64**——該欄位是 `.env` 格式，多行 JSON 會被截斷；在 CI secret 或本機 shell 這類支援多行的地方，原始 JSON 可直接用。
 - 認證邏輯在 `scripts/lib/insight-fetch.mjs` 的 `getToken()`，優先序為「服務帳號金鑰 → gcloud」，走 JWT-bearer flow（RFC 7523），無新增相依套件。
 - 主機 cron 仍走 `gcloud auth print-access-token`，這次改動不影響它。
 - 技術細節見 `docs/playbooks/audience-insights.md`。

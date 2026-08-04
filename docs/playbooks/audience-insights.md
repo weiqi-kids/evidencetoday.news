@@ -35,13 +35,15 @@
 
 摘要：GCP Console 產服務帳戶 JSON 金鑰 → GA4「資源存取管理」加該 SA 為檢視者 → GSC「使用者和權限」加該 SA 為完整權限 → 把整份 JSON 貼進 Claude Code on the web 的環境變數 `GOOGLE_SERVICE_ACCOUNT_KEY`。
 
-`GOOGLE_SERVICE_ACCOUNT_KEY` 接受**原始 JSON 直接貼上**（不必先 base64；base64 也支援）。設好之後任何 session 直接 `pnpm perf`、`pnpm insights`、`pnpm index:coverage` 都會有真實數據。
+`GOOGLE_SERVICE_ACCOUNT_KEY` 接受原始 JSON 或 base64。⚠️ 但 **Claude Code on the web 的環境變數欄位是 `.env` 格式（一行一個 `KEY=value`），多行 JSON 會壞掉——那裡一律用 base64**；原始 JSON 只在支援多行的地方（CI secret、本機 shell）能用。設好之後任何 session 直接 `pnpm perf`、`pnpm insights`、`pnpm index:coverage` 都會有真實數據。
 
 ⚠️ 關鍵觀念（最常卡住的一點）：**金鑰不在 GA4 或 GSC 介面裡**，那兩處只負責授權；金鑰要到 **Google Cloud Console** 產生。
 
+**診斷指令 `pnpm check:google`**（`scripts/check-google-access.mjs`）：逐項檢查金鑰解析、token 交換、GA4 與 GSC 讀取，並把每個失敗對應回設定文件的哪一段（例：GSC 403 → 服務帳戶沒加進「使用者和權限」；GA4 404 → GA4_PROPERTY 常數與實際資源對不上）。唯讀，不印出任何搜尋查詢內容。設定過程卡住時先跑它。
+
 **權限需求**：該 SA 需在 GA4 資源有「檢視者」、在 GSC 資源有使用者權限。`sitemap-submit` 另需 `webmasters` **寫入** scope。
 
-**安全性**：服務帳號私鑰是真憑證。只貼進環境變數設定介面，**不要貼進對話或 commit 進 repo**（本 repo 為 public）。金鑰可隨時在 GCP Console 撤銷、重發。
+**安全性**：服務帳號私鑰是真憑證。只貼進環境變數設定介面，**不要貼進對話或 commit 進 repo**（本 repo 為 public）。金鑰可隨時在 GCP Console 撤銷、重發。⚠️ 環境變數欄位**不是加密保管庫**——官方文件明載「Anyone who uses the environment can read the values, and cloud environments have no dedicated secrets store」。要收斂風險就把 GSC 權限降成「受限」（唯讀），代價只是 `sitemap:submit` 不能自動提交。
 
 ## 姊妹指令：`pnpm perf`（站整體效能快照）
 - `scripts/perf-snapshot.mjs` — **唯讀**印出近 28 天 GA4（使用者/工作階段/Top 頁面/流量來源）+ GSC（點擊/曝光/CTR/排名、Top 查詢與著陸頁）。
