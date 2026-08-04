@@ -15,6 +15,7 @@
 | `src/components/blocks/Footer.astro` | 頁尾「健康專題」連結 |
 | `src/components/blocks/TopNav.astro` | 導覽列「健康專題」→ `/topics/`（全站內鏈入口） |
 | `src/pages/articles/[slug].astro` | 文章頁 spoke→hub 回鏈：用 `matchesTopic()` 自動列出「所屬健康專題」 |
+| `src/pages/ingredients/[slug].astro` | 成分頁 spoke→hub 回鏈（同上），外加 `getAutoRelated()` tag 重疊自動補相關內容 |
 
 ### 目前的 hubs（11 個）
 `omega-3` / `lutein` / `calcium-vitamin-d` / `supplement-guide` / `blood-lipids` / `blood-sugar` / `liver-kidney-test`，
@@ -23,7 +24,17 @@
 
 ### hub↔spoke 雙向內鏈
 - **hub→spoke**：`/topics/<slug>/` 依 `matchKeywords` 自動收斂內容（既有機制）。
-- **spoke→hub**：文章單篇頁（`articles/[slug].astro`）用同一個 `matchesTopic()` 反查本文所屬專題，渲染「所屬健康專題」膠囊連結；零手工維護、新文章自動生效。
+- **spoke→hub**：文章單篇頁（`articles/[slug].astro`）與成分頁（`ingredients/[slug].astro`）用同一個 `matchesTopic()` 反查本文所屬專題，渲染「所屬健康專題」膠囊連結；零手工維護、新內容自動生效。
+
+#### 成分頁的孤島問題（2026-08-04 修）
+
+成分頁 63 篇中只有 5 篇填了 `relatedX`，其餘渲染出空的相關區、對外零出鏈，是全站最孤立的一群頁面（全站真實索引率僅 11%，內鏈是少數能把 Discovered→Crawled 推動的站內槓桿）。修法比照 `articles/[slug].astro`：手動 `relatedX` 全空時退到 `getAutoRelated()` 的 tag 重疊自動補齊，並加上 spoke→hub 膠囊。修完覆蓋率：相關內容 5→30 篇、專題回鏈 0→21 篇（分母 45 篇已發布成分頁）。
+
+剩下未覆蓋的頁多半是 tag 命中不到任何 hub，屬 `matchKeywords` 廣度問題，見下方「常見陷阱」。
+
+#### ⚠️ 闢謠頁（myths）不套用這套
+
+`myths/[slug].astro` 的版型是**刻意簡化**的（見 `CLAUDE.md`「踩過的坑」）：只渲染固定區塊，不得加「延伸閱讀」「更新與更正紀錄」「相關內容」等區塊；FAQ 是唯一刻意保留的例外。因此闢謠頁**不加** `getAutoRelated()`，也**不加**「所屬健康專題」膠囊。闢謠的 hub 連結靠 hub→spoke 單向（`/topics/<slug>/` 會自動收錄闢謠）與 tag 頁達成。若日後要改，須先推翻該版型決策，不要當成內鏈優化順手加上去。
 
 ### 專題卡片縮圖（資料驅動，零手工維護）
 - 專題**沒有**逐主題圖庫，也不維護 `topics.ts` 圖片欄位。`/topics/` 列表頁與首頁「健康專題」區塊的卡片縮圖，一律由 `resolveTopicCover(topic, [articles, ingredients])`（`src/utils/topic-cover.ts`）**從該主題自動歸入的文章／成分解析取一張封面**（各池先按發佈日新到舊排序，取第一個「有比對到本主題且封面合法」者）。
