@@ -67,7 +67,12 @@ const {
   references,
   citationAnswer,
   queryPatternLabel,
-  showMedicalDisclaimer = true,
+  // 預設關閉（2026-08-04 改）：通用醫療免責由頁尾單一處承擔，內文不再放同義句。
+  // 原本內文區塊寫「本站所有內容僅供一般健康資訊參考，不構成醫療診斷、治療建議或處方」，
+  // 與 Footer 的「本站內容僅供一般健康資訊參考，不構成醫療建議」前 15 字幾乎逐字重複，
+  // 出現在每一篇文章與成分頁。規則見 docs/playbooks/legal-notices.md。
+  // 個別頁面若真有非通用的提醒需求，才顯式傳 true。
+  showMedicalDisclaimer = false,
 } = Astro.props;
 
 // 分享列：用 canonical 絕對網址。myths 單篇刻意極簡（見 CLAUDE.md 與 myths playbook），不加分享列。

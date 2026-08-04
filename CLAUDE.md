@@ -45,6 +45,7 @@
 7. 語言用台灣繁體中文，禁中國用語；禁聳動用語、具體醫療建議、醫療承諾。
 7a. **禁 AI 量產寫法（YMYL 致命傷，違反會被 Google 拒絕索引）**：禁模板化第一人稱開頭「我一直覺得／我最近／老實講／朋友最常問我／我發現／我觀察」（開頭第一句直接給具體價值，每篇都要不同）；禁 AI 感句型「不是…而是／不只是…更是／換句話說／真正的問題是」。守門＝統一引擎 `scripts/check-content.mjs`（2026-07-21 取代舊 `audit-ai-tone.mjs`）：`pnpm check:content`（= 相容別名 `pnpm content:audit`）掃變動檔、`pnpm check:content:all` 全站盤點；已串進 `pnpm build`（`check-design && check-content && astro build`），提交前即擋。寫／改內容後必跑到全綠。細節見 `docs/content-guide.md`「鐵則」。
 8. 不得把網站改成商城 / 診所 / 產品頁 / 政府宣導頁 / AI 模板站；圖像不得自動加十字架元素（除非明確要求）。
+8a. **免責與揭露：一頁一次、放角落、降彩度、絕不重複**。通用醫療免責**只在頁尾一處**（`Article.astro` 的 `showMedicalDisclaimer` 預設 `false`）；**禁止在 MDX 內文自己再寫一次免責句**；揭露類文字只放一行連到 `/disclosure`，完整條文寫在政策頁。字級不得低於 `var(--text-meta)`（設計規範 ⑥ 擋，且無更小級距），低干擾靠**降彩度與位置**達成，不靠縮字。醫療審閱者署名極簡（`審閱：姓名＋職稱`，無圖示無徽章），且**審閱者＝作者時不顯示**。細節見 `docs/playbooks/legal-notices.md`。
 9. `pnpm build` 零錯誤才算通過。
 
 ---
@@ -169,10 +170,10 @@ docs/                 # architecture / content-guide / news_sop / playbooks/
 
 **每次 session 請主動追問使用者這三件事：**
 1. **本輪送審了哪幾篇？** 採階段性審核：**審完一篇才填一篇** `reviewer: 黃子彥`，嚴禁批次蓋章。`reviewedBy` 是「這位具名醫師審閱過這篇」的事實主張。
-2. **憑證表述是否正確？** `hasCredential` 目前填「中醫師」，內容取自公開網路資料、未經本人確認。啟用前需確認正確表述（中醫師？中西醫雙執照？）與經歷（臺南市立醫院中醫部主任）的第一手可點來源。
+2. **憑證表述是否正確？** `hasCredential` 填「中醫師」（執照類別，據實填寫）；中西醫學歷屬 `description` 的訓練背景敘述，兩者不可混用。⚠️「臺南市立醫院中醫部主任」是**錯誤資訊**，已移除，不要再寫回去。
 3. **/disclosure 是否已補上？** 黃醫師任職上一生物醫學（保健食品研發），與本站 63 篇成分解析、大量保健食品闢謠存在利益衝突。本站已有同型前例（主編羅揚經營樂地滋），啟用審閱者時**必須同步在 `/disclosure` 揭露**，且審閱範圍應避開與其產品線直接重疊的品項，否則「獨立審閱」的訊號價值會被自身利益衝突抵銷。
 
-建議首批審閱範圍：中醫／中藥／草本類（對應 `/topics/tcm-traditional/`），西醫疾病指南（statin、疫苗、青光眼、Cochrane 統合分析）不掛他的名字。
+**審閱範圍：中西醫皆可**（2026-08-04 使用者確認，黃醫師具中西醫背景與學歷）。首批 20 篇送審清單與逐篇進度見 `docs/medical-review-queue.md`。
 
 機制已就緒：`content.schemas.ts` 有 `reviewer` 欄、`articles/[slug].astro:88-91` 已實作「審閱者≠作者才輸出 Person 級 `reviewedBy`」。
 

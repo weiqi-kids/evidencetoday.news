@@ -12,6 +12,18 @@ const { author, reviewer, editorReviewed } = Astro.props;
 
 // 作者已登錄於 registry 時，把姓名連到作者頁，串起 文章 → 作者 → sameAs 實體圖（E-E-A-T）。
 const authorPath = AUTHORS[author]?.url?.replace('https://evidencetoday.news', '') ?? null;
+
+// 醫療審閱者顯示規則（刻意極簡，見 docs/playbooks/legal-notices.md）：
+// 只寫「審閱：姓名＋職稱」一行，不加圖示、不加徽章、不加任何說明文字，顏色降彩度。
+// 署名是可信度訊號，不是版面重點——喧賓奪主會擠掉讀者真正要看的答案。
+// 姓名連到 /disclosure（該處說明審閱者身分與商業關係），讓揭露不必佔用內文版面。
+// 審閱者＝作者時不顯示：自己審自己不是獨立審閱，前台掛「審閱：」會誤導讀者。
+// 與 articles/[slug].astro 的 JSON-LD 反自審判斷一致（該處也只在 reviewer !== author
+// 時才輸出 Person 級 reviewedBy）。
+const independentReviewer = reviewer && reviewer !== author ? reviewer : undefined;
+const reviewerLabel = independentReviewer
+  ? `${independentReviewer}${AUTHORS[independentReviewer]?.jobTitle ?? ''}`
+  : '';
 ---
 
 <div class="editor-info">
@@ -20,10 +32,9 @@ const authorPath = AUTHORS[author]?.url?.replace('https://evidencetoday.news', '
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
       {authorPath ? <a class="editor-info__author-link" href={authorPath} rel="author">{author}</a> : author}
     </span>
-    {reviewer && (
-      <span class="editor-info__item">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-        主編把關：{reviewer}
+    {independentReviewer && (
+      <span class="editor-info__item editor-info__item--reviewer">
+        審閱：<a class="editor-info__author-link" href="/disclosure/">{reviewerLabel}</a>
       </span>
     )}
   </div>
@@ -54,6 +65,12 @@ const authorPath = AUTHORS[author]?.url?.replace('https://evidencetoday.news', '
     font-family: var(--font-ui);
     font-size: var(--text-meta);
     color: var(--color-ink);
+  }
+
+  /* 審閱者署名降彩度、不加圖示，存在感低於作者。字級不另外縮小——
+     設計規範 ⑥ 強制所有 --text-* ≥ 1.125rem，低干擾只能靠顏色與位置達成。 */
+  .editor-info__item--reviewer {
+    color: color-mix(in oklch, var(--color-ink) 55%, transparent);
   }
 
   .editor-info__item svg {
