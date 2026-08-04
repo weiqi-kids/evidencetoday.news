@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-08-03T06:19:00+08:00",
+  "lastRun": "2026-08-05T06:20:00+08:00",
   "processed": {
     "https://www.cdc.gov.tw/Bulletin/Detail/I6r18LGy_-Y1I2Fj72gO2w?typeid=9": {
       "processedAt": "2026-08-03T06:19:00+08:00",
@@ -15,11 +15,11 @@
       "outputFile": "src/content/news/radar-2026-08-03-06-01.md"
     },
     "https://pmc.ncbi.nlm.nih.gov/articles/PMC10824847/": {
-      "processedAt": "2026-08-03T06:19:00+08:00",
+      "processedAt": "2026-07-29T06:30:00+08:00",
       "outputFile": null
     },
     "https://www.who.int/news-room/events/detail/2026/07/06/default-calendar/forty-ninth-session-of-the-fao-who-codex-alimentarius-commission-adopts-new-standards": {
-      "processedAt": "2026-08-03T06:19:00+08:00",
+      "processedAt": "2026-07-19T06:30:00+08:00",
       "outputFile": null
     },
     "https://www.who.int/teams/nutrition-and-food-safety/food-and-nutrition-actions-in-health-systems": {
@@ -27,7 +27,7 @@
       "outputFile": null
     },
     "https://www.medrxiv.org/content/10.1101/2025.08.07.25333265.full.pdf": {
-      "processedAt": "2026-08-03T06:19:00+08:00",
+      "processedAt": "2026-07-30T06:30:00+08:00",
       "outputFile": null
     },
     "https://www.sciencedaily.com/releases/2026/07/260729010716.htm": {
@@ -155,10 +155,6 @@
       "outputFile": null
     },
     "https://pubmed.ncbi.nlm.nih.gov/41883858/": {
-      "processedAt": "2026-07-19T06:30:00+08:00",
-      "outputFile": null
-    },
-    "https://www.who.int/news-room/events/detail/2026/07/06/default-calendar/forty-ninth-session-of-the-fao-who-codex-alimentarius-commission-adopts-new-standards": {
       "processedAt": "2026-07-19T06:30:00+08:00",
       "outputFile": null
     },
@@ -986,10 +982,6 @@
       "processedAt": "2026-07-29T06:30:00+08:00",
       "outputFile": "src/content/news/radar-2026-07-29-06-01.md"
     },
-    "https://pmc.ncbi.nlm.nih.gov/articles/PMC10824847/": {
-      "processedAt": "2026-07-29T06:30:00+08:00",
-      "outputFile": null
-    },
     "https://medicalxpress.com/news/2026-07-diet-cholesterol-genes.html": {
       "processedAt": "2026-07-29T06:30:00+08:00",
       "outputFile": null
@@ -1035,10 +1027,6 @@
       "outputFile": null
     },
     "https://www.medrxiv.org/content/10.1101/2020.02.23.20026898.full.pdf": {
-      "processedAt": "2026-07-30T06:30:00+08:00",
-      "outputFile": null
-    },
-    "https://www.medrxiv.org/content/10.1101/2025.08.07.25333265.full.pdf": {
       "processedAt": "2026-07-30T06:30:00+08:00",
       "outputFile": null
     },
@@ -1104,6 +1092,62 @@
     },
     "https://www.who.int/teams/nutrition-and-food-safety/monitoring-nutritional-status-and-food-safety-and-events": {
       "processedAt": "2026-08-02T06:20:05+08:00",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/": {
+      "processedAt": "2026-08-05T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Bulletin/List/MmgtpeidAR5Ooai4-fgHzQ": {
+      "processedAt": "2026-08-05T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Category/MPage/g2B1VbUeuu_gEgdYmNiiKw": {
+      "processedAt": "2026-08-05T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Category/MPage/iclxC6BjjFmtM1oT54EVuw": {
+      "processedAt": "2026-08-05T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Category/MPage/7cc1CTepnQ7B7yBAdq6z7A": {
+      "processedAt": "2026-08-05T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Category/MPage/kVk7_6s4M5aVPmrKFUQCjQ": {
+      "processedAt": "2026-08-05T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Category/List/ZrvS2zJwZ03tl8CbKYdI8g": {
+      "processedAt": "2026-08-05T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://www.nature.com/subjects/randomized-controlled-trials/ejcn": {
+      "processedAt": "2026-08-05T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://www.nature.com/subjects/nutrition": {
+      "processedAt": "2026-08-05T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://www.sciencedaily.com/news/mind_brain/nutrition/": {
+      "processedAt": "2026-08-05T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://www.sciencedaily.com/news/health_medicine/nutrition/": {
+      "processedAt": "2026-08-05T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12665681/": {
+      "processedAt": "2026-08-05T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12910210/": {
+      "processedAt": "2026-08-05T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12902778/": {
+      "processedAt": "2026-08-05T06:20:00+08:00",
       "outputFile": null
     }
   }
