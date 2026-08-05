@@ -1,7 +1,12 @@
-# 醫療審閱佇列 — 第一批（20 篇）
+# 醫療審閱佇列
 
 審閱者：**黃子彥中醫師**（中國醫藥大學中西醫學訓練背景；社團法人中華民國上醫預防醫學發展協會理事長）
-建立日：2026-08-04 ｜ 狀態：**待送審**
+建立日：2026-08-04 ｜ 最後更新：2026-08-05
+
+| 批次 | 篇數 | 狀態 |
+|---|---|---|
+| 第一批 | 20 | ✅ **已審閱完畢，20 篇皆已掛 `reviewer: 黃子彥`**（2026-08-05） |
+| 第二批 | 20 | 📤 **待送審** |
 
 ---
 
@@ -73,34 +78,36 @@ YMYL 風險最高的一組，讀者最可能據此行動。
 
 **規則：審完一篇才填一篇 `reviewer: 黃子彥`。嚴禁批次蓋章**——`reviewedBy` 在 schema.org 上是「這位具名醫師審閱過這篇」的事實主張。
 
+第一批 20 篇已於 2026-08-05 由使用者確認**全數審閱完畢**，故同批掛上署名。
+
 | # | slug | 送審日 | 回覆日 | 意見已處理 | 已填 reviewer |
 |---|---|---|---|---|---|
-| 1 | `stop-supplements-before-surgery` | | | ☐ | ☐ |
-| 2 | `fish-oil-blood-thinner-interaction` | | | ☐ | ☐ |
-| 3 | `red-yeast-rice-with-statin` | | | ☐ | ☐ |
-| 4 | `elderly-tcm-western-drug-combos-that-matter` | | | ☐ | ☐ |
-| 5 | `chronic-disease-drug-supplement-interaction` | | | ☐ | ☐ |
-| 6 | `biotin-before-blood-test` | | | ☐ | ☐ |
-| 7 | `curcumin-anticancer-claims-myth` | | | ☐ | ☐ |
-| 8 | `red-yeast-rice-monacolin-k-safety-guide` | | | ☐ | ☐ |
-| 9 | `melatonin-prescription-taiwan-gray-market` | | | ☐ | ☐ |
-| 10 | `hypertension-130-80-home-bp-guide` | | | ☐ | ☐ |
-| 11 | `chronic-kidney-disease-egfr-guide` | | | ☐ | ☐ |
-| 12 | `fatty-liver-masld-reversal-guide` | | | ☐ | ☐ |
-| 13 | `osteoporosis-dxa-frax-prevention-guide` | | | ☐ | ☐ |
-| 14 | `pcos-diagnosis-insulin-resistance-guide` | | | ☐ | ☐ |
-| 15 | `subclinical-hypothyroidism-treat-or-monitor` | | | ☐ | ☐ |
-| 16 | `glp1-wegovy-complete-guide-nutrition` | | | ☐ | ☐ |
-| 17 | `sleep-apnea-osa-diagnosis-treatment-guide` | | | ☐ | ☐ |
-| 18 | `psa-4-to-10-gray-zone-biopsy-decision` | | | ☐ | ☐ |
-| 19 | `h-pylori-stomach-cancer-prevention-guide` | | | ☐ | ☐ |
-| 20 | `menstrual-pain-painkillers-losing-effect-endometriosis` | | | ☐ | ☐ |
+| 1 | `stop-supplements-before-surgery` | 2026-08-04 | 2026-08-05 | ☑ | ☑ |
+| 2 | `fish-oil-blood-thinner-interaction` | 2026-08-04 | 2026-08-05 | ☑ | ☑ |
+| 3 | `red-yeast-rice-with-statin` | 2026-08-04 | 2026-08-05 | ☑ | ☑ |
+| 4 | `elderly-tcm-western-drug-combos-that-matter` | 2026-08-04 | 2026-08-05 | ☑ | ☑ |
+| 5 | `chronic-disease-drug-supplement-interaction` | 2026-08-04 | 2026-08-05 | ☑ | ☑ |
+| 6 | `biotin-before-blood-test` | 2026-08-04 | 2026-08-05 | ☑ | ☑ |
+| 7 | `curcumin-anticancer-claims-myth` | 2026-08-04 | 2026-08-05 | ☑ | ☑ |
+| 8 | `red-yeast-rice-monacolin-k-safety-guide` | 2026-08-04 | 2026-08-05 | ☑ | ☑ |
+| 9 | `melatonin-prescription-taiwan-gray-market` | 2026-08-04 | 2026-08-05 | ☑ | ☑ |
+| 10 | `hypertension-130-80-home-bp-guide` | 2026-08-04 | 2026-08-05 | ☑ | ☑ |
+| 11 | `chronic-kidney-disease-egfr-guide` | 2026-08-04 | 2026-08-05 | ☑ | ☑ |
+| 12 | `fatty-liver-masld-reversal-guide` | 2026-08-04 | 2026-08-05 | ☑ | ☑ |
+| 13 | `osteoporosis-dxa-frax-prevention-guide` | 2026-08-04 | 2026-08-05 | ☑ | ☑ |
+| 14 | `pcos-diagnosis-insulin-resistance-guide` | 2026-08-04 | 2026-08-05 | ☑ | ☑ |
+| 15 | `subclinical-hypothyroidism-treat-or-monitor` | 2026-08-04 | 2026-08-05 | ☑ | ☑ |
+| 16 | `glp1-wegovy-complete-guide-nutrition` | 2026-08-04 | 2026-08-05 | ☑ | ☑ |
+| 17 | `sleep-apnea-osa-diagnosis-treatment-guide` | 2026-08-04 | 2026-08-05 | ☑ | ☑ |
+| 18 | `psa-4-to-10-gray-zone-biopsy-decision` | 2026-08-04 | 2026-08-05 | ☑ | ☑ |
+| 19 | `h-pylori-stomach-cancer-prevention-guide` | 2026-08-04 | 2026-08-05 | ☑ | ☑ |
+| 20 | `menstrual-pain-painkillers-losing-effect-endometriosis` | 2026-08-04 | 2026-08-05 | ☑ | ☑ |
 
 ---
 
 ## 執行注意事項
 
-**① 填 `reviewer` 時會擋 build 的 3 篇**（已預檢，皆單句可修，同 commit 改掉即可）：
+**① 填 `reviewer` 時會擋 build 的 3 篇**（2026-08-05 實際掛署名時重跑 `check-content`，**已無 ERROR**，那三句在先前的內容整理中已修掉，此表僅保留為紀錄）：
 
 | slug | 行 | 句型 |
 |---|---|---|
@@ -113,3 +120,93 @@ YMYL 風險最高的一組，讀者最可能據此行動。
 **② 為什麼 20 篇全是 articles**：`reviewer` 欄位只存在於 `articlesSchema` 與 `mythsSchema`（`ingredients` / `news` 沒有）；而 `myths/[slug].astro` 不會把 `author`/`reviewer` 傳給 `<Article>`，闢謠頁即使填了前台也不會顯示。闢謠要納入審閱需要額外接線，另案處理。
 
 **③ 利益揭露**：黃醫師任職上一生物醫學（保健食品研發），與本站成分解析、保健食品闢謠存在利益衝突，已於 `/disclosure` 揭露。揭露方式遵守「一頁一次、放角落、絕不重複」原則，見 `docs/playbooks/legal-notices.md`。
+
+---
+
+# 第二批（20 篇）— 待送審
+
+建立日：2026-08-05
+
+## 選篇邏輯
+
+第一批以「保健品×藥物交互作用」為主軸。第二批刻意換一個重心：**就醫時機的判斷、檢驗數值的判讀、以及症狀的鑑別診斷**。理由有三：
+
+1. **傷害型態不同**。第一批的風險是「吃錯東西」，第二批的風險是「該就醫而沒去」或「把警訊當成小毛病」——延誤診斷的代價通常更高，而這正是具名醫師審閱最能加值的地方。
+2. **用得上中西醫雙背景**。自律神經失調、久咳喉嚨卡（梅核氣）、更年期前期、落髮這幾類，是中醫門診高頻主訴，同時又必須排除西醫的器質性病因。這是黃醫師的交集地帶。
+3. **避開利益衝突**。`/disclosure` 第 3 點承諾「涉及審閱者任職公司產品或明確利益的頁面不掛署名」。第二批刻意**排除純保健品品項評比類**的文章（例：`nmn-taiwan-legal-buy` 曝光 114 但屬純成分商品題材，已剔除），把重心放在臨床判斷。
+
+## 清單
+
+### A. 檢驗判讀與就醫時機（7 篇）— 誤判會延誤診斷
+
+| # | slug | 標題 | 審閱重點 |
+|---|---|---|---|
+| 1 | `health-checkup-red-flag-triage` | 健檢報告出現紅字，哪些要馬上看醫生 | **本批風險最高**：分流建議是否會讓該就醫的人延後 |
+| 2 | `cholesterol-report-ldl-hdl-triglycerides` | 膽固醇報告 4 大指標怎麼看 | 判讀門檻與用藥時機 |
+| 3 | `fasting-glucose-only-add-hba1c-decision` | 健檢只驗空腹血糖夠嗎 | 加驗建議是否符合台灣健保與自費現況 |
+| 4 | `prediabetes-105-next-three-months-plan` | 空腹血糖 105 接下來三個月 | 生活型態處方的強度是否恰當 |
+| 5 | `glaucoma-early-detection-guide` | 青光眼完整指南 | 延誤即不可逆，篩檢間隔與高風險族群 |
+| 6 | `cancer-screening-2026-eligibility-guide` | 2026 公費癌症篩檢資格 | 資格與頻率是否與國健署現行一致 |
+| 7 | `shingles-vaccine-guide` | 帶狀疱疹疫苗要不要打 | 適應症、禁忌症與各縣市補助正確性 |
+
+### B. 症狀鑑別 — 中西醫雙背景最有價值（5 篇）
+
+| # | slug | 標題 | 審閱重點 |
+|---|---|---|---|
+| 8 | `autonomic-nervous-dysfunction-anxiety-guide` | 「自律神經失調」是不是一種病 | 中醫門診高頻主訴；需排除的器質性病因是否完整 |
+| 9 | `chronic-cough-throat-globus-when-to-suspect-gerd` | 久咳、喉嚨卡卡何時該懷疑胃食道逆流 | 對應中醫「梅核氣」；紅旗症狀（吞嚥困難、體重減輕）是否有提醒 |
+| 10 | `perimenopause-or-something-else-in-your-40s` | 四十幾歲月經變亂是更年期前期嗎 | 鑑別診斷是否涵蓋甲狀腺、貧血、腫瘤 |
+| 11 | `hair-loss-rule-out-before-treating-aga` | 落髮就一定是雄性禿嗎 | 用藥前該排除的內科病因 |
+| 12 | `ibs-low-fodmap-guide` | 腸躁症完整指南 | 羅馬 IV 準則、以及**必須先排除警訊症狀**的說明是否足夠 |
+
+### C. 慢性病與飲食處置（4 篇）
+
+| # | slug | 標題 | 審閱重點 |
+|---|---|---|---|
+| 13 | `gout-hyperuricemia-causes-diet` | 痛風與高尿酸血症 | 飲食建議與用藥門檻 |
+| 14 | `kidney-stones-summer-prevention-guide` | 腎結石完整指南 | 結石成分別的飲食差異、何時該就醫 |
+| 15 | `intermittent-fasting-168-guide` | 168 間歇性斷食完整指南 | **誰該避開**（糖尿病用藥者、孕產婦、飲食障礙）是否講清楚 |
+| 16 | `dysphagia-elderly-food-texture-nutrition` | 長者吞嚥困難完整指南 | 質地分級與嗆咳風險的表述 |
+
+### D. 高曝光與急症判斷（4 篇）
+
+| # | slug | 標題 | 曝光/28天 | 審閱重點 |
+|---|---|---|---|---|
+| 17 | `import-melatonin-taiwan-customs` | 從國外帶回褪黑激素合不合法 | **1,627（全站第一）** | 佔全站曝光 36%，掛署名的信任效益最大；法規敘述正確性 |
+| 18 | `melatonin-dosage-how-many-mg` | 褪黑激素該吃幾 mg | 94 | 劑量區間與族群差異 |
+| 19 | `heat-illness-heatstroke-guide` | 中暑、熱衰竭、熱痙攣差在哪 | 43 | **急救五步驟的正確性**，錯了會致命 |
+| 20 | `iron-deficiency-anemia-women-supplements` | 補鐵補了好幾年血色素還是不足 | — | 補鐵前必須排除的出血病因（含大腸癌）是否有提醒 |
+
+## 逐篇進度表
+
+| # | slug | 送審日 | 回覆日 | 意見已處理 | 已填 reviewer |
+|---|---|---|---|---|---|
+| 1 | `health-checkup-red-flag-triage` | | | ☐ | ☐ |
+| 2 | `cholesterol-report-ldl-hdl-triglycerides` | | | ☐ | ☐ |
+| 3 | `fasting-glucose-only-add-hba1c-decision` | | | ☐ | ☐ |
+| 4 | `prediabetes-105-next-three-months-plan` | | | ☐ | ☐ |
+| 5 | `glaucoma-early-detection-guide` | | | ☐ | ☐ |
+| 6 | `cancer-screening-2026-eligibility-guide` | | | ☐ | ☐ |
+| 7 | `shingles-vaccine-guide` | | | ☐ | ☐ |
+| 8 | `autonomic-nervous-dysfunction-anxiety-guide` | | | ☐ | ☐ |
+| 9 | `chronic-cough-throat-globus-when-to-suspect-gerd` | | | ☐ | ☐ |
+| 10 | `perimenopause-or-something-else-in-your-40s` | | | ☐ | ☐ |
+| 11 | `hair-loss-rule-out-before-treating-aga` | | | ☐ | ☐ |
+| 12 | `ibs-low-fodmap-guide` | | | ☐ | ☐ |
+| 13 | `gout-hyperuricemia-causes-diet` | | | ☐ | ☐ |
+| 14 | `kidney-stones-summer-prevention-guide` | | | ☐ | ☐ |
+| 15 | `intermittent-fasting-168-guide` | | | ☐ | ☐ |
+| 16 | `dysphagia-elderly-food-texture-nutrition` | | | ☐ | ☐ |
+| 17 | `import-melatonin-taiwan-customs` | | | ☐ | ☐ |
+| 18 | `melatonin-dosage-how-many-mg` | | | ☐ | ☐ |
+| 19 | `heat-illness-heatstroke-guide` | | | ☐ | ☐ |
+| 20 | `iron-deficiency-anemia-women-supplements` | | | ☐ | ☐ |
+
+## 給審閱者的說明（第二批，可直接轉貼）
+
+同第一批的四個確認重點，另外請特別留意本批的重心：
+
+5. **「什麼情況要立刻就醫」的門檻**是否寫得夠明確——本批多數文章讀者會拿來自我分流，寫得太寬鬆會延誤，太緊又會製造不必要的恐慌。
+6. **鑑別診斷有沒有漏掉不該漏的**（尤其第 8–12 篇）：文章把某個症狀歸因到常見良性原因時，該一併提醒排除的重大病因有沒有寫到。
+
+網址格式：`https://evidencetoday.news/articles/<slug>/`
