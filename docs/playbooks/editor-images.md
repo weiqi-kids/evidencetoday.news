@@ -158,6 +158,24 @@ curl -s -X POST https://evidencetoday-ai-suggest.lightman-chang.workers.dev/stoc
 5. 寫進 frontmatter 三欄：`coverAlt` / `coverImage`(=full) / `coverImageCredit`(=credit)。`pnpm build` 後確認佔位圖歸零。
 6. 尊重「有選的用選的圖」：**已有 `coverImage` 的文章不要覆蓋**；只補真的空的。若 rebase 撞到使用者前台剛存的封面，保留對方（theirs）。
 
+#### 已封裝成指令：`pnpm covers:backfill`（2026-08-05）
+
+上面六步已固定在 `scripts/backfill-covers.mjs`，不必每次重打 curl：
+
+```bash
+pnpm covers:backfill --dry                    # 只查詢與 HEAD 驗證，不寫檔（先跑這個）
+pnpm covers:backfill                          # 實際寫入 coverImage / coverImageCredit
+pnpm covers:backfill --only slug-a,slug-b     # 限定文章
+```
+
+三個刻意的設計決定，改之前先看懂：
+
+- **`coverAlt` 不自動產生。**playbook 第 3 步要求「逐張看圖再寫 alt」，機器沒看過圖就寫 alt 等於編造無障礙描述。腳本改為在結尾印出待補清單，由人或具視覺能力的 session 補。
+- **HEAD 驗不過就跳過、不寫入。**`ArticleCard` 對 https URL 不做存在性檢查，404 會變破圖，比佔位卡更糟。
+- **英文關鍵字覆寫表 `KEYWORD_HINTS`。**Unsplash／Pexels 索引是英文，直接餵中文 `tags` 幾乎回空（2026-08-05 實測）。新增文章要補封面時，先在這張表加一行英文關鍵字；沒對應到的會退回中文 tags 並印警告，不會亂猜。
+
+⚠️ **Claude Code on the web 的沙箱跑不動這支**：環境的 network egress allowlist 預設擋掉 `*.workers.dev` 與 `images.unsplash.com`，實測 proxy 回 `403 connect_rejected`（`curl -sS "$HTTPS_PROXY/__agentproxy/status"` 可看到 `recentRelayFailures`）。要在遠端 session 補封面，得先把這兩個網域加進環境的網路白名單；否則改在主機或前台編輯器做。
+
 ### E. 部署行為：`cancelled` ≠ 失敗
 
 GitHub Pages 部署有 concurrency group，**同時只跑一個**。連續 push（例如使用者在前台連存幾次）會讓新部署**取消**還在跑的舊部署 → `gh run list` 看到一排 `cancelled` 是正常的，不是 build fail。只要最新 commit 是目標的祖先，**等最後一筆 `success` 即全部上線**；停止 push 約 5–6 分鐘（含 Pagefind 索引＋連結檢查）會自然完成。等待用 `until gh run list --workflow "Deploy to GitHub Pages" --limit 1 | grep -q completed; do sleep 20; done`。
