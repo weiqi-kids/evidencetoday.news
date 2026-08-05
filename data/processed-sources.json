@@ -1,7 +1,11 @@
 {
   "version": 1,
-  "lastRun": "2026-08-05T06:20:00+08:00",
+  "lastRun": "2026-08-06T06:20:00+08:00",
   "processed": {
+    "https://www.cdc.gov.tw/Bulletin/Detail/lFK7neXKyk54GdPYg_hNDg?typeid=9": {
+      "processedAt": "2026-08-06T06:20:00+08:00",
+      "outputFile": null
+    },
     "https://www.cdc.gov.tw/Bulletin/Detail/I6r18LGy_-Y1I2Fj72gO2w?typeid=9": {
       "processedAt": "2026-08-03T06:19:00+08:00",
       "outputFile": "src/content/news/radar-2026-08-03-06-01.md"
