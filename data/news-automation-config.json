@@ -57,10 +57,10 @@
     ]
   },
   "editorial": {
-    "scoreThreshold": 7.0,
+    "scoreThreshold": 5.0,
     "maxMaterialsPerArticle": 5,
     "minMaterialsPerGroupedArticle": 2,
-    "soloArticleMinScore": 8.0
+    "soloArticleMinScore": 7.0
   },
   "review": {
     "nonConvergenceThreshold": 3

@@ -184,3 +184,9 @@
 - topic fallback 由 `src/utils/news.ts` 依 `titleDisplay`、`title`、`subtitle`、`summary`、`tags`、`category` 關鍵字判斷，命中後使用 `public/images/news/topics/*.svg`，避免同分類文章全部共用同一張圖。
 - `public/images/news/**/*.svg` 必須是本地、完整 XML，`viewBox="0 0 800 450"`，不可引用外部圖片；主視覺需佔圖面約 45–65%，不可退回中央小 icon 或淡色 placeholder。
 - fallback 圖應以中文健康媒體語氣呈現，避免過小英文裝飾字；若需要文字，只使用足夠辨識的中文短字輔助主視覺。
+
+### 8. 排程：news 必須排在自己的名目日期（不可被全站節奏調整波及）
+- radar 稿的**檔名與標題都自帶日期**（`radar-2026-08-05-12-01.md` ／ `titleDisplay: "健康雷達 2026-08-05 12：…"`），因此 `publishDate` **必須等於檔名的名目日期**（最早不得早於今天）。標題宣告的日期與實際上線日期不一致，等於發一篇上線即過期的新聞。
+- **踩過的坑（2026-08-04）**：把全站排程從 4 篇/天拉成 1 篇/天時，news 被一併拉開 → 標題寫 08-10 的稿排到 09-28 才發，最遲遲 **54 天**。2026-08-05 已修正，18 篇全部回到名目日期 08-05→08-22。
+- **要調整發文量請動 evergreen**（`articles` / `ingredients` / `myths`），那三類沒有日期語意，可自由重排；news 一律排除在重排腳本之外。
+- 要真正減少 news 產出，改的是**產稿端**：`data/news-automation-config.json` 的 `scoreThreshold` / `soloArticleMinScore`、`ops/draft-cron.sh` 的門檻，以及主機 `/etc/cron.d/evidencetoday` 的執行日（不在 repo 內）。⚠️ 只調門檻卻不改 cron 執行日 ＝ 每天照樣付全額 token 跑選題卻多數空手而回，是最差組合；兩者要一起改。

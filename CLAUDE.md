@@ -157,10 +157,29 @@ docs/                 # architecture / content-guide / news_sop / playbooks/
 - Podcast 連結 slug 一律用 `stripPodcastSlug()`，不可用 `stripExt()`。
 - **排程稿可見性只有 HTML 路由套 `isPublicEntry`，`.txt`／RSS／`llms-full.txt`／tags 頁曾只濾 `!data.draft`** → 未來日期排程稿會提前洩全文（2026-07-12 修，全站公開面統一改用 `isPublicEntry`）。新增前台讀 collection 的路由**一律用 `isPublicEntry(data)`，禁裸 `!data.draft`**；`src/utils/visibility.test.ts` 有防回歸測試會擋。
 - 遠端 CCR 環境 WebFetch 被沙箱封鎖（PubMed/RSS 403），新聞管線為 WebSearch-only，用 `site:` 定向搜尋。
+- **news 排程不可被「拉開節奏」波及**：radar 稿的**檔名與標題都自帶日期**（`radar-2026-08-05-…` ／「健康雷達 2026-08-05」）。2026-08-04 把全站排程從 4 篇/天改成 1 篇/天時，news 一併被拉開 → 標題寫 08-10 的稿被排到 09-28 才發，最遲遲 54 天，等於發一批一上線就過期的新聞。**重排全站排程時 news 必須排除在外，一律回到檔名的名目日期**（見 `docs/playbooks/news-article.md`）。要調整發文量請動 evergreen（articles/ingredients/myths）。
+- **跨 collection 比 CTR 會得到相反結論**：各 collection 的平均排名差很多（articles ≈ 5–8、myths ≈ 9–12、ingredients ≈ 15–25），直接比原始 CTR 會把「排名差異」誤讀成「標題爛」。2026-08-04 就這樣誤判過一次，說 ingredients／myths 標題該全面改寫、可換 +35 clicks；用位置校正期望值重算後，達成率其實是 articles 123%、ingredients 87%、myths 52%、news 165%，真正缺口僅約 7 clicks。**談 CTR 一律先做位置校正**（`docs/playbooks/audience-insights.md` 有算法）。
 - **OG 圖字型「Bold」曾其實是細體**：`src/assets/fonts/NotoSansTC-Bold-static.ttf` 原檔是可變字型（fvar）直接複製、沒有真的 instance 成 wght=700，satori 渲染時字重等於 Regular（2026-08-04 修，連帶重生 `public/og-static/author-luo-yang.png`）。以後若要更新這兩個 `*-static.ttf`，須用 `fonttools varLib.instancer NotoSansTC-Regular.ttf wght=400/700 -o ...` 產生真正定死權重的靜態實例，不能只是複製可變字型或改檔名；驗證方法：渲染一段 `fontWeight:700` 文字比對是否真的比 400 粗。
 - **headless 派子代理不帶 model＝默默用 opus、燒爆額度**：cron orchestrator 雖 `--model sonnet`，但它派出的撰寫/審核 `Agent` 不帶 model 會落到帳號預設 opus。撰寫委員會一律 `model='sonnet'`（見 `AGENTS.md` 並行紀律、`ops/README.md` 鐵則 6）。談「cron 燒 token」先查子代理 model。
 
 ---
+
+## ⏰ 到期提醒：news 發文頻率重新評估（約 2026-09-01，每次 session 檢查日期）
+
+**每次 session 若今天 ≥ 2026-09-01，主動提醒使用者做這件事**（未到期則不必提，避免噪音）。
+
+2026-08-05 使用者決定：**發文維持原本節奏（4 篇/天，四類各 1 篇），news 不減量**。理由是趨勢新聞有時效性，壓著不發等於作廢；且當時網站正處陡峭成長期（曝光 118→1,124→4,381，連續三個 28 天），不宜在高峰期亂動結構。同時撤回 2026-08-04 規劃的 news 降頻（門檻已還原 5.0/7.0/6.0，主機 cron 始終是每日、那道 `sed` 從未執行也不該執行）。
+
+**到期要做的評估**：08-05→08-22 這批 72 篇屆時已全數發完並累積約一週數據。跑 `pnpm perf` 與 `pnpm index:coverage`，對照下表判斷 news 是否該減量：
+
+| 指標 | 2026-08-05 基準 | 判讀 |
+|---|---|---|
+| news 每頁曝光 | 2.8（articles 28.1） | 若仍 <5，減量的理由成立 |
+| news 未索引比例 | 33/85（39%） | 若未改善，代表產出未被 Google 採納 |
+| 全站曝光趨勢 | 4,381／28 天且仍在加速 | 若仍在成長，優先「別亂動」 |
+| news 位置校正 CTR 達成率 | 165%（全站最高） | 這是**反對**減量的證據，別忽略 |
+
+⚠️ 評估時務必先做**位置校正**再談 CTR（見 `docs/playbooks/audience-insights.md`），跨 collection 直接比原始 CTR 會得到相反結論。
 
 ## 🔔 進行中：醫療審閱者導入（每次 session 看到請主動提醒使用者）
 

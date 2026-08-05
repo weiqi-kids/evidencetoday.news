@@ -21,7 +21,7 @@
 | `claude-run.sh` | **所有 headless `claude` 呼叫的統一包裝**（跑 `claude-appi`、偵測 weekly/usage limit→寫冷卻旗標）。draft/news/optimize/perf 皆經此呼叫，勿再直接呼叫 `claude-appi`。 | 本檔 |
 | `gate-lib.sh` | 核准閘共用函式庫（型別對應、Slack/Worker 讀寫）。被 draft/publish source。 | `slack-approval-gate.md` |
 | `slack-notify.sh` | 通用 Slack 發訊（`chat.postMessage`，含 `--thread`）。 | `slack-approval-gate.md` |
-| `draft-cron.sh <type>` | 半自動撰寫出草稿→暫存→發按鈕→存 Worker。**articles 選題受「能贏的文章模子」六基因約束**（SELECT_BLOCK 已注入，見鐵則 8）。**news 受降頻與標題形狀約束**（見鐵則 9）。 | `slack-approval-gate.md`、`winning-article-formula.md` |
+| `draft-cron.sh <type>` | 半自動撰寫出草稿→暫存→發按鈕→存 Worker。**articles 選題受「能贏的文章模子」六基因約束**（SELECT_BLOCK 已注入，見鐵則 8）。**news 維持每日、受標題形狀約束**（見鐵則 9）。 | `slack-approval-gate.md`、`winning-article-formula.md` |
 | `publish-approved.sh` | 讀核准狀態→發佈→等連結生效回貼。 | `slack-approval-gate.md` |
 | `news-cron.sh` | （備援，已停用）原 /news 全自動發布。 | `news_sop.md` |
 | `optimize-cron.sh` | 每日自我優化引擎（改既有頁→部署→發優化報報）。 | `daily-optimize.md` |
@@ -45,10 +45,12 @@
 6. **子代理模型｜省成本鐵則**：撰寫類 prompt（draft/news）凡用 `Agent` 工具派 sub-agent，**一律顯式帶 `model='sonnet'`**（審核委員會亦同，比照 `docs/news_sop.md` 設計 Sonnet x n）；**嚴禁用預設模型——預設會落到 opus（最貴）**。純機械性檢查（連結驗 200/檔名）才可降 `model='haiku'`。orchestrator 自身由各腳本 `--model claude-sonnet-4-6` 鎖定。
 7. **`draft-cron.sh` 與 `publish-approved.sh` 共用 `src/content` 互斥鎖**（`CONTENT_LOCK`，定義在 `gate-lib.sh`）。原因：draft 撰稿期間草稿是 `src/content/<type>/` 下的**未追蹤檔**，還沒搬進暫存區；而 publish 每 10 分鐘一輪，結尾會 `git clean -fdq -- src/content` 清殘留——會把還在寫、耗時 >10 分鐘的草稿整篇洗掉（**2026-07-10 draft-myths 事故**：bone-broth / plant-milk 草稿各被誤刪一次，靠審核 Agent 留底才救回）。約定：**draft 端頁面型撰稿全程持鎖**（`flock -w 600`，等值得，稿件型 podcast/videos 走 repo 外 scratch 不需要）；**publish 端 `flock -n` 搶不到就跳過本輪**（10 分鐘後自動重試，發布延遲可接受、弄丟草稿不可接受）。
 8. **articles 選題＝「能贏的文章模子」**：`draft-cron.sh` 的 `articles` SELECT_BLOCK 已注入 `docs/playbooks/winning-article-formula.md` 的六基因鐵律（單一具體決定／「現在」觸發點／台灣在地限定／權威站沒寫的角度／切身後果／答案先行＋範圍狠收）。改選題邏輯時，這兩處（SELECT_BLOCK 與 playbook）要一起改，別讓自動管線與方法論分岔。
-9. **news 產出頻率與標題形狀（2026-08-04 新增）**：全站真實索引率僅約 11%（189 頁卡在 Discovered–not indexed），Google 對新 URL 的態度是**價值判斷**，持續灌入低需求頁面會直接稀釋網域權重。因此：
-   - **頻率**：cron 由每日降為**週二/四/六**（`17 22 * * 1,3,5`）。
-   - **門檻**：`data/news-automation-config.json` 的 `scoreThreshold` 5.0→**7.0**、`soloArticleMinScore` 7.0→**8.0**；SELECT_BLOCK 的加權門檻 6.0→**8.0**。**寧可整週零產出，也不要為發而發。**
-   - **標題**：`titleDisplay` 必須是讀者會實際打進搜尋框的問句，**嚴禁「健康雷達 YYYY-MM-DD」日報流水句型**、嚴禁把期刊名或研究設計當標題主體；並確認前 18 字單獨看讀得通（`social-meta.mjs` 的 `shortTitle()` 會截到 18 字）。
+9. **news 產出頻率與標題形狀**：
+   - **頻率＝維持每日**（`17 22 * * 0-6`）。2026-08-04 曾規劃降為週二/四/六，**2026-08-05 撤回，從未套用到主機**。撤回理由是當初的前提（索引率僅 11%、灌新 URL 會稀釋權重）已被數據推翻：索引率回升到 **68%**（222/328），趨勢新聞的**位置校正 CTR 達成率 165%，全站最高**。更關鍵的是**趨勢新聞有時效性——壓著不發等於作廢**，稿子排完就該送出去。
+   - **門檻**：`data/news-automation-config.json` 的 `scoreThreshold` **5.0**、`soloArticleMinScore` **7.0**；SELECT_BLOCK 的加權門檻 **6.0**（皆為原值，2026-08-05 由降頻期的 7.0/8.0/8.0 還原）。
+   - **標題**（此項與降頻無關，保留）：`titleDisplay` 必須是讀者會實際打進搜尋框的問句，**嚴禁「健康雷達 YYYY-MM-DD」日報流水句型**、嚴禁把期刊名或研究設計當標題主體；並確認前 18 字單獨看讀得通（`social-meta.mjs` 的 `shortTitle()` 會截到 18 字）。
+   - ⚠️ **news 的 `publishDate` 一律等於檔名的名目日期**（`radar-YYYY-MM-DD`），不可為了調整全站發文量而延後——2026-08-04 曾把 news 一併拉開，標題寫 08-10 的稿被排到 09-28，最遲遲 54 天。要調發文量請動 evergreen（articles/ingredients/myths）。
+   - **⏰ 待重新評估（約 2026-09-01）**：屆時 08-05→08-22 這批 72 篇已全數發完並累積約一週數據。若成長趨勢延續，再評估 news 是否減量。評估依據：news 的每頁曝光（2026-08-05 為 2.8，articles 為 28.1）、未索引比例（當時 33/85）、以及是否排擠共用週限額。
    - 改動時三處要一起改：本檔 crontab 區塊、`draft-cron.sh` 的 news SELECT_BLOCK、`news-automation-config.json`。
 
 ## crontab（在 `/etc/cron.d/evidencetoday`，單檔一專案；系統 TZ=UTC，排程以 UTC 寫，台北＝UTC+8）
@@ -56,16 +58,11 @@
 > 改排程＝改 `/etc/cron.d/evidencetoday`（**不在** user crontab）。日誌統一在 `/var/log/evidencetoday/<job>.log`。
 > 各行格式含 user 欄位：`分 時 日 月 週  root  /root/evidencetoday.news/ops/bootstrap.sh <script> [args] >> /var/log/evidencetoday/<job>.log 2>&1`
 >
-> 🔴 **待同步到主機（2026-08-04）**：下方 news 那行的降頻（`0-6` → `1,3,5`）**只改了本文件**，主機上的 `/etc/cron.d/evidencetoday` 仍是每日。cron 檔不在 repo，需在主機手動改：
-> ```
-> sudo sed -i 's|^17 22 \* \* 0-6|17 22 * * 1,3,5|' /etc/cron.d/evidencetoday
-> /root/evidencetoday.news/ops/cron-status.sh   # 確認生效
-> ```
-> 沒改主機的話，`scoreThreshold` 拉高只會讓多數天數空跑（仍會耗 token 跑選題），降頻的效益拿不到。
+> ✅ **主機不需要任何改動（2026-08-05）**：2026-08-04 曾規劃把 news 降為 `1,3,5` 並提示在主機執行 `sed`，**該降頻已撤回，且那道指令從未執行過**，主機上的 `/etc/cron.d/evidencetoday` 一直是每日 `0-6`，正是現在要的狀態。**不要執行那道 sed。**
 
 ```
 CRON_TZ=UTC
-17 22 * * 1,3,5  draft-cron.sh news       # 台北週二/四/六 06:17 趨勢草稿（2026-08-04 由每日降頻）
+17 22 * * 0-6    draft-cron.sh news       # 台北每日 06:17 趨勢草稿（2026-08-04 曾規劃降頻，08-05 撤回，主機始終是每日）
 35 23 * * 0    draft-cron.sh articles     # 台北週日→一 07:35
 35 23 * * 2    draft-cron.sh ingredients  # 台北週二→三 07:35
 35 23 * * 4    draft-cron.sh myths        # 台北週四→五 07:35
