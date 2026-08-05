@@ -5,6 +5,7 @@
  * 逐項檢查並把每個失敗對應回 docs/setup-google-data-access.md 的哪一段沒做好，
  * 讓設定過程不必來回猜。唯讀：不寫檔、不提交、不印出任何搜尋查詢內容。
  */
+import { execFileSync } from 'node:child_process';
 import { readServiceAccountKey, getToken } from './lib/insight-fetch.mjs';
 import { GA4_URL, GSC_URL, GA4_PROPERTY, GSC_SITE, SCOPES } from './lib/insight-constants.mjs';
 
@@ -14,27 +15,35 @@ const info = (m) => console.log(`     ${m}`);
 
 console.log('\n===== GA4 / GSC 存取診斷 =====\n');
 
-/* 1. 金鑰有沒有進到環境裡 */
-console.log('【1】服務帳戶金鑰');
+/* 1. 憑證來源：金鑰（遠端）或 gcloud（主機）——兩條都算通過 */
+// ⚠️ 別把「沒有金鑰」當成失敗直接 exit。主機 cron 走的是 gcloud 那條，
+// 本來就不會有 GOOGLE_SERVICE_ACCOUNT_KEY；早期版本在這裡硬退出，
+// 會讓主機上跑這支診斷得到「找不到金鑰」的假警報（2026-08-05 修）。
+console.log('【1】憑證來源');
 const key = readServiceAccountKey();
-if (!key) {
+const hasGcloud = (() => {
+  try { execFileSync('gcloud', ['--version'], { stdio: 'ignore' }); return true; } catch { return false; }
+})();
+if (key?.client_email && key?.private_key) {
+  ok(`服務帳戶金鑰：${key.client_email}`);
+  info(`GCP 專案：${key.project_id ?? '(未標示)'}`);
+} else if (key) {
+  no('金鑰缺少 client_email 或 private_key 欄位', 'JSON 可能沒貼完整，請重新全選複製一次。');
+  process.exit(1);
+} else if (hasGcloud) {
+  ok('未設金鑰，但偵測到 gcloud——將走 gcloud 這條（主機 cron 的正常狀態）');
+} else {
   const rawSet = !!(process.env.GOOGLE_SERVICE_ACCOUNT_KEY || '').trim();
   if (rawSet) {
     no('環境變數有值，但解析不出金鑰',
-       '值必須是完整的 JSON（從 { 到 }）或該 JSON 的 base64。常見原因：貼上時被截斷。');
+       '值必須是完整的 JSON（從 { 到 }）或該 JSON 的 base64。常見原因：貼上時被截斷、或漏打「GOOGLE_SERVICE_ACCOUNT_KEY=」導致整串值被當成變數名。');
   } else {
-    no('找不到 GOOGLE_SERVICE_ACCOUNT_KEY',
-       '這是設定文件的「丁段」。若你剛存好，請開一個新的 session——環境變數在容器啟動時才注入。');
+    no('既沒有 GOOGLE_SERVICE_ACCOUNT_KEY，也沒有 gcloud',
+       '遠端環境請照設定文件的「丁段」存金鑰後**開新 session**（環境變數在容器啟動時才注入）。');
   }
   console.log('\n設定說明：docs/setup-google-data-access.md\n');
   process.exit(1);
 }
-if (!key.client_email || !key.private_key) {
-  no('金鑰缺少 client_email 或 private_key 欄位', 'JSON 可能沒貼完整，請重新全選複製一次。');
-  process.exit(1);
-}
-ok(`讀到金鑰：${key.client_email}`);
-info(`GCP 專案：${key.project_id ?? '(未標示)'}`);
 
 /* 2. 能不能換到 access token */
 console.log('\n【2】用金鑰換 access token');

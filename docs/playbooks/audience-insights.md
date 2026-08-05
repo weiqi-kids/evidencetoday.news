@@ -39,7 +39,9 @@
 
 ⚠️ 關鍵觀念（最常卡住的一點）：**金鑰不在 GA4 或 GSC 介面裡**，那兩處只負責授權；金鑰要到 **Google Cloud Console** 產生。
 
-**診斷指令 `pnpm check:google`**（`scripts/check-google-access.mjs`）：逐項檢查金鑰解析、token 交換、GA4 與 GSC 讀取，並把每個失敗對應回設定文件的哪一段（例：GSC 403 → 服務帳戶沒加進「使用者和權限」；GA4 404 → GA4_PROPERTY 常數與實際資源對不上）。唯讀，不印出任何搜尋查詢內容。設定過程卡住時先跑它。
+**診斷指令 `pnpm check:google`**（`scripts/check-google-access.mjs`）：逐項檢查憑證來源、token 交換、GA4 與 GSC 讀取，並把每個失敗對應回設定文件的哪一段（例：GSC 403 → 服務帳戶沒加進「使用者和權限」；GA4 404 → GA4_PROPERTY 常數與實際資源對不上）。唯讀，不印出任何搜尋查詢內容。設定過程卡住時先跑它。
+⚠️ 第 1 關檢查的是**憑證來源**，金鑰與 gcloud **兩條都算通過**——主機 cron 本來就沒有 `GOOGLE_SERVICE_ACCOUNT_KEY`，早期版本在這裡硬 exit 會給出「找不到金鑰」的假警報（2026-08-05 修）。
+⚠️ 環境變數欄位是 `.env` 格式（`名稱=值`）。**漏打 `GOOGLE_SERVICE_ACCOUNT_KEY=` 而只貼 base64，整串值會被當成「變數名」、值為空字串**，症狀是 `check:google` 說「找不到」但 `env` 裡看得到一個超長的變數名（2026-08-05 實際踩過）。
 
 **權限需求**：該 SA 需在 GA4 資源有「檢視者」、在 GSC 資源有使用者權限。`sitemap-submit` 另需 `webmasters` **寫入** scope。
 
