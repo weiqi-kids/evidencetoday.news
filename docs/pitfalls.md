@@ -41,6 +41,14 @@
 - **營運帳號與 appi.news 共用同一個週限額**：撞限額時本站的 cron 會一起空跑。`claude-run.sh` 撞限額會寫冷卻旗標，冷卻期內 `bootstrap.sh` 只跳過 claude 型 job、純資料型照跑。現況看 `/etn-cron`。
 - **遠端 CCR 環境 WebFetch 被沙箱封鎖**（PubMed/RSS 403），新聞管線為 WebSearch-only，用 `site:` 定向搜尋。
 
+
+## 資料結構（查過一次，不用再查）
+
+- **闢謠每篇有「兩份平行版本」，這是設計不是 bug**：`check-myth-quality.mjs` 強制 MDX **body** 必須含 8 個 section（30 秒快速結論／坊間怎麼流傳／科學證據怎麼看／白話辯證／哪些人要特別小心／FAQ／References／健康資訊提醒），但 `myths/[slug].astro` **完全不渲染 body**（沒有 `<Content />`），前台看到的是從 **frontmatter** 渲染的同名區塊。body 只流向 `.txt` 端點（AI／GEO 用）。
+  2026-08-06 量測：body 段落出現在 HTML 的比例中位數 62%，18/58 篇低於一半——乍看像「大量內容被藏起來」。但改用**具名來源密度**（食藥署／WHO／FDA／Cochrane／查核中心等）比對，58 篇裡只有 3 篇的 body 比頁面多，且差距是 15:11、8:7、1:0。**結論：落差主要在敘事散文，不是證據流失，前台版本沒有比較差。** 不要為了「露出 body」去加 `<Content />`，那會讓每頁出現兩份近似內容。
+- **`check-myth-quality.mjs` 的 `FORBIDDEN_BODY_SECTION_TITLES` 禁止 body 寫「正確做法」「一般人最安全做法」「什麼時候該尋求專業意見」**，因為那些內容的正本在 frontmatter（`safeActions` / `avoidActions` / `whenToSeekProfessionalAdvice`），2026-08-06 起由前台「那，實際上該怎麼做？」區塊渲染。要改這類內容改 frontmatter，不要往 body 加 section，gate 會擋。
+- **schema 死欄位盤點（2026-08-06）**：宣告了但沒有任何程式讀取的欄位——`articles`：`evidenceBasis`、`targetAudience`（0/129 從沒人填，純殘留）；`ingredients`：`mechanism`(8 篇有值)、`pathwaySteps`(1 篇)；`news`：`editorPick`(103 篇有值)；`videos`：`evidenceBasis`、`targetAudience`(5/5)；`myths`：另有 10 個 metadata 欄（`spreadLevel` 全站只有 2 種值、`disclosureStatus` 只有 1 種，屬樣板，露出反而是重複內容）。
+  查法：把 `content.schemas.ts` 的欄位名對整個 repo（排除 `src/content/`）做全字比對。**加欄位前先想清楚誰會讀它**——`medicalDisclaimer` 與 `safeActions` 就是「required 欄位寫了兩年沒人渲染」的前例。
 ## 資產產出
 
 - **OG 圖字型「Bold」曾其實是細體**：`*-Bold-static.ttf` 原檔是可變字型直接複製、沒有真的 instance 成 `wght=700`，satori 渲染時字重等於 Regular。要更新這類靜態字型，須用 `fonttools varLib.instancer NotoSansTC-Regular.ttf wght=400/700 -o ...` 產生真正定死權重的實例，不能只是複製可變字型或改檔名。驗證：渲染一段 `fontWeight:700` 文字，比對是否真的比 400 粗。
