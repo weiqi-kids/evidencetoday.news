@@ -138,6 +138,52 @@ const ingredientBreadcrumbSchema = {
 
   <Content />
 
+  {/*
+    安全性與交互作用（2026-08-06 接線）。
+    `ingredientsSchema.safety` 從建站起就有資料——20 篇成分頁寫了一般安全性、
+    交互作用與族群注意——但沒有任何模板讀它，讀者一個字都看不到。
+    `docs/page-rules/ingredients.md` 早就規定「content 有 safety 欄位時，模板需
+    固定輸出『安全性與交互作用』區塊」，屬於規格寫了、實作沒做。勿再移除。
+
+    刻意只接 safety，不接 uses：寫得好的成分頁（如 taurine、urolithin-a）body
+    已用散文講過用途與證據，把 uses 也渲染出來會在同一頁產生兩份近似內容。
+    safety 是條列式的交互作用與族群注意，body 通常不會逐條重複，重疊風險低。
+  */}
+  {data.safety && (
+    <section class="ingredient-safety" aria-labelledby="ingredient-safety-title">
+      <h2 id="ingredient-safety-title">安全性與交互作用</h2>
+      <p>{data.safety.general}</p>
+
+      {data.safety.interactions && data.safety.interactions.length > 0 && (
+        <>
+          <h3>可能的交互作用</h3>
+          <dl>
+            {data.safety.interactions.map((item) => (
+              <>
+                <dt>{item.substance}</dt>
+                <dd>{item.description}</dd>
+              </>
+            ))}
+          </dl>
+        </>
+      )}
+
+      {data.safety.populations && data.safety.populations.length > 0 && (
+        <>
+          <h3>特定族群注意事項</h3>
+          <dl>
+            {data.safety.populations.map((item) => (
+              <>
+                <dt>{item.group}</dt>
+                <dd>{item.note}</dd>
+              </>
+            ))}
+          </dl>
+        </>
+      )}
+    </section>
+  )}
+
   <Fragment slot="sidebar">
     {headings.length > 0 && (
       <TableOfContents headings={headings} client:idle />
@@ -210,6 +256,57 @@ const ingredientBreadcrumbSchema = {
 <ReadingEngagement client:idle contentType="ingredient" slug={slug} tags={data.tags} hasRelated={hasRelated} />
 
 <style>
+  /* 安全性與交互作用：接在內文之後的固定區塊。
+     用 dl 而非 ul，因為每一條都是「對象 → 說明」的配對，語意上是定義列表；
+     螢幕閱讀器可據此把物質名與說明關聯起來。字級全部走 --text-* 階梯。 */
+  .ingredient-safety {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-fog);
+  }
+
+  .ingredient-safety h2 {
+    font-family: var(--font-sans);
+    font-size: var(--text-h2);
+    font-weight: 700;
+    color: var(--color-ink);
+    margin: 0 0 1rem;
+  }
+
+  .ingredient-safety h3 {
+    font-family: var(--font-sans);
+    font-size: var(--text-h3);
+    font-weight: 700;
+    color: var(--color-ink);
+    margin: 1.5rem 0 0.75rem;
+  }
+
+  .ingredient-safety p {
+    font-size: var(--text-body);
+    line-height: 1.8;
+    color: var(--color-ink);
+    margin: 0;
+  }
+
+  .ingredient-safety dl {
+    margin: 0;
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .ingredient-safety dt {
+    font-size: var(--text-body);
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+
+  .ingredient-safety dd {
+    margin: 0.25rem 0 0;
+    font-size: var(--text-body);
+    line-height: 1.75;
+    color: var(--color-ink);
+  }
+
   /* spoke→hub 專題膠囊，與 articles/[slug].astro 同一套視覺 */
   .topic-hubs {
     display: flex;
