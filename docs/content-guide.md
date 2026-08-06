@@ -457,3 +457,13 @@ news 一併拉開、標題寫 08-10 的稿排到 09-28 那次的錯。
 | `String must contain at most 155 character(s)` | description 超過 155 字 | 縮短 description |
 
 Schema 定義檔：`src/content.config.ts`，所有欄位的型別、必填/選填、允許值都在這裡。
+
+## ⚠️ 站內連結不可指向「尚未發布」的稿件（會擋住部署）
+
+從**已上線**的頁連向**未來排程稿**，在 `dist` 裡是死連結。`pnpm build` 不會抱怨（Astro 不驗站內連結字串），CI 的 lychee 連結檢查才會擋——症狀是 **build 綠燈、部署紅燈**，很容易誤判成 CI 壞掉。
+
+2026-08-06 實際發生：每日優化 cron 在已上線的 `import-melatonin-taiwan-customs` 內文加了一條指向 `thailand-sleep-gummies-bring-back-taiwan` 的連結，但後者排在 08-25，整個部署被擋下。
+
+- **守門**：`pnpm check:schedule` 已內建此檢查（2026-08-06 加），與「排程破洞」分開計數、補法不同。加完內鏈務必跑一次。
+- **反向是安全的**：未發布稿 → 未發布稿不會擋，因為兩者都還沒進 `dist`，且同批排程上線時目標多半已在。
+- **補法**：把連結拿掉（保留語意即可），或把目標稿的 `publishDate` 提前到來源之前。

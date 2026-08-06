@@ -20,7 +20,7 @@
  * 用法：pnpm check:schedule
  */
 
-import { readdirSync, readFileSync } from 'node:fs';
+import { readdirSync, readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 
 const CONTENT_DIR = 'src/content';
@@ -79,6 +79,7 @@ function futureDates(collection, today) {
 
 const today = todayTaipei();
 const errors = [];
+let hasLinkErrors = false;   // 內鏈指向未發布稿；與排程破洞分開計數，補法不同
 const warnings = [];
 
 console.log(`發文排程健檢（台北時間 ${today}）\n`);
@@ -123,6 +124,48 @@ if (warnings.length) {
   for (const w of warnings) console.log(`  · ${w}`);
 }
 
+/* ── 內鏈指向「尚未發布」的稿件 ───────────────────────────────────────────────
+ * 2026-08-06 這個組合把整個部署擋掉：每日優化 cron 在已上線的
+ * import-melatonin-taiwan-customs 內文加了一條指向 thailand-sleep-gummies 的
+ * 站內連結，但後者排在 08-25。已發布頁 → 未發布頁的連結在 dist 裡是死連結，
+ * `pnpm build` 不會抱怨（Astro 不驗站內連結字串），CI 的 lychee 才會，
+ * 於是 build 綠燈、部署紅燈。
+ * 判定只看「來源已發布」這個方向：未發布 → 未發布是安全的，因為兩者上線時
+ * 目標多半已在（同批排程），且雙方都還沒進 dist。
+ */
+{
+  const linkErrors = [];
+  const pubOf = new Map();          // "collection/slug" → publishDate
+  const bodies = [];                // 已發布稿的內文，供掃連結
+  for (const collection of Object.keys(PIPELINES)) {
+    const dir = `${CONTENT_DIR}/${collection}`;
+    if (!existsSync(dir)) continue;
+    for (const f of readdirSync(dir).filter((x) => /\.mdx?$/.test(x))) {
+      const raw = readFileSync(`${dir}/${f}`, 'utf8');
+      const m = raw.match(/^publishDate: *["']?(\d{4}-\d{2}-\d{2})/m);
+      if (!m) continue;
+      const slug = f.replace(/\.mdx?$/, '');
+      pubOf.set(`${collection}/${slug}`, m[1]);
+      if (m[1] <= today) bodies.push({ from: `${collection}/${slug}`, body: raw.split('---').slice(2).join('---') });
+    }
+  }
+  for (const { from, body } of bodies) {
+    for (const mm of body.matchAll(/\]\(\/(articles|myths|ingredients|news)\/([a-z0-9-]+)\/?[)"]/g)) {
+      const target = `${mm[1]}/${mm[2]}`;
+      const td = pubOf.get(target);
+      if (td && td > today) {
+        linkErrors.push(`${from} 內文連到尚未發布的 /${target}/（${td} 才發布）`);
+      }
+    }
+  }
+  if (linkErrors.length) {
+    console.log(`\n內鏈指向未發布稿 ${linkErrors.length} 處（會讓 CI 連結檢查失敗、擋住部署）：`);
+    for (const l of linkErrors) console.log(`  ✗ ${l}`);
+    console.log('\n補法：把連結拿掉（保留語意），或把目標稿的 publishDate 提前到來源之前。');
+    hasLinkErrors = true;
+  }
+}
+
 if (errors.length) {
   console.log(`\n排程破洞 ${errors.length} 項：`);
   for (const e of errors) console.log(`  ✗ ${e}`);
@@ -131,4 +174,6 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log('\n排程健檢通過：無破洞。');
+if (hasLinkErrors) process.exit(1);
+
+console.log('\n排程健檢通過：無破洞、無指向未發布稿的內鏈。');

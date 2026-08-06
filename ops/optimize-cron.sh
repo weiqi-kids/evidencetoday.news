@@ -76,7 +76,7 @@ PROMPT="$(cat <<PROMPTEOF
 【資料】先 Read 原始數據檔「$RAW」（含 pnpm perf 28天 GA4+GSC、pnpm insights 三桶含 queriesLast7/queriesPrev7 週對週、pnpm index:coverage 索引覆蓋率）。再 Read 帳本「$LEDGER」（每行一筆 JSON），取近 14 天動過的 slug 作為**排除清單**。
 
 【選清單】四源打分取 top ≤ $MAX_CHANGES 項（牽引力 × 可改善幅度 × 索引 ROI）：
- (A) 衝索引【主力】：從 index:coverage 的 byCov 找「Discovered/Crawled - not indexed」頁，補 1–2 條語意相關站內連結指向它＋（內容單薄時）補一段有來源的實質內容＋確認進 sitemap。
+ (A) 衝索引【主力】：從 index:coverage 的 byCov 找「Discovered/Crawled - not indexed」頁，補 1–2 條語意相關站內連結指向它＋（內容單薄時）補一段有來源的實質內容＋確認進 sitemap。**⚠️ 站內連結只能指向 publishDate 已到的頁**：從已上線頁連向未來排程稿，在 dist 裡是死連結，`pnpm build` 不會抱怨（Astro 不驗站內連結字串），CI 的 lychee 才會擋——結果是 build 綠燈但部署紅燈（2026-08-06 實際發生過一次）。加連結前先確認目標的 publishDate ≤ 今天；收尾一律跑 `pnpm check:schedule` 驗過再交件。
  (B) 競品補完【起步只補內容，禁加互動功能/禁動 src/】：對近 7 天有牽引力、排名 5–15 的 query，用 WebSearch 跑 SERP→讀前 3 名競品頁→找出具體內容缺口（缺的對照表/FAQ/數據點/未涵蓋子主題）→用自己的話＋自己的來源補進我們對應的既有頁。**不可抄競品文字、不可加計算器/圖表/篩選器**。
  (C) 站內微優化：執行 insights 的 siteOptimizations 桶（rank 5–15 query 的 title/「重點摘要」/FAQ 小修、補結構化資料缺口）。
  (D) 選題/新內容：僅限常青文章（articles/ingredients/myths，**不是 news**，news 歸 news-cron），有明確缺口才做、低頻。
