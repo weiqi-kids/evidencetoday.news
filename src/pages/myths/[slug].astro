@@ -91,6 +91,27 @@ const sourceTypeLabels: Record<string, string> = {
 // mythsSchema.medicalDisclaimer 是 required，等於每篇都認真寫了然後丟掉。勿再改回寫死。
 const FALLBACK_REMINDER = '本文為健康資訊與迷思查證，不提供個人診斷或治療建議。若你已被診斷疾病、正在服藥、懷孕、哺乳，或症狀持續未改善，請諮詢醫師、藥師或營養師。';
 const healthReminder = d.medicalDisclaimer?.trim() || FALLBACK_REMINDER;
+
+/* ── 「怎麼做才安全」區塊（2026-08-06 新增）────────────────────────────────
+ * safeActions / avoidActions / whenToSeekProfessionalAdvice 三欄從建站起就寫在
+ * 每篇 frontmatter（前兩者是 required），但從未被任何模板讀取——74 篇逐篇寫的
+ * 「該做什麼／別做什麼／何時該就醫」讀者一個字都看不到。這是本站最實用、也最
+ * 該被 AI 答案引擎引用的內容。
+ *
+ * ⚠️ 這一次是**刻意推翻**「myths 版型只渲染固定區塊」的舊決策，經使用者
+ * 2026-08-06 明確授權。舊規則的用意是擋掉「延伸閱讀／相關內容／更新紀錄」這類
+ * 為 SEO 硬加的導覽區塊；這裡加的是該篇自己的安全內容，性質不同。
+ * 相關文件（topic-hubs.md、pitfalls.md、page-rules/myths.md）已同步改寫。
+ *
+ * whenToSeekProfessionalAdvice 只在「不等於通用句」時輸出：74 篇裡有 28 篇填的
+ * 是與頁尾免責幾乎同義的通用句，兩處都印就變成同一頁講兩次，違反硬規則 8a
+ * 「免責一頁一次、絕不重複」。那 28 篇的訊息由頁尾 health-reminder 承擔即可。
+ */
+const GENERIC_SEEK_ADVICE = '若症狀持續、惡化、影響生活，或你正考慮停藥、換藥、高劑量補充，請先諮詢醫師、藥師或營養師。';
+const seekAdvice = d.whenToSeekProfessionalAdvice?.trim();
+const specificSeekAdvice = seekAdvice && seekAdvice !== GENERIC_SEEK_ADVICE ? seekAdvice : null;
+const hasSafetyBlock = d.safeActions?.length > 0 || d.avoidActions?.length > 0 || specificSeekAdvice;
+
 const slugId = entry.id.replace(/\.[^.]+$/, '');
 const squareCardImage = `/og/myths/${slugId}-square.png`;
 const lineShareUrl = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(canonical)}`;
@@ -181,6 +202,28 @@ const mythFaqSchema = d.faq && d.faq.length > 0
   </section>
 
   {d.whoShouldBeCareful?.length > 0 && <section class="block"><h2>哪些人要特別小心？</h2><ul>{d.whoShouldBeCareful.map((item) => { const carefulItem = splitCarefulItem(item); return <li>{carefulItem.label ? <><strong>{carefulItem.label}：</strong>{carefulItem.text}</> : carefulItem.text}</li>; })}</ul></section>}
+  {hasSafetyBlock && (
+    <section class="block">
+      <h2>那，實際上該怎麼做？</h2>
+      <div class="myth-reasoning-grid">
+        {d.safeActions?.length > 0 && (
+          <div class="myth-reasoning-card myth-reasoning-card--blue">
+            <h3>可以這樣做</h3>
+            <ul>{d.safeActions.map((item) => <li>{item}</li>)}</ul>
+          </div>
+        )}
+        {d.avoidActions?.length > 0 && (
+          <div class="myth-reasoning-card myth-reasoning-card--red">
+            <h3>不建議這樣做</h3>
+            <ul>{d.avoidActions.map((item) => <li>{item}</li>)}</ul>
+          </div>
+        )}
+      </div>
+      {specificSeekAdvice && (
+        <p class="seek-advice"><strong>什麼時候該找專業人員：</strong>{specificSeekAdvice}</p>
+      )}
+    </section>
+  )}
   {d.faq?.length > 0 && <section class="block"><h2>FAQ</h2>{d.faq.map((item) => <article><h3>{item.question}</h3><p>{item.answer}</p></article>)}</section>}
 
   <section class="block share-block">
@@ -223,6 +266,16 @@ document.getElementById('copy-btn')?.addEventListener('click', async () => { awa
 
   .block :is(h1, h2, h3) {
     margin: 0 0 12px;
+  }
+
+  /* 「什麼時候該找專業人員」：接在該做／別做兩張卡之後的單行提示。
+     它是可行動的就醫時機，不是免責聲明，所以維持內文字級與正常彩度；
+     真正的免責由頁尾 .health-reminder 承擔（見下一條）。 */
+  .seek-advice {
+    margin: 1rem 0 0;
+    font-size: var(--text-body);
+    line-height: 1.75;
+    color: var(--color-ink);
   }
 
   /* 硬規則 8a：免責一頁一次、放角落、降彩度、字級不得低於 --text-meta。

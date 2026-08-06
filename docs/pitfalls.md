@@ -10,7 +10,8 @@
 
 - **tags 含 `/`** → build 失敗。分類名有斜線（例如某些疾病縮寫）要改寫成不含 `/` 的形式。
 - **插入不存在的行內圖 `![...](images/...)`** → Rollup 解析失敗，全站部署連續 fail。本站慣例不用行內本地圖；配圖走 frontmatter 封面與圖庫外連（見 `playbooks/editor-images.md`）。
-- **myths 單篇版型是刻意簡化**：只渲染固定區塊，不要再加「更新與更正紀錄」「延伸閱讀」等。playbook 把關，`check-myth-quality` 掃不到模板層。
+- **myths 單篇版型是刻意簡化**：不要加「更新與更正紀錄」「延伸閱讀」「相關內容」這類為 SEO／內鏈硬加的**導覽**區塊。playbook 把關，`check-myth-quality` 掃不到模板層。
+  範圍在 2026-08-06 釐清：這條擋的是導覽區塊，**不是**該篇自己的內容。當天新增了「那，實際上該怎麼做？」（`safeActions`／`avoidActions`／`whenToSeekProfessionalAdvice`），因為那三欄從建站起就逐篇寫在 frontmatter、前兩者還是 required，卻從來沒有任何模板讀過——74 篇的「該做／別做／何時就醫」讀者一個字都看不到。要再加區塊仍請先確認屬於哪一類。
   - **例外：FAQ 是刻意保留的固定區塊**。曾因 `mythsSchema` 漏宣告 `faq` 欄，Zod 靜默剝除 → FAQ 從未顯示、FAQPage JSON-LD 也輸不出來。補欄位後生效，勿再移除。
 - **掛 `reviewer` 會引爆既有內文的 AI 味守門**：`check-content.mjs` 對「被碰到的檔案」重掃全文，既有內文原本只因不在 diff 裡而被 grandfather。掛署名前先跑 `node scripts/check-content.mjs <檔案>`，ERROR 同一個 commit 修掉。
 
