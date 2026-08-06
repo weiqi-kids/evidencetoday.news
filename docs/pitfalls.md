@@ -42,6 +42,10 @@
 - **遠端 CCR 環境 WebFetch 被沙箱封鎖**（PubMed/RSS 403），新聞管線為 WebSearch-only，用 `site:` 定向搜尋。
 
 
+- **列表頁未被索引 ≠ 站上有缺陷（2026-08-06 查證，不要再查一次）**：曾發現 `/articles/`、`/ingredients/`、`/news/`、`/videos/` 未索引，而 `/myths/`、`/topics/`、`/podcasts/` 已索引，直覺會去找 noindex／canonical／內鏈的差異。**七頁逐項比對後完全相同**：canonical 皆正確自指、無 noindex、都在 sitemap、導覽列在 1,233 頁裡都是真 `<a href>`（不是 script 內字串）。唯一差別是 URL Inspection 的 `lastCrawlTime`——已索引的三頁被爬過，未索引的四頁**從未被爬**，`pageFetchState`／`robotsTxtState` 全為 `UNSPECIFIED`（代表「還沒檢查」而非「檢查不過」）。`referringUrls: 0` 同理是未處理的結果，不是原因。
+  推論時要避開的錯：**別用「列表頁沒索引」解釋該分類索引率低**。實測 `/articles/` 一樣沒被爬，底下卻有 77% 已索引；`/ingredients/` 也沒被爬，底下只有 58%。兩者不連動。
+  對症的動作只有一個：`URL is unknown to Google` 的頁可靠 `pnpm sitemap:submit` 讓 Google 發現；已經是 `Discovered - currently not indexed` 的，Google 早就知道了，重送無效，只能等爬取排程。
+
 ## 資料結構（查過一次，不用再查）
 
 - **闢謠每篇有「兩份平行版本」，這是設計不是 bug**：`check-myth-quality.mjs` 強制 MDX **body** 必須含 8 個 section（30 秒快速結論／坊間怎麼流傳／科學證據怎麼看／白話辯證／哪些人要特別小心／FAQ／References／健康資訊提醒），但 `myths/[slug].astro` **完全不渲染 body**（沒有 `<Content />`），前台看到的是從 **frontmatter** 渲染的同名區塊。body 只流向 `.txt` 端點（AI／GEO 用）。
