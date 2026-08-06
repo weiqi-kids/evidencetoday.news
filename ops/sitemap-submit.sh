@@ -9,7 +9,7 @@
 #   0 1 * * 1 /root/.config/evidencetoday-news/sitemap-submit.sh >> /tmp/evidencetoday-sitemap.log 2>&1
 #   （台北週一 09:00 = UTC 週一 01:00；Vixie cron 不支援 CRON_TZ，故時間以 UTC 寫死。）
 #
-# 前置：gcloud 服務帳號 ga4-insights@yaocare 已 activate；binary 在 /snap/bin。
+# 前置：gcloud 服務帳號 etn-insights@evidencetoday 已 activate（2026-08-06 換帳號後的專屬 SA）；binary 在 /snap/bin。
 # 提交 sitemap 需 webmasters 寫入 scope，由 scripts/sitemap-submit.mjs 就地取得（不放寬唯讀流程）。
 
 export PATH="/snap/bin:/usr/local/bin:/usr/bin:/bin"

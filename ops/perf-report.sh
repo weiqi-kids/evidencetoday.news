@@ -15,7 +15,7 @@
 #
 # 前置（與 news-cron 相同，皆已備妥）：
 #   - claude CLI 已登入（/root/.local/bin）
-#   - gcloud 服務帳號 ga4-insights@yaocare 已 activate（GA4/GSC；binary 在 /snap/bin）
+#   - gcloud 服務帳號 etn-insights@evidencetoday 已 activate（2026-08-06 換帳號後的專屬 SA）（GA4/GSC；binary 在 /snap/bin）
 set -euo pipefail
 
 # cron PATH 精簡：顯式補 claude(/root/.local/bin) 與 gcloud(/snap/bin)，否則 perf/insights 取不到 token

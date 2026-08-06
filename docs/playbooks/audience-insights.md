@@ -13,7 +13,7 @@
 - 輸出：`data/audience-insights.json`（**gitignore，不公開**）
 
 ## 鎖定參數（改前先確認）
-- GA4 property `541692554`、GSC `sc-domain:evidencetoday.news`、SA `ga4-insights@yaocare`
+- GA4 property `541692554`、GSC `sc-domain:evidencetoday.news`、SA `etn-insights@evidencetoday`（2026-08-06 換帳號：站長專案 `evidencetoday` 專屬 SA，舊共用 `ga4-insights@yaocare` 已無本站權限）
 - 門檻全在 config `audienceInsights.thresholds`，勿散落程式碼
 
 ## 認證：兩條路，同一個 `getToken()`（2026-08-04 起）
@@ -59,7 +59,7 @@
 ## 姊妹指令：`pnpm sitemap:submit`（提交 sitemap + 索引覆蓋率）
 - `scripts/sitemap-submit.mjs` — 把 `sitemap-index.xml` 主動提交給 GSC，並印出 sitemap 處理狀態與「近 28 天有曝光頁數 / sitemap 234 頁」的覆蓋率訊號。`--check` 只查不提交。
 - **為何存在**：2026-06-23 診斷發現 **GSC 從未提交過 sitemap** → 約 200 頁內容僅 26 頁有曝光，整批 myths/ingredients 經 URL 檢查 API 回報「URL is unknown to Google」（Google 連爬都沒爬）。robots.txt 雖已聲明 sitemap，但對權重低的新站不足以系統性發現全部頁。提交後 Google 會週期性重抓 sitemap、自動發現新頁——這是全站流量的最高槓桿動作，遠勝單頁 title/CTR 微調。
-- **認證差異**：`pnpm perf`/`insights` 用唯讀 scope（`webmasters.readonly`，見 `insight-constants.mjs` 的 `SCOPES`）；**提交 sitemap 需寫入 scope**，故本腳本就地用 `gcloud ... --scopes https://www.googleapis.com/auth/webmasters` 取一顆獨立 token，不放寬其他唯讀流程的權限。SA `ga4-insights@yaocare` 已具該 GSC 屬性擁有者權限（已實測可提交，HTTP 204）。
+- **認證差異**：`pnpm perf`/`insights` 用唯讀 scope（`webmasters.readonly`，見 `insight-constants.mjs` 的 `SCOPES`）；**提交 sitemap 需寫入 scope**，故本腳本就地用 `gcloud ... --scopes https://www.googleapis.com/auth/webmasters` 取一顆獨立 token，不放寬其他唯讀流程的權限。SA `etn-insights@evidencetoday` 為該 GSC 屬性完整使用者（2026-08-06 實測可提交 sitemap）。
 - **自動化**：本機 cron 每週一重 ping 並記錄覆蓋率 → `ops/sitemap-submit.sh`（crontab `0 1 * * 1`，log 在 `/tmp/evidencetoday-sitemap.log`）。沿用既有 cron 慣例（`/snap/bin` PATH、UTC 寫死時間、Vixie 不支援 `CRON_TZ`）。
 - 部署到 GitHub Pages 的 CI **沒有** gcloud 憑證，故此提交只能在本機/cron 跑，不在 deploy workflow 內。
 

@@ -21,7 +21,7 @@
 #   DRY_RUN=1 /root/.config/evidencetoday-news/optimize-cron.sh
 #
 # 前置（與 news-cron 相同，皆已備妥）：
-#   - claude CLI 已登入（/root/.local/bin）；gcloud 服務帳號 ga4-insights@yaocare 已 activate（/snap/bin）
+#   - claude CLI 已登入（/root/.local/bin）；gcloud 服務帳號 etn-insights@evidencetoday 已 activate（2026-08-06 換帳號後的專屬 SA）（/snap/bin）
 #   - gh 已認證且 git push 可用（repo scope）
 set -euo pipefail
 

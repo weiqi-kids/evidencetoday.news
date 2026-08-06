@@ -4,9 +4,9 @@
 
 **總共約 10 分鐘，分成四段。**
 
-> **先選路線**：本文主體（第一～四段）假設你**進得去 GCP 專案 `yaocare`**，能幫既有的服務帳戶 `ga4-insights@yaocare` 產新金鑰。
-> 若你**進不去 yaocare**（例如你是新接手的人、或想用自己的 Google 帳號自建），跳到文末的
-> [附錄：完全自建路線](#附錄完全自建路線不使用-yaocare-服務帳戶)。自建**不需要改任何程式碼**。
+> **先選路線**：本文主體（第一～四段）假設你**進得去 GCP 專案 `evidencetoday`**（站長帳號下），能幫既有的服務帳戶 `etn-insights@evidencetoday` 產新金鑰。
+> 若你**進不去 evidencetoday 專案**（例如你是新接手的人、或想用自己的 Google 帳號自建），跳到文末的
+> [附錄：完全自建路線](#附錄完全自建路線不使用既有服務帳戶)。自建**不需要改任何程式碼**。
 
 ---
 
@@ -26,7 +26,7 @@
 我們要用的這把鑰匙叫做「服務帳戶」，它的名字是：
 
 ```
-ga4-insights@yaocare.iam.gserviceaccount.com
+etn-insights@evidencetoday.iam.gserviceaccount.com
 ```
 
 這個帳戶**已經存在**（之前設定過），所以你只是要**幫它產一把新鑰匙**，不用從頭建立。
@@ -36,17 +36,17 @@ ga4-insights@yaocare.iam.gserviceaccount.com
 ## 第一段：拿金鑰檔（Google Cloud Console）
 
 1. 打開 <https://console.cloud.google.com/>
-2. 看畫面**最上方**，有一個專案名稱的下拉選單（可能顯示別的專案名）。點它，選 **yaocare**。
-   - 找不到 yaocare？點下拉選單後選「全部」分頁，用搜尋框打 `yaocare`。
+2. 看畫面**最上方**，有一個專案名稱的下拉選單（可能顯示別的專案名）。點它，選 **evidencetoday**。
+   - 找不到 evidencetoday？點下拉選單後選「全部」分頁，用搜尋框打 `evidencetoday`。
 3. 左上角點 **☰**（三條線）→ 找到 **IAM 與管理** → 點 **服務帳戶**
    - 英文介面是 *IAM & Admin* → *Service Accounts*
    - 或者直接開這個網址：<https://console.cloud.google.com/iam-admin/serviceaccounts>
-4. 清單中找到 **ga4-insights@yaocare.iam.gserviceaccount.com**，**點它**（點 email 本身）
+4. 清單中找到 **etn-insights@evidencetoday.iam.gserviceaccount.com**，**點它**（點 email 本身）
 5. 進去後，上方有幾個分頁：詳細資料／權限／**金鑰**／指標／記錄。點 **金鑰**（英文 *KEYS*）
 6. 點 **新增金鑰** → **建立新的金鑰**
    - 英文：*ADD KEY* → *Create new key*
 7. 跳出視窗問格式，選 **JSON**（預設就是），點 **建立**
-8. 瀏覽器會**自動下載一個 .json 檔**，檔名長得像 `yaocare-a1b2c3d4e5f6.json`
+8. 瀏覽器會**自動下載一個 .json 檔**，檔名長得像 `evidencetoday-a1b2c3d4e5f6.json`
 
 ✅ 這個檔案就是鑰匙。**先放著別關**，等一下要用。
 
@@ -63,7 +63,7 @@ ga4-insights@yaocare.iam.gserviceaccount.com
 4. 右上角點藍色的 **＋** → 選 **新增使用者**
 5. Email 欄位貼上：
    ```
-   ga4-insights@yaocare.iam.gserviceaccount.com
+   etn-insights@evidencetoday.iam.gserviceaccount.com
    ```
 6. **把「通知新使用者」的勾勾取消**（那是機器帳號，寄信沒意義）
 7. 角色選 **檢視者**（*Viewer*）就夠了
@@ -82,7 +82,7 @@ ga4-insights@yaocare.iam.gserviceaccount.com
 5. 右上角點 **新增使用者**
 6. Email 欄位貼上同一個：
    ```
-   ga4-insights@yaocare.iam.gserviceaccount.com
+   etn-insights@evidencetoday.iam.gserviceaccount.com
    ```
 7. 權限選 **完整**（*Full*）
    - 為什麼不是「受限」？因為除了讀數據，還要能自動提交 sitemap，那需要寫入權限。
@@ -191,9 +191,9 @@ pnpm check:google
 
 ---
 
-# 附錄：完全自建路線（不使用 yaocare 服務帳戶）
+# 附錄：完全自建路線（不使用既有服務帳戶）
 
-適用於**進不去 GCP 專案 `yaocare`**、想用自己的 Google 帳號從頭建一把鑰匙的人。
+適用於**進不去 GCP 專案 `evidencetoday`**、想用自己的 Google 帳號從頭建一把鑰匙的人。
 
 ## 為什麼不必改程式碼
 

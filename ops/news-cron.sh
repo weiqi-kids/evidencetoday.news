@@ -10,7 +10,7 @@
 #
 # 前置條件（皆已於 2026-06-16 備妥）：
 #   - claude CLI 已登入（headless 可用）
-#   - gcloud 服務帳號 ga4-insights@yaocare 已 activate（GA4/GSC insights）；binary 在 /snap/bin
+#   - gcloud 服務帳號 etn-insights@evidencetoday 已 activate（2026-08-06 換帳號後的專屬 SA）（GA4/GSC insights）；binary 在 /snap/bin
 #   - gh 已認證且 git push 可用（LightChang，repo scope）
 set -euo pipefail
 

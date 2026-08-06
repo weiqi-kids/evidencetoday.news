@@ -11,7 +11,7 @@
 #   45 1 * * 1 /root/.config/evidencetoday-news/googlenews-watch.sh >> /tmp/evidencetoday-gnews.log 2>&1
 #   （台北每週一 09:45 = UTC 週一 01:45；與 sitemap 09:00 / perf 09:30 錯開。）
 #
-# 前置：gcloud 服務帳號 ga4-insights@yaocare 已 activate（GSC；binary 在 /snap/bin）。
+# 前置：gcloud 服務帳號 etn-insights@evidencetoday 已 activate（2026-08-06 換帳號後的專屬 SA）（GSC；binary 在 /snap/bin）。
 set -euo pipefail
 
 export PATH="/root/.local/bin:/snap/bin:/usr/local/bin:/usr/bin:/bin"
