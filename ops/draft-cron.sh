@@ -239,10 +239,13 @@ if [ "$IS_SCRIPT" = "1" ]; then
   exit 0
 fi
 
-# 頁面型：成品在 src/content，git-detect 未追蹤新檔
-mapfile -t NEW_FILES < <(git status --porcelain -- "$CONTENT_SUBDIR" | awk '/^\?\?/{print $2}')
+# 頁面型：成品在 src/content，git-detect 新檔。
+# ⚠️ 必須同時認「未追蹤（??）」與「已 staged 新增（A）」：2026-08-06 實測撰稿 agent 會自己 git add，
+# 只認 ?? 會漏抓，且 staged 稿會被下面 processed-sources 的 commit 一起掃進 main、繞過發佈流程。
+git restore --staged "$CONTENT_SUBDIR" 2>/dev/null || true   # 先解除 staged，統一回未追蹤狀態
+mapfile -t NEW_FILES < <(git status --porcelain -- "$CONTENT_SUBDIR" | awk '/^(\?\?|A )/{print $NF}')
 if [ ${#NEW_FILES[@]} -eq 0 ]; then
-  echo "[draft] 本次無新草稿（src/content/$TYPE/ 無未追蹤新檔）"
+  echo "[draft] 本次無新草稿（src/content/$TYPE/ 無未追蹤/新增檔）"
 else
   echo "[draft] 偵測到 ${#NEW_FILES[@]} 篇新草稿，逐一暫存+通知"
   for f in "${NEW_FILES[@]}"; do stage_and_notify "$f"; done
@@ -250,8 +253,9 @@ fi
 
 # news：保留 processed-sources.json 更新（避免重複選題），單獨提交
 if [ "$TYPE" = "news" ] && ! git diff --quiet -- data/processed-sources.json 2>/dev/null; then
-  git add data/processed-sources.json
-  git commit -q -m "chore(news): 標記來源已處理（草稿暫存，待核准發布）" && git push origin main \
+  # commit 限定 pathspec：就算工作樹/索引還有其他東西（例如 agent 自行 add 的檔），也不會被掃進來
+  git commit -q -m "chore(news): 標記來源已處理（草稿已入自動發佈佇列）" -- data/processed-sources.json \
+    && git push origin main \
     && echo "[draft] processed-sources.json 已提交" || echo "[draft] processed-sources.json 提交/push 失敗"
 fi
 
