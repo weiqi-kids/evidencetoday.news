@@ -1,13 +1,21 @@
 ---
 interface Props {
   summary: string;
+  /**
+   * 可截取的直球答案（來自 frontmatter 的 aiAnswer），渲染成摘要區的第一句。
+   * 2026-08-06 前 aiAnswer 被接在 citationAnswer 的 fallback 鏈最前面，填了會**取代**
+   * 整段 tldr——但 2026-07-21 稽核要的是「以 1–2 句可截取答案**開頭**」，不是砍掉摘要。
+   * 改成獨立的 lead 後，填 aiAnswer 是純加分，沒填則版面完全不變。
+   */
+  lead?: string;
 }
 
 type SummaryRender =
   | { type: 'paragraphs'; items: string[] }
   | { type: 'ul' | 'ol'; items: string[] };
 
-const { summary } = Astro.props;
+const { summary, lead } = Astro.props;
+const leadText = lead?.trim();
 
 function normalize(text: string): string {
   return text.replace(/\r\n/g, '\n').trim();
@@ -99,6 +107,7 @@ const formattedSummary = formatSummary(summary);
 <aside class="summary-box" aria-label="重點摘要">
   <h2 class="summary-box__title">重點摘要</h2>
   <div class="summary-box__content">
+    {leadText && <p class="summary-box__lead">{leadText}</p>}
     {formattedSummary.type === 'paragraphs' ? (
       formattedSummary.items.map((item) => <p>{item}</p>)
     ) : formattedSummary.type === 'ol' ? (
@@ -138,6 +147,11 @@ const formattedSummary = formatSummary(summary);
     margin: 0;
     font-size: var(--text-body);
     line-height: 1.8;
+  }
+
+  /* 直球答案：加粗以區隔於後面的條列，字級不變（設計規範 ⑥ 不得低於階梯值）。 */
+  .summary-box__lead {
+    font-weight: 700;
   }
 
   .summary-box__list {

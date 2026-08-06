@@ -38,6 +38,8 @@ interface Props {
   faq?: Array<{ question: string; answer: string }>;
   references?: Array<{ title: string; url?: string; type: string }>;
   citationAnswer?: string;
+  /** 可截取的直球答案，渲染成「重點摘要」的首句（不取代 tldr）。 */
+  aiAnswer?: string;
   queryPatternLabel?: string;
   showMedicalDisclaimer?: boolean;
 }
@@ -66,6 +68,7 @@ const {
   faq,
   references,
   citationAnswer,
+  aiAnswer,
   queryPatternLabel,
   // 預設關閉（2026-08-04 改）：通用醫療免責由頁尾單一處承擔，內文不再放同義句。
   // 原本內文區塊寫「本站所有內容僅供一般健康資訊參考，不構成醫療診斷、治療建議或處方」，
@@ -125,7 +128,7 @@ const safeCover =
 
     <div class:list={['article-grid', `article-grid--${variant}`]}>
       <div class="article-content">
-        {citationAnswer && <TldrBox summary={citationAnswer} />}
+        {citationAnswer && <TldrBox summary={citationAnswer} lead={aiAnswer} />}
         <div class="prose">
           <slot />
         </div>

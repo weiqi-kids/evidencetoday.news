@@ -58,5 +58,9 @@
 
 - ~~`src/components/blocks/VerdictDisclaimer.astro`~~ — 全站零引用，2026-08-04 已刪除。
 - ~~`Footer.astro` 的 `.footer__disclosure`~~ — 有 CSS 無 markup，2026-08-04 已刪除。
-- **`mythsSchema.medicalDisclaimer`**（`src/content.schemas.ts`）為 **required 但從未被渲染**：70 篇闢謠各自寫了客製免責文案，讀者永遠看不到，前台顯示的是 `myths/[slug].astro` 內的硬編碼 `healthReminder`。改 required 欄位會動到 70 個檔案，風險高，**另案處理**；在那之前不要以為那個欄位有作用。
+- ~~**`mythsSchema.medicalDisclaimer`** 為 required 但從未被渲染~~ → **2026-08-06 已修，欄位現在是活的。**
+  當時前台顯示的是 `myths/[slug].astro` 內硬編碼的 `healthReminder` 常數，把每篇 frontmatter 的 `medicalDisclaimer` 整個繞過。修法只有一行：`const healthReminder = d.medicalDisclaimer?.trim() || FALLBACK_REMINDER`，不需要動任何內容檔（原本評估「要動 70 個檔案、風險高」是高估了）。
+  **實際效益比預期小，如實記錄**：74 篇裡有 67 篇的 `medicalDisclaimer` 是把通用句原封不動複製一遍，真正客製的只有 7 篇。生效後那 7 篇會顯示含該主題具體警訊症狀與建議科別的版本（例如大腸相關題目寫「出現血便、排便習慣改變、體重不明下降等症狀，請至消化內科、家庭醫學科」），其餘 67 篇畫面不變。
+  同一次把版面改成符合硬規則 8a：原本是 `<section class="block">` 加 `<h2>健康資訊提醒</h2>`，跟內容區塊一樣醒目；現改為 `<aside class="health-reminder">`，去掉卡片與標題，只留左側細線與 `--color-ink-subtle`，字級維持 `var(--text-meta)`（規範 ⑥ 不得再縮小）。**低干擾靠降彩度與位置達成，不靠縮字。**
+  往後寫闢謠時，`medicalDisclaimer` 值得針對主題寫具體症狀與科別——它現在真的會顯示。
 - `ingredientsSchema.disclosure` 欄位存在但 0 檔案設定，且 `ingredients/[slug].astro` 從未把它傳給 `<Article>`——雙重死碼。

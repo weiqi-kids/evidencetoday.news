@@ -37,8 +37,9 @@ const data = entry.data;
 const queryPatternLabel = getArticleQueryPatternLabel(data.queryPattern);
 const social = contentSocial('articles', data, entry.id.replace(/\.[^.]+$/, ''));
 
+// aiAnswer 刻意**不在**這條 fallback 鏈裡：它是「重點摘要」的首句（見 TldrBox 的 lead），
+// 放進來會讓填了 aiAnswer 的文章直接失去整段 tldr。2026-08-06 修，勿再合併回來。
 const citationAnswer =
-  data.aiAnswer ||
   data.quickAnswer ||
   data.citationAnswer ||
   data.summary ||
@@ -162,6 +163,7 @@ const breadcrumbSchema = {
   faq={data.faq}
   references={data.references}
   citationAnswer={citationAnswer}
+  aiAnswer={data.aiAnswer}
   queryPatternLabel={queryPatternLabel}
 >
   <Fragment slot="head">

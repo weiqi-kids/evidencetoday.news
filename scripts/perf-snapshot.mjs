@@ -94,9 +94,23 @@ if (pages.length) {
   console.log('\n— Top 著陸頁 · 依曝光 (clicks / impr / pos / CTR) —');
   [...pages].sort(byImpr).slice(0, 20).forEach((p) => console.log(pLine(p)));
 
-  const weak = pages.filter((p) => p.impressions >= 50 && p.ctr < 0.02).sort(byImpr);
-  console.log(`\n— ⚠️ 高曝光低 CTR 頁面：曝光 ≥50 且 CTR <2%（共 ${weak.length} 筆）—`);
+  // ⚠️ 位置過濾不可省。查詢表（上面）有 position <= 10，頁面表原本沒有，於是排名 24.7、
+  // 59.2 的頁（第 3、第 6 頁）也被列進「低 CTR」——那些位置的 CTR 本來就趨近 0，是排名
+  // 問題不是標題問題。2026-08-06 實測 14 筆裡有 2 筆是這種假陽性，照著改標題等於白工。
+  // 這正是 docs/playbooks/audience-insights.md 記載的位置校正陷阱，門檻放寬到 12 是為了
+  // 納入第 2 頁前段（仍有可觀曝光、標題確實影響點擊），再往後就不該用 CTR 判讀標題。
+  const LOW_CTR_MAX_POS = 12;
+  const weak = pages.filter((p) => p.impressions >= 50 && p.position <= LOW_CTR_MAX_POS && p.ctr < 0.02).sort(byImpr);
+  console.log(`\n— ⚠️ 高曝光低 CTR 頁面：曝光 ≥50、排名 ≤${LOW_CTR_MAX_POS}、CTR <2%（共 ${weak.length} 筆）—`);
   weak.slice(0, 20).forEach((p) => console.log(pLine(p)));
   if (!weak.length) console.log('  (無)');
+
+  // 排名太後面而 CTR 低的，單獨列出來並標明「這不是標題問題」，避免下次又被誤讀成待改標題。
+  const deepLowCtr = pages.filter((p) => p.impressions >= 50 && p.position > LOW_CTR_MAX_POS && p.ctr < 0.02).sort(byImpr);
+  if (deepLowCtr.length) {
+    console.log(`\n— ℹ️ 曝光 ≥50 但排名 >${LOW_CTR_MAX_POS} 的低 CTR 頁（共 ${deepLowCtr.length} 筆）—`);
+    console.log('   這些是排名問題，不是標題問題。要做的是內鏈／權威／內容深度，改標題無效。');
+    deepLowCtr.slice(0, 20).forEach((p) => console.log(pLine(p)));
+  }
 }
 console.log('');

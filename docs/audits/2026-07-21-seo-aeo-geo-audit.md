@@ -21,7 +21,7 @@
 | AEO 答案引擎 | **8.0 / 10** | 重點摘要前置、FAQ 全覆蓋、ClaimReview；短答欄位已接線但 0 篇填、闢謠缺 FAQPage |
 | GEO 生成引擎 | **7.5 / 10** | llms.txt / .txt / Wikidata 實體圈是同級最強；但醫療審閱與引用覆蓋率拉低可信度 |
 | 內容品質 | **8.0 / 10** | 引用真實可解析、醫療聲明謹慎、無 build 地雷；~23 處第一人稱 AI 味、3 篇褪黑激素近重複 |
-| 效能 / CWV | **7.0 / 10** | aspect-ratio 防 CLS、字型自託管、選擇性 hydration；但圖片未走 astro:assets、無 width/height |
+| 效能 / CWV | **7.0 / 10** | aspect-ratio 防 CLS（2026-08-06 複查：前台 img 全數已有，原評註「無 width/height 有 CLS 風險」不成立）、字型自託管、選擇性 hydration；剩餘空間在 srcset／格式優化 |
 | 無障礙 | **8.0 / 10** | skip link、aria、語意標籤、原生 details；列表頁 h1→h3 跳級 |
 | 架構 / 可維護性 | **9.0 / 10** | 單一真相 schema、isPublicEntry 防回歸測試、design/content gate、playbook 完整 |
 | **加權總分** | **≈ 8.1 / 10** | 上線品質之上、離「被 AI 當權威引用」還差臨門幾腳 |
@@ -52,8 +52,10 @@
 3. **闢謠頁補 FAQPage schema**〔AEO·高〕
    48/48 闢謠頁已渲染可見 Q&A（`myths/[slug].astro:142`），卻沒輸出 `FAQPage`（只有 articles/topics 有）。已符合 Google「答案可見」硬規則，白白放掉 rich result。→ 複用文章的 `faqSchema`。
 
-4. **填 `aiAnswer` 短答，讓「重點摘要」以 1–2 句可截取答案開頭**〔AEO·中高〕
-   `articles/[slug].astro:39-45` 已接線 `aiAnswer||quickAnswer||citationAnswer||summary||tldr`，但 0/103 有填，全部 fall through 到長段 `tldr`（~230 字）。→ 每篇補一句 40–60 字直球答案，voice/AI Overview 命中率最直接。
+4. **填 `aiAnswer` 短答，讓「重點摘要」以 1–2 句可截取答案開頭**〔AEO·中高〕〔2026-08-06 機制修好、內容進行中〕
+   ⚠️ **原本的接線是錯的**：`aiAnswer` 掛在 `citationAnswer` 的 fallback 鏈最前面，填了會**取代**整段 tldr，而本項要的是「以答案**開頭**」。若照原樣回填，129 篇的「重點摘要」會從 230 字縮成 50 字，等於一邊補 AEO 一邊砍讀者拿到的資訊。
+   2026-08-06 改為 `TldrBox` 的獨立 `lead` prop：`aiAnswer` 渲染成摘要區加粗首句，後面照常接 tldr 條列；沒填時版面完全不變，所以回填是純加分、可以分批做。
+   進度：15/129（依 GSC 曝光挑的高價值頁，涵蓋 articles 絕大部分實際曝光）。**剩下 114 篇要逐篇讀內文才寫得對**——多數文章的 `tldr` 首句是流行病學或背景陳述（實測中位數 125 字），機械抽取會產出不對題的答案，而批次套模板正是硬規則 7a 禁的量產寫法。
 
 5. **內容頁 schema 補 `inLanguage`**〔SEO·中〕
    只有 `WEBSITE` 有 `inLanguage`；Article/MedicalWebPage/NewsArticle 都缺；媒體頁用的是 `zh-TW` 與站上 `zh-Hant-TW` 不一致。→ 統一 `zh-Hant-TW`。
@@ -81,7 +83,8 @@
 11. **成分引用結構化**〔GEO·中〕：0/41 成分用 `journal`/`pmid`/`doi`，全塞在 `title` 字串裡，`buildCitations` 因此少了 DOI/PMID 的 `sameAs`。
 12. **前台把已有的引用細節秀出來**〔GEO·中〕：`ReferenceList.astro:22-31` 只渲染 title+type，丟掉 frontmatter 已有的 journal/year/doi/pmid；闢謠的 `quotedExcerpt` 從不顯示。可被 LLM 直接引用的逐字句與期刊年份藏著沒用。
 13. **`quotedExcerpt` 與 `mainFinding` 幾乎逐字相同**〔內容·中〕：多數闢謠兩欄是同一段中文改寫、非原文逐字引，讀來像量產樣板，削弱可查證性。
-14. **圖片走 `astro:assets` / 補 `width`/`height`／`srcset`**〔效能·中〕：目前全是裸 `<img>`（含遠端 unsplash）無尺寸，卡片縮圖有 LCP/CLS 風險；`sharp` 只在 devDependency。
+14. ~~**圖片走 `astro:assets` / 補 `width`/`height`／`srcset`**〔效能·中〕~~ → **CLS 部分已無需處理（2026-08-06 複查）**：當初寫「無尺寸、有 CLS 風險」是只看了 `<img>` 標籤沒看樣式。實際逐一比對，**每一個前台 `<img>` 的容器都已在 scoped CSS 設 `aspect-ratio: 16/9`**（ArticleCard:79、MythCard:65、IngredientCard:99、NewsCard:62、NewsItem、Article.astro:199、index.astro ×4、topics、news/[slug]），版位在圖載入前就保留好了，補 `width`/`height` 屬重複宣告。剩下的 `<img>` 全在 `src/components/editor/*`（僅後台編輯器，不影響公開頁 CWV）。
+    仍可做但**不建議現在動**的是 `srcset`／格式優化：站上封面是遠端 Unsplash URL，改走 `astro:assets` 會讓 build 期需要對外抓圖，CI 從此多一個網路失敗點；Unsplash URL 本身已支援 `w=` 參數，要優化用它更省事。
 15. **字型載入**〔效能·中〕：head 匯入 8 個 fontsource（含 2 套 CJK）render-blocking、無 preload；建議 preload 主要內文字型子集。
 16. **列表頁 h1→h3 跳級**〔無障礙·低〕：卡片標題一律 `<h3>`，List 版面 h1 後直接接 h3，缺 h2。
 17. **每頁 `.txt` 補上 FAQ Q&A、闢謠頁補 sourceType 中文標籤**〔AEO·低〕：`.txt` 目前不含 frontmatter `faq`；news 參考清單未顯示研究類型（闢謠已有 `sourceTypeLabels` 對照可複用）。

@@ -85,7 +85,12 @@ const sourceTypeLabels: Record<string, string> = {
   'in-vitro': '細胞或體外研究',
   'case-report': '個案報告',
 };
-const healthReminder = '本文為健康資訊與迷思查證，不提供個人診斷或治療建議。若你已被診斷疾病、正在服藥、懷孕、哺乳，或症狀持續未改善，請諮詢醫師、藥師或營養師。';
+// 優先用該篇 frontmatter 的 medicalDisclaimer——那是逐篇寫的，含該主題的具體警訊症狀
+// 與建議科別（例如血便、排便習慣改變 → 消化內科），比通用句對讀者有用得多。
+// 2026-08-06 前這裡寫死通用字串，74 篇客製文案全被繞過、讀者一個字都看不到；
+// mythsSchema.medicalDisclaimer 是 required，等於每篇都認真寫了然後丟掉。勿再改回寫死。
+const FALLBACK_REMINDER = '本文為健康資訊與迷思查證，不提供個人診斷或治療建議。若你已被診斷疾病、正在服藥、懷孕、哺乳，或症狀持續未改善，請諮詢醫師、藥師或營養師。';
+const healthReminder = d.medicalDisclaimer?.trim() || FALLBACK_REMINDER;
 const slugId = entry.id.replace(/\.[^.]+$/, '');
 const squareCardImage = `/og/myths/${slugId}-square.png`;
 const lineShareUrl = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(canonical)}`;
@@ -115,7 +120,7 @@ const mythFaqSchema = d.faq && d.faq.length > 0
   : null;
 ---
 
-<Article title={d.title} description={social.description} seoTitle={social.title} socialTitle={social.title} socialDescription={social.description} ogImage={social.image} category="myth" variant="cards" showMedicalDisclaimer={false} publishDate={d.publishDate} updatedDate={d.updatedDate} author={d.author} reviewer={d.reviewer} tags={d.topicTags} breadcrumbItems={[{ label: '首頁', href: '/' }, { label: '迷思查證', href: '/myths/' }, { label: d.title }]}>
+<Article title={d.title} description={social.description} seoTitle={d.seoTitle ?? social.title} socialTitle={social.title} socialDescription={social.description} ogImage={social.image} category="myth" variant="cards" showMedicalDisclaimer={false} publishDate={d.publishDate} updatedDate={d.updatedDate} author={d.author} reviewer={d.reviewer} tags={d.topicTags} breadcrumbItems={[{ label: '首頁', href: '/' }, { label: '迷思查證', href: '/myths/' }, { label: d.title }]}>
   <Fragment slot="head">
     <meta property="article:published_time" content={d.publishDate.toISOString()} />
     <meta property="article:modified_time" content={d.updatedDate.toISOString()} />
@@ -193,7 +198,7 @@ const mythFaqSchema = d.faq && d.faq.length > 0
     <p id="share-status" aria-live="polite"></p>
   </section>
   {refs.length > 0 && <section class="block"><h2>References</h2><ol>{refs.map((r) => <li><strong>{r.title}</strong>{r.sourceType ? `（類型：${r.sourceType}）` : ''}{r.evidenceType ? `（證據類型：${r.evidenceType}）` : ''}<br /><a href={r.url} target="_blank" rel="noopener noreferrer">{r.url}</a></li>)}</ol></section>}
-  <section class="block health-reminder"><h2>健康資訊提醒</h2><p>{healthReminder}</p></section>
+  <aside class="health-reminder" aria-label="健康資訊提醒"><p>{healthReminder}</p></aside>
   <EditButton client:idle repoPath={`src/content/myths/${entry.id}`} collection="myths" slug={entry.id.replace(/\.[^.]+$/, '')} />
   <ReadingEngagement client:idle contentType="myth" slug={entry.id.replace(/\.[^.]+$/, '')} tags={d.topicTags} author={d.author} verdict={d.verdict} evidenceLevel={d.evidenceLevel} hasRelated={false} />
 </Article>
@@ -218,6 +223,21 @@ document.getElementById('copy-btn')?.addEventListener('click', async () => { awa
 
   .block :is(h1, h2, h3) {
     margin: 0 0 12px;
+  }
+
+  /* 硬規則 8a：免責一頁一次、放角落、降彩度、字級不得低於 --text-meta。
+     低干擾靠「降彩度＋去卡片化」達成，不靠縮字——所以這裡拿掉 .block 的白底卡片
+     與 h2 標題，只留一條左側細線與 muted 文字色，字級維持 --text-meta（1.125rem）。 */
+  .health-reminder {
+    margin-top: 1.5rem;
+    padding: 0.75rem 0 0.75rem 1rem;
+    border-left: 2px solid var(--color-fog);
+    color: var(--color-ink-subtle);
+    font-size: var(--text-meta);
+  }
+
+  .health-reminder p {
+    margin: 0;
   }
 
   /* Quick conclusion — single column on mobile */

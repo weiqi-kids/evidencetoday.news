@@ -145,6 +145,8 @@ export const articlesSchema = z.object({
 export const mythsSchema = z.object({
   slug: z.string().optional(),
   title: z.string(),
+  // 與 articlesSchema 同義：覆蓋 <title>，不影響 H1。未填則回退 `${title}｜迷思查證｜本日有據`。
+  seoTitle: z.string().max(60).optional(),
   description: z.string().max(220),
   category: z.string().optional(),
   mythClaim: z.string(),
@@ -290,6 +292,11 @@ export const mythsSchema = z.object({
 
 export const ingredientsSchema = z.object({
   title: z.string(),
+  // 成分頁的 title 是成分名（如「尿石素A」），當 <title> 用等於在 SERP 只給一個名詞，
+  // 使用者看不出點進來能得到什麼——2026-08-06 GSC：urolithin-a 排名 8.4 但 CTR 1.1%、
+  // lions-mane 排名 10.5 但 CTR 0%，排名不差、點擊掛零，屬典型標題問題。
+  // 填這欄可覆蓋 <title> 而不動頁面 H1（H1 仍是成分名，維持列表與導覽一致）。
+  seoTitle: z.string().max(60).optional(),
   titleEn: z.string().optional(),
   sortKey: z.string(),
   description: z.string().max(155),

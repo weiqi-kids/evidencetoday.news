@@ -167,7 +167,11 @@
 - 分類首頁固定使用短字主視覺：健康文章、迷思查證、成分解析、喜聞樂健、短影音、健康雷達。若新增 collection，必須同步補 `COLLECTION_SOCIAL` 與產圖模板色彩。
 - **闢謠（myths）單篇例外，不用分類共用圖**：`contentSocial('myths', …)` 回傳 `/og/myths/{slug}.png?v={updatedDate}`，由 `src/pages/og/myths/[slug].png.ts` 在 build 時逐篇動態生成（1200×630，白底題目區＋依判讀 tone 上色的色帶，秀出這篇的判讀結果與證據強度），不進 git、不用手動產圖。另有 `[slug]-square.png.ts` 產 1080×1080「儲存圖卡」（供讀者下載後直接貼 LINE 群組），單篇頁分享區塊（`.share-block`）同時放這張 OG 圖預覽、「分享到 LINE」按鈕與「下載圖卡」按鈕。兩個模板都在 `src/utils/og-template.ts`（`generateMythOgSvg` / `generateMythSquareCardSvg`），色帶依 `VERDICT_META[verdict].tone` 選色（`VERDICT_BAND_COLORS`）。新增/修改 myths 版面時勿把這兩支 `.png.ts` 誤當一般 astro page 刪掉。
 - 內容 frontmatter 可選填 `ogShortTitle`、`socialTitle`、`socialDescription` 作為人工覆寫；未填時會由 title / description / summary 推導短標與分享描述。文案應維持 40–80 個中文字左右，避免「值得關注」「帶你了解」「一篇看懂」等套版語氣。
-- **`seoTitle`（articles 限定，覆寫 `<title>`，不影響頁面 H1）**：`src/content.schemas.ts` 的 `articlesSchema` 提供 `seoTitle`（`max(60)`），`src/pages/articles/[slug].astro` 以 `seoTitle={data.seoTitle ?? social.title}` 帶入 `Article.astro`。用途是把搜尋查詢關鍵詞**前置**到 SERP 標題，解決編輯式長標題不對題、CTR 低的問題（依 GSC 真實查詢調整，見 `docs/playbooks/audience-insights.md`）。**需自帶品牌後綴**（如「｜本日有據」，因為走的不是 `social.title` 那條會自動加雙重後綴的路徑）；SERP 中文約 28–30 字會截斷，宜精簡並把關鍵詞放最前。未填時維持原本 `social.title`（機器推導短標）行為，不影響其他文章。`socialTitle`（OG 標題）不受 `seoTitle` 影響，仍走 `social.title`。
+- **`seoTitle`（articles／myths／ingredients，覆寫 `<title>`，不影響頁面 H1）**：`src/content.schemas.ts` 的 `articlesSchema` 提供 `seoTitle`（`max(60)`），`src/pages/articles/[slug].astro` 以 `seoTitle={data.seoTitle ?? social.title}` 帶入 `Article.astro`。用途是把搜尋查詢關鍵詞**前置**到 SERP 標題，解決編輯式長標題不對題、CTR 低的問題（依 GSC 真實查詢調整，見 `docs/playbooks/audience-insights.md`）。**需自帶品牌後綴**（如「｜本日有據」，因為走的不是 `social.title` 那條會自動加雙重後綴的路徑）；SERP 中文約 28–30 字會截斷，宜精簡並把關鍵詞放最前。未填時維持原本 `social.title`（機器推導短標）行為，不影響其他文章。`socialTitle`（OG 標題）不受 `seoTitle` 影響，仍走 `social.title`。
+
+  **2026-08-06 擴充到 myths／ingredients**：`mythsSchema`／`ingredientsSchema` 也加了 `seoTitle`，接線同樣是 `data.seoTitle ?? social.title`（`myths/[slug].astro`、`ingredients/[slug].astro`）。動機來自 GSC 實測——成分頁的 `title` 是成分名，當 `<title>` 用就變成 SERP 上只有一個名詞（`<title>尿石素A｜成分解析｜本日有據</title>`），使用者看不出點進來能得到什麼：`urolithin-a` 排名 8.4 但 CTR 1.1%、`lions-mane` 排名 10.5 但 CTR 0%，排名不差、點擊掛零。填 `seoTitle` 可只換 `<title>` 而保留 H1 的成分名，列表與導覽的一致性不受影響。
+
+  ⚠️ **回填要挑，不要全站盲填。**2026-08-06 的教訓：GSC 高曝光低 CTR 的 articles（如 `melatonin-prescription-taiwan-gray-market` 252 曝光 / CTR 1.2%）**早就有寫好的 `seoTitle`**，CTR 低不是缺標題造成的；真正缺的是那些 `title` 本身就不是問句的成分頁。挑選前先做位置校正（見下一段與 `audience-insights.md`），排名 >12 的頁 CTR 低屬排名問題，改標題無效。
 - 標籤頁的標題與描述會依 tag 個別產生，但共用 `/og/tags/index.png`，避免 build 前產生數百張低差異圖片。
 
 ## 詳情頁封面圖與證據標籤（2026-07-15 介面優化 Phase 1）
@@ -177,6 +181,23 @@
 - **參考文獻證據類型中文化**：`ReferenceList.astro` 原本直接輸出 `ref.type` 英文 enum（`meta-analysis`、`rct`…，屬 `content:audit` 會抓的 raw enum 外露）。改用 `src/utils/evidence-labels.ts` 的 `referenceTypeLabel()`（涵蓋 referenceSchema.type 全 14 值＋ animal/in-vitro/case-report；用詞對齊 myths 的 sourceTypeLabels）。未知值原樣回傳、不吞資料。
 - **`IngredientCard` 缺圖 fallback**：原本 `{coverImage && <img>}`，缺圖時完全不渲染媒體區、同一 grid 高度參差、也無檔案存在守衛。已比照 `ArticleCard` 加 `safeCoverImage` 守衛，缺圖時渲染 `.ingredient-card__thumb--fallback`（cat-ingredient 類色漸層＋「本日有據」佔位，`aria-hidden`），維持 16/9 比例讓卡片高度一致。
 - **闢謠頁頂端判定徽章**：`myths/[slug].astro` 的「30 秒快速結論」左欄（`.quick-panel`）加 `<VerdictBadge verdict={d.verdict} size="lg" />`＋`<span class="pill evidence">證據強度：{d.evidenceLevel}</span>`（evidenceLevel 已是中文 enum 高／中／低）。重用原本閒置的 `.quick-badges/.pill/.evidence` CSS，並清掉真正無用的 dead CSS（`.claim/.verdict/.quick-summary/.belief`）。徽章顏色由 verdict tone 決定（對→綠、錯→紅、不足→藍），天然情緒中立。`VerdictBadge` 的 lg 標籤改用 `displayVerdict()`（需謹慎→須謹慎）。此為既有簡化版型內的強化、非新增內容區塊。
+
+
+## 「重點摘要」的兩層結構：aiAnswer（首句）+ tldr（條列）
+
+`TldrBox.astro` 有兩個 prop：
+
+- `summary` — 走 `quickAnswer || citationAnswer || summary || tldr || description`，自動拆成條列。
+- `lead` — 來自 frontmatter `aiAnswer`，渲染成摘要區的**加粗首句**，接在條列之前。
+
+⚠️ **2026-08-06 前 `aiAnswer` 是掛在 `summary` 那條 fallback 鏈的最前面**，也就是填了會**取代**整段 tldr。稽核要的是「以 1–2 句可截取答案**開頭**」，照原樣回填 129 篇等於把 230 字摘要換成 50 字，一邊補 AEO 一邊砍掉讀者拿到的資訊。現已拆成獨立的 `lead`，沒填時版面完全不變，所以回填是純加分、可分批做。**不要再把 `aiAnswer` 合併回 `citationAnswer` 鏈。**
+
+寫 `aiAnswer` 的兩條規矩：
+
+1. **直接回答標題那個問題**，40–80 字，帶得走的數字或條件（劑量、間隔、上限、法規門檻）。
+2. **不要跟 tldr 首句重複**。重複會變成加粗一遍、條列再講一遍。回填後可用 8-gram 重疊率自查，超過 35% 就換切入點——例如 tldr 已說完劑量高原，`aiAnswer` 就改從讀者的決策點（「多數人 0.5–4mg 就夠，代購常見的 5mg 已屬過量」）切入。
+
+進度與剩餘工作見 `docs/audits/2026-07-21-seo-aeo-geo-audit.md` 第 4 項。
 
 ## Articles 文章 JSON-LD 審閱欄位規則（2026-06-14）
 
