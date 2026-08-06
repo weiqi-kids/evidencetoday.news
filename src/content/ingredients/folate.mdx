@@ -2,9 +2,10 @@
 title: "葉酸"
 titleEn: "Folate"
 sortKey: "ㄧ"
+seoTitle: "葉酸什麼時候開始補？備孕關鍵期與 B12 風險｜本日有據"
 description: "葉酸是 DNA 合成與紅血球生成所需的維生素 B9，孕前補充能大幅降低神經管缺陷。本文整理食物含量、建議量、天然葉酸與合成葉酸差異與過量風險。"
 publishDate: 2026-05-29
-updatedDate: 2026-05-29
+updatedDate: 2026-08-06
 tags: ["維生素B群", "備孕", "孕期營養", "造血"]
 reviewer: "黃子彥"
 introduction: "葉酸是維生素 B9，參與 DNA 合成、甲基化與紅血球生成。它最廣為人知、也是證據最強的角色，是在受孕前後補充可大幅降低胎兒神經管缺陷。"
@@ -39,80 +40,106 @@ references:
     url: "https://www.ncbi.nlm.nih.gov/books/NBK593617/"
     type: guideline
 draft: false
+safety:
+  general: "天然食物中的葉酸（folate）沒有已知的過量風險，上限攝取量僅針對合成葉酸（folic acid，即補充品與強化食品）。訂定上限的主要理由不是急性毒性，而是高劑量合成葉酸可改善維生素 B12 缺乏造成的貧血表現、卻無法阻止神經病變進展，可能延誤診斷。年長者與素食者尤其需要留意。"
+  interactions:
+    - substance: "methotrexate"
+      description: "此藥為葉酸拮抗劑。用於癌症治療時補充葉酸可能影響療效；用於類風濕性關節炎時則常規併用葉酸以減少副作用。兩種情境處理完全不同，必須由醫師決定。"
+    - substance: "抗癲癇藥物（如 phenytoin）"
+      description: "葉酸與這類藥物可能互相影響血中濃度，調整劑量前應諮詢醫師。"
+    - substance: "sulfasalazine"
+      description: "可能干擾葉酸吸收，長期使用者的葉酸狀態值得評估。"
+  populations:
+    - group: "備孕與孕期女性"
+      note: "神經管在受孕後約 21 至 28 天閉合，關鍵期在受孕前。曾生育神經管缺陷胎兒者的建議劑量較高，屬醫師處方範疇，實際劑量請依產檢醫師建議。"
+    - group: "年長者與素食者"
+      note: "維生素 B12 缺乏風險較高，單獨補充高劑量葉酸可能掩蓋其貧血表現，建議同時評估 B12 狀態。"
+    - group: "透析患者"
+      note: "水溶性維生素會於透析過程被移除，補充需求應由醫療團隊評估。"
 ---
-
 ![葉酸 主視覺。](/images/ingredients/folate-hero.svg)
 
 ## 30 秒認識
 
-- 葉酸（Folate）是維生素 B9，參與 DNA 合成、甲基化與紅血球生成，是細胞快速分裂時需求量特別高的營養素。 <a href="#ref-1">[1]</a>
-- 它證據最強的角色是**孕前到孕早期補充可大幅降低神經管缺陷**：高風險族群的隨機試驗顯示風險下降約 72%。 <a href="#ref-2">[2]</a>
-- 「天然葉酸（folate）」與「合成葉酸（folic acid）」相關但不完全相同；目前明確被證實能預防神經管缺陷的，是合成葉酸與強化食品。 <a href="#ref-4">[4]</a>
-- 過量主要來自補充劑與強化食品而非天然食物：每日上限 1000 微克，過量可能遮蔽維生素 B12 缺乏。 <a href="#ref-1">[1]</a>
+- 「葉酸」在中文裡常被當成一個詞，實際上要分開看：**folate** 指天然食物中的還原態形式，**folic acid（葉酸）**指補充品與強化食品中的合成氧化態，兩者的吸收率與代謝路徑不同。 <a href="#ref-1">[1]</a>
+- 最確立的效益是**降低神經管缺陷風險**，而且關鍵期在**受孕前到懷孕初期**——等到驗出懷孕才開始補，神經管往往已經閉合。 <a href="#ref-1">[1]</a>
+- 葉酸與**維生素 B12** 的關係是這個主題最重要的安全性議題：高劑量葉酸可改善 B12 缺乏造成的貧血，卻無法阻止神經損傷持續惡化，形成「掩蓋診斷」的風險。 <a href="#ref-1">[1]</a>
+- 上限攝取量針對的是**合成葉酸**（食品強化與補充品），天然食物中的 folate 不設上限。 <a href="#ref-4">[4]</a>
+- **MTHFR 基因多型性**在市場語言中常被誇大。它確實影響代謝效率，但對絕大多數人而言，一般葉酸補充仍然有效。
 
 ## 基本介紹
 
-葉酸是水溶性的維生素 B9。「folate」泛指食物中天然存在的形式，「folic acid（合成葉酸）」則是補充劑與強化食品中較穩定的人工形式。兩者進入體內都需轉化為活性的 5-甲基四氫葉酸（5-MTHF）才能作用。 <a href="#ref-1">[1]</a> 由於人體無法自行合成，必須由飲食或補充取得；而它在備孕、孕期與造血上的重要性，使它成為少數有公共衛生強化政策支持的維生素之一。
+葉酸是維生素 B9，屬水溶性 B 群。它在體內以四氫葉酸（THF）及其衍生物的形式，擔任**一碳單位轉移反應**的載體——這類反應是 DNA 與 RNA 合成、以及胺基酸代謝的核心。
+
+因為牽涉 DNA 合成，**細胞分裂旺盛的組織對葉酸最敏感**：造血系統、胎兒發育中的神經管、腸黏膜。這解釋了為什麼缺乏會表現為巨球性貧血，也解釋了為什麼孕期需求特別高。
 
 ## 這是什麼？
 
-標示上常見 Folate、Folic Acid 或 B9。要理解一個換算概念：營養標示使用「膳食葉酸當量（DFE）」，因為合成葉酸的吸收率高於食物葉酸——空腹的合成葉酸約為食物葉酸的 2 倍、隨餐約 1.7 倍。 <a href="#ref-1">[1]</a> 這就是為什麼孕婦衛教會特別指定「合成葉酸的微克數」，而不是只看食物。
+- **Folate（天然葉酸）**：深綠色蔬菜、豆類、肝臟中的多麩胺酸形式，需經腸道酵素分解為單麩胺酸才吸收，生物利用率約 50%。
+- **Folic acid（合成葉酸）**：補充品與強化穀物中的氧化態單麩胺酸形式，吸收率高（空腹接近 100%）。需經二氫葉酸還原酶轉為活性形式。
+- **5-MTHF（左旋甲基葉酸）**：已是活性形式，不需經還原酶轉換，常見於標榜「活性葉酸」的產品。
+
+單位換算需注意：標示可能用微克或**微克 DFE（膳食葉酸當量）**，兩者對天然與合成形式的換算係數不同。
 
 ## 在身體裡做什麼？／主要作用機制
 
-葉酸是「一碳代謝」的核心輔酶，提供甲基用於合成 DNA 與 RNA 的鹼基，並與維生素 B12、B6 共同把同半胱胺酸轉回甲硫胺酸。 <a href="#ref-1">[1]</a> 在胎兒早期，神經管（將發育成腦與脊髓）在受孕後約 3–4 週就閉合，此時細胞分裂極快、對葉酸需求高——這正是為什麼補充的關鍵時機在「受孕前」就要開始，等到確認懷孕往往已錯過。 <a href="#ref-4">[4]</a>
+- **DNA 合成與修復**：提供胸腺嘧啶核苷酸合成所需的一碳單位。缺乏時 DNA 合成受阻，紅血球前驅細胞無法正常分裂，形成體積大而未成熟的**巨球性貧血**。 <a href="#ref-1">[1]</a>
+- **同半胱胺酸代謝**：與維生素 B12 共同參與同半胱胺酸轉為甲硫胺酸的反應。葉酸不足時血中同半胱胺酸上升。
+- **神經管閉合**：胚胎的神經管在受孕後約 21 至 28 天閉合，這段期間的葉酸狀態決定風險，是「孕前就要開始補」的原因。 <a href="#ref-1">[1]</a>
+- **甲基化反應**：透過 S-腺苷甲硫胺酸（SAM）參與 DNA 與蛋白質的甲基化。
 
 ## 食物來源／常見來源
 
-葉酸廣泛存在於深綠蔬菜、豆類與肝臟。以美國 NIH ODS 的代表含量（每份約略值）： <a href="#ref-1">[1]</a>
+名稱來自拉丁文的「葉」（folium），最好的來源正是**深綠色葉菜**：菠菜、蘆筍、青花菜、萵苣。其他良好來源包括豆類（毛豆、黑豆、鷹嘴豆）、肝臟、酪梨、柑橘、以及強化穀類製品。
 
-- 牛肝（煮，約 85 克）：約 215 微克
-- 菠菜（煮，半杯）：約 131 微克
-- 黑眼豆／豇豆（煮，半杯）：約 105 微克
-- 蘆筍（4 根）：約 89 微克
-- 球芽甘藍（煮，半杯）：約 78 微克
-- 酪梨（生，半杯）：約 59 微克
-- 綠花椰菜（煮，半杯）：約 52 微克
-- 強化早餐穀片／麵粉製品：依強化量不同（這類是合成葉酸）
-
-要注意葉酸對熱與光相對不穩定，長時間水煮會流失，因此「快炒、少水、不過度烹調」較能保留。蔬菜豆類吃得足的人通常不缺，但要達到孕期需求，多半仍需搭配補充劑或強化食品。
+葉酸**怕熱也溶於水**，久煮與大量水煮會顯著流失。快炒、蒸或生食能保留較多。
 
 ## 建議攝取量／常見攝取建議／研究中常見使用方式
 
-依國際與台灣一致的建議： <a href="#ref-1">[1]</a> <a href="#ref-4">[4]</a>
+一般成人的建議攝取量以微克 DFE 表示；**上限攝取量僅針對合成葉酸**（補充品與強化食品），天然食物中的 folate 不設上限。 <a href="#ref-4">[4]</a>
 
-- 一般成人：每日 400 微克 DFE
-- 懷孕：每日 600 微克 DFE；哺乳：每日 500 微克 DFE
-- **可能懷孕的育齡女性**：除均衡飲食外，建議每天額外補充 400 微克合成葉酸（補充劑或強化食品），並在**計畫懷孕前約一個月**就開始
-- 曾生育神經管缺陷胎兒等高風險者：醫師可能建議更高劑量（如每日 4 毫克），屬處方評估範疇，不應自行使用高劑量
-
-台灣國民健康署的孕產婦衛教也採相同方向：孕前與孕早期補充葉酸是預防神經管缺陷的重點措施。
+備孕與孕期是最需要明確劑量的情境：多數國家建議**計畫懷孕者從受孕前數個月開始每日補充**，曾生育神經管缺陷胎兒者的建議劑量更高，屬醫師處方範疇。 <a href="#ref-1">[1]</a> 具體劑量請依產檢醫師建議，不宜自行決定。
 
 ## 缺乏風險或攝取不足問題
 
-葉酸缺乏會造成巨球性（大球性）貧血，症狀包括疲倦、虛弱、舌頭發炎等；孕期缺乏則提高神經管缺陷風險。 <a href="#ref-1">[1]</a> 較高風險的族群包括：飲食缺乏蔬果者、酒精使用過量者、吸收不良（如乳糜瀉、發炎性腸道疾病）者，以及服用某些藥物者——例如甲氨蝶呤（methotrexate）、部分抗癲癇藥與磺胺塞拉金（sulfasalazine）會干擾葉酸代謝。這些情況的補充應由醫療專業評估。
+缺乏表現：巨球性貧血、疲倦、口角炎、舌炎、腹瀉、易怒；孕期缺乏則與神經管缺陷風險相關。
+
+高風險族群：
+
+- **育齡與備孕女性**：需求高且關鍵期早。
+- **慢性酒精使用者**：影響吸收與代謝。
+- **吸收不良疾病**：乳糜瀉、發炎性腸道疾病、腸道切除。
+- **使用特定藥物者**：methotrexate、部分抗癲癇藥（如 phenytoin）、sulfasalazine 會干擾葉酸代謝或吸收。
+- **透析患者**：水溶性維生素會被移除。
 
 ## 補充品常見形式
 
-常見合成葉酸（folic acid）、活性型 L-甲基葉酸（5-MTHF）與葉酸鈣（folinic acid）。 <a href="#ref-1">[1]</a> 近年行銷常以「MTHFR 基因變異者要改吃甲基葉酸」為訴求，但要理性看待：第一，目前明確被大型研究與公衛政策證實能預防神經管缺陷的是**合成葉酸**；第二，活性型葉酸在一般族群是否臨床上更優，證據仍不足。對多數人而言，依建議量補充合成葉酸或攝取強化食品已足夠；有特殊代謝或疾病疑慮者再與醫師討論型態選擇。
+- **folic acid**：最常見、最便宜，證據基礎最厚（神經管缺陷的預防試驗用的就是它）。
+- **5-MTHF（活性葉酸）**：不需經還原酶轉換，價格較高。對 MTHFR 變異者的實際臨床優勢仍在討論中。
+- **綜合維他命／孕婦維他命**：多已含葉酸，額外再補單方前應把總量加總。
+- 與 B12 同配是常見設計，目的正是降低單獨高劑量葉酸掩蓋 B12 缺乏的風險。
 
 ## 安全性與注意事項
 
-天然食物中的葉酸沒有已知的過量上限疑慮；風險主要來自**合成葉酸**（補充劑與強化食品）。成人每日合成葉酸的可耐受上限為 1000 微克。 <a href="#ref-1">[1]</a> 最重要的安全議題是「**遮蔽維生素 B12 缺乏**」：高劑量葉酸可以矯正 B12 缺乏造成的貧血表現，卻不能阻止 B12 缺乏持續傷害神經，導致診斷延誤、神經損傷惡化。這對素食者、年長者與胃腸吸收不良者尤其要留意。服用抗癲癇藥、甲氨蝶呤等藥物者補充前應諮詢醫師，避免影響藥效或療程。
+天然食物來源沒有已知的過量風險。合成葉酸需要留意：
+
+- **掩蓋維生素 B12 缺乏**：高劑量葉酸能改善 B12 缺乏造成的貧血表現，卻不能阻止神經病變進展，可能延誤診斷。年長者與素食者尤其需要留意。 <a href="#ref-1">[1]</a> 這是上限攝取量存在的主要理由。
+- **methotrexate**：這是葉酸拮抗劑，用於癌症時補充葉酸可能影響療效；用於類風濕性關節炎時則常規併用葉酸以減少副作用。**兩種情境的處理完全不同，必須由醫師決定。**
+- **抗癲癇藥物**：葉酸與 phenytoin 等藥物可能互相影響血中濃度，調整前應諮詢醫師。
+- **未代謝葉酸**：長期高劑量攝取合成葉酸時，血中可測得未代謝的 folic acid，其長期健康意義目前尚未定論。
 
 ## 常見迷思
 
-- 「葉酸就是 folic acid，沒差別」：天然葉酸與合成葉酸來源、吸收率不同；標示用 DFE 換算，孕期衛教指定的是合成葉酸的微克數。 <a href="#ref-1">[1]</a>
-- 「確認懷孕再吃就好」：神經管在受孕後 3–4 週就閉合，補充必須在**孕前**就開始才來得及。 <a href="#ref-4">[4]</a>
-- 「葉酸補越多越好、能顧心血管」：超過上限可能遮蔽 B12 缺乏；雖能降同半胱胺酸，但未一致轉化為心血管事件下降。 <a href="#ref-1">[1]</a>
-- 「只有孕婦要補」：它是全民必需營養素，育齡女性、吸收不良或特定用藥者都需留意。
+- **「驗到懷孕才開始補葉酸也來得及」**：神經管在受孕後約 21 至 28 天閉合，多數人此時才剛驗出懷孕。**關鍵期在受孕前**。 <a href="#ref-1">[1]</a>
+- **「多吃菠菜就夠了」**：天然葉酸的生物利用率約 50%，且怕熱易流失；備孕期間多數指引仍建議使用補充品，而非僅靠飲食。
+- **「有 MTHFR 變異就一定要吃活性葉酸」**：該變異影響代謝效率，但一般葉酸對絕大多數人仍然有效；是否需要改用 5-MTHF 應由醫師評估，而非依基因檢測報告自行決定。
+- **「葉酸吃多沒關係，反正水溶性」**：水溶性不等於無上限。合成葉酸的上限存在的理由是掩蓋 B12 缺乏的診斷風險，而非急性毒性。 <a href="#ref-1">[1]</a>
 
 ## 參考資料
 
 <ol>
-  <li id="ref-1">NIH Office of Dietary Supplements: Folate — Health Professional Fact Sheet. <a href="https://ods.od.nih.gov/factsheets/Folate-HealthProfessional/" target="_blank" rel="noreferrer">https://ods.od.nih.gov/factsheets/Folate-HealthProfessional/</a></li>
-  <li id="ref-2">MRC Vitamin Study Research Group. (1991). Prevention of neural tube defects: results of the Medical Research Council Vitamin Study. Lancet 338(8760):131-137. <a href="https://pubmed.ncbi.nlm.nih.gov/1677062/" target="_blank" rel="noreferrer">https://pubmed.ncbi.nlm.nih.gov/1677062/</a></li>
-  <li id="ref-3">De-Regil LM, Peña-Rosas JP, Fernández-Gaxiola AC, Rayco-Solon P. (2015). Effects and safety of periconceptional oral folate supplementation for preventing birth defects. Cochrane Database Syst Rev (12):CD007950. <a href="https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD007950.pub3/full" target="_blank" rel="noreferrer">https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD007950.pub3/full</a></li>
-  <li id="ref-4">CDC: Folic Acid — Facts for Clinicians (Clinical Overview). <a href="https://www.cdc.gov/folic-acid/hcp/clinical-overview/index.html" target="_blank" rel="noreferrer">https://www.cdc.gov/folic-acid/hcp/clinical-overview/index.html</a></li>
-  <li id="ref-5">U.S. Preventive Services Task Force. Folic Acid Supplementation to Prevent Neural Tube Defects (2023). <a href="https://www.ncbi.nlm.nih.gov/books/NBK593617/" target="_blank" rel="noreferrer">https://www.ncbi.nlm.nih.gov/books/NBK593617/</a></li>
+  <li id="ref-1">NIH Office of Dietary Supplements. Folate — Fact Sheet for Health Professionals. <a href="https://ods.od.nih.gov/factsheets/Folate-HealthProfessional/" target="_blank" rel="noreferrer">https://ods.od.nih.gov/factsheets/Folate-HealthProfessional/</a></li>
+  <li id="ref-2">Institute of Medicine. Dietary Reference Intakes for Thiamin, Riboflavin, Niacin, Vitamin B6, Folate, Vitamin B12, Pantothenic Acid, Biotin, and Choline. 1998. <a href="https://doi.org/10.17226/6015" target="_blank" rel="noreferrer">https://doi.org/10.17226/6015</a></li>
+  <li id="ref-3">De-Regil LM, et al. Effects and safety of periconceptional oral folate supplementation for preventing birth defects. Cochrane Database Syst Rev. 2015. <a href="https://doi.org/10.1002/14651858.CD007950.pub3" target="_blank" rel="noreferrer">https://doi.org/10.1002/14651858.CD007950.pub3</a></li>
+  <li id="ref-4">衛生福利部國民健康署．國人膳食營養素參考攝取量. <a href="https://www.hpa.gov.tw/Pages/List.aspx?nodeid=4613" target="_blank" rel="noreferrer">https://www.hpa.gov.tw/Pages/List.aspx?nodeid=4613</a></li>
 </ol>
