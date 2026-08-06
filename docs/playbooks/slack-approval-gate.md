@@ -1,4 +1,11 @@
-# Playbook：Slack 按鈕核准閘半自動發布（slack-approval-gate）
+# Playbook：自動發布產線（原 Slack 按鈕核准閘，slack-approval-gate）
+
+> ⚠️ **2026-08-06 業主裁示改「直接發佈制」**：頁面型草稿**不再發按鈕、不等人工 ✅**——
+> `draft-cron.sh` 出稿即 `gate_put_draft`＋`gate_set_state approved`（meta 的 `slack_ts` 留空），
+> `publish-approved.sh` 過完整 gate 後發佈，連結生效後**直接在該型別頻道貼「已上線+連結」**
+> （`reply_thread` 遇 `slack_ts` 空自動走頻道分支）。本檔以下按鈕/人工核准相關敘述為**歷史機制**，
+> Worker 的按鈕端點與狀態機仍在（rejected/TTL 路徑保留供手動介入），但日常流程已無人工步驟。
+> 品質 gate（content:audit＋型別 gate＋build）**完全不變**，仍是發佈的硬門檻。
 
 > 六型內容分兩類，**機制完全不同**：
 > - **頁面型**（news／articles／ingredients／myths）：自動撰寫 →（暫存 + Slack 按鈕）**核准** → **發布上站**。

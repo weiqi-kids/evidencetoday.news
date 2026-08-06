@@ -1,13 +1,17 @@
 #!/usr/bin/env bash
-# 半自動發布「✅ 核准閘」發布端（本日有據 evidencetoday.news）— 按鈕版
+# 自動發布產線・發布端（本日有據 evidencetoday.news）
 #
-# 掃暫存區 $PENDING_DIR/<type>/<slug>/，向 Worker 查每篇草稿狀態（按鈕寫入 KV）：
+# ⚠️ 2026-08-06 業主裁示改「直接發佈制」：draft-cron 出稿即自動標 approved（不再有人工按鈕），
+#   本腳本的職責不變＝過完整 gate 才發佈；上線通知因草稿無錨點訊息（slack_ts 空），
+#   由 thread 回貼改為直接發頻道訊息（reply_thread 的頻道分支）。
+#
+# 掃暫存區 $PENDING_DIR/<type>/<slug>/，向 Worker 查每篇草稿狀態（KV）：
 #   approved  → copy 進 src/content/<type>/ → 過 build/型別 gate → commit → 全部完成後 push
 #               → 寫 awaiting-live 標記（等連結生效）
-#   rejected  → 刪草稿（訊息已由 Worker 改為「已退稿」）
-#   逾期(>TTL) → 刪草稿 + thread 回貼「逾期過期」
+#   rejected  → 刪草稿（僅手動介入時出現）
+#   逾期(>TTL) → 刪草稿 + 頻道通知「逾期過期」（正常不應發生＝表示自動核准沒生效）
 #   pending   → 留到下輪
-# 另：每輪先掃 awaiting-live 標記，已 push 的文章一旦線上網址回 200，就回貼「已上線+連結」到該頻道。
+# 另：每輪先掃 awaiting-live 標記，已 push 的文章一旦線上網址回 200，就發「已上線+連結」到該頻道。
 #
 # 安裝（crontab；UTC 寫死，與既有 cron 錯開）：
 #   */10 * * * * /root/.config/evidencetoday-news/publish-approved.sh >> /tmp/evidencetoday-publish.log 2>&1
@@ -56,9 +60,13 @@ mkdir -p "$PENDING_DIR" "$AWAIT_DIR"; touch "$PUBLISHED_LEDGER"
 shopt -s nullglob
 NOW="$(date '+%s')"
 
-reply_thread() {  # <channel> <slack_ts> <text>
-  [ "$DRY_RUN" = "1" ] && { echo "[publish][DRY] thread→$1: $3"; return 0; }
-  printf '%s' "$3" | "$SLACK_NOTIFY" "$1" --thread "$2" >/dev/null 2>&1 || echo "[publish] thread 回貼失敗（$1）"
+reply_thread() {  # <channel> <slack_ts> <text>；ts 空＝直接發頻道訊息（直接發佈制，2026-08-06 起草稿無錨點訊息）
+  [ "$DRY_RUN" = "1" ] && { echo "[publish][DRY] →$1（${2:-頻道}）: $3"; return 0; }
+  if [ -n "$2" ]; then
+    printf '%s' "$3" | "$SLACK_NOTIFY" "$1" --thread "$2" >/dev/null 2>&1 || echo "[publish] thread 回貼失敗（$1）"
+  else
+    printf '%s' "$3" | "$SLACK_NOTIFY" "$1" >/dev/null 2>&1 || echo "[publish] 頻道通知失敗（$1）"
+  fi
 }
 
 # ── 階段 A：已發佈、等連結生效 → 一旦 200 就回貼上線連結 ─────────────────────────
@@ -70,7 +78,7 @@ for M in "${AWAIT_MARKERS[@]}"; do
   if [ "$CODE" = "200" ]; then
     echo "[publish] 連結已生效：$URL"
     if [ "$DRY_RUN" != "1" ]; then
-      reply_thread "$CH" "$STS" ":white_check_mark: *已上線*：$TITLE
+      reply_thread "$CH" "$STS" ":white_check_mark: *已上線* $TITLE
 :link: $URL"
       gate_set_state "$ID" "published" "$URL"
       rm -f "$M"
@@ -119,7 +127,7 @@ for META in "${PENDING_METAS[@]}"; do
   EXT="$(gate_ext "$TYPE")" || { echo "[publish] ⚠️ 未知型別 $TYPE"; continue; }
   CONTENT="$DIR/content.$EXT"
   [ -f "$CONTENT" ] || { echo "[publish] ⚠️ 缺 content.$EXT：$DIR"; continue; }
-  [ -z "$STS" ] && { echo "[publish] $LABEL/$SLUG 無 slack_ts（未通知成功），留待下輪"; continue; }
+  # 直接發佈制：slack_ts 允許為空（無草稿錨點訊息），通知一律走 reply_thread 的頻道分支
   [ -z "$ID" ] && ID="$(gate_id "$TYPE" "$SLUG")"
 
   STATE="$(gate_get_state "$ID")"
@@ -147,7 +155,7 @@ for META in "${PENDING_METAS[@]}"; do
         continue
       fi
       git add "$DEST"
-      if git commit -q -m "$(printf '%s(%s): 核准發布 %s\n\n經 Slack ✅ 核准閘人工核可後發布。\n🤖 半自動撰寫（%s）' "$TYPE" "$SLUG" "$TITLE" "$LABEL")"; then
+      if git commit -q -m "$(printf '%s(%s): 自動發布 %s\n\n直接發佈制（2026-08-06 業主裁示）：出稿自動核准，經完整 gate 後發布。\n🤖 自動撰寫（%s）' "$TYPE" "$SLUG" "$TITLE" "$LABEL")"; then
         PUSHED_ANY=1
         NEW_AWAIT+=( "$ID|$CH|$STS|$SITE/$TYPE/$SLUG/|$TITLE" )
         printf '{"date":"%s","type":"%s","slug":"%s","url":"%s"}\n' "$(date '+%Y-%m-%d')" "$TYPE" "$SLUG" "$SITE/$TYPE/$SLUG/" >> "$PUBLISHED_LEDGER"

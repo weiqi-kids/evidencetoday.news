@@ -19,10 +19,10 @@
 |---|---|---|
 | `bootstrap.sh` | **所有 cron 的統一入口**：設環境→`git pull`→**額度冷卻閘**→`exec` 指定腳本。根除「repo 內腳本自我 pull」風險。 | 本檔 |
 | `claude-run.sh` | **所有 headless `claude` 呼叫的統一包裝**（跑 `claude-appi`、偵測 weekly/usage limit→寫冷卻旗標）。draft/news/optimize/perf 皆經此呼叫，勿再直接呼叫 `claude-appi`。 | 本檔 |
-| `gate-lib.sh` | 核准閘共用函式庫（型別對應、Slack/Worker 讀寫）。被 draft/publish source。 | `slack-approval-gate.md` |
+| `gate-lib.sh` | 發佈產線共用函式庫（型別對應、Slack/Worker 讀寫）。被 draft/publish source。 | `slack-approval-gate.md` |
 | `slack-notify.sh` | 通用 Slack 發訊（`chat.postMessage`，含 `--thread`）。 | `slack-approval-gate.md` |
-| `draft-cron.sh <type>` | 半自動撰寫出草稿→暫存→發按鈕→存 Worker。**articles 選題受「能贏的文章模子」六基因約束**（SELECT_BLOCK 已注入，見鐵則 8）。**news 維持每日、受標題形狀約束**（見鐵則 9）。 | `slack-approval-gate.md`、`winning-article-formula.md` |
-| `publish-approved.sh` | 讀核准狀態→發佈→等連結生效回貼。 | `slack-approval-gate.md` |
+| `draft-cron.sh <type>` | 撰寫出草稿→暫存→**自動標 approved（2026-08-06 業主裁示直接發佈制，不再發按鈕等人工 ✅）**。**articles 選題受「能贏的文章模子」六基因約束**（SELECT_BLOCK 已注入，見鐵則 8）。**news 維持每日、受標題形狀約束**（見鐵則 9）。 | `slack-approval-gate.md`、`winning-article-formula.md` |
+| `publish-approved.sh` | 讀狀態→過完整 gate→發佈→連結生效後**直接發頻道**「已上線+連結」（直接發佈制，無 thread 錨點）。 | `slack-approval-gate.md` |
 | `news-cron.sh` | （備援，已停用）原 /news 全自動發布。 | `news_sop.md` |
 | `optimize-cron.sh` | 每日自我優化引擎（改既有頁→部署→發優化報報）。 | `daily-optimize.md` |
 | `perf-report.sh` | 每 3 天 GA4+GSC 經營建議（避開 optimize 已做的事，發優化報報）。 | `audience-insights.md` |
@@ -68,7 +68,7 @@ CRON_TZ=UTC
 35 23 * * 4    draft-cron.sh myths        # 台北週四→五 07:35
 # 35 23 * * 1  draft-cron.sh podcast      # 【2026-07-07 用戶要求停用】台北週一→二 07:35（1 份講稿）
 # 35 23 * * 3  draft-cron.sh videos       # 【2026-07-07 用戶要求停用】台北週三→四 07:35（3 份短影音腳本）
-*/10 * * * *   publish-approved.sh        # 每 10 分核准→發佈→回貼
+*/10 * * * *   publish-approved.sh        # 每 10 分掃自動核准草稿→gate→發佈→貼上線連結（2026-08-06 直接發佈制）
 0 1  */3 * *   sitemap-submit.sh          # 每 3 天 sitemap+索引覆蓋率（台北 09:00）
 30 1 */3 * *   perf-report.sh             # 每 3 天經營建議（台北 09:30）
 30 2 *   * *   optimize-cron.sh           # 每日自我優化（台北 10:30）

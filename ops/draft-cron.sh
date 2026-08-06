@@ -1,16 +1,17 @@
 #!/usr/bin/env bash
-# 半自動發布「✅ 核准閘」出草稿端（本日有據 evidencetoday.news）
+# 自動發布產線・出草稿端（本日有據 evidencetoday.news）
 #   draft-cron.sh <articles|ingredients|myths|news|podcast|videos>
+#
+# ⚠️ 2026-08-06 業主裁示改「直接發佈制」：草稿不再發 Slack 按鈕等人工 ✅，出稿即自動標
+#   approved，publish-approved.sh 過完整 gate 後直接發佈，並在頻道貼上線連結。
+#   （原「✅ 核准閘」機制的狀態機/暫存區/TTL 全部沿用，只拿掉人工核准那一步。）
 #
 # 兩類草稿（型別→分流見 gate-lib.sh gate_is_script）：
 #   ▸ 頁面型 news/articles/ingredients/myths：比照全管線在 src/content/<type>/ 原地撰寫並跑真 gate
-#     （content:audit / 型別 gate / build），過了搬進暫存區 $PENDING_DIR/<type>/<slug>/、發按鈕、清工作樹；
-#     核准後 publish-approved.sh 才 cp 進 src→build→commit→push 真正發布上站。
+#     （content:audit / 型別 gate / build），過了搬進暫存區 $PENDING_DIR/<type>/<slug>/、自動標 approved、
+#     清工作樹；publish-approved.sh 再 cp 進 src→重跑 gate→commit→push 真正發布上站。
 #   ▸ 稿件型 podcast/videos：產「給真人錄/拍的稿子」，**不進 repo、不建站內頁、不跑 build**。
-#     claude 寫到 repo 外 scratch → wrapper 搬暫存區、發按鈕；核准後 publish 只回「已採用，請錄/拍」不發布。
-#
-# 比照 news 全管線但**不發布**：claude 只把成品留在指定位置，搬暫存／發 Slack／清理都由 wrapper 處理。
-# 之後 publish-approved.sh 讀到 ✅ 才依型別處置（頁面型發布上站／稿件型回採用）。
+#     claude 寫到 repo 外 scratch → wrapper 搬暫存區；目前兩型別皆已停用（2026-07-07）。
 #
 # 安裝（crontab；UTC 寫死，與既有 cron 錯開。一律經 ops/bootstrap.sh 啟動）：
 #   17 22 * * * .../draft-cron.sh news        # 台北每日 06:17（門檻制，不夠不發）
@@ -65,20 +66,23 @@ stage_and_notify() {  # <src_content_file>
   nsrc="$(grep -cE 'https?://' "$src")"
   gateline="來源約 ${nsrc} 處連結　•　已過 gate：content:audit + build$( [ -n "$(gate_typecheck "$TYPE")" ] && echo " + $(gate_typecheck "$TYPE")" )　•　$(date '+%Y-%m-%d')"
 
-  ts="$(gate_post_buttons "$CH" "$id" "$LABEL" "$title" "$desc" "$gateline")" || ts=""
-  if [ -n "$ts" ]; then
-    gate_put_draft "$id" "$TYPE" "$slug" "$title" "$desc" "$CH" "$ts" "$stagedir/content.$EXT" \
-      || echo "[draft] ⚠️ $slug 存 Worker 失敗（預覽會顯示草稿不存在；核准仍可運作）"
-  else
-    echo "[draft] ⚠️ $slug 發按鈕訊息失敗；草稿留在 $stagedir（meta 無 slack_ts，publish 會略過直到補上）"
-  fi
+  # 直接發佈制（2026-08-06 業主裁示，取代 Slack ✅ 核准閘）：不發按鈕訊息、不等人工核准。
+  # 仍存 Worker（狀態機/預覽頁沿用）→ 直接標 approved；publish cron 過完整 gate 後發佈，
+  # 上線時由 publish-approved.sh 直接在頻道貼連結（meta 的 slack_ts 留空＝頻道訊息而非 thread）。
+  # Worker 的 PUT /gate/draft 驗證 slack_ts 非空；直接發佈制沒有按鈕訊息，給佔位值 "0"
+  # （僅滿足驗證，無人會按按鈕）；meta.json 的 slack_ts 才是通知走向的依據，留空＝發頻道訊息。
+  ts=""
+  gate_put_draft "$id" "$TYPE" "$slug" "$title" "$desc" "$CH" "0" "$stagedir/content.$EXT" \
+    || echo "[draft] ⚠️ $slug 存 Worker 失敗（狀態機沒有條目時 set_state 不會生效，會卡 pending 至 TTL）"
+  gate_set_state "$id" "approved" \
+    || echo "[draft] ⚠️ $slug 設 approved 失敗，會卡 pending 至 TTL（可手動 gate_set_state 補救）"
   jq -nc \
     --arg id "$id" --arg type "$TYPE" --arg slug "$slug" --arg title "$title" \
-    --arg summary "$desc" --arg ch "$CH" --arg ts "${ts:-}" \
+    --arg summary "$desc" --arg ch "$CH" --arg ts "" \
     --argjson created "$(date '+%s')" \
     '{id:$id,type:$type,slug:$slug,title:$title,summary:$summary,gate:"audit+build+typecheck",created_ts:$created,channel:$ch,slack_ts:$ts}' \
     > "$stagedir/meta.json"
-  echo "[draft] ✅ 已暫存並發按鈕：$LABEL/$slug（ts=${ts:-none}）"
+  echo "[draft] ✅ 已暫存並自動核准（直接發佈制）：$LABEL/$slug"
 }
 
 # ── 稿件型（podcast/videos）：把一份稿直接發到頻道當通知（無核准閘、不進 repo、不存 Worker）──
