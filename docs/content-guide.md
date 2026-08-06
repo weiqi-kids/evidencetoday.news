@@ -415,6 +415,35 @@ relatedVideos: ["sprouted-potato"]       # 連到 src/content/videos/sprouted-po
 
 ---
 
+## 發文排程健檢（`pnpm check:schedule`）
+
+排程破洞不會讓 build 失敗、不會讓 CI 變紅，就這樣安靜地少發一天。2026-08-06 盤點時
+才發現 `ingredients` 的 08-17 是空的——沒有任何檢查在看排程本身。`pnpm check:schedule`
+補這個缺口。
+
+它分開看兩件性質不同的事：
+
+| 問題 | 判定 | 行為 |
+|---|---|---|
+| **破洞** | 兩篇已排程稿之間夾著空日 | ✗ exit 1。排程是連續產出的，中間有洞一定是失誤 |
+| **跑道** | 最後一篇排程稿距今剩幾天，低於 10 天 | ⚠️ 只警告。這是產線的正常前緣，不是失誤 |
+
+跑道門檻抓 10 天而不是 7 天，是因為 evergreen 每週才一批（`ingredients` 週二 /
+`myths` 週四 / `articles` 週日），而營運帳號跟 appi.news 共用週限額，撞到限額那批
+會整批空跑——要留得起 miss 一次的餘裕。
+
+**`news` 只檢查破洞，不檢查跑道。** 趨勢新聞每日 cron 產出，且 `publishDate` 一律
+等於檔名的名目日期。拿它跟 evergreen 一起談「排程夠不夠」，就會重蹈 2026-08-04 把
+news 一併拉開、標題寫 08-10 的稿排到 09-28 那次的錯。
+
+**補洞怎麼補**：evergreen（articles / ingredients / myths）可以補一篇該日的稿，
+也可以把後面的稿往前挪一天填掉——挪動只會讓跑道少一天，下一批 cron 會補回來。
+**`news` 不能挪**，它的 `publishDate` 綁死檔名日期，要補只能補新稿。
+
+草稿（`draft: true`）不列入計算，否則草稿會把破洞蓋掉、看起來一切正常。
+
+---
+
 ## Schema 驗證失敗排錯
 
 `pnpm build` 或 `pnpm dev` 時如果出現 Content Collection schema 錯誤，常見原因：
