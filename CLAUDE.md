@@ -88,7 +88,7 @@ pnpm check:schedule     # 發文排程健檢：破洞擋、跑道不足警告
 
 | 想知道什麼 | 跑哪道指令 | 詳解 |
 |---|---|---|
-| 各類型篇數、已公開/排程中/草稿、審閱署名覆蓋、最後排程日 | `pnpm stats` | `scripts/content-stats.mjs` |
+| 各類型篇數、已公開/排程中/草稿/送審中、已掛審閱署名、最後排程日 | `pnpm stats` | `scripts/content-stats.mjs` |
 | 排程有沒有破洞、跑道剩幾天 | `pnpm check:schedule` | `docs/content-guide.md` |
 | 曝光 / 點擊 / 排名 / 流量來源（近 28 天） | `pnpm perf` | `docs/playbooks/audience-insights.md` |
 | Google 索引涵蓋率、哪些頁沒被收錄 | `pnpm index:coverage` | `docs/playbooks/analytics.md` |

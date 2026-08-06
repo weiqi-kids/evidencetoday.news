@@ -116,15 +116,19 @@ const pad = (s, w) => String(s) + ' '.repeat(Math.max(0, w - width(s)));
 const num = (n, w) => ' '.repeat(Math.max(0, w - width(n))) + String(n);
 
 console.log(`\n站況快照（台北時間 ${today}）\n`);
-console.log(`${pad('類型', 14)}${num('總數', 6)}${num('已公開', 8)}${num('排程中', 8)}${num('草稿', 6)}${num('待審', 6)}${num('掛審閱', 8)}  最後排程日`);
-console.log('-'.repeat(74));
+// 欄名要能單獨看懂。舊版寫「待審」與「掛審閱」，兩欄都有「審」字卻是完全不同的
+// 兩件事（前者是編輯送審狀態、後者是醫療審閱署名），且「掛審閱」看不出是已掛還是
+// 待掛——2026-08-06 使用者實際被誤導過一次。改名時請維持這個判準：欄名要能脫離
+// 上下文獨立判讀，寧可長一點。
+console.log(`${pad('類型', 14)}${num('總數', 6)}${num('已公開', 8)}${num('排程中', 8)}${num('草稿', 6)}${num('送審中', 8)}${num('已掛署名', 10)}  最後排程日`);
+console.log('-'.repeat(78));
 
 for (const r of rows) {
   const pending = r.underReview ? r.underReview : '-';
   const drafts = r.draft ? r.draft : '-';
   console.log(
     `${pad(r.label, 14)}${num(r.total, 6)}${num(r.published, 8)}${num(r.scheduled, 8)}` +
-    `${num(drafts, 6)}${num(pending, 6)}${num(`${r.reviewed}/${r.total}`, 8)}  ${r.lastScheduled ?? '-'}`
+    `${num(drafts, 6)}${num(pending, 8)}${num(`${r.reviewed}/${r.total}`, 10)}  ${r.lastScheduled ?? '-'}`
   );
 }
 
@@ -137,7 +141,8 @@ const totals = rows.reduce(
   { total: 0, published: 0, scheduled: 0 }
 );
 
-console.log('-'.repeat(74));
+console.log('-'.repeat(78));
 console.log(`${pad('合計', 14)}${num(totals.total, 6)}${num(totals.published, 8)}${num(totals.scheduled, 8)}`);
 console.log(`\n最後排程日：${latestScheduled ?? '（無未來排程稿）'}`);
+console.log('欄位說明：送審中＝status: under-review（編輯流程未公開）｜已掛署名＝frontmatter 有 reviewer，分子是「已掛」的篇數');
 console.log('排程破洞與跑道請跑 pnpm check:schedule；曝光數據 pnpm perf；索引涵蓋率 pnpm index:coverage\n');
