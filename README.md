@@ -247,6 +247,7 @@ pnpm check:content:all  # 全站去 AI 味盤點（恆 exit 0，人工普查用�
 pnpm check:myths    # 闢謠內容品質 gate（發布 myths 前必跑）
 pnpm check:news     # 趨勢新聞來源連結 gate（每篇須有可點 references/sourceUrl/pmid；CI 已接）
 pnpm check:design   # 設計規範守門 v2（pnpm build 會自動先跑；規則見「CSS / RWD 通用規範」）
+pnpm check:schedule # 發文排程健檢：找排程破洞（擋）與跑道不足（警告）
 
 # — 曝光量 / 選題（情境 B）—
 pnpm perf           # 近 28 天 GA4+GSC 效能快照（唯讀，經營決策用；需 gcloud token）

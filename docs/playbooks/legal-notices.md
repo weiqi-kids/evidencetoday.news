@@ -38,6 +38,20 @@
 
 **署名採逐篇制**：只有實際審閱過的頁面才填 `reviewer`。`reviewedBy` 在 schema.org 上是「這位具名醫師審閱過這篇」的事實主張，批次蓋章等同不實陳述。送審進度見 `docs/medical-review-queue.md`。
 
+### 三個 collection 的接法（2026-08-06 統一）
+
+`reviewer` 欄位有沒有作用，取決於各 collection 的路由**有沒有真的接**。曾經發生過「frontmatter 寫了但前台完全沒讀」——myths 74 篇掛了 `reviewer` 卻既不顯示署名、也不輸出 `reviewedBy`，白掛了一輪。動這三個檔時務必成套檢查：
+
+| collection | 作者 | 審閱者署名 | JSON-LD |
+|---|---|---|---|
+| `articles` | `data.author`（逐篇具名） | `EditorInfo` | 審閱者≠作者 → Person 級 `reviewedBy` |
+| `myths` | `d.author`（逐篇具名） | `EditorInfo` | 同上（2026-08-06 補接） |
+| `ingredients` | 無 author 欄，`EditorInfo` 顯示「編輯部」 | `EditorInfo` | 有 `reviewer` → Person 級；否則退回機構級 `PUBLISHER_REF`（2026-08-06 補接） |
+
+- `ingredients` 刻意不設 `author`：成分解析由編輯部彙整，沒有逐篇掛名作者。`Article.astro` 的 `author ?? '編輯部'` fallback 就是為此。
+- 三處共用同一條反自審規則：**審閱者＝作者時不顯示署名、也不輸出 Person 級 `reviewedBy`**（退為機構級）。判斷邏輯散在 `EditorInfo.astro` 與三個 `[slug].astro`，改一處要同步其他處。
+- **驗證方式**：`rm -rf .astro dist && pnpm build`（schema 改動必須清 content-layer 快取，否則新欄位會被舊 `data-store.json` 靜默剝除），然後 `grep -o '"reviewedBy":{"@type":"[A-Za-z]*"' dist/<collection>/<slug>/index.html` 應出現 `Person`。
+
 ---
 
 ## 已知的死碼與待處理項

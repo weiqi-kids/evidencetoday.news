@@ -26,7 +26,8 @@
     "sitemap:submit": "node scripts/sitemap-submit.mjs",
     "index:coverage": "node scripts/index-coverage.mjs",
     "gnews:watch": "node scripts/googlenews-watch.mjs",
-    "check:design": "node scripts/check-design.mjs"
+    "check:design": "node scripts/check-design.mjs",
+    "check:schedule": "node scripts/check-schedule.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.14",

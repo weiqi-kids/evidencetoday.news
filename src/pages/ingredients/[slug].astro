@@ -12,7 +12,7 @@ import { fmtDate } from '@/utils/date';
 import { stripPodcastSlug } from '@/utils/podcasts';
 import { contentSocial } from '@/utils/social-meta.mjs';
 import ReadingEngagement from '@/components/blocks/ReadingEngagement.svelte';
-import { buildCitations, PUBLISHER_REF, WEBSITE_REF } from '@/utils/schema-org';
+import { buildCitations, buildPerson, PUBLISHER_REF, WEBSITE_REF } from '@/utils/schema-org';
 import { isPublicEntry } from '@/utils/visibility';
 import { getAutoRelated } from '@/utils/related';
 import { TOPICS, matchesTopic } from '@/data/topics';
@@ -81,8 +81,11 @@ const ingredientArticleSchema = {
   dateModified: data.updatedDate.toISOString(),
   lastReviewed: data.updatedDate.toISOString(),
   medicalAudience: { '@type': 'MedicalAudience', audienceType: 'Patient' },
+  // 成分解析由編輯部彙整，作者維持機構級；但掛了獨立醫療審閱者時，reviewedBy 升級為
+  // Person（含 hasCredential），這才是 E-E-A-T 有分量的部分。沒掛才退回機構級。
   author: PUBLISHER_REF,
-  reviewedBy: PUBLISHER_REF,
+  reviewedBy: data.reviewer ? buildPerson(data.reviewer) : PUBLISHER_REF,
+  ...(data.reviewer ? { lastReviewed: data.updatedDate.toISOString() } : {}),
   publisher: PUBLISHER_REF,
   isPartOf: WEBSITE_REF,
   about: {
@@ -118,6 +121,7 @@ const ingredientBreadcrumbSchema = {
   category="ingredient"
   publishDate={data.publishDate}
   updatedDate={data.updatedDate}
+  reviewer={data.reviewer}
   tags={data.tags}
   breadcrumbItems={[
     { label: '首頁', href: '/' },
