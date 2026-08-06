@@ -98,6 +98,31 @@ for M in "${AWAIT_MARKERS[@]}"; do
   fi
 done
 
+# ── 階段 C：排程稿見刊當天貼連結（2026-08-06 業主要求：所有上線內容都要在群裡看得到）──
+# 掃四型內容裡 publishDate=今天者，頁面 200 即發頻道「已上線+連結」。
+# 用 $PUBLISHED_LEDGER 以 URL 去重：核准流程發布的稿已寫 ledger，不會重複貼；
+# 排程稿貼完也寫一筆。頁面還沒部署到（非 200）就留給下一輪（本 cron 每 10 分跑）。
+TODAY_TW="$(date '+%Y-%m-%d')"
+for T2 in news articles myths ingredients; do
+  CH2="$(gate_channel "$T2")"; DIR2="$(gate_dir "$T2")"
+  for F2 in "$DIR2"/*.md "$DIR2"/*.mdx; do
+    [ -f "$F2" ] || continue
+    PD2="$(grep -m1 -E '^publishDate:' "$F2" | sed -E 's/^publishDate:[[:space:]]*//; s/["'"'"']//g')"
+    [ "$PD2" = "$TODAY_TW" ] || continue
+    SLUG2="$(basename "$F2")"; SLUG2="${SLUG2%.*}"
+    URL2="$SITE/$T2/$SLUG2/"
+    grep -qF "\"url\":\"$URL2\"" "$PUBLISHED_LEDGER" 2>/dev/null && continue
+    CODE2="$(curl -s -o /dev/null -w '%{http_code}' -I --max-time 15 "$URL2" 2>/dev/null || echo 000)"
+    [ "$CODE2" = "200" ] || { echo "[publish] 排程稿未生效（HTTP $CODE2，下輪再試）：$URL2"; continue; }
+    TITLE2="$(grep -m1 -E '^title:' "$F2" | sed -E 's/^title:[[:space:]]*//; s/^["'"'"']//; s/["'"'"']$//')"
+    if [ "$DRY_RUN" = "1" ]; then echo "[publish][DRY] 排程稿上線通知→$CH2：$TITLE2 $URL2"; continue; fi
+    reply_thread "$CH2" "" ":white_check_mark: *已上線* $TITLE2
+:link: $URL2"
+    printf '{"date":"%s","type":"%s","slug":"%s","url":"%s","scheduled":true}\n' "$TODAY_TW" "$T2" "$SLUG2" "$URL2" >> "$PUBLISHED_LEDGER"
+    echo "[publish] 排程稿上線已通知：$T2/$SLUG2"
+  done
+done
+
 # ── 階段 B：處理待審草稿 ─────────────────────────────────────────────────────────
 PENDING_METAS=( "$PENDING_DIR"/*/*/meta.json )
 if [ ${#PENDING_METAS[@]} -eq 0 ]; then echo "[publish] $(date '+%F %T %Z') 無待審草稿"; exit 0; fi
