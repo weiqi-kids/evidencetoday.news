@@ -163,7 +163,7 @@
 
 - 全站分享標題、描述與 OG 圖路徑集中在 `src/utils/social-meta.mjs` 維護；頁面請優先使用 `STATIC_SOCIAL`、`listSocial()`、`contentSocial()` 或 `tagSocial()`，不要在各頁零散拼接 `og:title` / `og:description`。
 - `Base.astro` 支援 `ogTitle`、`ogDescription`、`ogImage`，並會同步輸出 Open Graph 與 Twitter Card；單篇版型由 `Article.astro` / `Media.astro` 轉傳 `socialTitle` 與 `socialDescription`。
-- `scripts/generate-og.mjs` 會在 build 前產生首頁、靜態頁、分類首頁、內容單篇與標籤頁共用的 1200×630 PNG。OG 圖只放短 badge、短主題與小品牌識別；不要把完整 description 放進圖裡。
+- OG 圖現為**靜態、每 collection 一張**（`public/og-static/*.png`，1200×630），由 `src/utils/social-meta.mjs` 的 `ogImageForCollection()` 指派；逐頁生成方案已淘汰。OG 圖只放短 badge、短主題與小品牌識別；不要把完整 description 放進圖裡。規則見 [`../page-rules/seo-and-feeds.md`](../page-rules/seo-and-feeds.md)。
 - 分類首頁固定使用短字主視覺：健康文章、迷思查證、成分解析、喜聞樂健、短影音、健康雷達。若新增 collection，必須同步補 `COLLECTION_SOCIAL` 與產圖模板色彩。
 - **闢謠（myths）單篇例外，不用分類共用圖**：`contentSocial('myths', …)` 回傳 `/og/myths/{slug}.png?v={updatedDate}`，由 `src/pages/og/myths/[slug].png.ts` 在 build 時逐篇動態生成（1200×630，白底題目區＋依判讀 tone 上色的色帶，秀出這篇的判讀結果與證據強度），不進 git、不用手動產圖。另有 `[slug]-square.png.ts` 產 1080×1080「儲存圖卡」（供讀者下載後直接貼 LINE 群組），單篇頁分享區塊（`.share-block`）同時放這張 OG 圖預覽、「分享到 LINE」按鈕與「下載圖卡」按鈕。兩個模板都在 `src/utils/og-template.ts`（`generateMythOgSvg` / `generateMythSquareCardSvg`），色帶依 `VERDICT_META[verdict].tone` 選色（`VERDICT_BAND_COLORS`）。新增/修改 myths 版面時勿把這兩支 `.png.ts` 誤當一般 astro page 刪掉。
 - 內容 frontmatter 可選填 `ogShortTitle`、`socialTitle`、`socialDescription` 作為人工覆寫；未填時會由 title / description / summary 推導短標與分享描述。文案應維持 40–80 個中文字左右，避免「值得關注」「帶你了解」「一篇看懂」等套版語氣。
