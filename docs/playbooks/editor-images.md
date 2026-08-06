@@ -174,7 +174,18 @@ pnpm covers:backfill --only slug-a,slug-b     # 限定文章
 - **HEAD 驗不過就跳過、不寫入。**`ArticleCard` 對 https URL 不做存在性檢查，404 會變破圖，比佔位卡更糟。
 - **英文關鍵字覆寫表 `KEYWORD_HINTS`。**Unsplash／Pexels 索引是英文，直接餵中文 `tags` 幾乎回空（2026-08-05 實測）。新增文章要補封面時，先在這張表加一行英文關鍵字；沒對應到的會退回中文 tags 並印警告，不會亂猜。
 
-⚠️ **Claude Code on the web 的沙箱跑不動這支**：環境的 network egress allowlist 預設擋掉 `*.workers.dev` 與 `images.unsplash.com`，實測 proxy 回 `403 connect_rejected`（`curl -sS "$HTTPS_PROXY/__agentproxy/status"` 可看到 `recentRelayFailures`）。要在遠端 session 補封面，得先把這兩個網域加進環境的網路白名單；否則改在主機或前台編輯器做。
+⚠️ **Claude Code on the web 的沙箱跑不動這支**：環境的 network egress allowlist 預設擋掉 `*.workers.dev` 與 `images.unsplash.com`，實測 proxy 回 `403 connect_rejected`（`curl -sS "$HTTPS_PROXY/__agentproxy/status"` 可看到 `recentRelayFailures`）。2026-08-06 再測，`api.unsplash.com`／`images.pexels.com`／`upload.wikimedia.org` 也一律回 `000`——**不是只有那兩個網域，是整類圖庫來源都被擋**，換圖庫繞不過去。要在遠端 session 補封面，得先把網域加進環境的網路白名單；否則改在主機或前台編輯器做。
+
+#### 待補（2026-08-06）
+
+6 篇 2026-08-23～08-28 的排程稿還沒有封面，`KEYWORD_HINTS` 已全部補好對應英文關鍵字，選圖邏輯也已在沙箱驗過（正確辨識 6 篇、排除 264 張站上已用圖），**只差對外網路**。在主機跑一行即可收尾：
+
+```bash
+GITHUB_TOKEN=$(gh auth token) pnpm covers:backfill --dry   # 先看 6 篇各挑到什麼
+GITHUB_TOKEN=$(gh auth token) pnpm covers:backfill         # 寫入後補 coverAlt 再 commit
+```
+
+清單：`japan-drugstore-medicine-bring-back-taiwan`、`cbd-products-bring-back-taiwan-legal-risk`、`thailand-sleep-gummies-bring-back-taiwan`、`aspirin-fish-oil-together-bleeding-risk`、`levothyroxine-calcium-iron-spacing-hours`、`probiotics-with-antibiotics-spacing`。寫入後別忘了逐張看圖補 `coverAlt`（腳本刻意不寫）。
 
 ### E. 部署行為：`cancelled` ≠ 失敗
 
