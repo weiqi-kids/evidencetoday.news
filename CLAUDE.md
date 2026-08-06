@@ -188,12 +188,13 @@ docs/                 # architecture / content-guide / news_sop / playbooks/
 
 2026-08-06 使用者明確指示：「我之後給你的內容，都已經是黃醫師看過的了，你不要再重複叫我去問他，你這樣會造成工作 SOP 混亂。」先前 CLAUDE.md 寫「每次 session 主動追問審閱進度」，導致每個 session 都去問同一件事——**該指示已撤除**。審閱窗口是使用者，不是你；你的角色是收到指令就執行。
 
-**現況（2026-08-06）**：40 篇已掛署名（第一批 20 + 第二批 20），逐篇進度在 `docs/medical-review-queue.md`。前台顯示「審閱：黃子彥中醫師」連到 `/disclosure`，並輸出 Person 級 `reviewedBy` 含 `hasCredential`（中醫師／衛福部）。
+**現況（2026-08-06）**：`articles` **129/129 全數掛上署名**（第一批 20 → 第二批 20 → 使用者告知全站審畢後一次補完 89）。逐篇進度在 `docs/medical-review-queue.md`。前台顯示「審閱：黃子彥中醫師」連到 `/disclosure`，並輸出 Person 級 `reviewedBy` 含 `hasCredential`（中醫師／衛福部）。
 
 **審閱者資料**：黃子彥，中醫師，中國醫藥大學中西醫學訓練背景，現任社團法人中華民國上醫預防醫學發展協會理事長，另任上一生物醫學研發長。`src/data/authors.ts` 的 `AUTHORS` 已建好。
 
 **掛署名的執行流程**（使用者說「這批審好了」就照做，不必再問）：
 1. 對目標檔在 `author:` 下一行插入 `reviewer: "黃子彥"`
+1a. **同時把 `updatedDate` 改成實際審閱日**——`articles/[slug].astro` 的 `dateModified` 與 `lastReviewed` 都取自 `updatedDate`，只加 `reviewer` 不動日期，等於宣告「最後審閱日」早於實際審閱日。⚠️ 但**更新日已 ≥ 審閱日者不要動**（多為未來排程稿），否則會產生 `updatedDate < publishDate` 的矛盾。
 2. **先跑 `node scripts/check-content.mjs <檔案>`**——守門會重掃「任何被碰到的檔案全文」，既有內文只因不在 diff 裡而被 grandfather，掛署名的那一刻才會爆。有 ERROR 就同一個 commit 修掉
 3. `pnpm build` 零錯誤 → commit → push
 
