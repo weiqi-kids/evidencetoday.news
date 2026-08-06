@@ -56,7 +56,7 @@
 
 #### 成分頁的孤島問題（2026-08-04 修）
 
-成分頁 63 篇中只有 5 篇填了 `relatedX`，其餘渲染出空的相關區、對外零出鏈，是全站最孤立的一群頁面（全站真實索引率僅 11%，內鏈是少數能把 Discovered→Crawled 推動的站內槓桿）。修法比照 `articles/[slug].astro`：手動 `relatedX` 全空時退到 `getAutoRelated()` 的 tag 重疊自動補齊，並加上 spoke→hub 膠囊。修完覆蓋率：相關內容 5→30 篇、專題回鏈 0→21 篇（分母 45 篇已發布成分頁）。
+成分頁絕大多數沒填 `relatedX`，渲染出空的相關區、對外零出鏈，是全站最孤立的一群頁面（內鏈是少數能把 `Discovered` → `Crawled` 推動的站內槓桿）。修法比照 `articles/[slug].astro`：手動 `relatedX` 全空時退到 `getAutoRelated()` 的 tag 重疊自動補齊，並加上 spoke→hub 膠囊。修完後絕大多數成分頁都有相關內容與專題回鏈。
 
 剩下未覆蓋的頁多半是 tag 命中不到任何 hub，屬 `matchKeywords` 廣度問題，見下方「常見陷阱」。
 

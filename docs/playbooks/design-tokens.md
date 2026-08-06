@@ -132,7 +132,7 @@
 
 ## OG 圖品牌系統維護規則
 
-`scripts/generate-og.mjs` 是全站分享圖的生成來源，因 satori 不支援 `oklch()`，OG 圖可以使用 `src/styles/variables.css` 的 hex 近似值，但不得自行發展脫離本站 CI 的新色系。全站 OG 應視為品牌門面：乾淨、字大、字粗、清楚，優先讓手機聊天縮圖可讀。
+全站分享圖為靜態圖（`public/og-static/*.png`）。生成這類圖時（如 `scripts/generate-author-og.ts`）因 satori 不支援 `oklch()`，可使用 `src/styles/variables.css` 的 hex 近似值，但不得自行發展脫離本站 CI 的新色系。全站 OG 應視為品牌門面：乾淨、字大、字粗、清楚，優先讓手機聊天縮圖可讀。
 
 ### 版型與安全區
 

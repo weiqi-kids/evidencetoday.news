@@ -46,11 +46,11 @@
 7. **`draft-cron.sh` 與 `publish-approved.sh` 共用 `src/content` 互斥鎖**（`CONTENT_LOCK`，定義在 `gate-lib.sh`）。原因：draft 撰稿期間草稿是 `src/content/<type>/` 下的**未追蹤檔**，還沒搬進暫存區；而 publish 每 10 分鐘一輪，結尾會 `git clean -fdq -- src/content` 清殘留——會把還在寫、耗時 >10 分鐘的草稿整篇洗掉（**2026-07-10 draft-myths 事故**：bone-broth / plant-milk 草稿各被誤刪一次，靠審核 Agent 留底才救回）。約定：**draft 端頁面型撰稿全程持鎖**（`flock -w 600`，等值得，稿件型 podcast/videos 走 repo 外 scratch 不需要）；**publish 端 `flock -n` 搶不到就跳過本輪**（10 分鐘後自動重試，發布延遲可接受、弄丟草稿不可接受）。
 8. **articles 選題＝「能贏的文章模子」**：`draft-cron.sh` 的 `articles` SELECT_BLOCK 已注入 `docs/playbooks/winning-article-formula.md` 的六基因鐵律（單一具體決定／「現在」觸發點／台灣在地限定／權威站沒寫的角度／切身後果／答案先行＋範圍狠收）。改選題邏輯時，這兩處（SELECT_BLOCK 與 playbook）要一起改，別讓自動管線與方法論分岔。
 9. **news 產出頻率與標題形狀**：
-   - **頻率＝維持每日**（`17 22 * * 0-6`）。2026-08-04 曾規劃降為週二/四/六，**2026-08-05 撤回，從未套用到主機**。撤回理由是當初的前提（索引率僅 11%、灌新 URL 會稀釋權重）已被數據推翻：索引率回升到 **68%**（222/328），趨勢新聞的**位置校正 CTR 達成率 165%，全站最高**。更關鍵的是**趨勢新聞有時效性——壓著不發等於作廢**，稿子排完就該送出去。
-   - **門檻**：`data/news-automation-config.json` 的 `scoreThreshold` **5.0**、`soloArticleMinScore` **7.0**；SELECT_BLOCK 的加權門檻 **6.0**（皆為原值，2026-08-05 由降頻期的 7.0/8.0/8.0 還原）。
+   - **頻率＝維持每日**（`17 22 * * 0-6`）。2026-08-04 曾規劃降為週二/四/六，**2026-08-05 撤回，從未套用到主機**。撤回理由：當初的前提（索引率低、灌新 URL 會稀釋權重）已被後續數據推翻，且趨勢新聞位置校正後的 CTR 達成率是全站最高的一群。更關鍵的是**趨勢新聞有時效性——壓著不發等於作廢**，稿子排完就該送出去。
+   - **門檻**：`data/news-automation-config.json` 的 `scoreThreshold` / `soloArticleMinScore` 與 SELECT_BLOCK 的加權門檻，皆維持原值（2026-08-05 由降頻期的暫時提高值還原）。**實際數值以 `news-automation-config.json` 為準，不在本檔複述**。
    - **標題**（此項與降頻無關，保留）：`titleDisplay` 必須是讀者會實際打進搜尋框的問句，**嚴禁「健康雷達 YYYY-MM-DD」日報流水句型**、嚴禁把期刊名或研究設計當標題主體；並確認前 18 字單獨看讀得通（`social-meta.mjs` 的 `shortTitle()` 會截到 18 字）。
-   - ⚠️ **news 的 `publishDate` 一律等於檔名的名目日期**（`radar-YYYY-MM-DD`），不可為了調整全站發文量而延後——2026-08-04 曾把 news 一併拉開，標題寫 08-10 的稿被排到 09-28，最遲遲 54 天。要調發文量請動 evergreen（articles/ingredients/myths）。
-   - **⏰ 待重新評估（2026-08-15，使用者 2026-08-06 指定，從原訂約 09-01 提前）**：評估依據為 news 的每頁曝光（2026-08-05 為 2.8，articles 為 28.1）、未索引比例（當時 33/85）、以及是否排擠共用週限額。⚠️ **08-15 屬期中檢查**：08-05→08-22 那批屆時只發到約一半，剛上線的稿必然曝光低、未索引，**計算時只納入已上線 ≥7 天者**，否則會把「還沒被爬」誤讀成「表現差」。判準以全站曝光趨勢方向為主，仍在成長就維持現狀。完整判讀見 `CLAUDE.md` 的「⏰ 到期提醒」。
+   - ⚠️ **news 的 `publishDate` 一律等於檔名的名目日期**（`radar-YYYY-MM-DD`），不可為了調整全站發文量而延後——2026-08-04 曾把 news 一併拉開，導致標題日期與實際發布日差了一個多月，等於發一批上線即過期的新聞。要調發文量請動 evergreen（articles/ingredients/myths）。
+   - **⏰ 何時重新評估頻率**：到期日在 `docs/reminders.md`，評估流程與判準在 `docs/playbooks/news-cadence-review.md`。**判準用的數字一律當場跑指令取得**（`pnpm perf` / `pnpm index:coverage` / `pnpm stats`），不要在本檔寫死基準。
    - 改動時三處要一起改：本檔 crontab 區塊、`draft-cron.sh` 的 news SELECT_BLOCK、`news-automation-config.json`。
 
 ## crontab（在 `/etc/cron.d/evidencetoday`，單檔一專案；系統 TZ=UTC，排程以 UTC 寫，台北＝UTC+8）

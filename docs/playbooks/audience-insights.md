@@ -71,7 +71,10 @@
 - **判讀**：已索引數逐次成長＝多屬時間問題、續觀察；停滯不動＝偏向權重天花板，全力投資站外權威（見 `docs/playbooks/geo-offsite.md`）。⚠️ 易誤判：`Discovered - currently not indexed` 的字串含 "indexed"，計數務必用「精確等於 `Submitted and indexed`」，勿用 `/indexed/` 比對。
 - **URL 來源與遠端沙箱 403（2026-08-04 修）**：優先抓線上 sitemap，取不到才退回 `dist/`。遠端沙箱（Claude Code on the web／CCR）的 egress allowlist 不含本站網域，`fetch` 會回 **403 純文字**「Host not in allowlist」而**不丟例外**——舊版沒驗證內容，解析出 0 個 `<loc>` 仍往下跑，印出「真實索引：0/0（NaN%）」，看起來像索引全掛。現在兩者都取不到會**硬失敗 exit 1**，勿把這個保護拿掉。遠端要跑就先 `pnpm build` 產 `dist/`（GSC API 本身走 googleapis.com，不受 allowlist 影響）。
 
-### 索引率基準線（每次量測請往下追加，不要覆蓋）
+### 索引率基準線（歷史量測紀錄，**不是現況**）
+
+> 這是本檔唯一容許出現數字的地方：GSC 不保留這段歷史，指令跑不出來，所以只能存檔。
+> **要看現況一律跑 `pnpm index:coverage`**，不要拿下表的數字當今天的狀態。每次量測往下追加，不要覆蓋。
 
 | 日期 | 已索引/總 | 索引率 | 備註 |
 |---|---|---|---|

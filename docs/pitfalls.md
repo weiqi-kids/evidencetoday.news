@@ -1,0 +1,46 @@
+# 踩過的坑
+
+每一條都是**實際壞過一次**才寫下來的。動手前先掃自己那一類。
+
+> 本檔只記「機制」與「怎麼避免」，不記當時的數字或當下狀態。要看現況請跑指令（`pnpm stats` / `check:schedule` / `perf` / `index:coverage`）。
+
+---
+
+## 內容撰寫
+
+- **tags 含 `/`** → build 失敗。分類名有斜線（例如某些疾病縮寫）要改寫成不含 `/` 的形式。
+- **插入不存在的行內圖 `![...](images/...)`** → Rollup 解析失敗，全站部署連續 fail。本站慣例不用行內本地圖；配圖走 frontmatter 封面與圖庫外連（見 `playbooks/editor-images.md`）。
+- **myths 單篇版型是刻意簡化**：只渲染固定區塊，不要再加「更新與更正紀錄」「延伸閱讀」等。playbook 把關，`check-myth-quality` 掃不到模板層。
+  - **例外：FAQ 是刻意保留的固定區塊**。曾因 `mythsSchema` 漏宣告 `faq` 欄，Zod 靜默剝除 → FAQ 從未顯示、FAQPage JSON-LD 也輸不出來。補欄位後生效，勿再移除。
+- **掛 `reviewer` 會引爆既有內文的 AI 味守門**：`check-content.mjs` 對「被碰到的檔案」重掃全文，既有內文原本只因不在 diff 裡而被 grandfather。掛署名前先跑 `node scripts/check-content.mjs <檔案>`，ERROR 同一個 commit 修掉。
+
+## 排程與可見性
+
+- **排程稿可見性只有 HTML 路由套 `isPublicEntry`**：`.txt`／RSS／`llms-full.txt`／tags 頁曾只濾 `!data.draft` → 未來日期排程稿提前洩全文。新增前台讀 collection 的路由**一律用 `isPublicEntry(data)`**；`src/utils/visibility.test.ts` 有防回歸測試會擋。
+- **news 排程不可被「拉開節奏」波及**：radar 稿的**檔名與標題都自帶日期**（`radar-YYYY-MM-DD-…`／「健康雷達 YYYY-MM-DD」）。曾在調整全站發文頻率時把 news 一起拉開 → 標題寫某日的稿被排到一個多月後才發，等於發一批一上線就過期的新聞。**重排全站排程時 news 必須排除在外，一律回到檔名的名目日期**（見 `playbooks/news-article.md`）。要調整發文量請動 evergreen（articles/ingredients/myths）。
+- **排程破洞沒有任何自動檢查看得到**（少發一天不會讓 build 紅），只能靠 `pnpm check:schedule`。動完排程一定要跑。
+- **Astro 5 content-layer 快取**：改 `content.schemas.ts` 欄位後，本機 `pnpm build` 可能沿用 `.astro/data-store.json` 舊解析結果（新欄位仍被剝除、前台看不到）。驗證 schema 改動請先 `rm -rf .astro dist` 再 build。CI 每次全新 checkout 無此問題。
+
+## 版面與樣式
+
+- **Article.astro `cards` variant 曾遺漏 `max-width: none`** → blocks 被限制在 68ch。改 variant 記得兩件事都設：透明背景 + 解除寬度上限。
+- **Podcast 連結 slug 一律用 `stripPodcastSlug()`**，不可用 `stripExt()`，否則單集頁連結壞掉。
+- **不要用 `:global()` 覆蓋 layout 的 class**，改用 variant prop；layout 管骨架、page 管皮膚。
+- **`!important` 存量遷移中**：`check-design.mjs` 的禁 `!important` 規則尚未啟用（存量在 `global.css`）。清零進度與清單見 `scripts/check-design.mjs` 檔頭 TODO，不要寫進文件。
+
+## 資料與判讀
+
+- **跨 collection 比 CTR 會得到相反結論**：各 collection 的平均排名差距很大，直接比原始 CTR 會把「排名差異」誤讀成「標題爛」，曾據此誤判某些分類該全面改寫標題。**談 CTR 一律先做位置校正**（算法見 `playbooks/audience-insights.md`）。
+- **剛上線的稿不能當「表現差」的證據**：未滿一週、Google 還沒爬完的稿，曝光與索引率本來就低。評估成效時只計已上線一段時間的稿，否則新稿必然拉低平均，會做出錯誤的減量決定。
+- **評估發文頻率不要看單期數字，要看方向**：全站曝光仍在成長時優先「別亂動結構」。流程見 `playbooks/news-cadence-review.md`。
+
+## 自動化與 token
+
+- **headless 派子代理不帶 model ＝ 默默用 opus、燒爆額度**：cron orchestrator 雖然自己跑 sonnet，但它派出的撰寫／審核 `Agent` 不帶 model 會落到帳號預設（opus）。撰寫委員會一律顯式 `model='sonnet'`（見 `AGENTS.md` 並行紀律、`ops/README.md`）。談「cron 燒 token」先查子代理 model。
+- **營運帳號與 appi.news 共用同一個週限額**：撞限額時本站的 cron 會一起空跑。`claude-run.sh` 撞限額會寫冷卻旗標，冷卻期內 `bootstrap.sh` 只跳過 claude 型 job、純資料型照跑。現況看 `/etn-cron`。
+- **遠端 CCR 環境 WebFetch 被沙箱封鎖**（PubMed/RSS 403），新聞管線為 WebSearch-only，用 `site:` 定向搜尋。
+
+## 資產產出
+
+- **OG 圖字型「Bold」曾其實是細體**：`*-Bold-static.ttf` 原檔是可變字型直接複製、沒有真的 instance 成 `wght=700`，satori 渲染時字重等於 Regular。要更新這類靜態字型，須用 `fonttools varLib.instancer NotoSansTC-Regular.ttf wght=400/700 -o ...` 產生真正定死權重的實例，不能只是複製可變字型或改檔名。驗證：渲染一段 `fontWeight:700` 文字，比對是否真的比 400 粗。
+- **字型子集化的權重要兩邊同步**：`Base.astro` 的 import 與 `subset-fonts.mjs` 的 `WEIGHTS` 不一致時，該權重不會被切塊（fallback 到整包或缺字）。見 `playbooks/ci-cd.md`。
