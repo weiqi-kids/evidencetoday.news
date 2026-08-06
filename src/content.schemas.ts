@@ -299,6 +299,9 @@ export const ingredientsSchema = z.object({
   publishDate: z.coerce.date(),
   updatedDate: z.coerce.date(),
   tags: z.array(z.string()),
+  // 成分解析由編輯部彙整（無逐篇掛名作者），但可掛獨立醫療審閱者。
+  // 有值時前台顯示「審閱：姓名＋職稱」並輸出 Person 級 reviewedBy。
+  reviewer: z.string().optional(),
   introduction: z.string(),
   featured: z.boolean().default(false),
   coverImage: z.string().optional(),

@@ -31,6 +31,15 @@ const whyItems = Array.isArray(d.whyItSpreads)
 const evidenceItems = d.evidenceSummary?.evidenceItems || [];
 const shareSummary = d.cardConclusion || d.verdictSummary;
 const mythCitations = buildCitations(d.references);
+// 與 articles 同一套規則：審閱者 ≠ 作者才輸出 Person 級 reviewedBy（獨立審閱才有 E-E-A-T
+// 價值），否則退為機構層級。2026-08-06 前 myths frontmatter 已寫 reviewer 但前台從未接，
+// 署名與 reviewedBy 都沒輸出；此處補上，勿再移除。
+const mythIndependentReviewer = d.reviewer && d.reviewer !== d.author;
+const mythReviewedBy = mythIndependentReviewer
+  ? buildPerson(d.reviewer)
+  : d.reviewer
+    ? { '@type': 'Organization', name: '本日有據', url: 'https://evidencetoday.news/' }
+    : null;
 const articleLd = {
   '@context': 'https://schema.org',
   '@type': 'Article',
@@ -42,6 +51,7 @@ const articleLd = {
   datePublished: d.publishDate.toISOString(),
   dateModified: d.updatedDate.toISOString(),
   author: buildPerson(d.author),
+  ...(mythReviewedBy ? { reviewedBy: mythReviewedBy, lastReviewed: d.updatedDate.toISOString() } : {}),
   publisher: PUBLISHER_REF,
   isPartOf: WEBSITE_REF,
   ...(mythCitations ? { citation: mythCitations } : {}),
@@ -105,7 +115,7 @@ const mythFaqSchema = d.faq && d.faq.length > 0
   : null;
 ---
 
-<Article title={d.title} description={social.description} seoTitle={social.title} socialTitle={social.title} socialDescription={social.description} ogImage={social.image} category="myth" variant="cards" showMedicalDisclaimer={false} publishDate={d.publishDate} updatedDate={d.updatedDate} tags={d.topicTags} breadcrumbItems={[{ label: '首頁', href: '/' }, { label: '迷思查證', href: '/myths/' }, { label: d.title }]}>
+<Article title={d.title} description={social.description} seoTitle={social.title} socialTitle={social.title} socialDescription={social.description} ogImage={social.image} category="myth" variant="cards" showMedicalDisclaimer={false} publishDate={d.publishDate} updatedDate={d.updatedDate} author={d.author} reviewer={d.reviewer} tags={d.topicTags} breadcrumbItems={[{ label: '首頁', href: '/' }, { label: '迷思查證', href: '/myths/' }, { label: d.title }]}>
   <Fragment slot="head">
     <meta property="article:published_time" content={d.publishDate.toISOString()} />
     <meta property="article:modified_time" content={d.updatedDate.toISOString()} />

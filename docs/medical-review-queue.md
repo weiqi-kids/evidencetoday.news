@@ -1,12 +1,16 @@
 # 醫療審閱佇列
 
 審閱者：**黃子彥中醫師**（中國醫藥大學中西醫學訓練背景；社團法人中華民國上醫預防醫學發展協會理事長）
-建立日：2026-08-04 ｜ 最後更新：2026-08-05
+建立日：2026-08-04 ｜ 最後更新：2026-08-06
 
 | 批次 | 篇數 | 狀態 |
 |---|---|---|
 | 第一批 | 20 | ✅ **已審閱完畢，20 篇皆已掛 `reviewer: 黃子彥`**（2026-08-05） |
 | 第二批 | 20 | ✅ **已審閱完畢，20 篇皆已掛 `reviewer: 黃子彥`**（2026-08-06 回覆：全部沒問題） |
+| 全站 articles | 129 | ✅ 全數掛署名（2026-08-06） |
+| 全站 myths | 74 | ✅ 全數掛署名；**前台接線 2026-08-06 才補上**，在那之前署名與 `reviewedBy` 都沒輸出 |
+| 全站 ingredients | 64 | ✅ 全數掛署名（2026-08-06，同批補上 schema 與前台接線） |
+| `news` | — | 不納入：每日自動產出，不走人工審閱 |
 
 ---
 
@@ -118,6 +122,8 @@ YMYL 風險最高的一組，讀者最可能據此行動。
 原因：`scripts/check-content.mjs` 會重掃**任何被碰到的檔案全文**，既有內文只因不在 diff 裡而被 grandfather。動工前可先跑 `node scripts/check-content.mjs <檔案>` 預檢。
 
 **② 為什麼 20 篇全是 articles**：`reviewer` 欄位只存在於 `articlesSchema` 與 `mythsSchema`（`ingredients` / `news` 沒有）；而 `myths/[slug].astro` 不會把 `author`/`reviewer` 傳給 `<Article>`，闢謠頁即使填了前台也不會顯示。闢謠要納入審閱需要額外接線，另案處理。
+
+> **2026-08-06 已解除**：接線補完了。`ingredientsSchema` 加了 `reviewer` 欄，`myths/[slug].astro` 與 `ingredients/[slug].astro` 都已傳 `reviewer` 給 `<Article>` 並輸出 Person 級 `reviewedBy`。myths 那 74 篇先前掛的 `reviewer` 在此之前**完全沒有前台效果**（署名沒顯示、`reviewedBy` 沒輸出），現已生效。接法對照表見 `docs/playbooks/legal-notices.md`。`news` 仍無 `reviewer` 欄——趨勢新聞是每日自動產出、不走人工審閱，這是刻意的。
 
 **③ 利益揭露**：黃醫師任職上一生物醫學（保健食品研發），與本站成分解析、保健食品闢謠存在利益衝突，已於 `/disclosure` 揭露。揭露方式遵守「一頁一次、放角落、絕不重複」原則，見 `docs/playbooks/legal-notices.md`。
 
