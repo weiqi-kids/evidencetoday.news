@@ -6,7 +6,7 @@
 | 批次 | 篇數 | 狀態 |
 |---|---|---|
 | 第一批 | 20 | ✅ **已審閱完畢，20 篇皆已掛 `reviewer: 黃子彥`**（2026-08-05） |
-| 第二批 | 20 | 📤 **2026-08-06 送審**（送審文件：[`medical-review-batch2-send.md`](./medical-review-batch2-send.md)），待回覆 |
+| 第二批 | 20 | ✅ **已審閱完畢，20 篇皆已掛 `reviewer: 黃子彥`**（2026-08-06 回覆：全部沒問題） |
 
 ---
 
@@ -123,7 +123,7 @@ YMYL 風險最高的一組，讀者最可能據此行動。
 
 ---
 
-# 第二批（20 篇）— 待送審
+# 第二批（20 篇）— 已完成
 
 建立日：2026-08-05 ｜ 送審日：2026-08-06
 
@@ -183,26 +183,26 @@ YMYL 風險最高的一組，讀者最可能據此行動。
 
 | # | slug | 送審日 | 回覆日 | 意見已處理 | 已填 reviewer |
 |---|---|---|---|---|---|
-| 1 | `health-checkup-red-flag-triage` | 2026-08-06 | | ☐ | ☐ |
-| 2 | `cholesterol-report-ldl-hdl-triglycerides` | 2026-08-06 | | ☐ | ☐ |
-| 3 | `fasting-glucose-only-add-hba1c-decision` | 2026-08-06 | | ☐ | ☐ |
-| 4 | `prediabetes-105-next-three-months-plan` | 2026-08-06 | | ☐ | ☐ |
-| 5 | `glaucoma-early-detection-guide` | 2026-08-06 | | ☐ | ☐ |
-| 6 | `cancer-screening-2026-eligibility-guide` | 2026-08-06 | | ☐ | ☐ |
-| 7 | `shingles-vaccine-guide` | 2026-08-06 | | ☐ | ☐ |
-| 8 | `autonomic-nervous-dysfunction-anxiety-guide` | 2026-08-06 | | ☐ | ☐ |
-| 9 | `chronic-cough-throat-globus-when-to-suspect-gerd` | 2026-08-06 | | ☐ | ☐ |
-| 10 | `perimenopause-or-something-else-in-your-40s` | 2026-08-06 | | ☐ | ☐ |
-| 11 | `hair-loss-rule-out-before-treating-aga` | 2026-08-06 | | ☐ | ☐ |
-| 12 | `ibs-low-fodmap-guide` | 2026-08-06 | | ☐ | ☐ |
-| 13 | `gout-hyperuricemia-causes-diet` | 2026-08-06 | | ☐ | ☐ |
-| 14 | `kidney-stones-summer-prevention-guide` | 2026-08-06 | | ☐ | ☐ |
-| 15 | `intermittent-fasting-168-guide` | 2026-08-06 | | ☐ | ☐ |
-| 16 | `dysphagia-elderly-food-texture-nutrition` | 2026-08-06 | | ☐ | ☐ |
-| 17 | `import-melatonin-taiwan-customs` | 2026-08-06 | | ☐ | ☐ |
-| 18 | `melatonin-dosage-how-many-mg` | 2026-08-06 | | ☐ | ☐ |
-| 19 | `heat-illness-heatstroke-guide` | 2026-08-06 | | ☐ | ☐ |
-| 20 | `iron-deficiency-anemia-women-supplements` | 2026-08-06 | | ☐ | ☐ |
+| 1 | `health-checkup-red-flag-triage` | 2026-08-06 | 2026-08-06 | ☑ | ☑ |
+| 2 | `cholesterol-report-ldl-hdl-triglycerides` | 2026-08-06 | 2026-08-06 | ☑ | ☑ |
+| 3 | `fasting-glucose-only-add-hba1c-decision` | 2026-08-06 | 2026-08-06 | ☑ | ☑ |
+| 4 | `prediabetes-105-next-three-months-plan` | 2026-08-06 | 2026-08-06 | ☑ | ☑ |
+| 5 | `glaucoma-early-detection-guide` | 2026-08-06 | 2026-08-06 | ☑ | ☑ |
+| 6 | `cancer-screening-2026-eligibility-guide` | 2026-08-06 | 2026-08-06 | ☑ | ☑ |
+| 7 | `shingles-vaccine-guide` | 2026-08-06 | 2026-08-06 | ☑ | ☑ |
+| 8 | `autonomic-nervous-dysfunction-anxiety-guide` | 2026-08-06 | 2026-08-06 | ☑ | ☑ |
+| 9 | `chronic-cough-throat-globus-when-to-suspect-gerd` | 2026-08-06 | 2026-08-06 | ☑ | ☑ |
+| 10 | `perimenopause-or-something-else-in-your-40s` | 2026-08-06 | 2026-08-06 | ☑ | ☑ |
+| 11 | `hair-loss-rule-out-before-treating-aga` | 2026-08-06 | 2026-08-06 | ☑ | ☑ |
+| 12 | `ibs-low-fodmap-guide` | 2026-08-06 | 2026-08-06 | ☑ | ☑ |
+| 13 | `gout-hyperuricemia-causes-diet` | 2026-08-06 | 2026-08-06 | ☑ | ☑ |
+| 14 | `kidney-stones-summer-prevention-guide` | 2026-08-06 | 2026-08-06 | ☑ | ☑ |
+| 15 | `intermittent-fasting-168-guide` | 2026-08-06 | 2026-08-06 | ☑ | ☑ |
+| 16 | `dysphagia-elderly-food-texture-nutrition` | 2026-08-06 | 2026-08-06 | ☑ | ☑ |
+| 17 | `import-melatonin-taiwan-customs` | 2026-08-06 | 2026-08-06 | ☑ | ☑ |
+| 18 | `melatonin-dosage-how-many-mg` | 2026-08-06 | 2026-08-06 | ☑ | ☑ |
+| 19 | `heat-illness-heatstroke-guide` | 2026-08-06 | 2026-08-06 | ☑ | ☑ |
+| 20 | `iron-deficiency-anemia-women-supplements` | 2026-08-06 | 2026-08-06 | ☑ | ☑ |
 
 ## 給審閱者的說明（第二批，可直接轉貼）
 
