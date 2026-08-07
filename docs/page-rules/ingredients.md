@@ -62,3 +62,28 @@ saw-palmetto 57.6% 最高）。整個欄位都不接，對其餘 38 篇是過度
 參考資料區塊，一次是 JSON-LD 的 `citation`，等於對 Google 宣告 13 頁引用同一組來源。
 真正逐篇寫的具體引用（含 DOI 與期刊卷期）在 MDX body 裡，本來就會顯示。
 現在 frontmatter 的 `references` 會過 `filterBoilerplateItems`，泛用清單不會出現。
+
+## `mechanism` 欄位：評估過，決定不上前台（2026-08-07）
+
+11/64 篇有值，內容品質不差（Nrf2/Keap1 路徑、粒線體自噬、hepcidin–ferroportin 調控
+這類具體機轉）。但用與 `uses` 同一把尺量過內文重疊率之後，決定不接：
+
+| | 重疊率 |
+|---|---|
+| taurine | 61.4% |
+| sulforaphane | 46.6% |
+| vitamin-d | 41.9% |
+| iron | 38.7% |
+| lions-mane | 33.7% |
+| magnesium | 33.1% |
+| postbiotics | 30.6% |
+| saffron | 16.0% |
+| urolithin-a | 15.0% |
+| nattokinase | 13.9% |
+| vitamin-c | 2.8% |
+
+11 篇裡有 7 篇超過 30% 門檻——內文散文已經講過同一件事。套用 `dropIfInBody` 之後
+只剩 4 篇會渲染。**為 4 個頁面加一個區塊、一套 CSS 與一條要長期維護的程式路徑，不划算。**
+
+這不是「以後再說」，是量過之後的結論。要推翻它，該做的是先把 `mechanism` 補到更多篇、
+且寫成內文沒有的角度，不是直接把區塊接上去。

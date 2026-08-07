@@ -178,12 +178,48 @@ function targetFiles() {
   return files;
 }
 
+/* ── 站台特化：密度型訊號（2026-08-07）──────────────────────────────
+ * 上方的 WARN_LAYERS 是「有沒有出現」的比對，一個檔案命中一次就記一筆。那種形狀抓不到
+ * 「這個寫法本身合法，但用得太密」——而 AI 腔最明顯的一種就是這樣：破折號。
+ *
+ * 2026-08-07 全站實測：384 篇裡有 235 篇用過破折號，articles 有 84% 的檔案在用、
+ * 每篇中位數 4 次，最多一篇 15 次。破折號是合法的中文標點，出現一次不代表什麼；
+ * 但每千字四五次就是可辨識的語氣習慣，而那正是讀者與 Google 會感覺到「機器寫的」的地方。
+ *
+ * 所以判準改成密度，不是有無。門檻 2.0（每千字）取自上面的分佈——中位數約 1.0，
+ * 超過兩倍才點名，避免把正常用法一起罵進去。只發 WARN 不擋：這是風格訊號，
+ * 不是錯誤，該由編輯決定改不改。
+ */
+const DENSITY_TELLS = [
+  { label: "破折號", re: /——|―――|—(?!—)/g, per1000: 2.0 },
+];
+
+function densityWarns(file, masked) {
+  const text = masked.join("").replace(/\s/g, "");
+  if (text.length < 500) return [];
+  const out = [];
+  for (const { label, re, per1000 } of DENSITY_TELLS) {
+    const n = (text.match(re) || []).length;
+    const d = (n / text.length) * 1000;
+    if (d > per1000)
+      out.push({ file, layer: "密度", label: `${label}密度 ${d.toFixed(1)}/千字（門檻 ${per1000}）`, text: `${n} 次 / ${text.length} 字` });
+  }
+  return out;
+}
+
 const files = targetFiles();
 if (files === null) process.exit(0); // 無 git base，安全放行
 if (!files.length) { console.log("內容守門：無變動的 .md/.mdx 內容檔。"); process.exit(0); }
 
 let errors = [], warns = [];
-for (const f of files) { const r = scanFile(f); errors.push(...r.errors); warns.push(...r.warns); }
+for (const f of files) {
+  const r = scanFile(f);
+  errors.push(...r.errors);
+  warns.push(...r.warns);
+  // 密度訊號不併入 hitLayers 的「跨 ≥3 層升級」計算——它是風格強度不是 AI 指紋，
+  // 用它去湊門檻會把正常的長文誤擋。
+  if (existsSync(f)) warns.push(...densityWarns(f, proseMask(readFileSync(f, "utf8"))));
+}
 
 if (warns.length) {
   console.error(`內容守門 WARN（軟訊號 ${warns.length}，未達 3 層不擋）：`);
