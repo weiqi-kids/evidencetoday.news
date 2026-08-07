@@ -28,7 +28,9 @@
     "gnews:watch": "node scripts/googlenews-watch.mjs",
     "check:design": "node scripts/check-design.mjs",
     "check:schedule": "node scripts/check-schedule.mjs",
-    "stats": "node scripts/content-stats.mjs"
+    "stats": "node scripts/content-stats.mjs",
+    "check:site": "astro build && node scripts/check-site.mjs",
+    "check:site:only": "node scripts/check-site.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.14",

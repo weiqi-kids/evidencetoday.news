@@ -81,9 +81,18 @@ export default defineConfig({
   },
   integrations: [
     svelte(),
-    // /admin 是隱藏管理頁；/tags/* 是 thin 自動分類頁（noindex,follow），皆不應進 sitemap
+    // /admin 是隱藏管理頁；/tags/* 是 thin 自動分類頁（noindex,follow），皆不應進 sitemap。
+    // /podcasts/ep01-supplements 是已下線的示範頁（自身掛 noindex,nofollow + meta refresh）——
+    // 它是手寫路由不是 collection 項目，所以逃過既有的 isPublicEntry 過濾，一路留在 sitemap 裡。
+    // 「送出去的」和「讓收錄的」不一致，GSC 會一直回報「已提交但被 noindex 排除」。
+    // 2026-08-07 由 pnpm check:site 的規則 5 抓到；該規則會持續守住這個不變式。
     sitemap({
-      filter: (page) => !page.includes('/admin') && !page.includes('/tags/') && !page.includes('/search') && !page.includes('/404'),
+      filter: (page) =>
+        !page.includes('/admin') &&
+        !page.includes('/tags/') &&
+        !page.includes('/search') &&
+        !page.includes('/404') &&
+        !page.includes('/podcasts/ep01-supplements'),
       // 對每篇內容頁輸出 lastmod（updatedDate ?? publishDate）。靜態頁（首頁/分類/政策頁）
       // 不在內容 frontmatter 中，無對應日期時不強加 lastmod。
       serialize(item) {

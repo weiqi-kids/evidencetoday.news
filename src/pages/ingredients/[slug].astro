@@ -14,6 +14,7 @@ import { contentSocial } from '@/utils/social-meta.mjs';
 import ReadingEngagement from '@/components/blocks/ReadingEngagement.svelte';
 import { buildCitations, buildPerson, PUBLISHER_REF, WEBSITE_REF } from '@/utils/schema-org';
 import { isPublicEntry } from '@/utils/visibility';
+import IngredientCard from '@/components/blocks/IngredientCard.astro';
 import { getAutoRelated } from '@/utils/related';
 import { TOPICS, matchesTopic } from '@/data/topics';
 
@@ -47,7 +48,10 @@ const manualVideos = data.relatedVideos
 const manualPodcasts = data.relatedPodcasts
   ? (await Promise.all(data.relatedPodcasts.map((id) => getEntry('podcasts', id)))).filter(Boolean)
   : [];
-const hasManual = manualArticles.length > 0 || manualMyths.length > 0 || manualVideos.length > 0 || manualPodcasts.length > 0;
+const manualIngredients = data.relatedIngredients
+  ? (await Promise.all(data.relatedIngredients.map((id) => getEntry('ingredients', id)))).filter(Boolean)
+  : [];
+const hasManual = manualArticles.length > 0 || manualMyths.length > 0 || manualVideos.length > 0 || manualPodcasts.length > 0 || manualIngredients.length > 0;
 
 /* 手動全空 → 用 tag 重疊自動補相關內容（同 articles/[slug].astro 的作法）。
    成分頁 63 篇中只有 5 篇填了 relatedX，其餘過去都渲染出空的相關區、
@@ -60,8 +64,14 @@ const relatedArticles = hasManual ? manualArticles : auto.articles;
 const relatedMyths = hasManual ? manualMyths : auto.myths;
 const relatedVideos = hasManual ? manualVideos : auto.videos;
 const relatedPodcasts = hasManual ? manualPodcasts : auto.podcasts;
+/* 同類成分也是出口。成分頁的讀者多半在「比較該吃哪一個」，推薦另一個成分比推薦一篇
+   泛用文章更貼近意圖；而且成分之間的標籤共用度遠高於跨 collection——2026-08-07 實測，
+   folate／lions-mane／resveratrol／spermidine／taurine／vitamin-b-complex 這 6 篇
+   在文章與闢謠裡找不到任何相關內容（成分的標籤詞彙自成一套，articles 從沒用過
+   「礦物質」「維生素」「脂溶性營養素」這些字），但彼此之間找得到。 */
+const relatedIngredients = hasManual ? manualIngredients : auto.ingredients;
 
-const hasRelated = relatedArticles.length > 0 || relatedMyths.length > 0 || relatedVideos.length > 0 || relatedPodcasts.length > 0;
+const hasRelated = relatedArticles.length > 0 || relatedMyths.length > 0 || relatedVideos.length > 0 || relatedPodcasts.length > 0 || relatedIngredients.length > 0;
 
 /* spoke→hub 回鏈：本成分所屬的健康專題（關鍵字比對 title+tags 自動判斷） */
 const belongingTopics = TOPICS.filter((t) => matchesTopic(t, { title: data.title, tags: data.tags }));
@@ -226,6 +236,18 @@ const ingredientBreadcrumbSchema = {
               href={`/myths/${stripExt(m.id)}/`}
               verdict={m.data.verdict}
               date={fmtDate(m.data.publishDate)}
+            />
+          ))}
+          {relatedIngredients.map((i) => (
+            <IngredientCard
+              title={i.data.title}
+              titleEn={i.data.titleEn}
+              description={i.data.description}
+              href={`/ingredients/${stripExt(i.id)}/`}
+              uses={i.data.uses}
+              coverImage={i.data.coverImage}
+              coverAlt={i.data.coverAlt}
+              tags={i.data.tags}
             />
           ))}
           {relatedVideos.map((v) => (

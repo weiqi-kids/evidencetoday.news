@@ -58,6 +58,14 @@ jobs:
       - name: Remove local OG preview artifacts
         run: rm -rf dist/og-preview
 
+      # 全站結構守門：只查「跨頁才看得出來」的事——各頁型的站內出口數、唯一 h1、
+      # canonical/description/JSON-LD、sitemap 與 noindex 是否一致、站內死連結。
+      # 排在 build 之後、連結檢查之前，因為它掃的是 dist/。
+      # 由來：闢謠頁站內出口長期是 0，五道 src 層 gate 全部看不到（每個檔案都合法，
+      # 「組起來沒有出口」不存在於任何單檔裡）。見 scripts/check-site.mjs 檔頭。
+      - name: Site structure gate
+        run: node scripts/check-site.mjs
+
       - name: Check internal links
         uses: lycheeverse/lychee-action@v2
         with:
