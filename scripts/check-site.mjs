@@ -150,6 +150,37 @@ for (const { name, dir } of DETAIL) {
     violations.push(`${name}頁型有 ${zero}/${files.length} 頁完全沒有站內出口（上限 10%）`);
 }
 
+// ── 規則 4b：內容頁的封面圖必須有描述性 alt（WARN，不擋）──
+// 為什麼是 WARN 不是 ERROR：alt 要寫得對，得先看得到那張圖。本站封面多半是 Pexels／
+// Unsplash 外連，而這個開發環境對外連圖床是 403（組織網路政策），沒辦法逐張看圖補寫。
+// 擋 build 只會逼人亂填一個值——那正是 2026-08-07 闢謠封面圖事件的成因
+// （必填但不檢查正確性，結果 74 篇填了不相干的圖）。所以這裡只讓缺口持續可見。
+// 缺 alt 的代價：螢幕閱讀器讀不到、沒有人能稽核圖文是否相符、Google 少一個相關性訊號。
+{
+  let noAlt = 0, withCover = 0;
+  for (const { dir } of DETAIL) {
+    const base = join(DIST, dir);
+    if (!existsSync(base)) continue;
+    for (const f of walk(base)) {
+      const html = readFileSync(f, 'utf8');
+      if (/http-equiv="refresh"/i.test(html)) continue;
+      const fig = html.match(/<figure class="article-cover"[\s\S]*?<\/figure>/i);
+      if (!fig) continue;
+      withCover++;
+      const img = fig[0].match(/<img\b[^>]*>/i);
+      if (!img) continue;
+      const alt = (img[0].match(/alt="([^"]*)"/) || [])[1] ?? '';
+      // Article.astro 缺 coverAlt 時退回文章標題——那不是圖片描述，是標題，
+      // 對螢幕閱讀器等於沒說明圖裡有什麼。
+      const title = (html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i) || [])[1]?.replace(/<[^>]+>/g, '').trim() ?? '';
+      if (!alt.trim() || (title && alt.trim() === title)) noAlt++;
+    }
+  }
+  if (noAlt)
+    warnings.push(`${noAlt}/${withCover} 個內容頁的封面圖沒有自己的 coverAlt（退回用標題當 alt）。` +
+      `補寫需要看得到圖，本環境對外連圖床為 403，見 docs/reminders.md。`);
+}
+
 // ── 規則 5：sitemap 不得收錄 noindex 頁 ──
 // 送出去的和讓收錄的必須一致，否則 GSC 會一直回報「已提交但被 noindex 排除」。
 const smFiles = readdirSync(DIST).filter((f) => /^sitemap.*\.xml$/.test(f));
