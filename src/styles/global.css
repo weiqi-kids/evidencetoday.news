@@ -217,7 +217,7 @@ img {
   overflow-x: auto;
   border-radius: var(--radius-sm);
   background-color: var(--color-fog);
-  font-size: 0.9em;
+  font-size: var(--text-meta);
   line-height: 1.6;
 }
 
@@ -225,7 +225,7 @@ img {
   padding: 0.15em 0.35em;
   border-radius: 3px;
   background-color: var(--color-fog);
-  font-size: 0.9em;
+  font-size: var(--text-meta);
 }
 
 .prose pre code {
@@ -320,7 +320,7 @@ img {
    ========================================================================== */
 
 .topnav__brand .topnav__brand-zh {
-  font-size: clamp(1.05rem, 1.8vw, 1.45rem) !important;
+  font-size: var(--text-brand) !important;
 }
 
 /* ============================================================================
@@ -443,7 +443,7 @@ a {
 }
 
 .topnav__brand .topnav__brand-zh {
-  font-size: clamp(1.05rem, 1.8vw, 1.45rem) !important;
+  font-size: var(--text-brand) !important;
 }
 
 @media (max-width: 1120px) {
@@ -486,7 +486,7 @@ a {
   max-width: 100%;
   white-space: normal;
   overflow-wrap: break-word;
-  font-size: clamp(1rem, 0.9rem + 0.55vw, 1.28rem) !important;
+  font-size: var(--text-lead) !important;
   line-height: 1.45;
 }
 
@@ -594,12 +594,12 @@ a {
 
   .hero__badge {
     padding: 0.45rem 0.9rem;
-    font-size: clamp(1.05rem, 4vw, 1.25rem) !important;
+    font-size: var(--text-lead) !important;
     letter-spacing: 0.03em;
   }
 
   .hero__title {
-    font-size: clamp(2.05rem, 8.8vw, 3rem) !important;
+    font-size: var(--text-h1) !important;
     line-height: 1.25 !important;
   }
 

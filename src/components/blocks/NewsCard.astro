@@ -98,7 +98,7 @@ const { title, summary, href, image, category, date } = Astro.props;
     padding: 0.3rem 0.7rem;
     border-radius: var(--radius-pill);
     font-family: var(--font-ui);
-    font-size: 0.85rem;
+    font-size: var(--text-meta);
     font-weight: 700;
     letter-spacing: 0.02em;
     color: white;
@@ -116,11 +116,11 @@ const { title, summary, href, image, category, date } = Astro.props;
   }
 
   /* 字級用 clamp 自適應，在 1280px 已解析到約 1.24rem；不要再加
-     @media(min-width:1024px){font-size:1.2rem} 那類覆蓋——那會讓寬螢幕反而變小，
+     @media(min-width:1024px){font-size:var(--text-h3)} 那類覆蓋——那會讓寬螢幕反而變小，
      且在 4 欄格線裡過大。 */
   .news-card__title {
     font-family: var(--font-sans);
-    font-size: clamp(1.125rem, 1rem + 0.3vw, 1.25rem);
+    font-size: var(--text-lead);
     font-weight: 700;
     color: var(--color-ink);
     line-height: 1.5;
@@ -132,7 +132,7 @@ const { title, summary, href, image, category, date } = Astro.props;
   }
 
   .news-card__summary {
-    font-size: 0.98rem;
+    font-size: var(--text-body);
     color: color-mix(in oklch, var(--color-ink) 60%, transparent);
     line-height: 1.7;
     margin-bottom: auto;
@@ -146,7 +146,7 @@ const { title, summary, href, image, category, date } = Astro.props;
     display: block;
     margin-top: 0.85rem;
     font-family: var(--font-ui);
-    font-size: 0.86rem;
+    font-size: var(--text-meta);
     color: color-mix(in oklch, var(--color-ink) 40%, transparent);
   }
 </style>

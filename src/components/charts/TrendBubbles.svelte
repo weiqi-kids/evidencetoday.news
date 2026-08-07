@@ -114,7 +114,7 @@
   .bubble--mid circle { fill: color-mix(in oklch, var(--color-teal) 52%, var(--color-fog)); }
   .bubble--low circle { fill: color-mix(in oklch, var(--color-teal) 34%, var(--color-fog)); }
   .bubble-group--hovered circle { transform: scale(1.1); }
-  .bubble-label { font-family: var(--font-ui); font-size: 0.875rem; font-weight: 600; fill: white; pointer-events: none; }
+  .bubble-label { font-family: var(--font-ui); font-size: var(--text-meta); font-weight: 600; fill: white; pointer-events: none; }
   .bubble--low .bubble-label { fill: var(--color-ink); }
   .tooltip { position: absolute; transform: translate(-50%, -100%); padding: 0.375rem 0.75rem; border-radius: var(--radius-sm); background-color: var(--color-ink); color: white; font-family: var(--font-ui); font-size: var(--text-badge); white-space: nowrap; pointer-events: none; z-index: 10; display: flex; gap: 0.5rem; align-items: center; }
 </style>

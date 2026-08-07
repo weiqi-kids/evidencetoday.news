@@ -282,7 +282,7 @@ const social = listSocial('videos');
   .eyebrow {
     margin-bottom: 0.45rem;
     font-family: var(--font-ui);
-    font-size: 0.76rem;
+    font-size: var(--text-meta);
     font-weight: 700;
     letter-spacing: 0.12em;
     color: color-mix(in oklch, var(--color-cat-video) 76%, var(--color-ink));
@@ -292,7 +292,7 @@ const social = listSocial('videos');
   .videos-hero h2 {
     max-width: 17em;
     margin: 0;
-    font-size: clamp(1.75rem, 3vw, 3rem);
+    font-size: var(--text-h1);
     line-height: 1.18;
     letter-spacing: -0.03em;
   }
@@ -347,7 +347,7 @@ const social = listSocial('videos');
 
   .videos-hero__stats dt {
     font-family: var(--font-serif);
-    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-size: var(--text-h2);
     font-weight: 700;
     line-height: 1;
     color: var(--color-cat-video);
@@ -391,7 +391,7 @@ const social = listSocial('videos');
     margin: 0 0 0.35rem;
     color: color-mix(in oklch, var(--color-teal) 72%, var(--color-ink));
     font-family: var(--font-ui);
-    font-size: 0.76rem;
+    font-size: var(--text-meta);
     font-weight: 800;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -458,14 +458,14 @@ const social = listSocial('videos');
     border-radius: 999px;
     color: var(--color-white);
     background: oklch(0 0 0 / 0.48);
-    font-size: 1.35rem;
+    font-size: var(--text-h3);
     transform: translate(-50%, -50%);
   }
 
   .curated-play--small {
     width: 2.5rem;
     height: 2.5rem;
-    font-size: 1rem;
+    font-size: var(--text-body);
   }
 
   .curated-feature__body,
@@ -481,7 +481,7 @@ const social = listSocial('videos');
   }
 
   .curated-feature h3 {
-    font-size: clamp(1.45rem, 2.3vw, 2.15rem);
+    font-size: var(--text-h2);
     line-height: 1.25;
   }
 
@@ -512,7 +512,7 @@ const social = listSocial('videos');
   }
 
   .curated-card h3 {
-    font-size: 1.05rem;
+    font-size: var(--text-body);
     line-height: 1.45;
   }
 
@@ -645,7 +645,7 @@ const social = listSocial('videos');
     align-items: center;
     border-radius: 999px;
     padding: 0.16rem 0.58rem;
-    font-size: 0.76rem;
+    font-size: var(--text-meta);
     font-weight: 700;
     color: color-mix(in oklch, var(--color-cat-video) 72%, var(--color-ink));
     background: color-mix(in oklch, var(--color-cat-video) 12%, white);
@@ -653,7 +653,7 @@ const social = listSocial('videos');
 
   .video-card h3 {
     margin: 0;
-    font-size: 1rem;
+    font-size: var(--text-body);
     line-height: 1.5;
   }
 
@@ -679,7 +679,7 @@ const social = listSocial('videos');
     padding: 0.16rem 0.5rem;
     color: var(--color-paper);
     background: var(--color-teal);
-    font-size: 0.72rem;
+    font-size: var(--text-meta);
     font-weight: 700;
   }
 

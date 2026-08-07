@@ -78,6 +78,9 @@
   --text-meta: 1.125rem;
   --text-caption: 1.125rem;
   --text-badge: 1.125rem;
+  /* 站名（TopNav 品牌字）專用：隨視寬縮放但下限守 18px。獨立成 token 是因為它同時被
+     TopNav scoped style 與 global.css 的 topnav 守衛引用，兩處必須同值，否則守衛會蓋掉元件。 */
+  --text-brand: clamp(1.125rem, 1.8vw, 1.45rem);
 
   /* ==== 遷移集中色（2026-07-20 check-design v2 導入）====
      以下為原本散落元件/頁面的硬編色，「值原樣搬入、零視覺變動」集中於本檔

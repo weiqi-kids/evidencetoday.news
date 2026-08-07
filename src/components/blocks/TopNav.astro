@@ -145,7 +145,7 @@ const currentPath = Astro.url.pathname;
   .topnav__brand-zh {
     font-family: var(--font-serif);
     font-weight: 700;
-    font-size: clamp(1.05rem, 1.8vw, 1.45rem);
+    font-size: var(--text-brand);
     color: var(--color-teal);
     letter-spacing: 0.06em;
     white-space: nowrap;
@@ -179,7 +179,7 @@ const currentPath = Astro.url.pathname;
     height: 100%;
     padding: 0 0.85rem clamp(1.106rem, calc(19.80px - 0.164vw), 1.145rem);
     font-family: var(--font-serif);
-    font-size: clamp(1.05rem, 1.8vw, 1.45rem);
+    font-size: var(--text-brand);
     font-weight: 700;
     line-height: 1.2;
     color: var(--color-ink);
@@ -271,7 +271,7 @@ const currentPath = Astro.url.pathname;
   .topnav__mobile-link {
     display: block;
     padding: 0.7rem 0.8rem;
-    font-size: 1.02rem;
+    font-size: var(--text-meta);
     color: var(--color-ink);
     text-decoration: none;
     border-radius: var(--radius-sm);

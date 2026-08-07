@@ -155,7 +155,7 @@
   .cf-alt { display: flex; flex-direction: column; gap: 0.25rem; }
   .cf-alt span { font-family: var(--font-ui); font-size: var(--text-badge); font-weight: 600; color: color-mix(in oklch, var(--color-ink) 70%, var(--color-paper)); }
   .cf-alt-head { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
-  .cf-alt-ai { font-family: var(--font-ui); font-size: 0.68rem; font-weight: 600; padding: 0.12rem 0.5rem; border: 1px solid var(--color-teal); border-radius: var(--radius-pill); background: white; color: var(--color-teal); cursor: pointer; }
+  .cf-alt-ai { font-family: var(--font-ui); font-size: var(--text-meta); font-weight: 600; padding: 0.12rem 0.5rem; border: 1px solid var(--color-teal); border-radius: var(--radius-pill); background: white; color: var(--color-teal); cursor: pointer; }
   .cf-alt-ai:disabled { opacity: 0.6; cursor: default; }
   .cf-credit { margin: 0; font-family: var(--font-ui); font-size: var(--text-badge); color: color-mix(in oklch, var(--color-ink) 55%, var(--color-paper)); }
   .cf-alt input { width: 100%; box-sizing: border-box; font-family: var(--font-ui); border: 1px solid var(--color-fog); border-radius: var(--radius-sm); padding: 0.45rem 0.6rem; }

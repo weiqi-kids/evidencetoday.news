@@ -349,6 +349,22 @@ document.getElementById('copy-btn')?.addEventListener('click', async () => { awa
     margin: 0 0 12px;
   }
 
+  /* 行長收斂（2026-08-07）。闢謠頁走 variant="cards"，Article.astro 對 --cards 解除了
+     .prose 的 68ch 上限，好讓卡片格線吃滿寬——但正文段落也跟著吃滿了：1280px 視寬下
+     每行 64 個中文字（Playwright 實測），遠超中文舒適閱讀的 30–45 字。
+     只收斂「文字流」，格線類（.myth-related__grid / 卡片）維持滿寬，兩者不衝突。 */
+  .block :is(p, ul, ol, blockquote),
+  .health-reminder > p {
+    max-width: 40em;
+  }
+
+  /* 例外：卡片／格線內的文字寬度由格線本身決定，不再套行長上限，否則卡片內會出現
+     文字只佔左半、右半空著的怪版面。 */
+  .myth-related__grid :is(p, ul, ol),
+  .myth-reasoning-card :is(p, ul, ol) {
+    max-width: none;
+  }
+
   /* 延伸閱讀：沿用 .block 的卡片外框，內部用與其他頁型一致的自適應網格。 */
   .myth-related__grid {
     display: grid;
@@ -413,7 +429,7 @@ document.getElementById('copy-btn')?.addEventListener('click', async () => { awa
     display: inline-flex;
     padding: 8px 14px;
     border-radius: 999px;
-    font-size: clamp(0.875rem, 0.8rem + 0.5vw, 1.125rem);
+    font-size: var(--text-meta);
     font-weight: 700;
   }
 
@@ -477,7 +493,7 @@ document.getElementById('copy-btn')?.addEventListener('click', async () => { awa
   .share-block,
   .share,
   .share :is(button, a) {
-    font-size: 1rem;
+    font-size: var(--text-body);
   }
 
   .share {

@@ -221,7 +221,7 @@ const personSchema = { '@context': 'https://schema.org', ...buildPerson('羅揚'
   .section-eyebrow,
   .card-kicker {
     font-family: var(--font-ui);
-    font-size: 0.72rem;
+    font-size: var(--text-meta);
     font-weight: 800;
     letter-spacing: 0.09em;
     text-transform: uppercase;
@@ -259,7 +259,7 @@ const personSchema = { '@context': 'https://schema.org', ...buildPerson('羅揚'
   }
 
   .podcast-card h3 {
-    font-size: clamp(1.3rem, 1.1rem + 0.8vw, 1.8rem);
+    font-size: var(--text-h3);
     line-height: 1.25;
   }
 
@@ -297,7 +297,7 @@ const personSchema = { '@context': 'https://schema.org', ...buildPerson('羅揚'
   }
 
   .featured-groups h3 {
-    font-size: clamp(1.12rem, 1rem + 0.35vw, 1.35rem);
+    font-size: var(--text-lead);
     line-height: 1.35;
   }
 
