@@ -31,3 +31,27 @@
 - **搜尋欄位**：`title`、`mythClaim`、`verdictSummary`、`summary`、`topicTags`、`tldr`（大小寫不敏感，先 `trim`）。
 - **空狀態**：結果為空時只顯示「目前沒有符合條件的闢謠文章，請調整搜尋或篩選條件。」且不渲染卡片。
 - 顯示切換用 `style.display`（避免 `hidden` 屬性被頁面樣式覆寫），確保空狀態與卡片列表互斥。
+
+## 免責、FAQ、封面圖：只印「這一篇自己的」（2026-08-07）
+
+三個欄位都曾是整批複製的樣板，且都已上前台或上結構化資料，改法一致：
+渲染時過 `src/utils/boilerplate.ts` 的過濾，值在 5 篇以上逐字相同就不顯示。
+
+| 欄位 | 樣板篇數 | 處理 |
+|---|---|---|
+| `medicalDisclaimer` | 68/76 | 只印該篇特有的（6 篇）。其餘交給頁尾全站免責——頁尾早就有一句，內文再印一次違反硬規則 10「通用醫療免責只在頁尾一處」 |
+| `faq` | 26/76 | 過濾後 FAQ 頁數 59 → 33。同時從 FAQPage 結構化資料移除——26 頁對 Google 宣告一模一樣的 FAQ，是拿 rich result 資格去換一個重複內容訊號 |
+| `safeActions` / `avoidActions` / `whenToSeekProfessionalAdvice` | 26–28/76 | 原本只硬編比對一句通用 seek-advice，改成跨篇實測。硬編清單擋不住下一批新的樣板句 |
+
+**順帶更正一項先前的判斷**：2026-08-06 曾記錄「74 篇客製文案讀者一個字都看不到」，
+那個數字是錯的——實測只有 8 篇是客製的，其餘 68 篇一字不差。
+
+### 封面圖欄位已全部移除
+
+74/76 篇的 `coverImage` / `heroImage` / `ogImage` / `shareCardImage` 指向同兩張 radar SVG，
+而那兩張圖裡烤死了別的題目的字樣與 `aria-label`（見 `docs/pitfalls.md`）。
+295 個錯誤欄位已清除，`shareCardImage` 改為 optional，`validate.ts` 的必填要求已移除。
+
+分享圖由 `contentSocial()` 的 `mythOgImage(slug)` 逐篇產生，不吃 frontmatter；
+列表頁用 `MythSquareCardVisual` 逐篇渲染該篇自己的標題／判讀／證據強度；
+卡片縮圖缺值時 `MythCard` 退回品牌縮圖。三條路都不需要 frontmatter 填圖。

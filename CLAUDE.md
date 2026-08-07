@@ -57,7 +57,9 @@
 10. **免責與揭露：一頁一次、放角落、降彩度、絕不重複**。通用醫療免責只在頁尾一處，禁止在 MDX 內文自己再寫一次；字級不得低於 `var(--text-meta)`，低干擾靠降彩度與位置達成，不靠縮字。細節見 `docs/playbooks/legal-notices.md`。
 11. **使用者交付的內容，預設「已經醫療審閱過」**，直接執行掛署名，不要再叫使用者去問醫師。流程見 `docs/playbooks/medical-review.md`。
 12. **前台讀 collection 一律用 `isPublicEntry(data)`**，禁裸 `!data.draft`（排程稿會提前洩全文）。
-13. `pnpm build` 零錯誤才算通過。
+13. **禁跨頁樣板**：同一段文字（frontmatter 欄位值或正文段落）不得在 5 篇以上逐字相同。守門＝`pnpm check:boilerplate`（已接進 `pnpm build`）。判準不是「寫得好不好」，是「這句話對這一頁成不成立」——一段話如果 20 篇都適用，那它對這 20 篇都沒有資訊量。改法是刪掉或換成只有這一篇成立的內容，不是改幾個字繞過。渲染端用 `src/utils/boilerplate.ts` 的 `dropIfBoilerplate` / `filterBoilerplateItems` 過濾。
+14. **頁型必須有站內出口**：每個內容頁型的站內出站連結中位數 ≥2，零出口頁 ≤10%。守門＝`pnpm check:site`（CI 已接）。樣板連結（`/disclosure/` 等每頁都有的）與資產連結不算出口。
+15. `pnpm build` 零錯誤才算通過。
 
 ---
 
@@ -67,7 +69,7 @@
 # — 開發 / 建置 —
 pnpm install        # 安裝依賴（不是 npm）
 pnpm dev            # 開發伺服器 localhost:4321
-pnpm build          # 建置至 dist/（會先跑 check:design + check:content）
+pnpm build          # 建置至 dist/（會先跑 check:design + check:content + check:boilerplate）
 pnpm preview        # 預覽建置結果
 pnpm test           # vitest
 
@@ -78,6 +80,8 @@ pnpm check:myths        # 闢謠內容品質 gate（發布 myths 前必跑）
 pnpm check:news         # 趨勢新聞來源連結 gate（CI 已接）
 pnpm check:design       # 設計規範守門 v2（pnpm build 自動先跑）
 pnpm check:schedule     # 發文排程健檢：破洞擋、跑道不足警告
+pnpm check:site         # 全站結構守門（掃 dist/：頁型站內出口、唯一 h1、canonical/JSON-LD、sitemap 與 noindex 一致、死連結）
+pnpm check:boilerplate  # 跨檔樣板守門（欄位成批複製、正文跨檔重複率；pnpm build 自動先跑）
 ```
 
 ---

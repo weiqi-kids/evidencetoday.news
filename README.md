@@ -39,7 +39,7 @@
 # — 開發 / 建置 —
 pnpm install        # 安裝依賴（不是 npm）
 pnpm dev            # 開發伺服器 localhost:4321
-pnpm build          # 建置至 dist/（prebuild 跑 sync:youtube + used-images；build 先跑 check:design + check:content）
+pnpm build          # 建置至 dist/（prebuild 跑 sync:youtube + used-images；build 先跑 check:design + check:content + check:boilerplate）
 pnpm preview        # 預覽建置結果
 pnpm test           # vitest
 
@@ -50,6 +50,8 @@ pnpm check:myths        # 闢謠內容品質 gate（發布 myths 前必跑）
 pnpm check:news         # 趨勢新聞來源連結 gate（CI 已接）
 pnpm check:design       # 設計規範守門 v2（pnpm build 自動先跑）
 pnpm check:schedule     # 發文排程健檢：破洞（擋）與跑道不足（警告）
+pnpm check:site         # 全站結構守門（掃 dist/：頁型站內出口、唯一 h1、canonical/JSON-LD、sitemap 與 noindex 一致、死連結）
+pnpm check:boilerplate  # 跨檔樣板守門（欄位成批複製、正文跨檔重複率；pnpm build 自動先跑）
 ```
 
 ## 查站況（唯讀，一律用指令查，不要憑文件裡的數字）
