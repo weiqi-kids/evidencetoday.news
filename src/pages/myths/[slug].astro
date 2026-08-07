@@ -14,6 +14,7 @@ import ArticleCard from '@/components/blocks/ArticleCard.astro';
 import MythCard from '@/components/blocks/MythCard.astro';
 import IngredientCard from '@/components/blocks/IngredientCard.astro';
 import { getAutoRelated } from '@/utils/related';
+import { dropIfBoilerplate } from '@/utils/boilerplate';
 import { fmtDate } from '@/utils/date';
 
 export async function getStaticPaths() {
@@ -92,10 +93,19 @@ const sourceTypeLabels: Record<string, string> = {
 };
 // 優先用該篇 frontmatter 的 medicalDisclaimer——那是逐篇寫的，含該主題的具體警訊症狀
 // 與建議科別（例如血便、排便習慣改變 → 消化內科），比通用句對讀者有用得多。
-// 2026-08-06 前這裡寫死通用字串，74 篇客製文案全被繞過、讀者一個字都看不到；
-// mythsSchema.medicalDisclaimer 是 required，等於每篇都認真寫了然後丟掉。勿再改回寫死。
-const FALLBACK_REMINDER = '本文為健康資訊與迷思查證，不提供個人診斷或治療建議。若你已被診斷疾病、正在服藥、懷孕、哺乳，或症狀持續未改善，請諮詢醫師、藥師或營養師。';
-const healthReminder = d.medicalDisclaimer?.trim() || FALLBACK_REMINDER;
+// 只有「這一篇自己的」提醒才印。
+//
+// 兩段修正疊在這裡，一起讀才不會又改回去：
+// ① 2026-08-06 前這裡寫死通用字串，把 frontmatter 的 medicalDisclaimer 整個繞過；當時
+//    判斷成「74 篇客製文案讀者一個字都看不到」。那個數字是錯的。
+// ② 2026-08-07 實際量過：76 篇裡有 68 篇的 medicalDisclaimer 與通用句一字不差，
+//    真正逐篇寫的只有 8 篇。所以①的修法（缺省就印通用句）等於在 68 頁印出同一段話，
+//    而頁尾 Footer 已經有全站通用免責（「本站內容僅供一般健康資訊參考，不構成醫療建議。」）——
+//    同一頁講兩次，正好違反硬規則 10「通用醫療免責只在頁尾一處」。
+//
+// 現在的判準：值是整批複製的 → 不印，讓頁尾那一處負責；只有該篇特有的（例如針對腎臟病、
+// 癌症病史寫的提醒）才在內文出現。見 docs/playbooks/legal-notices.md。
+const healthReminder = await dropIfBoilerplate('myths', 'medicalDisclaimer', d.medicalDisclaimer?.trim());
 
 /* ── 「怎麼做才安全」區塊（2026-08-06 新增）────────────────────────────────
  * safeActions / avoidActions / whenToSeekProfessionalAdvice 三欄從建站起就寫在
@@ -111,11 +121,22 @@ const healthReminder = d.medicalDisclaimer?.trim() || FALLBACK_REMINDER;
  * whenToSeekProfessionalAdvice 只在「不等於通用句」時輸出：74 篇裡有 28 篇填的
  * 是與頁尾免責幾乎同義的通用句，兩處都印就變成同一頁講兩次，違反硬規則 8a
  * 「免責一頁一次、絕不重複」。那 28 篇的訊息由頁尾 health-reminder 承擔即可。
+ *
+ * 2026-08-07 改法升級：原本只硬編比對一句 GENERIC_SEEK_ADVICE，但實測 safeActions（26 篇）、
+ * avoidActions（26 篇）、faq（26 篇）、medicalDisclaimer（68 篇）也都是整批逐字複製的。
+ * 硬編清單擋不住「下一批新的樣板句」，改用 dropIfBoilerplate 在 build 期實際量
+ * 「這個值有幾篇在用」，≥5 篇就不顯示。判準不是「寫得爛」，是「這句話對這一頁不成立」——
+ * 同一段話 26 篇都適用，代表它對這 26 篇都沒有資訊量。細節見 src/utils/boilerplate.ts。
  */
-const GENERIC_SEEK_ADVICE = '若症狀持續、惡化、影響生活，或你正考慮停藥、換藥、高劑量補充，請先諮詢醫師、藥師或營養師。';
-const seekAdvice = d.whenToSeekProfessionalAdvice?.trim();
-const specificSeekAdvice = seekAdvice && seekAdvice !== GENERIC_SEEK_ADVICE ? seekAdvice : null;
-const hasSafetyBlock = d.safeActions?.length > 0 || d.avoidActions?.length > 0 || specificSeekAdvice;
+const safeActions = await dropIfBoilerplate('myths', 'safeActions', d.safeActions);
+const avoidActions = await dropIfBoilerplate('myths', 'avoidActions', d.avoidActions);
+const specificSeekAdvice = (await dropIfBoilerplate('myths', 'whenToSeekProfessionalAdvice', d.whenToSeekProfessionalAdvice?.trim())) ?? null;
+const hasSafetyBlock = safeActions?.length > 0 || avoidActions?.length > 0 || specificSeekAdvice;
+
+/* FAQ 同理：26 篇掛的是同一組「這個做法可以取代醫療嗎？」問答。
+   可見區塊重複已經夠糟，更麻煩的是它同時餵給 FAQPage 結構化資料——
+   26 頁對 Google 宣告一模一樣的 FAQ，是拿 rich result 資格去換一個重複內容訊號。 */
+const mythFaq = await dropIfBoilerplate('myths', 'faq', d.faq);
 
 /* ── 延伸閱讀（2026-08-07 新增）────────────────────────────────────────
  * 在此之前闢謠單篇是全站唯一沒有任何站內出鏈的頁型：實測內文區站內連結
@@ -167,11 +188,11 @@ const mythBreadcrumbSchema = {
 };
 
 // FAQPage：闢謠頁已渲染可見 Q&A（下方 d.faq 區塊），比照文章頁輸出 FAQPage，取得 rich result 資格。
-const mythFaqSchema = d.faq && d.faq.length > 0
+const mythFaqSchema = mythFaq && mythFaq.length > 0
   ? {
       '@context': 'https://schema.org',
       '@type': 'FAQPage',
-      mainEntity: d.faq.map((item) => ({
+      mainEntity: mythFaq.map((item) => ({
         '@type': 'Question',
         name: item.question,
         acceptedAnswer: { '@type': 'Answer', text: item.answer },
@@ -245,16 +266,16 @@ const mythFaqSchema = d.faq && d.faq.length > 0
     <section class="block">
       <h2>那，實際上該怎麼做？</h2>
       <div class="myth-reasoning-grid">
-        {d.safeActions?.length > 0 && (
+        {safeActions?.length > 0 && (
           <div class="myth-reasoning-card myth-reasoning-card--blue">
             <h3>可以這樣做</h3>
-            <ul>{d.safeActions.map((item) => <li>{item}</li>)}</ul>
+            <ul>{safeActions.map((item) => <li>{item}</li>)}</ul>
           </div>
         )}
-        {d.avoidActions?.length > 0 && (
+        {avoidActions?.length > 0 && (
           <div class="myth-reasoning-card myth-reasoning-card--red">
             <h3>不建議這樣做</h3>
-            <ul>{d.avoidActions.map((item) => <li>{item}</li>)}</ul>
+            <ul>{avoidActions.map((item) => <li>{item}</li>)}</ul>
           </div>
         )}
       </div>
@@ -263,7 +284,7 @@ const mythFaqSchema = d.faq && d.faq.length > 0
       )}
     </section>
   )}
-  {d.faq?.length > 0 && <section class="block"><h2>FAQ</h2>{d.faq.map((item) => <article><h3>{item.question}</h3><p>{item.answer}</p></article>)}</section>}
+  {mythFaq?.length > 0 && <section class="block"><h2>FAQ</h2>{mythFaq.map((item) => <article><h3>{item.question}</h3><p>{item.answer}</p></article>)}</section>}
 
   <section class="block share-block">
     <h2>分享這篇文章</h2>
@@ -322,7 +343,7 @@ const mythFaqSchema = d.faq && d.faq.length > 0
       </div>
     </section>
   )}
-  <aside class="health-reminder" aria-label="健康資訊提醒"><p>{healthReminder}</p></aside>
+  {healthReminder && <aside class="health-reminder" aria-label="健康資訊提醒"><p>{healthReminder}</p></aside>}
   <EditButton client:idle repoPath={`src/content/myths/${entry.id}`} collection="myths" slug={entry.id.replace(/\.[^.]+$/, '')} />
   <ReadingEngagement client:idle contentType="myth" slug={entry.id.replace(/\.[^.]+$/, '')} tags={d.topicTags} author={d.author} verdict={d.verdict} evidenceLevel={d.evidenceLevel} hasRelated={false} />
 </Article>

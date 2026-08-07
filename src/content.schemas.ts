@@ -243,7 +243,8 @@ export const mythsSchema = z.object({
   }),
   safeActions: z.array(z.string()),
   avoidActions: z.array(z.string()),
-  shareCardImage: z.string(),
+  // 2026-08-07 改 optional：required 逼出 74 篇填了兩張不相干的 radar SVG（見 utils/myths/validate.ts）。
+  shareCardImage: z.string().optional(),
   coverImage: z.string().optional(),
   heroImage: z.string().optional(),
   imageAlt: z.string().optional(),

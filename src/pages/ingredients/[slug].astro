@@ -16,6 +16,7 @@ import { buildCitations, buildPerson, PUBLISHER_REF, WEBSITE_REF } from '@/utils
 import { isPublicEntry } from '@/utils/visibility';
 import IngredientCard from '@/components/blocks/IngredientCard.astro';
 import { getAutoRelated } from '@/utils/related';
+import { filterBoilerplateItems, dropIfInBody } from '@/utils/boilerplate';
 import { TOPICS, matchesTopic } from '@/data/topics';
 
 function stripExt(id: string): string {
@@ -32,7 +33,33 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content, headings } = await entry.render();
+
 const data = entry.data;
+
+/* 「研究中討論的用途」（2026-08-07 上架）。
+   ingredientsSchema.uses 從建站起就有資料，51/64 篇寫的是真的臨床試驗摘要
+   （樣本數、劑量、試驗長度、結論限制），但沒有任何模板讀它——那正是 AI 答案引擎
+   最需要、也最難從別處抄到的內容。
+
+   兩層過濾，都是量出來的不是猜的：
+   ① filterBoilerplateItems：14 篇填的是「核心知識與來源辨識／整理定義、來源與常見型態」
+      這種對任何成分都成立的句子，跨篇比對後整批濾掉。
+   ② dropIfInBody：這一項內文散文已經講過就不重印。這正是本檔原本「刻意不接 uses」
+      的理由，但實測重疊率中位數只有 16.2%、只有 13 篇超過 30%，整個欄位都不接
+      對其餘 38 篇是過度反應。改成逐項判斷。 */
+const usesAll = await filterBoilerplateItems('ingredients', 'uses', data.uses);
+const visibleUses = dropIfInBody(usesAll, entry.body ?? '', (u) => u.summary ?? '');
+
+/* 證據等級中文化：前台不出現 rct / meta-analysis 這類原始 enum 值。
+   與 src/utils/evidence-labels.ts 同一套說法，避免同一個概念站上有兩種講法。 */
+const USE_EVIDENCE_LABEL: Record<string, string> = {
+  'meta-analysis': '系統性回顧／統合分析',
+  rct: '隨機對照試驗',
+  observational: '觀察性研究',
+  animal: '動物實驗',
+  'in-vitro': '體外實驗',
+};
+
 const social = contentSocial('ingredients', data, entry.id.replace(/\.[^.]+$/, ''));
 
 /* Resolve related content */
@@ -78,7 +105,14 @@ const belongingTopics = TOPICS.filter((t) => matchesTopic(t, { title: data.title
 
 /* JSON-LD structured data */
 const slug = entry.id.replace(/\.[^.]+$/, '');
-const ingredientCitations = buildCitations(data.references);
+/* frontmatter 的 references 同樣過樣板濾網（2026-08-07）。
+   13 篇成分頁的 references 一字不差，內容是 NIH ODS / EFSA / Merck Manual / Cochrane /
+   PubMed 的**首頁**連結——那不是引用，是「我們查過這些資料庫」。而且它渲染兩次：
+   一次是可見的參考資料區塊，一次是 JSON-LD 的 citation，等於對 Google 宣告 13 頁引用
+   同一組來源。真正逐篇寫的具體引用（含 DOI 與期刊卷期）在 MDX body 裡，本來就會顯示，
+   濾掉泛用清單之後那份才是這一頁唯一的參考資料。 */
+const ingredientReferences = await filterBoilerplateItems('ingredients', 'references', data.references);
+const ingredientCitations = buildCitations(ingredientReferences);
 const ingredientArticleSchema = {
   '@context': 'https://schema.org',
   '@type': ['Article', 'MedicalWebPage'],
@@ -138,7 +172,7 @@ const ingredientBreadcrumbSchema = {
     { label: '成分解析', href: '/ingredients/' },
     { label: data.title },
   ]}
-  references={data.references}
+  references={ingredientReferences}
   citationAnswer={data.introduction}
 >
   <Fragment slot="head">
@@ -159,6 +193,24 @@ const ingredientBreadcrumbSchema = {
     已用散文講過用途與證據，把 uses 也渲染出來會在同一頁產生兩份近似內容。
     safety 是條列式的交互作用與族群注意，body 通常不會逐條重複，重疊風險低。
   */}
+  {visibleUses.length > 0 && (
+    <section class="ingredient-uses" aria-labelledby="ingredient-uses-title">
+      <h2 id="ingredient-uses-title">研究中討論的用途</h2>
+      <p class="ingredient-uses__note">以下是研究文獻中討論過的用途與證據強度，不是療效宣稱，也不代表適合每個人。</p>
+      <ul class="ingredient-uses__list">
+        {visibleUses.map((u) => (
+          <li class="ingredient-uses__item">
+            <div class="ingredient-uses__head">
+              <h3>{u.purpose}</h3>
+              <span class="ingredient-uses__level">{USE_EVIDENCE_LABEL[u.evidenceLevel] ?? u.evidenceLevel}</span>
+            </div>
+            <p>{u.summary}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
   {data.safety && (
     <section class="ingredient-safety" aria-labelledby="ingredient-safety-title">
       <h2 id="ingredient-safety-title">安全性與交互作用</h2>
@@ -281,6 +333,75 @@ const ingredientBreadcrumbSchema = {
   /* 安全性與交互作用：接在內文之後的固定區塊。
      用 dl 而非 ul，因為每一條都是「對象 → 說明」的配對，語意上是定義列表；
      螢幕閱讀器可據此把物質名與說明關聯起來。字級全部走 --text-* 階梯。 */
+  /* 「研究中討論的用途」：與 .ingredient-safety 同一套視覺語彙（分隔線起始、同字級階梯），
+     兩區塊相鄰時看起來是同一層級的內容，而不是後補上去的東西。 */
+  .ingredient-uses {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-fog);
+  }
+
+  .ingredient-uses h2 {
+    font-family: var(--font-sans);
+    font-size: var(--text-h2);
+    font-weight: 700;
+    color: var(--color-ink);
+    margin: 0 0 0.5rem;
+  }
+
+  /* 這句是體例聲明不是內容，降彩度、不縮字（硬規則 10：低干擾靠位置與彩度，不靠縮字）。 */
+  .ingredient-uses__note {
+    font-size: var(--text-meta);
+    color: var(--color-ink-muted);
+    margin: 0 0 1.25rem;
+  }
+
+  .ingredient-uses__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .ingredient-uses__item {
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--color-fog);
+    border-radius: var(--radius-sm);
+    background: var(--color-teal-subtle);
+  }
+
+  .ingredient-uses__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .ingredient-uses__head h3 {
+    font-family: var(--font-sans);
+    font-size: var(--text-h3);
+    font-weight: 700;
+    color: var(--color-ink);
+    margin: 0;
+  }
+
+  .ingredient-uses__level {
+    font-size: var(--text-meta);
+    font-weight: 600;
+    color: var(--color-teal);
+    white-space: nowrap;
+  }
+
+  .ingredient-uses__item p {
+    font-size: var(--text-body);
+    line-height: 1.8;
+    color: var(--color-ink);
+    margin: 0;
+    max-width: 40em;
+  }
+
   .ingredient-safety {
     margin-top: 2rem;
     padding-top: 1.5rem;
