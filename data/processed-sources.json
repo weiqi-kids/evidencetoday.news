@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-08-07T06:19:48+08:00",
+  "lastRun": "2026-08-08T06:36:43+08:00",
   "processed": {
     "https://www.cdc.gov.tw/Bulletin/Detail/vwMq9VkXIaV7FHyJgpk-5w?typeid=9": {
       "processedAt": "2026-08-06T11:08:34+08:00",
@@ -900,6 +900,78 @@
     },
     "https://pubmed.ncbi.nlm.nih.gov/39574193/": {
       "processedAt": "2026-08-07T06:19:48+08:00",
+      "outputFile": null
+    },
+    "PMID:41189312": {
+      "processedAt": "2026-08-08T06:36:43+08:00",
+      "outputFile": "src/content/news/radar-2026-08-23-12-01.md"
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41189312/": {
+      "processedAt": "2026-08-08T06:36:43+08:00",
+      "outputFile": "src/content/news/radar-2026-08-23-12-01.md"
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12823350/": {
+      "processedAt": "2026-08-08T06:36:43+08:00",
+      "outputFile": "src/content/news/radar-2026-08-23-12-01.md"
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC13091023/": {
+      "processedAt": "2026-08-08T06:36:43+08:00",
+      "outputFile": "src/content/news/radar-2026-08-23-12-01.md"
+    },
+    "https://www.uclahealth.org/news/release/creatine-may-supercharge-immune-cells-are-key-fighting": {
+      "processedAt": "2026-08-08T06:36:43+08:00",
+      "outputFile": "src/content/news/radar-2026-08-23-12-01.md"
+    },
+    "https://www.sciencedaily.com/releases/2026/07/260701015237.htm": {
+      "processedAt": "2026-08-08T06:36:43+08:00",
+      "outputFile": "src/content/news/radar-2026-08-23-12-01.md"
+    },
+    "https://www.sciencedaily.com/releases/2026/05/260504023828.htm": {
+      "processedAt": "2026-08-08T06:36:43+08:00",
+      "outputFile": "src/content/news/radar-2026-08-23-12-01.md"
+    },
+    "https://newsroom.ucla.edu/releases/creatine-may-supercharge-immune-cells-key-to-fighting-cancer": {
+      "processedAt": "2026-08-08T06:36:43+08:00",
+      "outputFile": null
+    },
+    "https://www.sciencedaily.com/releases/2026/06/260630020231.htm": {
+      "processedAt": "2026-08-08T06:36:43+08:00",
+      "outputFile": null
+    },
+    "https://www.eurekalert.org/news-releases/1136444": {
+      "processedAt": "2026-08-08T06:36:43+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42108202/": {
+      "processedAt": "2026-08-08T06:36:43+08:00",
+      "outputFile": null
+    },
+    "https://www.mohw.gov.tw/cp-16-40152-1.html": {
+      "processedAt": "2026-08-08T06:36:43+08:00",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/TravelEpidemic/Index/RzNQU2F5L2RhZmRBd2pzWU5tM0NDQT09": {
+      "processedAt": "2026-08-08T06:36:43+08:00",
+      "outputFile": null
+    },
+    "https://www.sciencedaily.com/news/health_medicine/dietary_supplements/": {
+      "processedAt": "2026-08-08T06:36:43+08:00",
+      "outputFile": null
+    },
+    "https://www.sciencedaily.com/news/health_medicine/vitamins/": {
+      "processedAt": "2026-08-08T06:36:43+08:00",
+      "outputFile": null
+    },
+    "https://www.sciencedaily.com/releases/2018/05/180528171511.htm": {
+      "processedAt": "2026-08-08T06:36:43+08:00",
+      "outputFile": null
+    },
+    "https://www.sciencedaily.com/news/health_medicine/vitamin_d/": {
+      "processedAt": "2026-08-08T06:36:43+08:00",
+      "outputFile": null
+    },
+    "https://www.sciencedaily.com/terms/glutamic_acid.htm": {
+      "processedAt": "2026-08-08T06:36:43+08:00",
       "outputFile": null
     }
   }
