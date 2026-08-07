@@ -68,7 +68,7 @@ const hasManual = manualArticles.length > 0 || manualMyths.length > 0 || manualI
 /* 手動全空 → 用 tag 重疊自動補相關內容，避免相關區整片空白（見 src/utils/related.ts） */
 const auto = hasManual
   ? { articles: [], myths: [], ingredients: [], videos: [], podcasts: [] }
-  : await getAutoRelated({ tags: data.tags ?? [], exclude: { collection: 'articles', id: entry.id }, perBucket: 3 });
+  : await getAutoRelated({ tags: data.tags ?? [], title: data.title, exclude: { collection: 'articles', id: entry.id }, perBucket: 3 });
 
 const relatedArticles = hasManual ? manualArticles : auto.articles;
 const relatedMyths = hasManual ? manualMyths : auto.myths;

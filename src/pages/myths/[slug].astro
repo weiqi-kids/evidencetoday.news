@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 import Article from '@/layouts/Article.astro';
 import JsonLd from '@/components/seo/JsonLd.astro';
 import { buildClaimReview, buildPerson, buildCitations, PUBLISHER_REF, WEBSITE_REF } from '@/utils/schema-org';
@@ -10,6 +10,11 @@ import { displayVerdict } from '@/utils/myths/schema';
 import { contentSocial } from '@/utils/social-meta.mjs';
 import EditButton from '@/components/editor/EditButton.svelte';
 import ReadingEngagement from '@/components/blocks/ReadingEngagement.svelte';
+import ArticleCard from '@/components/blocks/ArticleCard.astro';
+import MythCard from '@/components/blocks/MythCard.astro';
+import IngredientCard from '@/components/blocks/IngredientCard.astro';
+import { getAutoRelated } from '@/utils/related';
+import { fmtDate } from '@/utils/date';
 
 export async function getStaticPaths() {
   const entries = await getCollection('myths', ({ data }) => isPublicEntry(data));
@@ -111,6 +116,40 @@ const GENERIC_SEEK_ADVICE = '若症狀持續、惡化、影響生活，或你正
 const seekAdvice = d.whenToSeekProfessionalAdvice?.trim();
 const specificSeekAdvice = seekAdvice && seekAdvice !== GENERIC_SEEK_ADVICE ? seekAdvice : null;
 const hasSafetyBlock = d.safeActions?.length > 0 || d.avoidActions?.length > 0 || specificSeekAdvice;
+
+/* ── 延伸閱讀（2026-08-07 新增）────────────────────────────────────────
+ * 在此之前闢謠單篇是全站唯一沒有任何站內出鏈的頁型：實測內文區站內連結
+ * 中位數 0，讀者看完只能關掉。而闢謠正是搜尋主要入口之一，等於把人接進來
+ * 又送走。76 篇的 relatedArticles 有 70 篇是空的，所以主力靠自動推薦。
+ *
+ * ⚠️ 這是**刻意推翻**「闢謠版型只渲染固定區塊、不得加導覽區塊」的規則，
+ * 經使用者 2026-08-07 明確授權。上次（安全內容）的判準是「這個區塊的內容
+ * 是不是這一篇獨有的」，延伸閱讀不符合那個判準——它就是導覽。這次改的是
+ * 判準本身：留客優先於版型潔癖。相關文件已同步改寫，勿再依舊規則移除。
+ */
+const manualRelArticles = d.relatedArticles
+  ? (await Promise.all(d.relatedArticles.map((id) => getEntry('articles', id)))).filter(Boolean)
+  : [];
+const manualRelMyths = d.relatedMyths
+  ? (await Promise.all(d.relatedMyths.map((id) => getEntry('myths', id)))).filter(Boolean)
+  : [];
+const manualRelIngredients = d.relatedIngredients
+  ? (await Promise.all(d.relatedIngredients.map((id) => getEntry('ingredients', id)))).filter(Boolean)
+  : [];
+const hasManualRel = manualRelArticles.length > 0 || manualRelMyths.length > 0 || manualRelIngredients.length > 0;
+const autoRel = hasManualRel
+  ? { articles: [], myths: [], ingredients: [], videos: [], podcasts: [] }
+  : await getAutoRelated({
+      tags: [...(d.topicTags ?? []), ...(d.tags ?? [])],
+      title: d.title,
+      exclude: { collection: 'myths', id: entry.id },
+      perBucket: 2,
+      buckets: ['articles', 'myths', 'ingredients'],
+    });
+const relArticles = hasManualRel ? manualRelArticles : autoRel.articles;
+const relMyths = hasManualRel ? manualRelMyths : autoRel.myths;
+const relIngredients = hasManualRel ? manualRelIngredients : autoRel.ingredients;
+const hasRelated = relArticles.length > 0 || relMyths.length > 0 || relIngredients.length > 0;
 
 const slugId = entry.id.replace(/\.[^.]+$/, '');
 const squareCardImage = `/og/myths/${slugId}-square.png`;
@@ -241,6 +280,48 @@ const mythFaqSchema = d.faq && d.faq.length > 0
     <p id="share-status" aria-live="polite"></p>
   </section>
   {refs.length > 0 && <section class="block"><h2>References</h2><ol>{refs.map((r) => <li><strong>{r.title}</strong>{r.sourceType ? `（類型：${r.sourceType}）` : ''}{r.evidenceType ? `（證據類型：${r.evidenceType}）` : ''}<br /><a href={r.url} target="_blank" rel="noopener noreferrer">{r.url}</a></li>)}</ol></section>}
+  {hasRelated && (
+    <section class="block myth-related" aria-labelledby="myth-related-title">
+      <h2 id="myth-related-title">延伸閱讀</h2>
+      <div class="myth-related__grid">
+        {relArticles.map((a) => (
+          <ArticleCard
+            title={a.data.title}
+            description={a.data.description}
+            href={`/articles/${a.id.replace(/\.[^.]+$/, '')}/`}
+            category="article"
+            coverImage={a.data.coverImage}
+            coverAlt={a.data.coverAlt}
+            author={a.data.author}
+            date={fmtDate(a.data.publishDate)}
+          />
+        ))}
+        {relMyths.map((m) => (
+          <MythCard
+            title={m.data.title}
+            verdictSummary={m.data.verdictSummary}
+            href={`/myths/${m.id.replace(/\.[^.]+$/, '')}/`}
+            verdict={m.data.verdict}
+            date={fmtDate(m.data.publishDate)}
+            coverImage={m.data.coverImage}
+            coverAlt={m.data.coverAlt}
+          />
+        ))}
+        {relIngredients.map((i) => (
+          <IngredientCard
+            title={i.data.title}
+            titleEn={i.data.titleEn}
+            description={i.data.description}
+            href={`/ingredients/${i.id.replace(/\.[^.]+$/, '')}/`}
+            coverImage={i.data.coverImage}
+            coverAlt={i.data.coverAlt}
+            uses={i.data.uses}
+            tags={i.data.tags}
+          />
+        ))}
+      </div>
+    </section>
+  )}
   <aside class="health-reminder" aria-label="健康資訊提醒"><p>{healthReminder}</p></aside>
   <EditButton client:idle repoPath={`src/content/myths/${entry.id}`} collection="myths" slug={entry.id.replace(/\.[^.]+$/, '')} />
   <ReadingEngagement client:idle contentType="myth" slug={entry.id.replace(/\.[^.]+$/, '')} tags={d.topicTags} author={d.author} verdict={d.verdict} evidenceLevel={d.evidenceLevel} hasRelated={false} />
@@ -266,6 +347,19 @@ document.getElementById('copy-btn')?.addEventListener('click', async () => { awa
 
   .block :is(h1, h2, h3) {
     margin: 0 0 12px;
+  }
+
+  /* 延伸閱讀：沿用 .block 的卡片外框，內部用與其他頁型一致的自適應網格。 */
+  .myth-related__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .myth-related__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
 
   /* 「什麼時候該找專業人員」：接在該做／別做兩張卡之後的單行提示。

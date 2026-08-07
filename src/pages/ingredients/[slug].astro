@@ -54,7 +54,7 @@ const hasManual = manualArticles.length > 0 || manualMyths.length > 0 || manualV
    對外零出鏈，是全站最孤立的一群頁面。 */
 const auto = hasManual
   ? { articles: [], myths: [], ingredients: [], videos: [], podcasts: [] }
-  : await getAutoRelated({ tags: data.tags ?? [], exclude: { collection: 'ingredients', id: entry.id }, perBucket: 3 });
+  : await getAutoRelated({ tags: data.tags ?? [], title: data.title, exclude: { collection: 'ingredients', id: entry.id }, perBucket: 3 });
 
 const relatedArticles = hasManual ? manualArticles : auto.articles;
 const relatedMyths = hasManual ? manualMyths : auto.myths;
