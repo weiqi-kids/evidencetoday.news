@@ -23,6 +23,7 @@ import { appendFileSync, readFileSync, writeFileSync, existsSync, mkdirSync } fr
 import { dirname } from 'node:path';
 import { getToken } from './lib/insight-fetch.mjs';
 import { GSC_SITE } from './lib/insight-constants.mjs';
+import { buildLastmodMap } from './lib/content-dates.mjs';
 
 if (!(process.env.PATH || '').split(':').includes('/snap/bin')) {
   process.env.PATH = `/snap/bin:${process.env.PATH || ''}`;
@@ -136,6 +137,38 @@ Object.entries(bySeg).filter(([, v]) => v.tot >= 2).sort((a, b) => b[1].tot - a[
   .forEach(([k, v]) => console.log(`  ${k.padEnd(14)} ${v.idx}/${v.tot}`));
 console.log(`\n>>> 真實索引：${indexed}/${urls.length}（${(indexed / urls.length * 100).toFixed(0)}%）`);
 
+// ---- 依發布月份的索引率 ----
+// 為什麼要看這個：本檔原本只印總數，成長時一律建議「續觀察，多屬時間問題」。
+// 2026-08-08 把逐 URL 狀態對上 publishDate 之後，發現那句話是錯的——
+// 索引率不是隨時間單調上升，而是隨「發布當時的內容品質」變化：
+//   2026-03 76% ｜ 2026-04 38% ｜ 2026-05 53% ｜ 2026-06 71% ｜ 2026-07 97%
+// 也就是說近期產出幾乎全被收錄，拖累總數的是特定一批舊內容。那批已經過了 90–120 天，
+// Google 不是還沒看，是看過了決定不收。對它們「續觀察」等於永遠不處理。
+{
+  const dates = new Map();
+  for (const [path, iso] of buildLastmodMap()) dates.set(path, iso);
+  const byMonth = {};
+  for (const r of out) {
+    const path = r.u.replace('https://evidencetoday.news', '');
+    const iso = dates.get(path) ?? dates.get(path.endsWith('/') ? path : `${path}/`);
+    if (!iso) continue;
+    const mo = String(iso).slice(0, 7);
+    byMonth[mo] = byMonth[mo] || { tot: 0, idx: 0 };
+    byMonth[mo].tot++;
+    if (r.cov === INDEXED) byMonth[mo].idx++;
+  }
+  const months = Object.entries(byMonth).sort();
+  if (months.length > 1) {
+    console.log('\n— 依發布月份的索引率（判斷「是時間問題還是品質問題」）—');
+    for (const [mo, v] of months) {
+      const pct = (v.idx / v.tot) * 100;
+      console.log(`  ${mo}  ${String(v.idx).padStart(3)}/${String(v.tot).padEnd(3)} ${pct.toFixed(0).padStart(4)}%  ${'█'.repeat(Math.round(pct / 5))}`);
+    }
+    console.log('  判讀：最近一兩個月偏低是正常的（還在排隊）。舊月份偏低才是品質訊號——');
+    console.log('  那些頁已經過了幾個月，Google 不是還沒看，是看過了決定不收。');
+  }
+}
+
 // ---- 與上次比對 + 記錄 ----
 let prev = null;
 if (existsSync(HISTORY)) {
@@ -147,7 +180,7 @@ if (prev) {
   const days = ((Date.parse(stamp) - Date.parse(prev.stamp)) / 86400000).toFixed(1);
   const arrow = d > 0 ? `▲ +${d}` : d < 0 ? `▼ ${d}` : '＝ 持平';
   console.log(`\n對比上次（${prev.stamp.slice(0, 10)}，${days} 天前）：已索引 ${prev.indexed} → ${indexed}　${arrow}`);
-  console.log(d > 0 ? '  → 回補中，多屬時間問題，續觀察。' : '  → 未成長，偏向權重天花板訊號，該投資站外權威（見 docs/playbooks/geo-offsite.md）。');
+  console.log(d > 0 ? '  → 已索引數在成長。但成長不等於「未收錄的那些也會跟著回補」，見下方年齡分佈。' : '  → 未成長，偏向權重天花板訊號，該投資站外權威（見 docs/playbooks/geo-offsite.md）。');
 }
 if (save) {
   const snapshot = { stamp, total: urls.length, indexed, byCov, bySeg };
