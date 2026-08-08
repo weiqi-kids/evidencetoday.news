@@ -35,6 +35,25 @@
 - **全部 cron 自動化跑營運帳號 `claude-appi`**（=vegeta1260，wrapper 在 `/usr/local/bin/claude-appi` 設 `CLAUDE_CONFIG_DIR=~/.claude-appi`，再呼叫同一個 `claude` binary）。`claude`(dev/lightman) 只做互動改碼，不跑 cron。
 - ⚠️ **`claude-appi` 與 appi.news 自動化共用同一個週限額**——撞限額時 evidencetoday 會一起空跑；`claude-run.sh` 偵測到就寫冷卻旗標、`bootstrap.sh` 冷卻期內跳過 claude 型 job（純資料型照跑）。看現況用 `cron-status.sh`／`/etn-cron`。
 
+## articles 選題的三個來源（2026-08-08 補第二順位）
+
+`draft-cron.sh articles` 的 SELECT_BLOCK 現在有三條選題來源，順序有意義：
+
+1. **擴寫已有牽引力的主題叢集**（原有）——把單點頁擴成叢集，每個子題仍須獨立通過六基因。
+2. **把 news 抓到的重大轉向升格為常青決策文**（新增）——掃近 14 天 `src/content/news/`，
+   挑「指引更新／法規變動／重大證據反轉」且站上沒有對應決策文的題目。
+3. **GSC 排名 5–15 的 query 缺口**（原有，輔助）。
+
+**為什麼要加第二條**：兩條產線本來不通。news 每天在讀文獻，articles 選題卻只看
+既有叢集與 GSC。結果是重大題目進了一日新聞就被埋掉。
+2026-08-08 的實例：FDA 移除更年期荷爾蒙治療黑框警語（20 年來最大的一次轉向）
+只產出一則 08-22 的 radar，而站上 6 篇更年期文章全是保健品，沒有一篇談這個醫療決定。
+那是一個有時間窗的決定（停經 10 年內／60 歲前），時效性比一日新聞長得多。
+
+**同時補上「動筆前的排除檢查」**：必須直接列 `src/content/articles/` 確認排程稿沒在寫同一題。
+排程稿不在 `dist` 裡，用網站搜尋與 GSC 都看不到。2026-08-08 就是漏了這一步，
+在既有文裡加了一節，跟一篇 08-25 的排程稿打對台（見 commit 77d8da6）。
+
 ## 設計鐵則（改這裡前必讀）
 
 1. **ops 腳本一律不自我 `git pull`**——交給 `bootstrap.sh`。在 repo 內自我 pull 會執行中覆寫自身。
