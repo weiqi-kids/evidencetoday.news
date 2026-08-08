@@ -19,7 +19,7 @@
  *   /root/.config/evidencetoday-news/index-coverage-history.jsonl（每行一筆 JSON 快照）
  */
 import { execFileSync } from 'node:child_process';
-import { appendFileSync, readFileSync, existsSync, mkdirSync } from 'node:fs';
+import { appendFileSync, readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
 import { dirname } from 'node:path';
 import { getToken } from './lib/insight-fetch.mjs';
 import { GSC_SITE } from './lib/insight-constants.mjs';
@@ -30,6 +30,11 @@ if (!(process.env.PATH || '').split(':').includes('/snap/bin')) {
 
 const SITEMAP_INDEX = 'https://evidencetoday.news/sitemap-index.xml';
 const HISTORY = '/root/.config/evidencetoday-news/index-coverage-history.jsonl';
+// 逐 URL 明細（覆寫，只留最新一份）。歷史檔只存彙總計數，回答不了「Google 到底不收哪幾頁」——
+// 而那正是唯一能判斷「該衝內容量還是先修既有頁」的資料：新頁若有兩成機率不被收，
+// 「再多寫幾篇」就是錯的方向。2026-08-08 為了做這個分析得另外寫臨時腳本重跑一次 345 個
+// URL（API 有額度，重跑不是免費的），所以把明細一起留下來。
+const DETAIL = '/root/.config/evidencetoday-news/index-coverage-latest.json';
 const INDEXED = 'Submitted and indexed';
 const save = !process.argv.includes('--no-save');
 const token = await getToken();
@@ -97,7 +102,8 @@ async function inspect(u) {
       if (r.status === 429) { await new Promise((s) => setTimeout(s, 3000)); continue; }
       const j = await r.json();
       if (j.error) return { u, cov: `ERR${j.error.code}` };
-      return { u, cov: j.inspectionResult?.indexStatusResult?.coverageState || '?' };
+      const ir = j.inspectionResult?.indexStatusResult || {};
+      return { u, cov: ir.coverageState || '?', lastCrawl: ir.lastCrawlTime || null };
     } catch { if (t === 3) return { u, cov: 'EXC' }; }
   }
   return { u, cov: 'FAIL' };
@@ -147,5 +153,23 @@ if (save) {
   const snapshot = { stamp, total: urls.length, indexed, byCov, bySeg };
   mkdirSync(dirname(HISTORY), { recursive: true });
   appendFileSync(HISTORY, JSON.stringify(snapshot) + '\n');
+  writeFileSync(DETAIL, JSON.stringify({ stamp, urls: out }, null, 1));
   console.log(`\n已記錄快照 → ${HISTORY}`);
+  console.log(`逐 URL 明細 → ${DETAIL}（含 coverageState 與 lastCrawlTime，供交叉分析用）`);
+}
+
+// ---- 未被收錄的頁：直接列出來，不用再另外查 ----
+const notIndexed = out.filter((r) => r.cov !== INDEXED && !r.cov.startsWith('ERR'));
+if (notIndexed.length) {
+  const byState = {};
+  for (const r of notIndexed) (byState[r.cov] ||= []).push(r.u.replace('https://evidencetoday.news', ''));
+  console.log('\n— 未被收錄的頁（依狀態）—');
+  for (const [state, list] of Object.entries(byState).sort((a, b) => b[1].length - a[1].length)) {
+    console.log(`\n  ${state}（${list.length}）`);
+    list.slice(0, 15).forEach((u) => console.log(`    ${u}`));
+    if (list.length > 15) console.log(`    …另 ${list.length - 15} 頁，完整清單見 ${DETAIL}`);
+  }
+  console.log('\n  判讀：Discovered - currently not indexed 是「Google 知道但選擇不收」，');
+  console.log('  多半與內容量或跨頁重複有關（見 docs/playbooks/analytics.md）；');
+  console.log('  URL is unknown to Google 則是還沒被發現，屬內鏈或時間問題。');
 }

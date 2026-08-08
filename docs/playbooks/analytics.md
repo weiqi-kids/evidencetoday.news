@@ -295,3 +295,22 @@ pnpm test                                   # 全套
 ⚠️ 這批未索引頁正好是搜尋量最大、競爭最激烈的通用詞（維生素 C／D、鋅、鎂、鐵、膠原蛋白、薑黃、Omega-3、葉酸、Q10、葉黃素）。被索引是入場券，不等於排得上去。
 
 查法可複用：`pnpm index:coverage` 拿分類覆蓋率 → 對單一 collection 逐頁打 URL Inspection 取 `coverageState` → 與內文字數／references 數／入站連結／發布日交叉，並**務必在同一時期的稿內部再比一次**排除新舊混淆。
+
+## `pnpm index:coverage` 現在會列出「沒被收錄的是哪幾頁」（2026-08-08）
+
+原本只印彙總計數（245/345），回答不了最關鍵的那個問題：**Google 到底不收哪幾頁、為什麼。**
+而那正是唯一能判斷「該衝內容量還是先修既有頁」的資料——如果新頁有兩成機率不被收，
+「再多寫幾篇」就是錯的方向，因為每一頁不被收的薄頁對整站是負分。
+
+現在會做兩件事：
+1. 直接印出未收錄清單，依 `coverageState` 分組。
+2. 逐 URL 明細（含 `lastCrawlTime`）寫到
+   `/root/.config/evidencetoday-news/index-coverage-latest.json`，供交叉分析。
+
+**兩種狀態的意義不同，不要混著看：**
+- `Discovered - currently not indexed` —— Google 知道這頁但**選擇不收**。這是品質訊號，
+  多半與內容量或跨頁重複有關。
+- `URL is unknown to Google` —— 還沒被發現。這是內鏈或時間問題，不是品質問題。
+
+會加這個是因為 2026-08-08 要做「已收錄 vs 未收錄差在哪」的分析時，發現歷史檔只有彙總，
+得另外寫臨時腳本重跑一次 345 個 URL。URL Inspection API 有額度，重跑不是免費的。
