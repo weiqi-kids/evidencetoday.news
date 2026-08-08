@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-08-08T06:36:43+08:00",
+  "lastRun": "2026-08-09T06:37:32+08:00",
   "processed": {
     "https://www.cdc.gov.tw/Bulletin/Detail/vwMq9VkXIaV7FHyJgpk-5w?typeid=9": {
       "processedAt": "2026-08-06T11:08:34+08:00",
@@ -972,6 +972,42 @@
     },
     "https://www.sciencedaily.com/terms/glutamic_acid.htm": {
       "processedAt": "2026-08-08T06:36:43+08:00",
+      "outputFile": null
+    },
+    "https://doi.org/10.1016/j.cpblue.2026.100079": {
+      "processedAt": "2026-08-09T06:37:32+08:00",
+      "outputFile": "src/content/news/radar-2026-08-09-06-01.md"
+    },
+    "https://www.sciencedaily.com/releases/2026/08/260801042811.htm": {
+      "processedAt": "2026-08-09T06:37:32+08:00",
+      "outputFile": "src/content/news/radar-2026-08-09-06-01.md"
+    },
+    "https://www.eurekalert.org/news-releases/1137190": {
+      "processedAt": "2026-08-09T06:37:32+08:00",
+      "outputFile": null
+    },
+    "https://www.sciencedaily.com/releases/2026/05/260512202350.htm": {
+      "processedAt": "2026-08-09T06:37:32+08:00",
+      "outputFile": null
+    },
+    "https://www.sciencedaily.com/releases/2026/03/260318033138.htm": {
+      "processedAt": "2026-08-09T06:37:32+08:00",
+      "outputFile": null
+    },
+    "https://www.sciencedaily.com/releases/2026/05/260515234759.htm": {
+      "processedAt": "2026-08-09T06:37:32+08:00",
+      "outputFile": null
+    },
+    "https://www.eurekalert.org/news-releases/1105383": {
+      "processedAt": "2026-08-09T06:37:32+08:00",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Category/MPage/94JVbJ2BFjR_3MTi-9s9Cg": {
+      "processedAt": "2026-08-09T06:37:32+08:00",
+      "outputFile": null
+    },
+    "https://sciencesources.eurekalert.org/newsroom/nutrition2026": {
+      "processedAt": "2026-08-09T06:37:32+08:00",
       "outputFile": null
     }
   }
