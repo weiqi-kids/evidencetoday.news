@@ -181,6 +181,64 @@ for (const { name, dir } of DETAIL) {
       `補寫需要看得到圖，本環境對外連圖床為 403，見 docs/reminders.md。`);
 }
 
+// ── 規則 4c：同頁型的渲染結果不得互相高度重複 ──
+// check-boilerplate 掃的是原始碼；有些頁型的內容全在 frontmatter（videos 就是），
+// 原始碼層看到的正文是空的，那道 gate 對它等於不存在。而且真正造成重複的往往是**版型**——
+// 「繼續看」「相關內容」這類區塊如果印出鄰篇的完整描述，在小 collection 裡就會讓每一頁
+// 大部分內容都一樣。這種重複只有在組裝後才看得見。
+//
+// 2026-08-08 實測：5 個短影音頁彼此重複 43.8%、每頁只有 694–962 字，Google 收錄 0/6。
+// 對照組 myths（60 頁、1500–2500 字、重複 23.1%）收錄 49/60。
+//
+// 量的時候一定要先剝掉 <script>/<style>：Astro 的 hydration script 每頁都一樣，
+// 不剝的話任何頁型都會量出 88% 這種假數字（第一次就是這樣誤判的）。
+{
+  const NG = 8;
+  for (const { name, dir } of DETAIL.concat([{ name: '短影音', dir: 'videos' }, { name: 'Podcast', dir: 'podcasts' }])) {
+    const base = join(DIST, dir);
+    if (!existsSync(base)) continue;
+    const docs = [];
+    for (const f of walk(base)) {
+      if (f === join(base, 'index.html')) continue;
+      const html = readFileSync(f, 'utf8');
+      if (/http-equiv="refresh"/i.test(html)) continue;
+      const m = html.match(/<main[\s\S]*?<\/main>/i);
+      if (!m) continue;
+      const t = m[0]
+        .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+        .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+        .replace(/<[^>]+>/g, ' ')
+        .replace(/\s/g, '');
+      if (t.length >= 50) docs.push({ f, t });
+    }
+    if (docs.length < 3) continue;
+    const grams = docs.map((d) => {
+      const g = new Set();
+      for (let i = 0; i + NG <= d.t.length; i++) g.add(d.t.slice(i, i + NG));
+      return g;
+    });
+    const df = new Map();
+    for (const g of grams) for (const x of g) df.set(x, (df.get(x) ?? 0) + 1);
+    const ratios = docs.map((d, i) => {
+      const g = grams[i];
+      let n = 0;
+      for (const x of g) if ((df.get(x) ?? 0) >= 3) n++;
+      return g.size ? n / g.size : 0;
+    });
+    const sorted = [...ratios].sort((a, b) => a - b);
+    const med = sorted[Math.floor(sorted.length / 2)];
+    // 門檻 0.35：myths（收錄率 82%）實測 23.1%，videos（收錄率 0%）43.8%，取中間偏嚴。
+    if (med > 0.35)
+      violations.push(`${name}頁型的渲染結果互相重複 ${(med * 100).toFixed(1)}%（上限 35%）——` +
+        `同一批頁面長得太像，Google 多半只會收其中幾頁。先看版型：「繼續看／相關內容」區塊是不是印了鄰篇的完整描述？`);
+    // 過薄也一起報：內容量太少時，就算不重複也很難被收錄。
+    const lens = docs.map((d) => d.t.length).sort((a, b) => a - b);
+    const medLen = lens[Math.floor(lens.length / 2)];
+    if (medLen < 1200)
+      warnings.push(`${name}頁型每頁正文中位數只有 ${medLen} 字（建議 ≥1200）。內容量太少的頁面 Google 常「已檢索但未編入索引」。`);
+  }
+}
+
 // ── 規則 5：sitemap 不得收錄 noindex 頁 ──
 // 送出去的和讓收錄的必須一致，否則 GSC 會一直回報「已提交但被 noindex 排除」。
 const smFiles = readdirSync(DIST).filter((f) => /^sitemap.*\.xml$/.test(f));

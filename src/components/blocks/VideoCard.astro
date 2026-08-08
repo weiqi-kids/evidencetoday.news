@@ -2,11 +2,16 @@
 interface Props {
   title: string;
   tldr: string;
+  /** 精簡模式：只出標題與縮圖，不印 tldr。
+      用途：短影音詳情頁的「繼續看」區塊。整個 collection 只有 5 支影片時，
+      每頁印出另外 3 支的完整 tldr，會讓 5 頁彼此重複 43.8%——2026-08-08 實測，
+      Google 收錄 0/6。列表頁不受影響，維持完整卡片。 */
+  compact?: boolean;
   href: string;
   youtubeId: string;
 }
 
-const { title, tldr, href, youtubeId } = Astro.props;
+const { title, tldr, href, youtubeId, compact = false } = Astro.props;
 
 const thumbnailUrl = `https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg`;
 ---
@@ -19,7 +24,7 @@ const thumbnailUrl = `https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg`
   </div>
   <div class="video-card__body">
     <h3 class="video-card__title">{title}</h3>
-    <p class="video-card__tldr">{tldr}</p>
+    {!compact && <p class="video-card__tldr">{tldr}</p>}
   </div>
 </a>
 

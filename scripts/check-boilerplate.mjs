@@ -30,7 +30,10 @@ import yaml from 'js-yaml';
 
 const REPORT_ONLY = process.argv.includes('--report');
 const CONTENT = 'src/content';
-const COLLECTIONS = ['articles', 'myths', 'ingredients', 'news'];
+// 全部內容 collection 都要掃。2026-08-08 的教訓：videos 沒列進來，於是「5 支短影音頁
+// 彼此重複 43.8%、每頁只有 700–960 字」這件事完全沒有守門看到，而 Google 收錄了 0/6。
+// 新增 collection 時必須同步加進這個清單，否則那個 collection 等於沒有樣板守門。
+const COLLECTIONS = ['articles', 'myths', 'ingredients', 'news', 'videos', 'podcasts'];
 
 /** n-gram 長度。中文 12 字約等於一個短句——短了會抓到常用詞組，長了會漏掉改幾個字的樣板。 */
 const N = 12;

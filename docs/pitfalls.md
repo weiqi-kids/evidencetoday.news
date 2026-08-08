@@ -85,3 +85,17 @@
 的問題。連維生素 C 那篇自己掛的都是檸檬水那張——沒有任何一篇是對的。
 必填欄位如果沒有配套的正確性檢查，最可能的結果是「大家隨便填一個值讓 gate 過」。
 寧可不要求，也不要製造這種假合規。
+
+## 守門清單漏掉一個 collection，等於那個 collection 沒有守門（2026-08-08）
+
+`check-boilerplate.mjs` 的 `COLLECTIONS` 原本只列 articles/myths/ingredients/news。
+videos 不在裡面，於是「5 支短影音頁彼此重複、Google 收錄 0/6」這件事，兩道 gate 都沒看到。
+新增 collection 時必須同步加進那份清單。
+
+但這件事還有第二層，比補清單更重要：**videos 的內容全在 frontmatter，原始碼層的正文是空的**，
+所以就算加進清單，n-gram 那一關也照樣看不到——真正造成重複的是**版型**
+（「繼續看」印出鄰篇的完整描述）。這種重複只有在組裝後才存在。
+因此渲染層的重複檢查加在 `check-site.mjs`（規則 4c），不是 check-boilerplate。
+
+量渲染重複時**一定要先剝掉 `<script>`／`<style>`**：Astro 的 hydration script 每頁都一樣，
+不剝的話任何頁型都會量出 88% 這種數字。我第一次就是這樣誤判，差點照著假數字去改版型。
