@@ -145,9 +145,45 @@ LLM 偏好被全網廣泛引用的來源。重質不重量、禁灌水。
 判讀：連續 2–3 個月某平台從「否」變「是」，代表站內+站外努力開始被該引擎採信；長期沒有任何引用，回頭檢查該平台是否有索引（GSC/Bing 收錄狀況）。
 
 - [ ] 第一次基線抽測（記下目前 0/n 的起點）
+      **2026-08-08 註記：這一項遠端 agent 做不到。** 需要開瀏覽器逐題問
+      ChatGPT／Perplexity／Gemini 並人工判讀引用位置，而 CCR 環境對外網是
+      `403 connect_rejected`（組織網路政策），也沒有可驅動的瀏覽器。
+      這是少數必須由人執行的項目，不要再指派給 agent 然後得到編造的結果。
 - [ ] 設每月固定日重跑
 
-## 6. D1 referrer 監測（待你決定方式）
+## 6. D1 referrer 監測 —— 已解決，不需要建東西（2026-08-08）
+
+**GA4 的預設 channel grouping 已經有「AI Assistant」這一類，`sessionSource` 也直接看得到
+`chatgpt.com`／`copilot.com`。** 也就是說原本規劃的 A（自建 Cloudflare Worker beacon）
+與 B（第三方分析服務）都不必做，`privacy.astro` 也不用改——**選 C，但不是「先不做」，
+是「本來就已經在量了」**。
+
+查法（不需要新工具）：
+```bash
+node -e "…"   # 或直接在 GA4 報表看 sessionSource / sessionDefaultChannelGroup
+```
+`pnpm perf` 的「流量來源」區塊已經會印出 AI Assistant 這一列。
+
+**首次基線（2026-08-08，GA4 近 90 天，總 752 階段）：**
+
+| 來源 | 階段 |
+|---|---|
+| chatgpt.com | 2 |
+| copilot.com | 1 |
+| perplexity / gemini / claude | 0 |
+| **AI 合計** | **3（佔 0.4%）** |
+
+同期對照：google 386、bing 7。
+
+**這份對照才是重點。** ChatGPT 與 Copilot 的搜尋層都吃 Bing 的索引，而 Bing 只帶來 7 個
+階段（google 的 1.8%）。在 Bing 收錄不足的情況下，站內再怎麼優化也很難被這兩家引用——
+這佐證了本檔開頭把「Bing Webmaster Tools」列為最高槓桿的判斷，而那一項至今還沒做。
+
+- [x] D1 決定方式 → C（GA4 原生已涵蓋，不建 Worker、不引第三方）
+- [x] 首次基線已記錄（見上表）
+- [ ] 下次比對時，重點看 AI 合計有沒有離開個位數，以及 bing 是否隨 Bing Webmaster 開通而上升
+
+## 6b. D1 原規劃（已作廢，保留說明為什麼）
 
 GitHub Pages 靜態無 server log，無法直接看爬蟲。可量測的是「使用者從 AI 點連結進站」的 referrer。三條路，請擇一（決定後工程建置）：
 
