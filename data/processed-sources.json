@@ -1,7 +1,23 @@
 {
   "version": 1,
-  "lastRun": "2026-08-09T06:37:32+08:00",
+  "lastRun": "2026-08-10T06:19:57+08:00",
   "processed": {
+    "https://www.sciencedaily.com/releases/2026/07/260719035927.htm": {
+      "processedAt": "2026-08-10T06:19:57+08:00",
+      "outputFile": null
+    },
+    "http://www.sciencedaily.com/releases/2026/08/260807235103.htm": {
+      "processedAt": "2026-08-10T06:19:57+08:00",
+      "outputFile": null
+    },
+    "https://www.medscape.com/viewarticle/ultraprocessed-food-linked-increased-dementia-risk-poor-2026a1000euw": {
+      "processedAt": "2026-08-10T06:19:57+08:00",
+      "outputFile": null
+    },
+    "https://www.medscape.com/viewarticle/coffee-and-tea-may-protect-against-dementia-hold-decaf-2026a100046l": {
+      "processedAt": "2026-08-10T06:19:57+08:00",
+      "outputFile": null
+    },
     "https://www.cdc.gov.tw/Bulletin/Detail/vwMq9VkXIaV7FHyJgpk-5w?typeid=9": {
       "processedAt": "2026-08-06T11:08:34+08:00",
       "outputFile": "src/content/news/radar-2026-08-23-12-01.md"
