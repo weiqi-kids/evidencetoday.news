@@ -143,6 +143,16 @@ const safeCover =
             <ReferenceList references={references} />
           </section>
         )}
+        {tags && tags.length > 0 && (
+          <nav class="article-tags" aria-label="相關主題標籤">
+            <span class="article-tags__label">相關主題</span>
+            <div class="article-tags__list">
+              {tags.map((tag) => (
+                <a href={`/tags/${encodeURIComponent(tag)}/`}>{tag}</a>
+              ))}
+            </div>
+          </nav>
+        )}
         {showMedicalDisclaimer && <MedicalDisclaimer />}
         {showShare && <ShareButtons url={shareUrl} title={title} />}
         <slot name="after-content" />
@@ -252,6 +262,32 @@ const safeCover =
 
   .article-references {
     margin-top: 0;
+  }
+
+  .article-tags {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .article-tags__label {
+    font-size: var(--text-meta);
+    color: var(--color-ink-muted);
+  }
+
+  .article-tags__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .article-tags__list a {
+    background: var(--color-teal-subtle);
+    color: var(--color-navy);
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    text-decoration: none;
+    font-size: var(--text-meta);
   }
 
   .article-sidebar {

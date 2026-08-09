@@ -201,7 +201,7 @@ const mythFaqSchema = mythFaq && mythFaq.length > 0
   : null;
 ---
 
-<Article title={d.title} description={social.description} seoTitle={d.seoTitle ?? social.title} socialTitle={social.title} socialDescription={social.description} ogImage={social.image} category="myth" variant="cards" showMedicalDisclaimer={false} publishDate={d.publishDate} updatedDate={d.updatedDate} author={d.author} reviewer={d.reviewer} tags={d.topicTags} breadcrumbItems={[{ label: '首頁', href: '/' }, { label: '迷思查證', href: '/myths/' }, { label: d.title }]}>
+<Article title={d.title} description={social.description} seoTitle={d.seoTitle ?? social.title} socialTitle={social.title} socialDescription={social.description} ogImage={social.image} category="myth" variant="cards" showMedicalDisclaimer={false} publishDate={d.publishDate} updatedDate={d.updatedDate} author={d.author} reviewer={d.reviewer} tags={d.tags} breadcrumbItems={[{ label: '首頁', href: '/' }, { label: '迷思查證', href: '/myths/' }, { label: d.title }]}>
   <Fragment slot="head">
     <meta property="article:published_time" content={d.publishDate.toISOString()} />
     <meta property="article:modified_time" content={d.updatedDate.toISOString()} />
