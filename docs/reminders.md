@@ -61,6 +61,6 @@
 | 項目 | 為什麼只能人做 |
 |---|---|
 | GEO 的 D2 人工抽測（10 題問各家 AI） | 要開瀏覽器逐題問 ChatGPT／Perplexity／Gemini 並判讀引用位置。CCR 環境對外網 `403 connect_rejected`，也沒有可驅動的瀏覽器。指派給 agent 只會得到編造的結果。 |
-| Bing Webmaster Tools 開通與提交 | 需要登入。而這是 GEO 的最高槓桿——2026-08-08 實測 bing 只帶來 7 個階段（google 386），ChatGPT 與 Copilot 的搜尋層都吃 Bing 索引，收錄不足的話站內怎麼優化都很難被引用。 |
+| ~~Bing Webmaster Tools 開通與提交~~ | **這一項是我寫錯的，2026-08-09 更正。** Bing 早在 2026-06-17 就完成帳號、驗證與 sitemap 提交（`geo-offsite.md` 三個框都是 `[x]`），且 `public/<key>.txt` + `scripts/indexnow-submit.mjs` + CI 的 indexnow job 讓每次部署都主動推送。我看到章節標題寫「最高槓桿」就當成待辦，沒往下看那三個打勾的框。**真正該查的是「已經接好卻只帶來 7 個階段」的原因**，不是「去把它接上」。 |
 | 69 篇文章的 coverAlt | 要看得到圖才寫得對，外連圖床同樣 403。詳見上方。 |
 | 短影音頁要走哪條路 | 每支影片真正的獨有內容只有約 200 字，不是「有內容沒渲染」。要嘛接受不被單獨索引、定位成 YouTube 落地頁，要嘛改成一主題一頁收數支影片（URL 要改、要轉址）。這是產品決策不是技術決策，見 `docs/page-rules/videos.md`。 |
