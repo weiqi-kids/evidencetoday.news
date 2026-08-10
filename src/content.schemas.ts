@@ -117,7 +117,7 @@ export const articlesSchema = z.object({
   readingTime: z.number(),
   editorReviewed: z.boolean().default(true),
   featured: z.boolean().default(false),
-  disclosure: z.string().optional(),
+  disclosure: z.boolean().optional(),
   coverImage: z.string().optional(),
   ...coverFields,
   faq: z
@@ -314,7 +314,7 @@ export const ingredientsSchema = z.object({
   featured: z.boolean().default(false),
   coverImage: z.string().optional(),
   ...coverFields,
-  disclosure: z.string().optional(),
+  disclosure: z.boolean().optional(),
   uses: z.array(
     z.object({
       purpose: z.string(),

@@ -3,7 +3,6 @@ import Base from '@/layouts/Base.astro';
 import Breadcrumb from '@/components/ui/Breadcrumb.astro';
 import CategoryTag from '@/components/ui/CategoryTag.astro';
 import Badge from '@/components/ui/Badge.astro';
-import DisclosureBanner from '@/components/blocks/DisclosureBanner.astro';
 import AuthorMeta from '@/components/blocks/AuthorMeta.astro';
 import EditorInfo from '@/components/blocks/EditorInfo.astro';
 import TldrBox from '@/components/blocks/TldrBox.astro';
@@ -32,7 +31,7 @@ interface Props {
   reviewer?: string;
   readingTime?: number;
   editorReviewed?: boolean;
-  disclosure?: string;
+  disclosure?: boolean;
   tags: string[];
   breadcrumbItems: Array<{ label: string; href?: string }>;
   faq?: Array<{ question: string; answer: string }>;
@@ -107,14 +106,14 @@ const safeCover =
         {queryPatternLabel && <span class="article-header__aeo">{queryPatternLabel}</span>}
         {editorReviewed && <Badge variant="editor">主編把關</Badge>}
       </div>
-      {disclosure && <DisclosureBanner disclosure={disclosure} />}
       <AuthorMeta publishDate={publishDate} updatedDate={updatedDate} readingTime={readingTime} />
       <h1>{title}</h1>
-      {(author || reviewer) && (
+      {(author || reviewer || disclosure) && (
         <EditorInfo
           author={author ?? '編輯部'}
           reviewer={reviewer}
           editorReviewed={editorReviewed}
+          disclosure={disclosure}
         />
       )}
     </header>

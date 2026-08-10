@@ -54,6 +54,20 @@
 
 ---
 
+## 利益揭露標籤（2026-08-10 定案）
+
+**寫法**：固定四個字「利益揭露」，一個連結，無圖示、無徽章、無背景色，顏色比審閱者署名更淡（`EditorInfo.astro` 的 `.editor-info__item--disclosure`，`color-mix(... var(--color-ink) 40%, transparent)`，審閱者是 55%）。放在作者／審閱者那一排（`EditorInfo`）最後一個位置，點下去連到 `/disclosure/` 看完整說明。**不在內文或該欄位寫任何一句話**——欄位型別是 `boolean`（`disclosure: true`），結構上就不允許再寫成一整段句子。
+
+**為什麼是 boolean 不是字串**：舊版 `disclosure` 是自由文字欄位，曾經被寫成一整句夾在標題正上方的橘色色塊裡（`DisclosureBanner.astro`，已刪除）。business owner 明確定調「有就好，字數越少越好，不要破壞閱讀體驗」，所以直接把欄位改成 boolean——這樣以後不會有人（或 agent）又手滑寫成一大段話，固定版本靠 schema 鎖死，不是靠約定。
+
+**適用範圍**：只在「內容確實碰到主編個人商業利益」的頁面加，**不是全站盲蓋**。2026-08-10 業主親自核對後，全站僅 6 篇符合（魚油／Omega-3 相關 4 篇文章＋成分頁、葉黃素成分頁 1 篇）：
+`omega-3-guide.mdx`、`fish-oil-blood-thinner-interaction.mdx`、`krill-oil-vs-fish-oil-comparison.mdx`、`aspirin-fish-oil-together-bleeding-risk.mdx`、`ingredients/omega-3.mdx`、`ingredients/lutein.mdx`。
+之後新增內容若主題確實碰到主編實際在賣的品項，才加 `disclosure: true`；不要用「聽起來像保健品」「像購買指南」去猜——這條路徑已經試過一次、命中率接近零，業主明確否決了「廣泛盤點式」的做法。
+
+**接線同「三個 collection 的接法」表**：`articles`／`ingredients` 皆已接通（`Article.astro` 的 `(author || reviewer || disclosure)` 任一為真即渲染 `EditorInfo`）；`myths` 未接（`disclosureStatus` 是另一個全站只有 1 種值的樣板欄位，非本項，勿混用）。
+
+---
+
 ## 已知的死碼與待處理項
 
 - ~~`src/components/blocks/VerdictDisclaimer.astro`~~ — 全站零引用，2026-08-04 已刪除。
@@ -63,4 +77,4 @@
   **實際效益比預期小，如實記錄**：74 篇裡有 67 篇的 `medicalDisclaimer` 是把通用句原封不動複製一遍，真正客製的只有 7 篇。生效後那 7 篇會顯示含該主題具體警訊症狀與建議科別的版本（例如大腸相關題目寫「出現血便、排便習慣改變、體重不明下降等症狀，請至消化內科、家庭醫學科」），其餘 67 篇畫面不變。
   同一次把版面改成符合硬規則 8a：原本是 `<section class="block">` 加 `<h2>健康資訊提醒</h2>`，跟內容區塊一樣醒目；現改為 `<aside class="health-reminder">`，去掉卡片與標題，只留左側細線與 `--color-ink-subtle`，字級維持 `var(--text-meta)`（規範 ⑥ 不得再縮小）。**低干擾靠降彩度與位置達成，不靠縮字。**
   往後寫闢謠時，`medicalDisclaimer` 值得針對主題寫具體症狀與科別——它現在真的會顯示。
-- `ingredientsSchema.disclosure` 欄位存在但 0 檔案設定，且 `ingredients/[slug].astro` 從未把它傳給 `<Article>`——雙重死碼。
+- ~~`ingredientsSchema.disclosure` 欄位存在但 0 檔案設定，且 `ingredients/[slug].astro` 從未把它傳給 `<Article>`~~ → **2026-08-10 已接通**，見上方「利益揭露標籤」一節。

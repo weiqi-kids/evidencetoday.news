@@ -6,9 +6,10 @@ interface Props {
   author: string;
   reviewer?: string;
   editorReviewed: boolean;
+  disclosure?: boolean;
 }
 
-const { author, reviewer, editorReviewed } = Astro.props;
+const { author, reviewer, editorReviewed, disclosure } = Astro.props;
 
 // 作者已登錄於 registry 時，把姓名連到作者頁，串起 文章 → 作者 → sameAs 實體圖（E-E-A-T）。
 const authorPath = AUTHORS[author]?.url?.replace('https://evidencetoday.news', '') ?? null;
@@ -35,6 +36,11 @@ const reviewerLabel = independentReviewer
     {independentReviewer && (
       <span class="editor-info__item editor-info__item--reviewer">
         審閱：<a class="editor-info__author-link" href="/disclosure/">{reviewerLabel}</a>
+      </span>
+    )}
+    {disclosure && (
+      <span class="editor-info__item editor-info__item--disclosure">
+        <a class="editor-info__author-link" href="/disclosure/">利益揭露</a>
       </span>
     )}
   </div>
@@ -71,6 +77,14 @@ const reviewerLabel = independentReviewer
      設計規範 ⑥ 強制所有 --text-* ≥ 1.125rem，低干擾只能靠顏色與位置達成。 */
   .editor-info__item--reviewer {
     color: color-mix(in oklch, var(--color-ink) 55%, transparent);
+  }
+
+  /* 利益揭露標籤：故意比審閱者更淡，是這一整排裡存在感最低的項目。
+     只放連結文字「利益揭露」，完整說明在 /disclosure/，不在文章內展開，
+     避免揭露聲明喧賓奪主（2026-08 業主裁示：字級不可低於 18px 下限，
+     低干擾一律靠顏色與位置達成，不靠縮字）。 */
+  .editor-info__item--disclosure {
+    color: color-mix(in oklch, var(--color-ink) 40%, transparent);
   }
 
   .editor-info__item svg {
