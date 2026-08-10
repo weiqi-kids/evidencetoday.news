@@ -1,0 +1,143 @@
+---
+/**
+ * 閱讀量測回報（appinews-reader 的「真讀 / 秒退」訊號來源）。
+ *
+ * 契約正本：/root/appinews-reader/contracts/beacon.schema.json
+ * 生產者＝本元件；消費者＝appinews-reader 的 POST /v1/beacon。
+ * 要改 payload 欄位得先改那份 schema，不可單方面改這裡。
+ *
+ * 只在 LINE 官方帳號派送的網址（fragment 帶 r=<short_id>）上送資料；
+ * 讀者從搜尋或社群自然進站沒有那個 fragment，就整段不送。
+ *
+ * 移植自 /root/appi.news/src/components/seo/ReadingBeacon.astro，一字不改（除了
+ * ENDPOINT 與 hostname 守門改成本站網域）。以下每一條都是 appi.news 踩過的坑，
+ * 照抄是刻意的，不要「順手優化」：
+ *
+ * 效能鐵則：
+ *   - 絕不插入或改動任何可見 DOM，沒有樣式、沒有節點 → CLS 不受影響。
+ *   - 捲動 listener 是 passive，且只做一次數值比較（更新 maxY），
+ *     不讀 layout、不寫 DOM。
+ *   - 送出機制（visibilitychange / pagehide）等 window load 後才用
+ *     requestIdleCallback 掛上，與 Analytics.astro 同一套延後策略。
+ * 用 set:html 原樣輸出腳本文字；不用 define:vars + 樣板字串包裹，
+ * 那會被當成被丟棄的字串、IIFE 不執行（appi.news 的 Analytics.astro 已記過這個坑）。
+ *
+ * ⚠️ 捲動深度刻意「只在送出當下算一次」，而不是在 rAF 裡連續取樣取最大值：
+ * 文章頁的圖片是延後載入的，早期取樣時 scrollHeight 還沒長到最終高度，
+ * 算出來的比例會偏高，而「取最大值」會讓那個偏高值永久留下。改成全程只記
+ * 原始 maxY、送出時再用最終文件高度換算，既準確又完全不需要在捲動過程讀
+ * layout（連 rAF 節流都省了，因為 handler 本身已是 O(1)）。
+ *
+ * ⚠️ 停留計時用獨立 `running` 布林旗標，不用時間戳的真值判斷：
+ * `performance.now()` 在導覽起點附近可以是 0，0 是 falsy → 用 `if (since)`
+ * 判斷會把「計時中」誤判成「已暫停」，整段停留漏算（appi.news 這個 bug 是
+ * 寫模擬器跑才炸出來的，手測不會發現）。
+ *
+ * ⚠️ check-design.mjs 是逐行掃 src/、不分 CSS 還是 JS：inline script 裡若出現色碼
+ * 樣式字面值（十六進位色碼開頭符號、色彩函式呼叫）或字級屬性名，會被判成硬編樣式而擋
+ * build。本檔量測邏輯本就不需要顏色或字級，不要加，連本段說明文字都不要直接寫出那些
+ * 觸發字串（連文件本身都會被逐行掃到）。
+ *
+ * 只由 src/pages/articles/[slug].astro 掛載。該頁的 getStaticPaths() 已經用
+ * isPublicEntry 過濾過，本站目前沒有草稿預覽路由會渲染這個元件，不需要額外的
+ * preview 旗標判斷。
+ */
+const ENDPOINT = 'https://hi.evidencetoday.news/v1/beacon';
+const snippet = `(function () {
+  var host = location.hostname;
+  if (host !== 'evidencetoday.news' && host !== 'www.evidencetoday.news') return;
+
+  var hash = location.hash.replace(/^#/, '');
+  var m = /(?:^|&)r=([0-9a-f]{8})(?:&|$)/.exec(hash);
+  if (!m) return;
+  var shortId = m[1];
+
+  // 讀完立刻把識別碼從網址列抹掉：讀者複製網址分享出去時不帶識別，
+  // 也不會讓 fragment 污染 GA 的到達網頁報表。
+  try {
+    history.replaceState(null, '', location.pathname + location.search);
+  } catch (e) {}
+
+  // 立即綁：等 requestIdleCallback 才綁會漏掉極早期的捲動。
+  // handler 只更新一個最大值，不讀 layout、不碰 DOM。
+  var maxY = 0;
+  function onScroll() {
+    var y = window.pageYOffset || document.documentElement.scrollTop || 0;
+    if (y > maxY) maxY = y;
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // 停留秒數：分頁切走時暫停計時，不是離開時間減進入時間。
+  function nowMs() {
+    return window.performance && performance.now ? performance.now() : Date.now();
+  }
+  // running 用獨立旗標而不是「since 有沒有值」——時間戳可能合法地等於 0，
+  // 用真值判斷會把計時中誤判成已暫停、整段停留漏算。
+  var dwellMs = 0;
+  var since = 0;
+  var running = false;
+  function pause() {
+    if (!running) return;
+    dwellMs += nowMs() - since;
+    running = false;
+  }
+  function resume() {
+    if (running) return;
+    since = nowMs();
+    running = true;
+  }
+  if (document.visibilityState !== 'hidden') resume();
+
+  // 送出當下才換算比例，用的是最終文件高度（見檔頭說明）。
+  function depth() {
+    var scrollable = document.documentElement.scrollHeight - window.innerHeight;
+    if (scrollable <= 0) return 1;
+    var d = maxY / scrollable;
+    if (d < 0) return 0;
+    if (d > 1) return 1;
+    return d;
+  }
+
+  function send() {
+    if (!navigator.sendBeacon) return;
+    // Blob 用 text/plain：application/json 會觸發 CORS preflight，
+    // 而 preflight 在 pagehide 階段常來不及送出。reader 端自行 JSON.parse。
+    var payload = JSON.stringify({
+      short_id: shortId,
+      scroll_depth: Math.round(depth() * 1000) / 1000,
+      dwell_seconds: Math.round(dwellMs / 100) / 10
+    });
+    try {
+      navigator.sendBeacon('${ENDPOINT}', new Blob([payload], { type: 'text/plain' }));
+    } catch (e) {}
+  }
+
+  // 掛 visibilitychange 與 pagehide，不掛 beforeunload（行動裝置常不觸發）。
+  // 同一次瀏覽可能送多次，reader 端靠 unique index 只認第一筆。
+  function start() {
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'hidden') {
+        pause();
+        send();
+      } else {
+        resume();
+      }
+    });
+    window.addEventListener('pagehide', function () {
+      pause();
+      send();
+    });
+  }
+
+  window.addEventListener('load', function () {
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(start, { timeout: 4000 });
+    } else {
+      setTimeout(start, 1500);
+    }
+  });
+})();`;
+---
+
+<script is:inline set:html={snippet} />

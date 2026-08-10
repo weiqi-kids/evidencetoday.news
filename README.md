@@ -135,6 +135,7 @@ pnpm check:google    # Google 資料存取權限自檢
 |---|---|
 | 新增 Content Collection 類型 | [docs/playbooks/new-content-type.md](./docs/playbooks/new-content-type.md) |
 | 串接外部 API（YouTube / PubMed / WebSearch） | [docs/playbooks/external-apis.md](./docs/playbooks/external-apis.md) |
+| `reader-index.json` / 文章頁 ReadingBeacon（餵 LINE 官方帳號推薦後端） | [docs/playbooks/reader-index-and-beacon-contract.md](./docs/playbooks/reader-index-and-beacon-contract.md) |
 | CI/CD、deploy.yml、字型子集化 | [docs/playbooks/ci-cd.md](./docs/playbooks/ci-cd.md) |
 | 架構 / SEO / AEO / 無障礙總覽 | [docs/architecture.md](./docs/architecture.md) |
 | GA4/GSC 數據驅動選題與寫法 | [docs/playbooks/audience-insights.md](./docs/playbooks/audience-insights.md) |

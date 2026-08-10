@@ -14,6 +14,7 @@ import { getArticleQueryPatternLabel } from '@/utils/article-query-patterns';
 import { contentSocial } from '@/utils/social-meta.mjs';
 import EditButton from '@/components/editor/EditButton.svelte';
 import ReadingEngagement from '@/components/blocks/ReadingEngagement.svelte';
+import ReadingBeacon from '@/components/seo/ReadingBeacon.astro';
 import { buildPerson, buildCitations, PUBLISHER_REF, WEBSITE_REF } from '@/utils/schema-org';
 import { isPublicEntry } from '@/utils/visibility';
 import { getAutoRelated } from '@/utils/related';
@@ -254,6 +255,7 @@ const breadcrumbSchema = {
 
   <EditButton client:idle repoPath={`src/content/articles/${entry.id}`} collection="articles" slug={slug} />
   <ReadingEngagement client:idle contentType="article" slug={slug} tags={data.tags} author={data.author} queryPattern={data.queryPattern} readingTime={data.readingTime} hasRelated={hasRelated} />
+  <ReadingBeacon />
 </Article>
 
 <style>
