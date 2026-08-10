@@ -1,6 +1,6 @@
 import type { APIRoute, GetStaticPaths } from 'astro';
 import { getCollection } from 'astro:content';
-import { renderSources } from '@/utils/txt-endpoint';
+import { renderSources, renderFaq } from '@/utils/txt-endpoint';
 import { isPublicEntry } from '@/utils/visibility';
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -28,8 +28,9 @@ export const GET: APIRoute = async ({ props }) => {
     .join('\n');
 
   const summary = `重點摘要：${d.tldr}`;
+  const faq = renderFaq(d.faq);
   const sources = renderSources(d.references);
-  return new Response(`${header}\n---\n${summary}\n---\n${body}${sources}`, {
+  return new Response(`${header}\n---\n${summary}\n---\n${body}${faq}${sources}`, {
     headers: { 'Content-Type': 'text/plain; charset=utf-8' },
   });
 };

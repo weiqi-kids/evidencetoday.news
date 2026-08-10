@@ -239,6 +239,7 @@ const mythFaqSchema = mythFaq && mythFaq.length > 0
             <h3>來源 {index + 1}：{item.title}</h3>
             <p><strong>研究類型：</strong>{sourceTypeLabels[item.sourceType] || item.sourceType}</p>
             <p><strong>主要發現：</strong>{item.mainFinding}</p>
+            {item.quotedExcerpt && <blockquote class="evidence-item__quote">{item.quotedExcerpt}</blockquote>}
           </article>
         ))}
       </div>
@@ -474,6 +475,16 @@ document.getElementById('copy-btn')?.addEventListener('click', async () => { awa
     border: 0;
     border-top: 1px solid color-mix(in oklch, var(--color-fog) 82%, var(--color-ink));
     margin: 0 0 1.25rem;
+  }
+
+  /* 原文逐字引句：跟「主要發現」（白話轉譯）視覺區隔，證明兩者不是同一句改寫。
+     低干擾靠左側細線與降彩度達成，字級維持 var(--text-meta) 不縮小（規範⑥）。 */
+  .evidence-item__quote {
+    margin: 0.5rem 0 0;
+    padding-left: 0.85rem;
+    border-left: 2px solid color-mix(in oklch, var(--color-ink) 25%, transparent);
+    color: color-mix(in oklch, var(--color-ink) 70%, transparent);
+    font-style: italic;
   }
 
   .myth-reasoning-grid {
