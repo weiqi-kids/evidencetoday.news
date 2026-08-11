@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
-    "build": "node scripts/check-design.mjs && node scripts/check-content.mjs && node scripts/check-boilerplate.mjs && astro build",
+    "build": "node scripts/check-design.mjs && node scripts/check-content.mjs && node scripts/check-boilerplate.mjs && node scripts/check-spec.mjs && astro build",
     "check:myths": "node scripts/check-myth-quality.mjs",
     "check:news": "node scripts/check-news-quality.mjs",
     "og:thumbs": "node scripts/generate-og-thumbs.mjs",
@@ -32,7 +32,9 @@
     "check:site": "astro build && node scripts/check-site.mjs",
     "check:site:only": "node scripts/check-site.mjs",
     "check:boilerplate": "node scripts/check-boilerplate.mjs",
-    "check:boilerplate:report": "node scripts/check-boilerplate.mjs --report"
+    "check:boilerplate:report": "node scripts/check-boilerplate.mjs --report",
+    "check:spec": "node scripts/check-spec.mjs",
+    "check:spec:all": "node scripts/check-spec.mjs --all"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.14",

@@ -39,13 +39,15 @@
 # — 開發 / 建置 —
 pnpm install        # 安裝依賴（不是 npm）
 pnpm dev            # 開發伺服器 localhost:4321
-pnpm build          # 建置至 dist/（prebuild 跑 sync:youtube + used-images；build 先跑 check:design + check:content + check:boilerplate）
+pnpm build          # 建置至 dist/（prebuild 跑 sync:youtube + used-images；build 先跑 check:design + check:content + check:boilerplate + check:spec）
 pnpm preview        # 預覽建置結果
 pnpm test           # vitest
 
 # — 品質 gate（提交前）—
 pnpm check:content      # 去 AI 味守門，掃相對 origin/main 變動檔（= 別名 content:audit）
 pnpm check:content:all  # 全站去 AI 味盤點（恆 exit 0，人工普查用）
+pnpm check:spec         # 內容規格守門「七月標準」：來源數／正文長度／articles 站內連結（build 自動先跑）
+pnpm check:spec:all     # 全站規格盤點（恆 exit 0，人工普查用）
 pnpm check:myths        # 闢謠內容品質 gate（發布 myths 前必跑）
 pnpm check:news         # 趨勢新聞來源連結 gate（CI 已接）
 pnpm check:design       # 設計規範守門 v2（pnpm build 自動先跑）
