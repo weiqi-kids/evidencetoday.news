@@ -95,7 +95,7 @@ pnpm check:boilerplate  # 跨檔樣板守門（欄位成批複製、正文跨檔
 | 各類型篇數、已公開/排程中/草稿/送審中、已掛審閱署名、最後排程日 | `pnpm stats` | `scripts/content-stats.mjs` |
 | 排程有沒有破洞、跑道剩幾天 | `pnpm check:schedule` | `docs/content-guide.md` |
 | 曝光 / 點擊 / 排名 / 流量來源（近 28 天） | `pnpm perf` | `docs/playbooks/audience-insights.md` |
-| Google 索引涵蓋率、哪些頁沒被收錄 | `pnpm index:coverage` | `docs/playbooks/analytics.md` |
+| Google 索引涵蓋率、哪些頁沒被收錄 | `pnpm index:coverage`（**看依發布月份的分佈，不要只看總數**；最近一兩個月偏低是正常的，舊月份偏低才是品質訊號） | `docs/playbooks/analytics.md` |
 | 選題候選、寫作指令、站內優化建議 | `pnpm insights` | `docs/playbooks/audience-insights.md` |
 | Google 資料權限有沒有掉 | `pnpm check:google` | `docs/setup-google-data-access.md` |
 | cron 自動化跑得如何、有沒有撞限額 | `/etn-cron`（= `ops/cron-status.sh`） | `ops/README.md` |
@@ -119,7 +119,7 @@ pnpm check:boilerplate  # 跨檔樣板守門（欄位成批複製、正文跨檔
 ### 內容
 | 任務 | 看哪份 |
 |---|---|
-| ⭐ 選題／寫新文章前先讀（能贏的文章模子·六基因） | `docs/playbooks/winning-article-formula.md` |
+| ⭐ 選題／寫新文章前先讀（能贏的文章模子·六基因；含 queryPattern 與索引率的關聯） | `docs/playbooks/winning-article-formula.md` |
 | 新增/修改/刪除 文章·闢謠·成分解析·Podcast·短影音·趨勢新聞 | `docs/content-guide.md` |
 | 撰寫趨勢新聞（自動化 SOP / 7 步驟） | `docs/news_sop.md`、`AGENTS.md`「撰寫趨勢文章」 |
 | 文章配圖（封面＋內文情境圖／圖庫優先） | `docs/playbooks/editor-images.md` |

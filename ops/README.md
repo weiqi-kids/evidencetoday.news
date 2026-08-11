@@ -40,6 +40,7 @@
 `draft-cron.sh articles` 的 SELECT_BLOCK 現在有三條選題來源，順序有意義：
 
 1. **擴寫已有牽引力的主題叢集**（原有）——把單點頁擴成叢集，每個子題仍須獨立通過六基因。
+   並受**題型硬規則**約束：優先 decision-guide／ingredient-explainer／audience-stage-guide，嚴禁在 articles 寫 myth-check（闢謠題進 myths collection）。依據見 `docs/playbooks/winning-article-formula.md`「六基因不只預測排名，也預測會不會被索引」。
 2. **把 news 抓到的重大轉向升格為常青決策文**（新增）——掃近 14 天 `src/content/news/`，
    挑「指引更新／法規變動／重大證據反轉」且站上沒有對應決策文的題目。
 3. **GSC 排名 5–15 的 query 缺口**（原有，輔助）。
