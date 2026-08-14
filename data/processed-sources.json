@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-08-12T06:19:21+08:00",
+  "lastRun": "2026-08-15T06:19:22+08:00",
   "processed": {
     "https://www.sciencedaily.com/releases/2026/07/260719035927.htm": {
       "processedAt": "2026-08-10T06:19:57+08:00",
@@ -912,6 +912,34 @@
     },
     "https://www.eurekalert.org/news-releases/1136588": {
       "processedAt": "2026-08-12T06:19:21+08:00",
+      "outputFile": null
+    },
+    "PMID:42108202": {
+      "processedAt": "2026-08-15T06:19:22+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/33976376/": {
+      "processedAt": "2026-08-15T06:19:22+08:00",
+      "outputFile": null
+    },
+    "PMID:33976376": {
+      "processedAt": "2026-08-15T06:19:22+08:00",
+      "outputFile": null
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12952596/": {
+      "processedAt": "2026-08-15T06:19:22+08:00",
+      "outputFile": null
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC11173264/": {
+      "processedAt": "2026-08-15T06:19:22+08:00",
+      "outputFile": null
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC10857497/": {
+      "processedAt": "2026-08-15T06:19:22+08:00",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/AXG37sOc0tSeYH5Utn2ndw?typeid=9": {
+      "processedAt": "2026-08-15T06:19:22+08:00",
       "outputFile": null
     }
   }
