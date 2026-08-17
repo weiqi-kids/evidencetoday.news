@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-08-16T06:17:00+08:00",
+  "lastRun": "2026-08-18T06:30:00+08:00",
   "processed": {
     "https://www.sciencedaily.com/releases/2026/07/260719035927.htm": {
       "processedAt": "2026-08-10T06:19:57+08:00",
@@ -949,6 +949,22 @@
     "https://www.eurekalert.org/newsroom/nutrition2026/home?page=2": {
       "processedAt": "2026-08-16T06:17:00+08:00",
       "outputFile": null
+    },
+    "PMID:42271116": {
+      "processedAt": "2026-08-18T06:30:00+08:00",
+      "outputFile": null
+    },
+    "PMID:41635649": {
+      "processedAt": "2026-08-18T06:30:00+08:00",
+      "outputFile": "src/content/news/radar-2026-09-03-12-01.md"
+    },
+    "https://onlinelibrary.wiley.com/doi/10.1155/tsm2/6678879": {
+      "processedAt": "2026-08-18T06:30:00+08:00",
+      "outputFile": "src/content/news/radar-2026-09-03-12-01.md"
+    },
+    "PMID:28642676": {
+      "processedAt": "2026-08-18T06:30:00+08:00",
+      "outputFile": "src/content/news/radar-2026-09-03-12-01.md"
     }
   }
 }
