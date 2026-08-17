@@ -38,8 +38,14 @@
 
 `pnpm check:site` 每次都會提醒目前的缺口數字（不要把數字寫進這份文件）。
 
-**為什麼還沒做**：封面多半是 Pexels／Unsplash 外連，遠端 agent 環境對外連圖床是
+**為什麼還沒做**：封面多半是 Pexels／Unsplash 外連，**遠端** agent 環境對外連圖床是
 `403 connect_rejected`（組織網路政策，不可繞過）。alt 要寫得對，得先看得到那張圖。
+
+**但這不是全環境都做不到（2026-08-17 更正）**：Windows 本機（`e:\Noah\ET`）實測
+`images.unsplash.com` / `images.pexels.com` 皆回 200，`curl` 下載後用 Read 工具可直接看圖，
+當天已用這個方式替 20 篇新稿逐張看圖寫完 `coverAlt`。所以這條的正確描述是
+「遠端 agent 做不到、本機做得到」，不是「沒有環境做得到」——要清這 69 篇的欠帳，
+在本機開 session 跑即可，做法見 `playbooks/editor-images.md`。
 
 **為什麼不把它做成擋 build 的規則**：必填但不檢查正確性，結果就是大家隨便填一個值讓 gate
 過——2026-08-07 的闢謠封面圖事件（74 篇填了不相干的圖）正是這樣來的。

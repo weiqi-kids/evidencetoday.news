@@ -19,7 +19,8 @@
  *
  * 用法：
  *   pnpm covers:backfill --dry              # 只查詢與驗證，不寫檔（建議先跑）
- *   pnpm covers:backfill                    # 實際寫入 frontmatter
+ *   pnpm covers:backfill                    # 實際寫入 frontmatter（預設 articles）
+ *   pnpm covers:backfill --dir ingredients  # 改跑成分解析頁
  *   pnpm covers:backfill --only slug-a,slug-b
  *
  * 需要：GITHUB_TOKEN（worker 會驗此 token 對 repo 的 push 權）與對外網路。
@@ -30,7 +31,22 @@
 import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
 
 const WORKER = 'https://evidencetoday-ai-suggest.lightman-chang.workers.dev/stock';
-const DIR = 'src/content/articles';
+
+/**
+ * 只有 articles / ingredients 兩個頁型配封面。**myths 與 news 刻意不配**——
+ * 這不是漏掉：2026-08-07 曾替 74 篇闢謠自動配圖，結果全數與內文不相干（見
+ * docs/pitfalls.md），事後移除，此後闢謠與趨勢新聞維持無封面。不要「順手補上」。
+ * ANCHOR 是各頁型 frontmatter 裡用來插在其前的既有欄位（該頁型每篇都有的欄位）。
+ */
+const DIRS = {
+  articles: { dir: 'src/content/articles', anchor: /^(readingTime: .*)$/m },
+  ingredients: { dir: 'src/content/ingredients', anchor: /^(featured: .*)$/m },
+};
+const dirArg = process.argv.indexOf('--dir');
+const dirKey = dirArg > -1 ? process.argv[dirArg + 1] : 'articles';
+if (!DIRS[dirKey]) { console.error(`--dir 只接受：${Object.keys(DIRS).join(' / ')}`); process.exit(1); }
+const DIR = DIRS[dirKey].dir;
+const ANCHOR = DIRS[dirKey].anchor;
 const dry = process.argv.includes('--dry');
 const onlyArg = process.argv.indexOf('--only');
 const only = onlyArg > -1 ? (process.argv[onlyArg + 1] || '').split(',').filter(Boolean) : null;
@@ -51,6 +67,29 @@ const KEYWORD_HINTS = {
   'aspirin-fish-oil-together-bleeding-risk': 'pill organizer weekly medication elderly hands',
   'levothyroxine-calcium-iron-spacing-hours': 'morning glass of water medication kitchen table',
   'probiotics-with-antibiotics-spacing': 'yogurt bowl probiotic breakfast healthy gut',
+  // 2026-08-17 批次：症狀類文章一律取「人在該情境裡」的場景，不取患部病灶特寫
+  //   （病灶照對讀者不友善，且圖庫的病灶照多半是素材商標好的示意圖，未必對應本文疾病）。
+  'dry-eye-syndrome-guide': 'tired woman rubbing eyes computer screen office',
+  'hemorrhoids-guide': 'high fiber vegetables whole grains wooden table',
+  'tinnitus-guide': 'man touching ear quiet room listening',
+  'vertigo-bppv-guide': 'woman sitting sofa hand on forehead unwell',
+  'plantar-fasciitis-guide': 'person holding heel foot pain barefoot',
+  'frozen-shoulder-guide': 'man holding shoulder stretching arm pain',
+  'chronic-urticaria-guide': 'red skin rash irritation forearm',
+  'psoriasis-guide': 'dry skin elbow closeup moisturizer hand',
+  'thyroid-nodule-guide': 'ultrasound scan probe neck examination sonographer',
+  'recurrent-uti-guide': 'woman drinking glass of water hydration',
+  // 成分頁取「食物來源／原料本體」，不取膠囊瓶罐（本站不做產品頁，見規矩說明）
+  berberine: 'dried barberry goldenseal root herbs bowl',
+  'beta-glucan': 'rolled oats oatmeal bowl wooden spoon',
+  chromium: 'broccoli whole grains healthy meal plate',
+  iodine: 'dried seaweed kelp sheets sea salt',
+  bacopa: 'green herb leaves plant botanical medicine',
+  'tart-cherry': 'fresh tart cherries bowl red fruit',
+  'beta-alanine': 'athlete strength training gym weights',
+  lactoferrin: 'pouring milk glass dairy breakfast',
+  phosphatidylserine: 'soybeans soy seeds bowl',
+  maca: 'peruvian maca root tuber harvest',
 };
 
 /* ---- 1. 站上已用過的圖 id，避免推薦重複 ---- */
@@ -109,9 +148,9 @@ for (const t of targets) {
 
   /* ---- 5. 寫 coverImage / coverImageCredit（coverAlt 留人工）---- */
   const src = readFileSync(t.file, 'utf8');
-  const out = src.replace(/^(readingTime: .*)$/m,
+  const out = src.replace(ANCHOR,
     `coverImage: "${photo.full}"\ncoverImageCredit: "${photo.credit}"\n$1`);
-  if (out === src) { console.log('  ✗ 找不到插入點（readingTime），略過\n'); continue; }
+  if (out === src) { console.log(`  ✗ 找不到插入點（${dirKey} 的 anchor），略過\n`); continue; }
   writeFileSync(t.file, out);
   usedIds.add(String(photo.id));
   needAlt.push(t.slug);

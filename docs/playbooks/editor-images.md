@@ -164,15 +164,36 @@ curl -s -X POST https://evidencetoday-ai-suggest.lightman-chang.workers.dev/stoc
 
 ```bash
 pnpm covers:backfill --dry                    # 只查詢與 HEAD 驗證，不寫檔（先跑這個）
-pnpm covers:backfill                          # 實際寫入 coverImage / coverImageCredit
+pnpm covers:backfill                          # 實際寫入 coverImage / coverImageCredit（預設 articles）
+pnpm covers:backfill --dir ingredients        # 改跑成分解析頁
 pnpm covers:backfill --only slug-a,slug-b     # 限定文章
 ```
 
-三個刻意的設計決定，改之前先看懂：
+四個刻意的設計決定，改之前先看懂：
 
 - **`coverAlt` 不自動產生。**playbook 第 3 步要求「逐張看圖再寫 alt」，機器沒看過圖就寫 alt 等於編造無障礙描述。腳本改為在結尾印出待補清單，由人或具視覺能力的 session 補。
 - **HEAD 驗不過就跳過、不寫入。**`ArticleCard` 對 https URL 不做存在性檢查，404 會變破圖，比佔位卡更糟。
 - **英文關鍵字覆寫表 `KEYWORD_HINTS`。**Unsplash／Pexels 索引是英文，直接餵中文 `tags` 幾乎回空（2026-08-05 實測）。新增文章要補封面時，先在這張表加一行英文關鍵字；沒對應到的會退回中文 tags 並印警告，不會亂猜。
+- **`--dir` 只開放 articles / ingredients（2026-08-17 加）。**myths 與 news **刻意不配封面**，不是漏掉：2026-08-07 曾替 74 篇闢謠自動配圖、結果全數不相干（見 `pitfalls.md`），事後移除。各頁型插入錨點不同（articles 用 `readingTime`、ingredients 用 `featured`），寫在 `DIRS` 表裡，新增頁型要一併給錨點。
+
+#### HEAD 200 不等於「這張圖能用」（2026-08-17）
+
+腳本的 HEAD 驗證只證明**網址活著**，不證明**內容對**。2026-08-17 這批 20 張逐張看過，有 4 張非換不可，而它們全部通過了 HEAD 驗證：
+
+| slug | 關鍵字 | 實際拿到的圖 |
+|---|---|---|
+| `vertigo-bppv-guide` | dizzy woman holding head **sitting on bed** | 裸背女性坐在床上的藝術攝影——醫療站不能用 |
+| `chronic-urticaria-guide` | person **scratching** arm skin itch | 嬰兒的手伸向黑板（scratch 被當成「刮痕」） |
+| `thyroid-nodule-guide` | doctor **neck ultrasound** examination | 螢幕上是產科胎兒超音波，不是甲狀腺 |
+| `maca` | **maca root powder** wooden spoon | 亮黃橘色的薑黃粉（瑪卡粉是米褐色） |
+
+歸納出的選詞教訓：
+
+- **避開會被誤讀成別的意思的詞**：`scratching`（搔癢／刮痕）、`bed`（臥室情境易帶到人像攝影）。
+- **不要用成分名當搜圖關鍵字**：圖庫幾乎沒有正確標註的單一成分粉末，拿到的多半是外觀相近的別種粉。改搜「這個成分的食物來源」或「產地作物場景」。
+- **器材類要指定操作情境**（`ultrasound scan probe ... sonographer`）而非只給部位，否則會拿到最常見的產科影像。
+
+所以流程是「HEAD 驗過 → **人看過** → 才寫 `coverAlt`」，看圖那一步同時就把不能用的圖攔下來了，這也是 `coverAlt` 不自動產生的附帶價值。
 
 ⚠️ **Claude Code on the web 的沙箱跑不動這支**：環境的 network egress allowlist 預設擋掉 `*.workers.dev` 與 `images.unsplash.com`，實測 proxy 回 `403 connect_rejected`（`curl -sS "$HTTPS_PROXY/__agentproxy/status"` 可看到 `recentRelayFailures`）。2026-08-06 再測，`api.unsplash.com`／`images.pexels.com`／`upload.wikimedia.org` 也一律回 `000`——**不是只有那兩個網域，是整類圖庫來源都被擋**，換圖庫繞不過去。要在遠端 session 補封面，得先把網域加進環境的網路白名單；否則改在主機或前台編輯器做。
 
