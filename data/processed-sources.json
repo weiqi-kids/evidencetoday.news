@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-08-21T06:19:34+08:00",
+  "lastRun": "2026-08-22T06:19:06+08:00",
   "processed": {
     "https://www.who.int/publications/m/item/nutrition-and-food-safety-news---may-june-2026": {
       "processedAt": "2026-08-21T06:19:34+08:00",
@@ -19,7 +19,7 @@
       "outputFile": null
     },
     "https://www.sciencedaily.com/news/health_medicine/nutrition/": {
-      "processedAt": "2026-08-21T06:19:34+08:00",
+      "processedAt": "2026-08-05T06:20:00+08:00",
       "outputFile": null
     },
     "https://www.sciencedaily.com/releases/2026/07/260719035927.htm": {
@@ -778,10 +778,6 @@
       "processedAt": "2026-08-05T06:20:00+08:00",
       "outputFile": null
     },
-    "https://www.sciencedaily.com/news/health_medicine/nutrition/": {
-      "processedAt": "2026-08-05T06:20:00+08:00",
-      "outputFile": null
-    },
     "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12665681/": {
       "processedAt": "2026-08-05T06:20:00+08:00",
       "outputFile": null
@@ -985,6 +981,26 @@
     "PMID:28642676": {
       "processedAt": "2026-08-18T06:30:00+08:00",
       "outputFile": "src/content/news/radar-2026-09-03-12-01.md"
+    },
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12106159/": {
+      "processedAt": "2026-08-22T06:19:06+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/28029852/": {
+      "processedAt": "2026-08-22T06:19:06+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/32808383/?dopt=Abstract": {
+      "processedAt": "2026-08-22T06:19:06+08:00",
+      "outputFile": null
+    },
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12590694/": {
+      "processedAt": "2026-08-22T06:19:06+08:00",
+      "outputFile": null
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12665681/": {
+      "processedAt": "2026-08-22T06:19:06+08:00",
+      "outputFile": null
     }
   }
 }
