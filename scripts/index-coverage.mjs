@@ -23,7 +23,7 @@ import { appendFileSync, readFileSync, writeFileSync, existsSync, mkdirSync } fr
 import { dirname } from 'node:path';
 import { getToken } from './lib/insight-fetch.mjs';
 import { GSC_SITE } from './lib/insight-constants.mjs';
-import { buildLastmodMap } from './lib/content-dates.mjs';
+import { buildPublishDateMap } from './lib/content-dates.mjs';
 
 if (!(process.env.PATH || '').split(':').includes('/snap/bin')) {
   process.env.PATH = `/snap/bin:${process.env.PATH || ''}`;
@@ -144,9 +144,15 @@ console.log(`\n>>> 真實索引：${indexed}/${urls.length}（${(indexed / urls.
 //   2026-03 76% ｜ 2026-04 38% ｜ 2026-05 53% ｜ 2026-06 71% ｜ 2026-07 97%
 // 也就是說近期產出幾乎全被收錄，拖累總數的是特定一批舊內容。那批已經過了 90–120 天，
 // Google 不是還沒看，是看過了決定不收。對它們「續觀察」等於永遠不處理。
+//
+// ⚠️ 這裡**必須**用 buildPublishDateMap（publishDate），不能用 buildLastmodMap
+// （那是 `updatedDate ?? publishDate`，sitemap 專用）。2026-08-21 就是踩到這個：
+// 當時用的是 lastmod，印出「2026-08 共 225 頁」，但八月實際只發布 94 篇——多出來的
+// 是 8/11 批次補 seoTitle 時被改動 updatedDate 的舊頁。用 lastmod 分群，等於每做一次
+// 批次編輯就把舊批次的品質訊號洗掉一次，剛好抹掉這段註解要量的東西。
 {
   const dates = new Map();
-  for (const [path, iso] of buildLastmodMap()) dates.set(path, iso);
+  for (const [path, iso] of buildPublishDateMap()) dates.set(path, iso);
   const byMonth = {};
   for (const r of out) {
     const path = r.u.replace('https://evidencetoday.news', '');
