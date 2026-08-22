@@ -3,7 +3,8 @@ import svelte from '@astrojs/svelte';
 import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
 import rehypeStockFigure from './src/utils/rehype-stock-figure.mjs';
-import { buildLastmodMap } from './scripts/lib/content-dates.mjs';
+import { buildLastmodMap, buildEntryMeta } from './scripts/lib/content-dates.mjs';
+import { TOPICS, matchesTopic } from './src/data/topics.ts';
 import { createPageGitDate } from './scripts/lib/page-git-date.mjs';
 
 // 每篇公開內容的 lastmod（updatedDate ?? publishDate），給 sitemap serialize 逐頁標註，
@@ -11,6 +12,29 @@ import { createPageGitDate } from './scripts/lib/page-git-date.mjs';
 const lastmodMap = buildLastmodMap();
 // 靜態頁沒有 frontmatter 日期，改取該頁 .astro 的 git commit 日期（2026-08-22）。
 const pageGitDate = createPageGitDate(import.meta.url);
+
+// 主題頁（/topics/<slug>/）是**彙整頁**：由所有「title + tags 命中該主題 matchKeywords」的
+// 內容聚合而成，沒有自己的原始檔，所以既拿不到 frontmatter 日期也拿不到 .astro 的 git 日期
+// ——2026-08-22 的機制稽核就是這 16 頁在缺 lastmod。
+// 正解是取「它實際收錄的內容裡最新的那一筆」。
+// 🔴 歸屬判準直接用 src/data/topics.ts 的 matchesTopic，不在別處重寫一份：
+//    那份判準改了而這裡沒跟，不會報錯，只會讓主題頁的 lastmod 悄悄對不上它收錄的內容。
+const topicLastmod = new Map();
+{
+  const entries = buildEntryMeta();
+  for (const topic of TOPICS) {
+    let newest = '';
+    for (const e of entries) {
+      if (matchesTopic(topic, { title: e.title, tags: e.tags }) && e.lastmod > newest) newest = e.lastmod;
+    }
+    // 保險：即使上游漏掉未來日期，也不讓未來時間進 sitemap（Google 會整個不信這個欄位）。
+    const now = new Date().toISOString();
+    if (newest > now) newest = now;
+    {
+    }
+    if (newest) topicLastmod.set(`/topics/${topic.slug}/`, newest);
+  }
+}
 
 export default defineConfig({
   site: 'https://evidencetoday.news',
@@ -103,8 +127,10 @@ export default defineConfig({
       //   而首頁與分類頁往往是最重要的頁，完全沒有新鮮度訊號等於白放棄。）
       serialize(item) {
         const path = new URL(item.url).pathname;
+        const withSlash = path.endsWith('/') ? path : `${path}/`;
         const lastmod = lastmodMap.get(path)
-          ?? lastmodMap.get(path.endsWith('/') ? path : `${path}/`)
+          ?? lastmodMap.get(withSlash)
+          ?? topicLastmod.get(withSlash)
           ?? pageGitDate(path);
         if (lastmod) item.lastmod = lastmod;
         return item;
