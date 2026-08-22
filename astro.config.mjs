@@ -4,10 +4,13 @@ import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
 import rehypeStockFigure from './src/utils/rehype-stock-figure.mjs';
 import { buildLastmodMap } from './scripts/lib/content-dates.mjs';
+import { createPageGitDate } from './scripts/lib/page-git-date.mjs';
 
 // 每篇公開內容的 lastmod（updatedDate ?? publishDate），給 sitemap serialize 逐頁標註，
 // 讓搜尋引擎/AI 知道內容新鮮度。掃 frontmatter 一次，build 期間建好。
 const lastmodMap = buildLastmodMap();
+// 靜態頁沒有 frontmatter 日期，改取該頁 .astro 的 git commit 日期（2026-08-22）。
+const pageGitDate = createPageGitDate(import.meta.url);
 
 export default defineConfig({
   site: 'https://evidencetoday.news',
@@ -93,11 +96,16 @@ export default defineConfig({
         !page.includes('/search') &&
         !page.includes('/404') &&
         !page.includes('/podcasts/ep01-supplements'),
-      // 對每篇內容頁輸出 lastmod（updatedDate ?? publishDate）。靜態頁（首頁/分類/政策頁）
-      // 不在內容 frontmatter 中，無對應日期時不強加 lastmod。
+      // 內容頁用 frontmatter 的 updatedDate ?? publishDate；靜態頁（首頁／分類／政策頁）
+      // 不在 frontmatter 裡，改取該頁 .astro 原始檔的 git commit 日期。
+      // 兩者都對不到才留白——**絕不退回 build 時間**，那會讓每次部署都宣稱全站更新。
+      // （2026-08-22：此前靜態頁一律留白，408 個網址有 33 個沒有 lastmod，
+      //   而首頁與分類頁往往是最重要的頁，完全沒有新鮮度訊號等於白放棄。）
       serialize(item) {
         const path = new URL(item.url).pathname;
-        const lastmod = lastmodMap.get(path) ?? lastmodMap.get(path.endsWith('/') ? path : `${path}/`);
+        const lastmod = lastmodMap.get(path)
+          ?? lastmodMap.get(path.endsWith('/') ? path : `${path}/`)
+          ?? pageGitDate(path);
         if (lastmod) item.lastmod = lastmod;
         return item;
       },

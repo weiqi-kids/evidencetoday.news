@@ -27,6 +27,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # 🔴 sitemap 的靜態頁 lastmod 取該頁 .astro 的 git commit 日期
+          #    （見 astro.config.mjs 的 pageGitDate）。淺 clone 只有一個 commit，
+          #    每個檔案的 git log 都會回同一天＝每次部署宣稱全站更新，假訊號比沒有更糟。
+          fetch-depth: 0
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
