@@ -123,6 +123,7 @@ const KEYWORD_HINTS = {
   lactoferrin: 'pouring milk glass dairy breakfast',
   phosphatidylserine: 'soybeans soy seeds bowl',
   maca: 'peruvian maca root tuber harvest',
+  'krill-oil': 'antarctic krill shrimp ocean',
 };
 
 /* ---- 1. 站上已用過的圖 id，避免推薦重複 ---- */
