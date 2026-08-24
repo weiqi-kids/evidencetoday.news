@@ -479,6 +479,23 @@ export const newsSchema = z.object({
   draft: z.boolean().default(false),
 });
 
+// 健康專題總論（topic overview）。
+// 由來：2026-08-24 GSC 顯示 16 個 hub 只換到 3.1 曝光／頁、全站 1 次點擊——
+// 病因是每頁獨有文字僅約 420 字（intro + 30 秒重點 + FAQ），其餘 2~3 萬字元
+// 全是自動收斂的卡片清單，那些標題與描述在各自頁面上已經存在。
+// 對 Google 而言那是「薄內容 + 站內重複」。解法是把比例反轉：以長篇總論為主體、
+// 連結清單退為佐證。本 collection 只放總論長文，主題定義仍以 src/data/topics.ts 為唯一真相。
+export const topicOverviewsSchema = z.object({
+  /** 對應 src/data/topics.ts 的 slug，必須一致，否則不會被渲染 */
+  topicSlug: z.string(),
+  /** 供 <title> 與 meta description 覆寫用；留空則沿用 topics.ts 的 name / intro */
+  seoTitle: z.string().max(70).optional(),
+  seoDescription: z.string().max(160).optional(),
+  updatedDate: z.coerce.date(),
+  draft: z.boolean().default(false),
+});
+
+
 /* ------------------------------------------------------------------ */
 /*  Export                                                             */
 /* ------------------------------------------------------------------ */

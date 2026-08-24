@@ -14,6 +14,7 @@ import { fmtDate } from '@/utils/date';
 import { stripPodcastSlug } from '@/utils/podcasts';
 import { isPublicEntry } from '@/utils/visibility';
 import { TOPICS, matchesTopic, type Topic } from '@/data/topics';
+import { render } from 'astro:content';
 import { WEBSITE_REF, PUBLISHER_REF, SITE_URL } from '@/utils/schema-org';
 
 function stripExt(id: string): string {
@@ -21,13 +22,14 @@ function stripExt(id: string): string {
 }
 
 export async function getStaticPaths() {
-  const [articles, myths, ingredients, news, podcasts, videos] = await Promise.all([
+  const [articles, myths, ingredients, news, podcasts, videos, overviews] = await Promise.all([
     getCollection('articles', (e) => isPublicEntry(e.data)),
     getCollection('myths', (e) => isPublicEntry(e.data)),
     getCollection('ingredients', (e) => isPublicEntry(e.data)),
     getCollection('news', (e) => isPublicEntry(e.data)),
     getCollection('podcasts', (e) => isPublicEntry(e.data)),
     getCollection('videos', (e) => isPublicEntry(e.data)),
+    getCollection('topic-overviews', (e) => !e.data.draft),
   ]);
 
   const byDate = (a: { data: { publishDate: Date } }, b: { data: { publishDate: Date } }) =>
@@ -37,6 +39,8 @@ export async function getStaticPaths() {
     params: { slug: topic.slug },
     props: {
       topic,
+      // 總論長文（可選）。沒有對應檔的主題仍照舊渲染，不會壞。
+      overview: overviews.find((o) => o.data.topicSlug === topic.slug) ?? null,
       // 2026-08-04 調高上限：hub 是全站唯一的爬取權重集中器，收得到卻不顯示
       // 等於白收（原上限 6/4/4/4/2/4 讓多數 hub 只露出不到一半的命中內容）。
       // news 刻意維持較低：時效性內容佔版面會排擠常青內容的曝光。
@@ -50,9 +54,12 @@ export async function getStaticPaths() {
   }));
 }
 
-const { topic, articles, myths, ingredients, news, podcasts, videos } = Astro.props;
+const { topic, articles, myths, ingredients, news, podcasts, videos, overview } = Astro.props;
 const url = `${SITE_URL}/topics/${topic.slug}/`;
-const description = topic.intro.slice(0, 150);
+// 有總論時優先用它的 seoDescription（那是為搜尋結果寫的），沒有才退回主題簡介。
+const description = overview?.data.seoDescription ?? topic.intro.slice(0, 150);
+const pageTitle = overview?.data.seoTitle ?? `${topic.name}｜健康專題 - 本日有據`;
+const { Content: OverviewContent } = overview ? await render(overview) : { Content: null };
 
 const faqSchema = {
   '@context': 'https://schema.org',
@@ -105,7 +112,7 @@ const breadcrumbSchema = {
 };
 ---
 
-<Base title={`${topic.name}｜健康專題 - 本日有據`} description={description} ogTitle={`${topic.name}｜健康專題`} ogDescription={description}>
+<Base title={pageTitle} description={description} ogTitle={`${topic.name}｜健康專題`} ogDescription={description}>
   <Fragment slot="head">
     <JsonLd data={itemListSchema} />
     <JsonLd data={faqSchema} />
@@ -131,6 +138,12 @@ const breadcrumbSchema = {
         {topic.thirtySecond.map((point) => <li>{point}</li>)}
       </ul>
     </section>
+
+    {OverviewContent && (
+      <section class="topic-overview">
+        <OverviewContent />
+      </section>
+    )}
 
     {articles.length > 0 && (
       <section class="topic-section">
@@ -349,6 +362,68 @@ const breadcrumbSchema = {
     margin: 0.7rem 0 0;
     line-height: 1.8;
     color: color-mix(in oklch, var(--color-ink) 78%, transparent);
+  }
+
+  /* 總論長文：版面比照內文，讓它讀起來是一篇文章而不是附註。 */
+  .topic-overview {
+    max-width: 68ch;
+  }
+
+  .topic-overview :global(h2) {
+    font-family: var(--font-sans);
+    font-size: var(--text-h2);
+    font-weight: 700;
+    color: var(--color-ink);
+    margin: 2rem 0 0.75rem;
+  }
+
+  .topic-overview :global(h3) {
+    font-family: var(--font-sans);
+    font-size: var(--text-h3);
+    font-weight: 600;
+    color: var(--color-ink);
+    margin: 1.5rem 0 0.5rem;
+  }
+
+  .topic-overview :global(p) {
+    font-size: var(--text-body);
+    line-height: 1.85;
+    color: color-mix(in oklch, var(--color-ink) 82%, transparent);
+    margin: 0 0 1rem;
+  }
+
+  .topic-overview :global(ul),
+  .topic-overview :global(ol) {
+    margin: 0 0 1rem;
+    padding-left: 1.3rem;
+    line-height: 1.85;
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  .topic-overview :global(a) {
+    color: var(--color-teal);
+    text-underline-offset: 0.15em;
+  }
+
+  .topic-overview :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 0 1.25rem;
+    font-size: var(--text-meta);
+  }
+
+  .topic-overview :global(th),
+  .topic-overview :global(td) {
+    border: 1px solid var(--color-fog);
+    padding: 0.5rem 0.7rem;
+    text-align: left;
+    line-height: 1.7;
+  }
+
+  .topic-overview :global(th) {
+    background: color-mix(in oklch, var(--color-fog) 45%, white);
+    font-weight: 700;
   }
 
   @media (min-width: 640px) {

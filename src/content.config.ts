@@ -6,6 +6,7 @@ import {
   podcastsSchema,
   videosSchema,
   newsSchema,
+  topicOverviewsSchema,
 } from './content.schemas';
 
 // Schema 定義集中在 src/content.schemas.ts（單一真相來源），供 build 與前台編輯器共用。
@@ -18,4 +19,5 @@ export const collections = {
   podcasts: defineCollection({ type: 'content', schema: podcastsSchema }),
   videos: defineCollection({ type: 'content', schema: videosSchema }),
   news: defineCollection({ type: 'content', schema: newsSchema }),
+  'topic-overviews': defineCollection({ type: 'content', schema: topicOverviewsSchema }),
 };
