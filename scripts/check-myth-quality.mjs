@@ -1,7 +1,7 @@
 import { readFileSync, readdirSync } from 'node:fs';
 
 const MYTH_DIR = 'src/content/myths';
-const EXPECTED_PUBLISHED_COUNT = 105;
+const EXPECTED_PUBLISHED_COUNT = 111;
 const FORBIDDEN = [
   'TODO',
   'source needed',
