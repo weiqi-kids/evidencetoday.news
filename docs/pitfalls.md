@@ -20,6 +20,7 @@
 - **排程稿可見性只有 HTML 路由套 `isPublicEntry`**：`.txt`／RSS／`llms-full.txt`／tags 頁曾只濾 `!data.draft` → 未來日期排程稿提前洩全文。新增前台讀 collection 的路由**一律用 `isPublicEntry(data)`**；`src/utils/visibility.test.ts` 有防回歸測試會擋。
 - **news 排程不可被「拉開節奏」波及**：radar 稿的**檔名與標題都自帶日期**（`radar-YYYY-MM-DD-…`／「健康雷達 YYYY-MM-DD」）。曾在調整全站發文頻率時把 news 一起拉開 → 標題寫某日的稿被排到一個多月後才發，等於發一批一上線就過期的新聞。**重排全站排程時 news 必須排除在外，一律回到檔名的名目日期**（見 `playbooks/news-article.md`）。要調整發文量請動 evergreen（articles/ingredients/myths）。
 - **排程破洞沒有任何自動檢查看得到**（少發一天不會讓 build 紅），只能靠 `pnpm check:schedule`。動完排程一定要跑。
+- **自動發文可能連到「還沒上線的排程稿」，而這會擋掉全站部署**（2026-08-24 實際發生）：cron 自動發布的文章若在內文連向一篇尚未到 `publishDate` 的稿，該連結在 `dist` 就是死連結，`check:site` 會讓 build 紅 → **從那一刻起所有人的部署都失敗**，包含與此無關的修改。症狀是 GitHub Actions 連續 failure、而錯誤只有一行「站內死連結」。`pnpm check:schedule` 從原始碼就能抓到（訊息更清楚），但**它不在 CI 裡**，所以只有人主動跑才看得見。動完排程、或發現部署連續失敗時，第一件事就是跑它。修法有兩種：把目標稿的 `publishDate` 提前到來源之前（保住內鏈，較佳），或把連結拿掉只留語意；前者會在原本的日期留下破洞，記得把後面的稿往前挪一天補上。
 - **Astro 5 content-layer 快取**：改 `content.schemas.ts` 欄位後，本機 `pnpm build` 可能沿用 `.astro/data-store.json` 舊解析結果（新欄位仍被剝除、前台看不到）。驗證 schema 改動請先 `rm -rf .astro dist` 再 build。CI 每次全新 checkout 無此問題。
 
 ## 版面與樣式
@@ -78,6 +79,33 @@
 - **序列化偷換內容**：`check-boilerplate` 用 `Array.join()` 比對陣列欄位，物件陣列
   全部變成 `"[object Object]"`，於是報出「109 篇 faq 逐字相同」這種假違規。比對前先
   確認序列化後的字串真的代表原本的內容。
+
+## 本機是 Windows 時，換行符會讓守門腳本誤報（2026-08-24）
+
+Git 的 `autocrlf` 在 checkout 時把 LF 換成 CRLF，而多數守門腳本用 `/^---
+/` 這類正則解析
+frontmatter——多出來的 `` 會讓它們判定「找不到 frontmatter」，回報一個**根本不存在的錯誤**。
+
+實際踩到的情境：`git pull` 拉進新稿後跑 `pnpm check:news`，新檔被報「找不到 frontmatter」。
+檔案完全正常，CI 在 Linux 上也正常。
+
+**每次 pull 完、跑任何守門腳本之前，先把 `src/content` 正規化成 LF**：
+
+```bash
+python -c "
+import glob
+for p in glob.glob('src/content/**/*.md',recursive=True)+glob.glob('src/content/**/*.mdx',recursive=True):
+    b=open(p,'rb').read()
+    if b'
+' in b: open(p,'wb').write(b.replace(b'
+',b'
+'))
+"
+```
+
+轉完 `git status` 不會多出變動（git 端本來就存 LF），但 `git status` 仍可能把大量檔案顯示成
+`M`——那是 stat 快取，跑 `git update-index --refresh` 就會消失，**不是真的有變動**。
+判斷有沒有實質差異一律用 `git diff --ignore-all-space --name-only`。
 
 ## 要求「有值」而不要求「值正確」，比沒有要求更糟（2026-08-07）
 
