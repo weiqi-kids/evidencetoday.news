@@ -1,13 +1,13 @@
 {
   "version": 1,
-  "lastRun": "2026-08-25T06:19:26+08:00",
+  "lastRun": "2026-08-27T06:20:17+08:00",
   "processed": {
     "https://pubmed.ncbi.nlm.nih.gov/30381313/": {
       "processedAt": "2026-08-25T06:19:26+08:00",
       "outputFile": null
     },
     "https://www.sciencedaily.com/news/mind_brain/nutrition/": {
-      "processedAt": "2026-08-25T06:19:26+08:00",
+      "processedAt": "2026-08-05T06:20:00+08:00",
       "outputFile": null
     },
     "https://www.nature.com/nature-index/topics/l3/clinical-nutrition": {
@@ -786,10 +786,6 @@
       "processedAt": "2026-08-05T06:20:00+08:00",
       "outputFile": null
     },
-    "https://www.sciencedaily.com/news/mind_brain/nutrition/": {
-      "processedAt": "2026-08-05T06:20:00+08:00",
-      "outputFile": null
-    },
     "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12665681/": {
       "processedAt": "2026-08-05T06:20:00+08:00",
       "outputFile": null
@@ -1012,6 +1008,10 @@
     },
     "https://pmc.ncbi.nlm.nih.gov/articles/PMC12665681/": {
       "processedAt": "2026-08-22T06:19:06+08:00",
+      "outputFile": null
+    },
+    "https://www.sciencedaily.com/releases/2026/08/260823015009.htm": {
+      "processedAt": "2026-08-27T06:20:17+08:00",
       "outputFile": null
     }
   }
