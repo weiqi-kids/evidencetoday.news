@@ -59,7 +59,7 @@
 12. **前台讀 collection 一律用 `isPublicEntry(data)`**，禁裸 `!data.draft`（排程稿會提前洩全文）。
 13. **禁跨頁樣板**：同一段文字（frontmatter 欄位值或正文段落）不得在 5 篇以上逐字相同。守門＝`pnpm check:boilerplate`（已接進 `pnpm build`）。判準不是「寫得好不好」，是「這句話對這一頁成不成立」——一段話如果 20 篇都適用，那它對這 20 篇都沒有資訊量。改法是刪掉或換成只有這一篇成立的內容，不是改幾個字繞過。渲染端用 `src/utils/boilerplate.ts` 的 `dropIfBoilerplate` / `filterBoilerplateItems` 過濾。
 14. **頁型必須有站內出口**：每個內容頁型的站內出站連結中位數 ≥2，零出口頁 ≤10%。守門＝`pnpm check:site`（CI 已接）。樣板連結（`/disclosure/` 等每頁都有的）與資產連結不算出口。
-15. **新內容必須達到「七月標準」**：結構化 references 的可點來源數與正文長度有逐類型下限（articles 6 筆／2,900 字、myths 10／3,500、ingredients 7／5,000、news 3／800），articles 另需正文站內連結 ≥2 條。守門＝`pnpm check:spec`（已接進 `pnpm build`）：**新增檔未達即擋，既有檔只出 WARN**。門檻不是誰的偏好，是 2026-08-11 由 GSC 反推——2026-07 那批 63 篇曝光中位數 14、僅 3 篇零曝光，3–6 月的 215 篇中位數 0、約六成零曝光，而三個等長觀測窗顯示**沒有任何一批的曝光在下降**（舊內容不是衰退，是從沒活過）。推導見 `scripts/check-spec.mjs` 檔頭與 `docs/playbooks/winning-article-formula.md`。
+15. **新內容必須達到「七月標準」**：結構化 references 的可點來源數與正文長度有逐類型下限（articles 6 筆／2,900 字、myths 10／3,500、ingredients 7／5,000、news 3／800），articles 另需正文站內連結 ≥2 條，**且 articles／ingredients 必須有 `coverImage`、news 必須有 `heroImage`**（myths 刻意無封面，見 `docs/page-rules/myths.md`）。守門＝`pnpm check:spec`（已接進 `pnpm build`）：**新增檔未達即擋，既有檔只出 WARN**。門檻不是誰的偏好，是 2026-08-11 由 GSC 反推——2026-07 那批 63 篇曝光中位數 14、僅 3 篇零曝光，3–6 月的 215 篇中位數 0、約六成零曝光，而三個等長觀測窗顯示**沒有任何一批的曝光在下降**（舊內容不是衰退，是從沒活過）。推導見 `scripts/check-spec.mjs` 檔頭與 `docs/playbooks/winning-article-formula.md`。
 16. `pnpm build` 零錯誤才算通過。
 
 ---

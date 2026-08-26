@@ -217,3 +217,26 @@ GitHub Pages 部署有 concurrency group，**同時只跑一個**。連續 push�
 - `pnpm test`（含 `content.schemas.test.ts`、`git-commit`/`image-compress`/`tags-suggest`、worker `index.test.ts`）全綠。
 - `pnpm build` 零錯誤（單一真相 schema + 6 集合掛載 EditButton + 影像元件編譯）。
 - 本機注入 token：六種內容頁右下角浮出「編輯」→ 開面板 → 封面選擇器四分頁可用、進階 YAML 可改、填壞必填 → 存檔被 Zod gate 擋下。
+
+## 沒有封面圖現在會擋 build（2026-08-23）
+
+`pnpm check:spec` 已納入封面圖檢查：**articles／ingredients 要 `coverImage`、news 要 `heroImage`**，
+新增檔缺就擋，既有檔出 WARN。`myths` 明確豁免——2026-08-07 查出 74/76 篇指向同兩張 radar SVG
+後整批移除，它沒有封面是設計不是缺漏。
+
+**這條規則為什麼是現在才加**：`docs/reminders.md` 記著「必填但不檢查正確性，比沒有要求更糟」
+（當初正是那 74 篇填了不相干的圖）。那個逃生口後來被 `check-boilerplate` 堵住了——
+`coverImage` / `heroImage` 不在它的 `FIELD_ALLOW` 裡，同一張圖被 ≥5 篇共用會被抓出來。
+有了那道，這道才不會逼出「隨便填一張過關」。
+
+**它擋的是什麼情況**：cron 產線的 prompt 本來就有配圖鐵則（`ops/draft-cron.sh` 的
+`COMMON_RULES_PAGE` ②），但在互動 session 裡手動批次補排程的稿子不走那條路。
+2026-08-23 業主發現趨勢新聞與幾篇文章沒圖，追出來是三批手動批次稿（08-04 成分解析 9 篇、
+08-05 文章 6 篇、08-17 趨勢新聞 10 篇）跳過了配圖，而當時沒有任何 gate 檢查封面圖，
+於是一路過 build、過 CI、上線。**規則寫在 prompt 裡只約束得了走那個 prompt 的人。**
+
+**本地路徑也會被驗**：`Article.astro` 對不存在的本地封面路徑是靜默不渲染的——
+frontmatter 看起來有圖、前台是空的。gate 對 `/` 開頭的值會檢查 `public/` 底下檔案是否真的存在。
+
+**補圖只能在連得到圖庫的環境做**：CCR 遠端 session 對 `images.unsplash.com` /
+`images.pexels.com` 一律連不通（實測回 000）。要補請在本機或 GitHub Actions runner 上跑。
