@@ -38,6 +38,7 @@
  */
 import { existsSync, readFileSync } from "node:fs";
 import { execSync } from "node:child_process";
+import yaml from "js-yaml";
 
 const args = process.argv.slice(2);
 const ALL = args.includes("--all");
@@ -63,6 +64,25 @@ const run = (cmd) => {
 function collectionOf(file) {
   const m = file.match(/^src\/content\/([a-z]+)\//);
   return m && SPEC[m[1]] ? m[1] : null;
+}
+
+/**
+ * frontmatter 語法本身是否有效。
+ *
+ * 為什麼這一項要單獨檢查：本檔與 check-content、check-boilerplate 都是用 regex 讀
+ * frontmatter，YAML 壞掉時它們照樣「通過」——2026-08-26 就是這樣，三道 gate 全綠，
+ * 只有 astro build 的嚴格 parser 擋下來（`draft: false` 後面被插進 references 項目）。
+ * gate 說通過卻在 build 才炸，比沒有 gate 更誤導人，所以在這裡先驗一次。
+ */
+function frontmatterError(raw) {
+  const m = raw.match(/^---\n([\s\S]*?)\n---\n/);
+  if (!m) return raw.startsWith("---") ? "frontmatter 分隔線格式不正確（需為單獨一行的 --- 並以換行結尾）" : null;
+  try {
+    yaml.load(m[1]);
+    return null;
+  } catch (e) {
+    return `frontmatter YAML 無法解析：${String(e.message).split("\n")[0]}`;
+  }
 }
 
 function measure(file) {
@@ -132,6 +152,12 @@ for (const { file, added } of files) {
   if (!m) continue;
 
   const miss = [];
+  // YAML 壞掉是語法錯誤不是規格不足，無論新增或既有都必須擋——它會讓 build 失敗。
+  const fmErr = frontmatterError(readFileSync(file, "utf8"));
+  if (fmErr) {
+    errors.push({ file, col, miss: [fmErr] });
+    continue;
+  }
   if (m.refs < spec.refs) miss.push(`可點來源 ${m.refs} 筆（下限 ${spec.refs}）`);
   if (m.words < spec.words) miss.push(`正文 ${m.words} 字（下限 ${spec.words}）`);
   if (spec.inlinks != null && m.inlinks < spec.inlinks)
