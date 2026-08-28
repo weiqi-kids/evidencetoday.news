@@ -631,6 +631,10 @@ const social = listSocial('videos');
     align-items: center;
     gap: 0.75rem;
     margin-bottom: 0.55rem;
+    /* 卡片變窄時讓「分類／日期」整列換行，而不是把分類標籤壓到斷字。
+       日期那個 <p> 有 nowrap、分類標籤沒有，收縮壓力會全部落在標籤上——
+       2026-08-28 業主回報「保健觀念」在卡片裡折成兩行，就是這樣造成的。 */
+    flex-wrap: wrap;
   }
 
   .video-card__meta p {
@@ -645,6 +649,9 @@ const social = listSocial('videos');
     align-items: center;
     border-radius: 999px;
     padding: 0.16rem 0.58rem;
+    /* 藥丸型標籤一律不斷字：斷成兩行的膠囊在視覺上是壞掉的，不是「自適應」。 */
+    white-space: nowrap;
+    flex-shrink: 0;
     font-size: var(--text-meta);
     font-weight: 700;
     color: color-mix(in oklch, var(--color-cat-video) 72%, var(--color-ink));
