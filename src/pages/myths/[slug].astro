@@ -149,13 +149,19 @@ const mythFaq = await dropIfBoilerplate('myths', 'faq', d.faq);
  * 判準本身：留客優先於版型潔癖。相關文件已同步改寫，勿再依舊規則移除。
  */
 const manualRelArticles = d.relatedArticles
-  ? (await Promise.all(d.relatedArticles.map((id) => getEntry('articles', id)))).filter(Boolean)
+  ? (await Promise.all(d.relatedArticles.map((id) => getEntry('articles', id)))).filter(
+      (e) => e && isPublicEntry(e.data),
+    )
   : [];
 const manualRelMyths = d.relatedMyths
-  ? (await Promise.all(d.relatedMyths.map((id) => getEntry('myths', id)))).filter(Boolean)
+  ? (await Promise.all(d.relatedMyths.map((id) => getEntry('myths', id)))).filter(
+      (e) => e && isPublicEntry(e.data),
+    )
   : [];
 const manualRelIngredients = d.relatedIngredients
-  ? (await Promise.all(d.relatedIngredients.map((id) => getEntry('ingredients', id)))).filter(Boolean)
+  ? (await Promise.all(d.relatedIngredients.map((id) => getEntry('ingredients', id)))).filter(
+      (e) => e && isPublicEntry(e.data),
+    )
   : [];
 const hasManualRel = manualRelArticles.length > 0 || manualRelMyths.length > 0 || manualRelIngredients.length > 0;
 const autoRel = hasManualRel
