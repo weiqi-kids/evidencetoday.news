@@ -1,6 +1,6 @@
 # 對外服務契約：reader-index.json 與文章頁的 ReadingBeacon
 
-> 摘要：`/root/my-line-bot-customer`（LINE 官方帳號 appinews-reader）靠本站 build 期產出的
+> 摘要：`/mnt/customer/my-line-bot-customer`（LINE 官方帳號 appinews-reader）靠本站 build 期產出的
 > `reader-index.json` 取內容候選池、靠文章頁的 beacon 取「真讀 / 秒退」訊號。這兩樣不是自家
 > 檔案——改欄位會讓對面靜默降級而不是報錯。移植自 `appi.news` 的同名機制
 > （`docs/lessons/reader-index-and-beacon-contract.md`），本檔只記 evidencetoday.news 這一側

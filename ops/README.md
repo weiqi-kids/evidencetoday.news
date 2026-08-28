@@ -59,7 +59,7 @@
 
 1. **ops 腳本一律不自我 `git pull`**——交給 `bootstrap.sh`。在 repo 內自我 pull 會執行中覆寫自身。
 2. **機密/狀態走 `$CONF_DIR`**，永不寫進 repo（`slack-bot-token` 是機密；`pending/` 等是 runtime）。
-3. **路徑參數化**：`REPO` 從腳本位置推導（`$(dirname BASH_SOURCE)/..`）、`CONF_DIR` 取 env（預設主機路徑）。勿再 hardcode `/root/evidencetoday.news`。
+3. **路徑參數化**：`REPO` 從腳本位置推導（`$(dirname BASH_SOURCE)/..`）、`CONF_DIR` 取 env（預設主機路徑）。勿再 hardcode `/mnt/customer/evidencetoday.news`。
 4. crontab 一律經 `bootstrap.sh <script> [args]` 呼叫，不直接呼叫個別腳本。
 5. **headless `claude` 一律經 `claude-run.sh` 呼叫**，不直接呼叫 `claude-appi`（否則撞額度時不會寫冷卻旗標、會每趟空跑）。
 6. **子代理模型｜省成本鐵則**：撰寫類 prompt（draft/news）凡用 `Agent` 工具派 sub-agent，**一律顯式帶 `model='sonnet'`**（審核委員會亦同，比照 `docs/news_sop.md` 設計 Sonnet x n）；**嚴禁用預設模型——預設會落到 opus（最貴）**。純機械性檢查（連結驗 200/檔名）才可降 `model='haiku'`。orchestrator 自身由各腳本 `--model claude-sonnet-4-6` 鎖定。
@@ -76,7 +76,7 @@
 ## crontab（在 `/etc/cron.d/evidencetoday`，單檔一專案；系統 TZ=UTC，排程以 UTC 寫，台北＝UTC+8）
 
 > 改排程＝改 `/etc/cron.d/evidencetoday`（**不在** user crontab）。日誌統一在 `/var/log/evidencetoday/<job>.log`。
-> 各行格式含 user 欄位：`分 時 日 月 週  root  /root/evidencetoday.news/ops/bootstrap.sh <script> [args] >> /var/log/evidencetoday/<job>.log 2>&1`
+> 各行格式含 user 欄位：`分 時 日 月 週  root  /mnt/customer/evidencetoday.news/ops/bootstrap.sh <script> [args] >> /var/log/evidencetoday/<job>.log 2>&1`
 >
 > ✅ **主機不需要任何改動（2026-08-05）**：2026-08-04 曾規劃把 news 降為 `1,3,5` 並提示在主機執行 `sed`，**該降頻已撤回，且那道指令從未執行過**，主機上的 `/etc/cron.d/evidencetoday` 一直是每日 `0-6`，正是現在要的狀態。**不要執行那道 sed。**
 

@@ -122,7 +122,7 @@ publish-approved.sh（主機，每 ~10 分輪詢）
 **為何排 07:35**：讓三個重型 headless claude 工作嚴格序列、不搶資源——news 06:17（→約 07:00 結束）→ 各型草稿 07:35（→約 08:20）→ optimize-cron 10:30。中間 09:00 sitemap／09:30 perf 為輕量。
 
 頁面型走「暫存→按鈕核准→publish-approved 發布」；稿件型（podcast/videos）**不經 publish-approved**，draft-cron 產稿後直接發頻道。
-（路徑前綴 `/root/evidencetoday.news/`。為何經 bootstrap：repo 內腳本不可自我 `git pull`，見 `ops/README.md`。）
+（路徑前綴 `/mnt/customer/evidencetoday.news/`。為何經 bootstrap：repo 內腳本不可自我 `git pull`，見 `ops/README.md`。）
 
 ## 相關
 - 頻道對照與發送：記憶 `slack-channels`；token 位置 `secrets.md` § Slack；Worker 部署事實 `editor-ai-worker-deploy`。
