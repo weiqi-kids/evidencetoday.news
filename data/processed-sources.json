@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-08-28T06:19:15+08:00",
+  "lastRun": "2026-08-29T06:20:00+08:00",
   "processed": {
     "https://pubmed.ncbi.nlm.nih.gov/30381313/": {
       "processedAt": "2026-08-25T06:19:26+08:00",
@@ -1012,6 +1012,14 @@
     },
     "https://www.sciencedaily.com/releases/2026/08/260823015009.htm": {
       "processedAt": "2026-08-27T06:20:17+08:00",
+      "outputFile": null
+    },
+    "https://arxiv.org/pdf/2512.07531": {
+      "processedAt": "2026-08-29T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://www.nature.com/subjects/study-design/ejcn": {
+      "processedAt": "2026-08-29T06:20:00+08:00",
       "outputFile": null
     }
   }
