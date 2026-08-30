@@ -1,7 +1,11 @@
 {
   "version": 1,
-  "lastRun": "2026-08-29T06:20:00+08:00",
+  "lastRun": "2026-08-31T06:18:00+08:00",
   "processed": {
+    "https://www.cdc.gov.tw/Category/List/UVFDcMSRGZ0DX7NHPi8Lsw": {
+      "processedAt": "2026-08-31T06:18:00+08:00",
+      "outputFile": null
+    },
     "https://pubmed.ncbi.nlm.nih.gov/30381313/": {
       "processedAt": "2026-08-25T06:19:26+08:00",
       "outputFile": null
