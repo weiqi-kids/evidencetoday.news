@@ -31,11 +31,26 @@ const CONTENT_DIR = 'src/content';
  * 撞到限額那批就會空跑，得留得起一次 miss 的餘裕。
  */
 const PIPELINES = {
-  articles: { label: '文章', cron: '每週日', runwayDays: 10 },
-  ingredients: { label: '成分解析', cron: '每週二', runwayDays: 10 },
-  myths: { label: '闢謠', cron: '每週四', runwayDays: 10 },
-  news: { label: '趨勢新聞', cron: '每日', runwayDays: null }, // 只看破洞，不看跑道
+  articles: { label: '文章', cron: '每週日', runwayDays: 10, everyNDays: 1 },
+  ingredients: { label: '成分解析', cron: '每週二', runwayDays: 10, everyNDays: 2 },
+  myths: { label: '闢謠', cron: '每週四', runwayDays: 10, everyNDays: 2 },
+  news: { label: '趨勢新聞', cron: '每日', runwayDays: null, everyNDays: 1 }, // 只看破洞，不看跑道
 };
+
+/**
+ * everyNDays = 這條線的發布節奏（1 = 每天、2 = 每兩天）。
+ *
+ * 2026-08-31 加。原本破洞判定寫死「兩篇之間不得有空日」，那等於假設每條線都是每日發。
+ * 業主決定把闢謠與成分解析降到兩天一篇（依 GSC 每頁曝光效率：文章 87.0、成分 58.3、
+ * 闢謠 32.6、新聞 12.1，闢謠與成分的邊際效益已不值得每日產能），若不改這裡，
+ * 降頻後每一天都會被誤報成破洞，這支 gate 就會被當成雜訊忽略——那比沒有 gate 更糟。
+ *
+ * 判準改成：相鄰兩篇的間隔大於 everyNDays 才算破洞。間隔小於節奏（同一天兩篇）不罰，
+ * 那是補稿或特例，不是失誤。
+ *
+ * ⚠️ news 必須維持 1：它是每日 cron 產出、publishDate 等於檔名日期，
+ * 中間空一天代表 cron 沒跑成功，那正是要被抓出來的事。
+ */
 
 /** 台北時間（UTC+8）的今天，YYYY-MM-DD。專案硬規則 4：日期一律 UTC+8。 */
 function todayTaipei() {
@@ -97,19 +112,22 @@ for (const [collection, cfg] of Object.entries(PIPELINES)) {
   const last = entries[entries.length - 1].date;
   const scheduled = new Set(entries.map((e) => e.date));
 
-  // 破洞：第一篇到最後一篇之間，哪幾天是空的
+  // 破洞：相鄰兩篇的間隔超過該線節奏。每日線（everyNDays=1）等同「中間不得有空日」。
+  const step = cfg.everyNDays ?? 1;
+  const days = [...scheduled].sort();
   const gaps = [];
-  for (let d = first; d <= last; d = addDays(d, 1)) {
-    if (!scheduled.has(d)) gaps.push(d);
+  for (let i = 1; i < days.length; i++) {
+    const span = daysBetween(days[i - 1], days[i]);
+    if (span > step) gaps.push(`${days[i - 1]}→${days[i]}（隔 ${span} 天，節奏應為 ${step}）`);
   }
 
   const runway = daysBetween(today, last);
   console.log(
-    `  ${cfg.label.padEnd(5)} ${String(entries.length).padStart(3)} 篇  ${first} ~ ${last}  （跑道 ${runway} 天）`,
+    `  ${cfg.label.padEnd(5)} ${String(entries.length).padStart(3)} 篇  ${first} ~ ${last}  （跑道 ${runway} 天、節奏 ${cfg.everyNDays ?? 1} 天 1 篇）`,
   );
 
   if (gaps.length) {
-    errors.push(`${cfg.label}（${collection}）排程破洞 ${gaps.length} 天：${gaps.join('、')}`);
+    errors.push(`${cfg.label}（${collection}）排程破洞 ${gaps.length} 處：${gaps.join('、')}`);
   }
   if (cfg.runwayDays !== null && runway < cfg.runwayDays) {
     warnings.push(
