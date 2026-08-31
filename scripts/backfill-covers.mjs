@@ -33,20 +33,28 @@ import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
 const WORKER = 'https://evidencetoday-ai-suggest.lightman-chang.workers.dev/stock';
 
 /**
- * 只有 articles / ingredients 兩個頁型配封面。**myths 與 news 刻意不配**——
- * 這不是漏掉：2026-08-07 曾替 74 篇闢謠自動配圖，結果全數與內文不相干（見
- * docs/pitfalls.md），事後移除，此後闢謠與趨勢新聞維持無封面。不要「順手補上」。
- * ANCHOR 是各頁型 frontmatter 裡用來插在其前的既有欄位（該頁型每篇都有的欄位）。
+ * articles / ingredients / news 三個頁型配封面；**只有 myths 刻意不配**——
+ * 那不是漏掉：2026-08-07 曾替 74 篇闢謠自動配圖，結果全數與內文不相干（見
+ * docs/pitfalls.md），事後移除，此後闢謠維持無封面。不要「順手補上」。
+ *
+ * ⚠️ **news 的封面欄位叫 `heroImage`，不是 `coverImage`**（見 editor-images.md
+ * 的 getCoverConfig）。2026-08-24 曾因為拿 `coverImage` 去 grep news 得到 0 篇，
+ * 誤判成「news 不配封面」，導致該批 10 篇趨勢新聞無圖上線。欄位名不同不等於沒有這個功能，
+ * 查某個頁型有沒有某功能時，要先確認那個頁型用的欄位名。
+ *
+ * FIELD 是封面網址要寫進哪個欄位；ANCHOR 是插在哪個既有欄位之前（該頁型每篇都有的欄位）。
  */
 const DIRS = {
-  articles: { dir: 'src/content/articles', anchor: /^(readingTime: .*)$/m },
-  ingredients: { dir: 'src/content/ingredients', anchor: /^(featured: .*)$/m },
+  articles: { dir: 'src/content/articles', field: 'coverImage', anchor: /^(readingTime: .*)$/m },
+  ingredients: { dir: 'src/content/ingredients', field: 'coverImage', anchor: /^(featured: .*)$/m },
+  news: { dir: 'src/content/news', field: 'heroImage', anchor: /^(tags:.*)$/m },
 };
 const dirArg = process.argv.indexOf('--dir');
 const dirKey = dirArg > -1 ? process.argv[dirArg + 1] : 'articles';
 if (!DIRS[dirKey]) { console.error(`--dir 只接受：${Object.keys(DIRS).join(' / ')}`); process.exit(1); }
 const DIR = DIRS[dirKey].dir;
 const ANCHOR = DIRS[dirKey].anchor;
+const FIELD = DIRS[dirKey].field;
 const dry = process.argv.includes('--dry');
 const onlyArg = process.argv.indexOf('--only');
 const only = onlyArg > -1 ? (process.argv[onlyArg + 1] || '').split(',').filter(Boolean) : null;
@@ -70,7 +78,7 @@ const KEYWORD_HINTS = {
   // 2026-08-17 批次：症狀類文章一律取「人在該情境裡」的場景，不取患部病灶特寫
   //   （病灶照對讀者不友善，且圖庫的病灶照多半是素材商標好的示意圖，未必對應本文疾病）。
   'dry-eye-syndrome-guide': 'tired woman rubbing eyes computer screen office',
-  'hemorrhoids-guide': 'high fiber vegetables whole grains wooden table',
+  'hemorrhoids-guide': 'whole grain bread oats fiber breakfast',
   'tinnitus-guide': 'man touching ear quiet room listening',
   'vertigo-bppv-guide': 'woman sitting sofa hand on forehead unwell',
   'plantar-fasciitis-guide': 'person holding heel foot pain barefoot',
@@ -129,6 +137,18 @@ const KEYWORD_HINTS = {
   'birds-nest': 'chinese dessert soup white bowl',
   'pearl-powder': 'white powder in bowl with pearls',
   zeaxanthin: 'corn kernels yellow maize closeup',
+  // 2026-08-31 補：08-17 那批趨勢新聞漏配圖（誤判 news 不用封面，實際欄位是 heroImage）。
+  //   新聞取「該則研究主題的情境」，不取新聞感的示意圖。
+  'radar-2026-08-24-12-01': 'weight scale measuring tape health',
+  'radar-2026-08-25-12-01': 'scientist microscope research lab',
+  'radar-2026-08-26-12-01': 'gut microbiome petri dish laboratory',
+  'radar-2026-08-27-12-01': 'blood pressure monitor arm cuff',
+  'radar-2026-08-28-12-01': 'medical screening clinic corridor',
+  'radar-2026-08-29-12-01': 'vaccine syringe vial clinic',
+  'radar-2026-08-30-12-01': 'senior couple walking outdoors park',
+  'radar-2026-08-31-12-01': 'man doing squat barbell training',
+  'radar-2026-09-01-12-01': 'people walking city street daytime',
+  'radar-2026-09-02-12-01': 'packaged snacks supermarket shelf',
   // 成分頁取「食物來源／原料本體」，不取膠囊瓶罐（本站不做產品頁，見規矩說明）
   berberine: 'dried barberry goldenseal root herbs bowl',
   'beta-glucan': 'rolled oats oatmeal bowl wooden spoon',
@@ -146,11 +166,18 @@ const KEYWORD_HINTS = {
 /* ---- 1. 站上已用過的圖 id，避免推薦重複 ---- */
 const usedIds = new Set();
 const allFiles = readdirSync(DIR).filter((f) => /\.mdx?$/.test(f));
-for (const f of allFiles) {
-  const t = readFileSync(`${DIR}/${f}`, 'utf8');
-  for (const m of t.matchAll(/photo-\d+-[a-z0-9]+|photos\/\d+/g)) usedIds.add(m[0]);
+// 2026-08-31 修：原本只掃當前 collection 的目錄，跨頁型的重複因此抓不到——
+// news 的 08-31 與 ingredients 的 beta-alanine 就拿到了同一張健身房照片。
+// 圖是全站共用資源，去重必須掃全部 collection。
+for (const col of ['articles', 'myths', 'ingredients', 'news', 'podcasts', 'videos']) {
+  let entries = [];
+  try { entries = readdirSync(`src/content/${col}`).filter((f) => /\.mdx?$/.test(f)); } catch { continue; }
+  for (const f of entries) {
+    const t = readFileSync(`src/content/${col}/${f}`, 'utf8');
+    for (const m of t.matchAll(/photo-[\w-]+|photos\/\d+/g)) usedIds.add(m[0]);
+  }
 }
-console.log(`站上已用過 ${usedIds.size} 張圖，將排除。\n`);
+console.log(`站上已用過 ${usedIds.size} 張圖（掃全部 collection），將排除。\n`);
 
 /* ---- 找出缺封面的文章，並從內容推關鍵字 ---- */
 const targets = [];
@@ -158,7 +185,7 @@ for (const f of allFiles) {
   const slug = f.replace(/\.mdx?$/, '');
   if (only && !only.includes(slug)) continue;
   const t = readFileSync(`${DIR}/${f}`, 'utf8');
-  if (/^coverImage:/m.test(t)) continue;                       // 規矩 6：不覆蓋
+  if (new RegExp(`^${FIELD}:`, 'm').test(t)) continue;          // 規矩 6：不覆蓋
   const tags = (t.match(/^tags: *\[(.*)\]/m)?.[1] || '')
     .split(',').map((s) => s.replace(/["\s]/g, '')).filter(Boolean);
   const kw = KEYWORD_HINTS[slug] || tags.slice(0, 4).join(' ');
@@ -200,12 +227,16 @@ for (const t of targets) {
   /* ---- 5. 寫 coverImage / coverImageCredit（coverAlt 留人工）---- */
   const src = readFileSync(t.file, 'utf8');
   const out = src.replace(ANCHOR,
-    `coverImage: "${photo.full}"\ncoverImageCredit: "${photo.credit}"\n$1`);
+    `${FIELD}: "${photo.full}"\ncoverImageCredit: "${photo.credit}"\n$1`);
   if (out === src) { console.log(`  ✗ 找不到插入點（${dirKey} 的 anchor），略過\n`); continue; }
   writeFileSync(t.file, out);
-  usedIds.add(String(photo.id));
+  // 用「從網址擷取的 id」登記，格式必須與第 1 步的初始掃描一致。
+  // 2026-08-31 修：原本存的是 API 的 photo.id，與網址裡的 photo-<ts>-<hash> 格式不同，
+  // 導致同一次執行內剛用過的圖不會被排除——news 那批的 08-25 與 08-28 因此拿到同一張。
+  const usedId = (photo.full.match(/photo-[\w-]+|photos\/\d+/) || [])[0];
+  if (usedId) usedIds.add(usedId);
   needAlt.push(t.slug);
-  console.log('  已寫入 coverImage / coverImageCredit\n');
+  console.log(`  已寫入 ${FIELD} / coverImageCredit\n`);
 }
 
 if (needAlt.length) {
