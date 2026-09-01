@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-09-01T06:20:00+08:00",
+  "lastRun": "2026-09-02T06:21:10+08:00",
   "processed": {
     "https://www.cdc.gov.tw/Category/List/UVFDcMSRGZ0DX7NHPi8Lsw": {
       "processedAt": "2026-08-31T06:18:00+08:00",
@@ -1024,6 +1024,26 @@
     },
     "https://www.nature.com/subjects/study-design/ejcn": {
       "processedAt": "2026-08-29T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/31558379/": {
+      "processedAt": "2026-09-02T06:21:10+08:00",
+      "outputFile": null
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12437512/": {
+      "processedAt": "2026-09-02T06:21:10+08:00",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/9d0rrbxdmnVB0m9XpKX52Q?typeid=9": {
+      "processedAt": "2026-09-02T06:21:10+08:00",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/ZE59NhApqeBL6fVS-Qau9g?typeid=9": {
+      "processedAt": "2026-09-02T06:21:10+08:00",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/ukDZa_z9j_qFxscMcULvog?typeid=9": {
+      "processedAt": "2026-09-02T06:21:10+08:00",
       "outputFile": null
     }
   }
