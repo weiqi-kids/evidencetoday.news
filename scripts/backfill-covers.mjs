@@ -195,6 +195,10 @@ const KEYWORD_HINTS = {
   'cold-snap-cardiac-timing': 'elderly man warm coat cold winter morning street',
   'hot-spring-who-should-avoid': 'outdoor hot spring steam onsen rocks',
   'low-temperature-burns-heating-devices': 'hot water bottle knitted cover bed winter',
+  // 2026-09-01 國際法規落差批：取「跨境／貨架／官方文件」場景，不取藥丸特寫。
+  'melatonin-why-otc-abroad-prescription-taiwan': 'american pharmacy supplement aisle shelves bottles',
+  'nmn-regulation-taiwan-japan-us-eu': 'japanese drugstore shelf supplements tokyo',
+  'red-yeast-rice-regulation-eu-japan-taiwan': 'red yeast rice fermented grain bowl',
 };
 
 /* ---- 1. 站上已用過的圖 id，避免推薦重複 ---- */

@@ -151,6 +151,7 @@ pnpm check:spec:all     # 全站規格盤點（恆 exit 0，人工普查用）
 | /podcasts 頻道與單集 | `docs/page-rules/podcasts.md` |
 | /videos 短影音 | `docs/page-rules/videos.md` |
 | /news 趨勢文章結構與前台 | `docs/playbooks/news-article.md` |
+| 國際法規落差文（本站產能最高的題型） | `docs/page-rules/international-regulation.md` |
 | SEO meta / JSON-LD / RSS / OG / AEO | `docs/page-rules/seo-and-feeds.md` |
 
 ### 架構 / 運維 / 數據
