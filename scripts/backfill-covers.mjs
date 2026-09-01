@@ -161,6 +161,40 @@ const KEYWORD_HINTS = {
   phosphatidylserine: 'soybeans soy seeds bowl',
   maca: 'peruvian maca root tuber harvest',
   'krill-oil': 'antarctic krill shrimp ocean',
+  // 2026-09-01 成分解析批：台灣特有品類 + 貨架比較型。
+  //   比較型（劑型比較）取「貨架／膠囊實體」而非食材原型——這兩篇的讀者是站在藥局前的人。
+  'antrodia-cinnamomea': 'wild bracket fungus mushroom growing tree trunk forest',
+  'reishi-mushroom': 'reishi ganoderma mushroom dried whole',
+  bromelain: 'fresh pineapple sliced tropical fruit',
+  'royal-jelly': 'beehive honeycomb bees apiary frame',
+  propolis: 'beekeeper hands honeycomb hive wooden frame',
+  'bitter-melon-peptide': 'bitter gourd momordica sliced cutting board',
+  'roselle-extract': 'roselle hibiscus flowers red calyx harvest',
+  'si-wu-decoction': 'dried chinese herbal medicine roots bowl',
+  'fish-oil-forms-comparison': 'omega 3 softgel capsules golden pile close up',
+  'lutein-forms-comparison': 'supplement capsules bottle pharmacy shelf',
+  // 2026-09-01 秋冬節氣批：延續上面 08-17 的原則——症狀類取「人在那個情境裡」，
+  //   不取患部特寫；進補與火鍋類取食物與餐桌場景，不取藥材標本照。
+  'cold-or-allergy-seasonal-change': 'woman sneezing tissue autumn window',
+  'autumn-dry-cough-two-weeks': 'man coughing hand chest indoor',
+  'autumn-dry-skin-itch': 'woman applying body lotion cream after shower',
+  'cold-hands-feet-causes': 'cold hands holding warm mug blanket',
+  'temperature-swing-blood-pressure': 'home blood pressure monitor arm cuff table',
+  'autumn-hair-shedding': 'hair brush comb fallen hair bathroom',
+  'flu-vaccine-still-got-flu': 'nurse giving flu vaccine injection arm clinic',
+  'air-pollution-outdoor-exercise': 'hazy city skyline smog air pollution morning',
+  'winter-bedding-dust-mites': 'folded winter blankets duvet bedroom linen',
+  'who-should-avoid-winter-tonic': 'herbal chicken soup hot pot clay bowl',
+  'herbal-tonic-drug-interactions': 'medicine pills capsules spilled wooden table',
+  'sesame-oil-chicken-alcohol': 'sesame oil chicken soup ginger cooking pot',
+  'hotpot-tonic-sodium': 'steaming hot pot broth table winter dinner',
+  'tonic-side-effects-heatiness': 'tired woman sitting bed night insomnia',
+  'hotpot-frequency-blood-lipids': 'sliced beef pork hotpot ingredients platter',
+  'hotpot-dipping-sauce-calories': 'small bowl of sauce sesame paste chopsticks',
+  'hotpot-broth-purine-gout': 'seafood hotpot shrimp clams broth',
+  'cold-snap-cardiac-timing': 'elderly man warm coat cold winter morning street',
+  'hot-spring-who-should-avoid': 'outdoor hot spring steam onsen rocks',
+  'low-temperature-burns-heating-devices': 'hot water bottle knitted cover bed winter',
 };
 
 /* ---- 1. 站上已用過的圖 id，避免推薦重複 ---- */

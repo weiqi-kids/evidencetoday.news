@@ -45,6 +45,8 @@
 - **headless 派子代理不帶 model ＝ 默默用 opus、燒爆額度**：cron orchestrator 雖然自己跑 sonnet，但它派出的撰寫／審核 `Agent` 不帶 model 會落到帳號預設（opus）。撰寫委員會一律顯式 `model='sonnet'`（見 `AGENTS.md` 並行紀律、`ops/README.md`）。談「cron 燒 token」先查子代理 model。
 - **營運帳號與 appi.news 共用同一個週限額**：撞限額時本站的 cron 會一起空跑。`claude-run.sh` 撞限額會寫冷卻旗標，冷卻期內 `bootstrap.sh` 只跳過 claude 型 job、純資料型照跑。現況看 `/etn-cron`。
 - **遠端 CCR 環境 WebFetch 被沙箱封鎖**（PubMed/RSS 403），新聞管線為 WebSearch-only，用 `site:` 定向搜尋。
+- **`pnpm build 2>&1 | tail -25` 會吃掉真正的離開碼，把失敗的建置報成成功**（2026-09-01 差點誤報）：管線的離開碼取自最後一個指令（`tail`），`tail` 永遠回 0。當時 build 其實在第一秒就死於 `ERROR packages field missing or empty`，輸出只剩那兩行，看起來卻像「跑完了」。**要判斷 build 有沒有過，一律寫成 `pnpm build > 檔案 2>&1; echo "EXIT=$?"` 再看檔案**，不要用管線接 tail/head/grep。同理適用於所有 gate 腳本。
+- **`pnpm-workspace.yaml` 憑空出現且只有 `allowBuilds` 欄位 ＝ 被 pnpm 10 汙染過，pnpm 9 會完全動不了**（2026-09-01 再次踩到）：症狀是連 `pnpm --version` 都回 `ERROR packages field missing or empty`。這個檔**不在 git 追蹤裡**，直接 `rm -f pnpm-workspace.yaml` 即可，不必修內容。本專案鎖 pnpm 9（CI 也是），誤用 pnpm 10+ 執行任何指令都會重新產生它。
 
 
 - **列表頁未被索引 ≠ 站上有缺陷（2026-08-06 查證，不要再查一次）**：曾發現 `/articles/`、`/ingredients/`、`/news/`、`/videos/` 未索引，而 `/myths/`、`/topics/`、`/podcasts/` 已索引，直覺會去找 noindex／canonical／內鏈的差異。**七頁逐項比對後完全相同**：canonical 皆正確自指、無 noindex、都在 sitemap、導覽列在 1,233 頁裡都是真 `<a href>`（不是 script 內字串）。唯一差別是 URL Inspection 的 `lastCrawlTime`——已索引的三頁被爬過，未索引的四頁**從未被爬**，`pageFetchState`／`robotsTxtState` 全為 `UNSPECIFIED`（代表「還沒檢查」而非「檢查不過」）。`referringUrls: 0` 同理是未處理的結果，不是原因。
