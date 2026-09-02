@@ -22,6 +22,7 @@
 - **排程破洞沒有任何自動檢查看得到**（少發一天不會讓 build 紅），只能靠 `pnpm check:schedule`。動完排程一定要跑。
 - **自動發文可能連到「還沒上線的排程稿」，而這會擋掉全站部署**（2026-08-24 實際發生）：cron 自動發布的文章若在內文連向一篇尚未到 `publishDate` 的稿，該連結在 `dist` 就是死連結，`check:site` 會讓 build 紅 → **從那一刻起所有人的部署都失敗**，包含與此無關的修改。症狀是 GitHub Actions 連續 failure、而錯誤只有一行「站內死連結」。`pnpm check:schedule` 從原始碼就能抓到（訊息更清楚），但**它不在 CI 裡**，所以只有人主動跑才看得見。動完排程、或發現部署連續失敗時，第一件事就是跑它。修法有兩種：把目標稿的 `publishDate` 提前到來源之前（保住內鏈，較佳），或把連結拿掉只留語意；前者會在原本的日期留下破洞，記得把後面的稿往前挪一天補上。
 - **節氣／節慶文照「檔案順序」往後接，就會排到節慶結束之後**（2026-08-31 抓到）：一批 60 篇的家族稿是按主題分組依序排日期的，`mid-autumn-bbq-food-safety` 因此落在 2026-10-18——但 2026 中秋是**國曆 9/25**，等於中秋過完 23 天才上線，整篇白寫。同批的年菜稿排 10-19，而 2027 除夕是 2/5，早了三個半月。**這個風險在該批的規劃文件裡已經寫過（「J 組要照農曆與節氣排」），卻沒有在排程時執行**——寫下來不等於做到。做法：**排程前先查該年的國曆日期，節慶文一律排在節慶前一到兩週**（要留得出被 Google 索引的時間，當天發等於沒發）。2026-2027 關鍵日期記在 `docs/reminders.md`。
+- **`relatedArticles` 這類「手動關聯」欄位過去沒套 `isPublicEntry`，是死連結的第二個來源**（2026-09-02 修）：`articles/[slug].astro` 與 `ingredients/[slug].astro` 解析 `relatedX` 時用的是 `.filter(Boolean)`——那只擋得掉「這個 id 不存在」，擋不掉「這篇還沒到 `publishDate`」。未公開的稿在 `dist` 裡沒有頁面，渲染出來就是死連結，`check:site` 會讓 build 紅、擋掉全站部署。實際案例：cron 自動發布的 `ingredients/dong-quai` 在 `relatedArticles` 與正文各填了四篇 10 月底才上線的節氣文。**這是硬規則 12 的漏網之魚——當時只檢查了 `getCollection` 的呼叫點，沒檢查 `getEntry`。** 已改成共用的 `resolveManual()` 並套 `isPublicEntry`；日後新增任何「用 id 取單篇再渲染連結」的地方，都要記得過這一關。
 - **Astro 5 content-layer 快取**：改 `content.schemas.ts` 欄位後，本機 `pnpm build` 可能沿用 `.astro/data-store.json` 舊解析結果（新欄位仍被剝除、前台看不到）。驗證 schema 改動請先 `rm -rf .astro dist` 再 build。CI 每次全新 checkout 無此問題。
 
 ## 版面與樣式

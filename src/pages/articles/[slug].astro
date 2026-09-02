@@ -48,22 +48,20 @@ const citationAnswer =
   data.description;
 
 
-/* Resolve related content（手動 relatedX 優先，hub↔spoke 結構） */
-const manualArticles = data.relatedArticles
-  ? (await Promise.all(data.relatedArticles.map((id) => getEntry('articles', id)))).filter(Boolean)
-  : [];
-const manualMyths = data.relatedMyths
-  ? (await Promise.all(data.relatedMyths.map((id) => getEntry('myths', id)))).filter(Boolean)
-  : [];
-const manualIngredients = data.relatedIngredients
-  ? (await Promise.all(data.relatedIngredients.map((id) => getEntry('ingredients', id)))).filter(Boolean)
-  : [];
-const manualVideos = data.relatedVideos
-  ? (await Promise.all(data.relatedVideos.map((id) => getEntry('videos', id)))).filter(Boolean)
-  : [];
-const manualPodcasts = data.relatedPodcasts
-  ? (await Promise.all(data.relatedPodcasts.map((id) => getEntry('podcasts', id)))).filter(Boolean)
-  : [];
+/* Resolve related content（手動 relatedX 優先，hub↔spoke 結構）
+   只解析**已公開**的項目。`filter(Boolean)` 只擋掉「不存在」，擋不掉「還沒到 publishDate」
+   ——那種稿在 dist 裡不存在，渲染出來就是死連結，`check:site` 會擋掉全站部署
+   （硬規則 12、docs/pitfalls.md）。 */
+const resolveManual = async (collection, ids) =>
+  ids
+    ? (await Promise.all(ids.map((id) => getEntry(collection, id)))).filter((e) => e && isPublicEntry(e.data))
+    : [];
+
+const manualArticles = await resolveManual('articles', data.relatedArticles);
+const manualMyths = await resolveManual('myths', data.relatedMyths);
+const manualIngredients = await resolveManual('ingredients', data.relatedIngredients);
+const manualVideos = await resolveManual('videos', data.relatedVideos);
+const manualPodcasts = await resolveManual('podcasts', data.relatedPodcasts);
 const hasManual = manualArticles.length > 0 || manualMyths.length > 0 || manualIngredients.length > 0 || manualVideos.length > 0 || manualPodcasts.length > 0;
 
 /* 手動全空 → 用 tag 重疊自動補相關內容，避免相關區整片空白（見 src/utils/related.ts） */

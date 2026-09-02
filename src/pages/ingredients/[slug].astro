@@ -62,22 +62,22 @@ const USE_EVIDENCE_LABEL: Record<string, string> = {
 
 const social = contentSocial('ingredients', data, entry.id.replace(/\.[^.]+$/, ''));
 
-/* Resolve related content */
-const manualArticles = data.relatedArticles
-  ? (await Promise.all(data.relatedArticles.map((id) => getEntry('articles', id)))).filter(Boolean)
-  : [];
-const manualMyths = data.relatedMyths
-  ? (await Promise.all(data.relatedMyths.map((id) => getEntry('myths', id)))).filter(Boolean)
-  : [];
-const manualVideos = data.relatedVideos
-  ? (await Promise.all(data.relatedVideos.map((id) => getEntry('videos', id)))).filter(Boolean)
-  : [];
-const manualPodcasts = data.relatedPodcasts
-  ? (await Promise.all(data.relatedPodcasts.map((id) => getEntry('podcasts', id)))).filter(Boolean)
-  : [];
-const manualIngredients = data.relatedIngredients
-  ? (await Promise.all(data.relatedIngredients.map((id) => getEntry('ingredients', id)))).filter(Boolean)
-  : [];
+/* Resolve related content
+   手動 relatedX 只解析**已公開**的項目。`filter(Boolean)` 只擋掉「不存在」，擋不掉
+   「還沒到 publishDate」——那種稿在 dist 裡不存在，渲染出來就是死連結，`check:site`
+   會讓 build 紅、擋掉全站部署（硬規則 12、docs/pitfalls.md）。
+   2026-09-02 實際炸過：cron 自動發布的 dong-quai 在 relatedArticles 填了四篇
+   10 月底才上線的節氣文。 */
+const resolveManual = async (collection, ids) =>
+  ids
+    ? (await Promise.all(ids.map((id) => getEntry(collection, id)))).filter((e) => e && isPublicEntry(e.data))
+    : [];
+
+const manualArticles = await resolveManual('articles', data.relatedArticles);
+const manualMyths = await resolveManual('myths', data.relatedMyths);
+const manualVideos = await resolveManual('videos', data.relatedVideos);
+const manualPodcasts = await resolveManual('podcasts', data.relatedPodcasts);
+const manualIngredients = await resolveManual('ingredients', data.relatedIngredients);
 const hasManual = manualArticles.length > 0 || manualMyths.length > 0 || manualVideos.length > 0 || manualPodcasts.length > 0 || manualIngredients.length > 0;
 
 /* 手動全空 → 用 tag 重疊自動補相關內容（同 articles/[slug].astro 的作法）。
