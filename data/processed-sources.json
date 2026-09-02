@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-09-02T06:21:10+08:00",
+  "lastRun": "2026-09-03T06:20:08+08:00",
   "processed": {
     "https://www.cdc.gov.tw/Category/List/UVFDcMSRGZ0DX7NHPi8Lsw": {
       "processedAt": "2026-08-31T06:18:00+08:00",
@@ -1044,6 +1044,18 @@
     },
     "https://www.cdc.gov.tw/Bulletin/Detail/ukDZa_z9j_qFxscMcULvog?typeid=9": {
       "processedAt": "2026-09-02T06:21:10+08:00",
+      "outputFile": null
+    },
+    "https://www.mohw.gov.tw/cp-2704-86886-1.html": {
+      "processedAt": "2026-09-03T06:20:08+08:00",
+      "outputFile": null
+    },
+    "https://clinicaltrials.gov/study/NCT07766408": {
+      "processedAt": "2026-09-03T06:20:08+08:00",
+      "outputFile": null
+    },
+    "https://clinicaltrials.gov/study/NCT07755475": {
+      "processedAt": "2026-09-03T06:20:08+08:00",
       "outputFile": null
     }
   }
