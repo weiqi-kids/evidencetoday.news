@@ -9,7 +9,7 @@
 #   slack-bot-token、pending/、awaiting-live/、reports/、*-ledger.jsonl、*-history.jsonl。
 # 搬機器：clone 本 repo（邏輯全帶走）+ 在新主機重建 $CONF_DIR（機密+狀態）即可。
 #
-# crontab 用法：/mnt/customer/evidencetoday.news/ops/bootstrap.sh <script.sh> [args...]
+# crontab 用法：/mnt/customers/evidencetoday.news/ops/bootstrap.sh <script.sh> [args...]
 set -euo pipefail
 
 export PATH="/root/.local/bin:/snap/bin:/usr/local/bin:/usr/bin:/bin"

@@ -1,6 +1,13 @@
 import { readFileSync, readdirSync } from 'node:fs';
 
 const MYTH_DIR = 'src/content/myths';
+// 這個數字是「防止內容被誤刪」的哨兵，判準是 status: published 且非 draft，
+// 與 publishDate 無關（排程在未來的稿一樣算數）。
+// ⚠ 只有在某篇迷思真的變成 status: published 之後才調高——照著「打算要發幾篇」
+// 先調，會讓 gate 從那一刻起擋住這個站的所有自動化改動，而症狀（count must be
+// N, got N-2）看起來像內容遺失，不像是這個常數自己錯了。
+// 2026-09-02：曾被提前調到 113（當時 113 個檔裡有 2 篇仍在 under-review），
+// 連續兩天擋住大腦層；改回與實際相符的 111。
 const EXPECTED_PUBLISHED_COUNT = 111;
 const FORBIDDEN = [
   'TODO',
