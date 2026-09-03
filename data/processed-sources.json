@@ -1,7 +1,11 @@
 {
   "version": 1,
-  "lastRun": "2026-09-03T06:20:08+08:00",
+  "lastRun": "2026-09-04T06:18:45+08:00",
   "processed": {
+    "https://arxiv.org/pdf/2606.01428": {
+      "processedAt": "2026-09-04T06:18:45+08:00",
+      "outputFile": null
+    },
     "https://www.cdc.gov.tw/Category/List/UVFDcMSRGZ0DX7NHPi8Lsw": {
       "processedAt": "2026-08-31T06:18:00+08:00",
       "outputFile": null
