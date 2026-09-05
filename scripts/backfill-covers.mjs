@@ -69,7 +69,7 @@ if (!token) { console.error('缺 GITHUB_TOKEN（worker 用它驗 repo push 權�
  * 選詞原則：具體場景 > 抽象概念，且避開藥品實物特寫（本站不做產品頁）。
  */
 const KEYWORD_HINTS = {
-  'japan-drugstore-medicine-bring-back-taiwan': 'japan pharmacy drugstore shelf tokyo street',
+  'japan-drugstore-medicine-bring-back-taiwan': 'japanese drugstore storefront signage tokyo shopping street',
   'cbd-products-bring-back-taiwan-legal-risk': 'airport customs declaration counter luggage',
   'thailand-sleep-gummies-bring-back-taiwan': 'gummy candy jar bedside table night',
   'aspirin-fish-oil-together-bleeding-risk': 'pill organizer weekly medication elderly hands',
@@ -195,6 +195,18 @@ const KEYWORD_HINTS = {
   'cold-snap-cardiac-timing': 'elderly man warm coat cold winter morning street',
   'hot-spring-who-should-avoid': 'outdoor hot spring steam onsen rocks',
   'low-temperature-burns-heating-devices': 'hot water bottle knitted cover bed winter',
+  // 2026-09-05 日韓跨境批：取「當地藥局／貨架／機場」的場景，不取商品或藥丸特寫
+  //   （本站不做商城，封面出現可辨識商品會讓頁面看起來像業配）。
+  'korea-sleep-gummies-bring-back-taiwan': 'seoul street night pharmacy storefront korea',
+  'korea-red-ginseng-bring-back-taiwan': 'dried ginseng roots traditional market',
+  'korea-drugstore-medicine-bring-back-taiwan': 'seoul korea city street shop signs hangul daytime',
+  'japan-supplements-bring-back-taiwan': 'japanese drugstore aisle shelves products',
+  'japan-otc-ingredient-red-lines': 'person reading medicine box label pharmacy hands',
+  'ashwagandha-regulation-denmark-eu-us-taiwan': 'ashwagandha root withania herbal powder',
+  '5-htp-regulation-taiwan-us-eu': 'woman shopping supplement aisle grocery store shelves',
+  // 這兩篇是既有已上線文，深化時才發現從來沒有封面。
+  // 它們的關鍵字本來就在本表最上面（第 72、74 行），這裡不要再寫一次——
+  // JS 物件字面值後者覆蓋前者，重複鍵會讓「改了上面那筆卻沒生效」，很難查。
   // 2026-09-01 國際法規落差批：取「跨境／貨架／官方文件」場景，不取藥丸特寫。
   'melatonin-why-otc-abroad-prescription-taiwan': 'american pharmacy supplement aisle shelves bottles',
   'nmn-regulation-taiwan-japan-us-eu': 'japanese drugstore shelf supplements tokyo',
