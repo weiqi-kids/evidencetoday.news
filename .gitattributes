@@ -1,0 +1,34 @@
+# 內容與腳本一律以 LF 存放並「以 LF 簽出」。
+#
+# 為什麼要寫死 eol=lf：Windows 開發機的 git 預設 core.autocrlf=true，checkout／rebase
+# 會把工作區轉成 CRLF，而守門腳本的 frontmatter 正則（`^---\n...`）只吃 LF，
+# 一遇 CRLF 就誤判「frontmatter 分隔線格式不正確」而擋掉 build——內容其實沒問題。
+# 2026-09-02 一次 rebase 後就因此白跑了兩次完整建置。詳見 docs/pitfalls.md。
+#
+# CI 跑 Linux，本來就是 LF，這份設定不改變 CI 行為，只是讓 Windows 工作區跟 repo 一致。
+
+.gitattributes text eol=lf
+.gitignore     text eol=lf
+
+*.md    text eol=lf
+*.mdx   text eol=lf
+*.mjs   text eol=lf
+*.js    text eol=lf
+*.ts    text eol=lf
+*.astro text eol=lf
+*.svelte text eol=lf
+*.json  text eol=lf
+*.yml   text eol=lf
+*.yaml  text eol=lf
+*.css   text eol=lf
+*.sh    text eol=lf
+
+# 二進位資產不要做任何換行轉換
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.svg text eol=lf
+*.woff binary
+*.woff2 binary
+*.ico binary
