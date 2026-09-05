@@ -27,6 +27,7 @@
 |---|---|
 | `src/content.schemas.ts` | `reviewer` 欄位定義 |
 | `src/pages/articles/[slug].astro` | 「審閱者≠作者才輸出 Person 級 `reviewedBy`」的判斷 |
+| `src/pages/news/[slug].astro` | 趨勢稿的 byline 與 `reviewedBy`／`lastReviewed`（author 是機構，不需反自審判斷） |
 | `src/data/authors.ts` | 審閱者的姓名／職稱／憑證 registry |
 | frontmatter `updatedDate` | 同時是 `dateModified` 與 `lastReviewed` 的來源 |
 
@@ -35,6 +36,8 @@
 ## 修改流程（使用者說「這批審好了」就照做，不必再問）
 
 1. 對目標檔在 `author:` 下一行插入 `reviewer: "黃子彥"`。
+   ⚠️ **news 沒有 `author:` 欄位**（趨勢稿的作者是機構，欄位叫 `source:`），插在 `source:` 下一行。
+   2026-09-05 起 news 產線的新稿一律自帶 `reviewer`，不必再補。
 2. **同時把 `updatedDate` 改成實際審閱日**——`dateModified` 與 `lastReviewed` 都取自 `updatedDate`，只加 `reviewer` 不動日期，等於宣告「最後審閱日」早於實際審閱日。
    ⚠️ **但 `updatedDate` 已 ≥ 審閱日者不要動**（多為未來排程稿），否則會產生 `updatedDate < publishDate` 的矛盾。
 3. **先跑 `node scripts/check-content.mjs <檔案>`**——守門會重掃「任何被碰到的檔案全文」，既有內文原本只因不在 diff 裡而被 grandfather，掛署名的那一刻才會爆。有 ERROR 就在同一個 commit 修掉。

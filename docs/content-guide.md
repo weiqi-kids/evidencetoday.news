@@ -307,8 +307,10 @@ titleDisplay: "口語化前台標題（選填，優先於自動清理結果）"
 subtitle: "一句話副標（選填，15-30 字）"
 category: "主分類（選填，會從 tags 自動推斷）"  # 睡眠/飲食/食品安全/運動營養/慢性病/公共衛生/保健食品/腸道健康/研究新知
 source: "來源媒體名稱"
+reviewer: "黃子彥"                          # 醫療審閱署名，趨勢稿一律填
 sourceUrl: "https://原始新聞連結"
 publishDate: 2026-05-08
+updatedDate: 2026-05-08                    # 掛 reviewer 時填實際審閱日（= lastReviewed 來源）
 tags: ["標籤"]
 summary: "一句話摘要"
 heroImage: "/images/news/xxx.jpg"          # 選填，文章主圖（有分類 fallback SVG）

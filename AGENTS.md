@@ -94,6 +94,7 @@
 - **⭐ 選題第一順位＝「能贏的文章模子」**：撰寫或改寫任何文章前先讀 `docs/playbooks/winning-article-formula.md`。題目必須同時具備六基因（單一具體決定／「現在」觸發點／台灣在地限定／權威站沒寫的角度／切身後果／答案先行＋範圍狠收），否則會退化成排不上去的百科泛論。互動與 cron 自動撰稿都適用。
 - **🚫 禁止模板化第一人稱開頭與 AI 感句型**：開頭第一句直接給具體價值（數據、明確主張、具體情境），每篇都要不一樣。在 YMYL 健康類，這些指紋會被 Google 判為 AI 量產而拒絕索引。發布前必跑 `pnpm check:content`，命中 `ai-phrase` 一律改掉。句型清單見 `docs/content-guide.md`「鐵則」。
 - **來源連結一律寫進 frontmatter 結構化 `references`**（每筆 `{title, type, url}`，`url` 可點），不可只放在 body 文字；每篇至少 1 筆含 `url`（或具 `sourceUrl`/`pmid`），否則 `pnpm check:news` gate 會擋下部署。真的暫無來源才設 `sourcePending:true` + `sourcePendingReason`。
+- **每篇 frontmatter 必填 `reviewer: "黃子彥"`**（news 沒有 `author:` 欄位，放在 `source:` 下一行），並把 `updatedDate` 設為當天——前台 byline 顯示「審閱：黃子彥中醫師」，JSON-LD 的 `lastReviewed` 取自 `updatedDate`。審閱窗口是使用者，不要回頭要求確認。見 `docs/playbooks/medical-review.md`。
 - Schema 定義在 `src/content.config.ts`
 - **動手前掃 `docs/pitfalls.md`**，特別是「內容撰寫」「排程與可見性」「自動化與 token」三節
 

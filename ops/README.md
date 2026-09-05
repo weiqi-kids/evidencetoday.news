@@ -65,7 +65,8 @@
 6. **子代理模型｜省成本鐵則**：撰寫類 prompt（draft/news）凡用 `Agent` 工具派 sub-agent，**一律顯式帶 `model='sonnet'`**（審核委員會亦同，比照 `docs/news_sop.md` 設計 Sonnet x n）；**嚴禁用預設模型——預設會落到 opus（最貴）**。純機械性檢查（連結驗 200/檔名）才可降 `model='haiku'`。orchestrator 自身由各腳本 `--model claude-sonnet-4-6` 鎖定。
 7. **`draft-cron.sh` 與 `publish-approved.sh` 共用 `src/content` 互斥鎖**（`CONTENT_LOCK`，定義在 `gate-lib.sh`）。原因：draft 撰稿期間草稿是 `src/content/<type>/` 下的**未追蹤檔**，還沒搬進暫存區；而 publish 每 10 分鐘一輪，結尾會 `git clean -fdq -- src/content` 清殘留——會把還在寫、耗時 >10 分鐘的草稿整篇洗掉（**2026-07-10 draft-myths 事故**：bone-broth / plant-milk 草稿各被誤刪一次，靠審核 Agent 留底才救回）。約定：**draft 端頁面型撰稿全程持鎖**（`flock -w 600`，等值得，稿件型 podcast/videos 走 repo 外 scratch 不需要）；**publish 端 `flock -n` 搶不到就跳過本輪**（10 分鐘後自動重試，發布延遲可接受、弄丟草稿不可接受）。
 8. **articles 選題＝「能贏的文章模子」**：`draft-cron.sh` 的 `articles` SELECT_BLOCK 已注入 `docs/playbooks/winning-article-formula.md` 的六基因鐵律（單一具體決定／「現在」觸發點／台灣在地限定／權威站沒寫的角度／切身後果／答案先行＋範圍狠收）。改選題邏輯時，這兩處（SELECT_BLOCK 與 playbook）要一起改，別讓自動管線與方法論分岔。
-9. **news 產出頻率與標題形狀**：
+9. **醫療審閱署名一律由管線自帶**：`draft-cron.sh` 的 `COMMON_RULES_PAGE` 要求每篇頁面型草稿寫 `reviewer: "黃子彥"` 並把 `updatedDate` 設為當天。2026-09-05 前這條不存在，於是自動產出的稿一篇都沒掛署名（news 116 篇全缺，靠當天補掛）——改這段時不要拿掉，否則會再度靜默累積無署名內容。規則見 `docs/playbooks/medical-review.md`。
+10. **news 產出頻率與標題形狀**：
    - **頻率＝維持每日**（`17 22 * * 0-6`）。2026-08-04 曾規劃降為週二/四/六，**2026-08-05 撤回，從未套用到主機**。撤回理由：當初的前提（索引率低、灌新 URL 會稀釋權重）已被後續數據推翻，且趨勢新聞位置校正後的 CTR 達成率是全站最高的一群。更關鍵的是**趨勢新聞有時效性——壓著不發等於作廢**，稿子排完就該送出去。
    - **門檻**：`data/news-automation-config.json` 的 `scoreThreshold` / `soloArticleMinScore` 與 SELECT_BLOCK 的加權門檻，皆維持原值（2026-08-05 由降頻期的暫時提高值還原）。**實際數值以 `news-automation-config.json` 為準，不在本檔複述**。
    - **標題**（此項與降頻無關，保留）：`titleDisplay` 必須是讀者會實際打進搜尋框的問句，**嚴禁「健康雷達 YYYY-MM-DD」日報流水句型**、嚴禁把期刊名或研究設計當標題主體；並確認前 18 字單獨看讀得通（`social-meta.mjs` 的 `shortTitle()` 會截到 18 字）。

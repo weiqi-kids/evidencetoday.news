@@ -20,6 +20,7 @@ export const GET: APIRoute = async ({ props }) => {
     `Title: ${d.titleDisplay ?? d.title}`,
     `Date: ${d.publishDate.toISOString().split('T')[0]}`,
     d.source ? `Source: ${d.source}` : null,
+    d.reviewer ? `Reviewer: ${d.reviewer}` : null,
     d.tags?.length ? `Tags: ${d.tags.join(', ')}` : null,
   ]
     .filter(Boolean)

@@ -127,11 +127,16 @@
 - **NewsArticle schema**（`src/pages/news/[slug].astro`）：`author` 掛**機構「本日有據編輯室」**（趨勢稿由編輯室產製，
   不謊稱個人親筆）；主編羅揚以 **`editor`（`buildPerson('羅揚')` 完整 Person 實體）** 承載人為查核權責，
   對齊頁面可見的「主編判讀」區塊（E-E-A-T，避免結構化資料與可見內容 mismatch）；加 `dateModified`
-  （= `updatedDate ?? publishDate`，`updatedDate` 為 newsSchema 新增選填欄位）。
+  （= `updatedDate ?? publishDate`，`updatedDate` 為 newsSchema 新增選填欄位）；
+  **`reviewedBy`**：有 `reviewer` 時輸出 Person 級（`buildPerson`）並附 `lastReviewed`（取自 `updatedDate`），
+  沒有時退回機構層級 `PUBLISHER_REF`——不謊稱有具名醫師看過。`author` 是機構、不會與個人審閱者同名，
+  故 news 不需要 articles/myths 那套「反自審」判斷。
 - **Organization → NewsMediaOrganization**（`src/utils/schema-org.ts`）：向 Google News 表明發布機構身分；
   `logo` 改用**點陣 PNG** `apple-touch-icon.png`（180×180，Google 不認 SVG logo），不可改回 `favicon.svg`。
-- **可見 byline**（header `news-article__meta`）：頁面顯示「本日有據編輯室整理 · 主編 羅揚 審定」，
-  羅揚連到 `/authors/luo-yang/`（`rel="author"`）。**務必與 JSON-LD 的 `editor` 一致**（Google 要結構化資料對齊可見內容），且可見署名才真正加 E-E-A-T。
+- **可見 byline**（header `news-article__meta`）：頁面顯示「本日有據編輯室整理 · 主編 羅揚 審定 · 審閱：黃子彥中醫師」，
+  羅揚連到 `/authors/luo-yang/`（`rel="author"`），審閱者連到 `/disclosure/`（該處說明其身分與商業關係）。
+  審閱者標示格式（姓名＋`AUTHORS[].jobTitle`）與 `EditorInfo.astro` 一致，改一邊要改兩邊。
+  **務必與 JSON-LD 的 `editor` / `reviewedBy` 一致**（Google 要結構化資料對齊可見內容），且可見署名才真正加 E-E-A-T。
 - **結構化資料圖 ≥1200px**：schema 的 `image` 經 `schemaImageUrl()`（`src/utils/news.ts`）把 pexels/unsplash 的 `w=`
   拉到 ≥1200（Google Article/News 建議；頁面顯示仍可用較小尺寸）。新聞管線抓圖時也應優先取 ≥1200 寬的圖庫圖。
 - **改這區任一處都要**：`pnpm build` 後 grep `dist/sitemap-news.xml` 確認有 `<news:news>` 條目、

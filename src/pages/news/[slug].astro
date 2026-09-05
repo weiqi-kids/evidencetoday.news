@@ -15,6 +15,7 @@ import { getDisplayTitle, getNewsCategory, getNewsHeroImage, schemaImageUrl } fr
 import { stripPodcastSlug } from '@/utils/podcasts';
 import { contentSocial } from '@/utils/social-meta.mjs';
 import { buildCitations, buildPerson, PUBLISHER_REF, WEBSITE_REF } from '@/utils/schema-org';
+import { AUTHORS } from '@/data/authors';
 import { isPublicEntry } from '@/utils/visibility';
 import { getAutoRelated } from '@/utils/related';
 
@@ -137,8 +138,20 @@ const articleSchema = {
   dateModified: (data.updatedDate ?? data.publishDate).toISOString(),
   publisher: PUBLISHER_REF,
   isPartOf: WEBSITE_REF,
+  // 醫療審閱者：有 reviewer 時輸出 Person 級 reviewedBy，並用 updatedDate 當 lastReviewed
+  // （與 ingredients/[slug].astro 同一套判斷）。沒有 reviewer 時退回機構層級 PUBLISHER_REF，
+  // 不謊稱有具名醫師看過。lastReviewed 取自 updatedDate，所以掛署名時務必同步改日期——
+  // 規則見 docs/playbooks/medical-review.md。
+  reviewedBy: data.reviewer ? buildPerson(data.reviewer) : PUBLISHER_REF,
+  ...(data.reviewer ? { lastReviewed: (data.updatedDate ?? data.publishDate).toISOString() } : {}),
   ...(newsCitations ? { citation: newsCitations } : {}),
 };
+
+// 前台 byline 的審閱者標示，格式與 EditorInfo.astro 一致（姓名＋職稱，連到 /disclosure）。
+// 趨勢稿的 author 掛機構「本日有據編輯室」，不會與個人審閱者同名，故不需要反自審判斷。
+const newsReviewerLabel = data.reviewer
+  ? `${data.reviewer}${AUTHORS[data.reviewer]?.jobTitle ?? ''}`
+  : '';
 
 const breadcrumbSchema = {
   '@context': 'https://schema.org',
@@ -170,7 +183,7 @@ const breadcrumbSchema = {
         <h1 class="news-article__title">{displayTitle}</h1>
         {data.subtitle && <p class="news-article__subtitle">{data.subtitle}</p>}
         <div class="news-article__meta">
-          <span class="news-article__byline">本日有據編輯室整理 · 主編 <a href="/authors/luo-yang/" rel="author">羅揚</a> 審定</span>
+          <span class="news-article__byline">本日有據編輯室整理 · 主編 <a href="/authors/luo-yang/" rel="author">羅揚</a> 審定{newsReviewerLabel && (<> · 審閱：<a href="/disclosure/">{newsReviewerLabel}</a></>)}</span>
           <time>{fmtDate(data.publishDate)}</time>
         </div>
       </header>

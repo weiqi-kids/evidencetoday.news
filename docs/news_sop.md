@@ -154,7 +154,9 @@ src/content/news/radar-{YYYY}-{MM}-{DD}-{HH}-{NN}.md
 | subtitle | 否 | 一句話副標（15-30 字） |
 | category | 否 | 主分類（會從 tags 自動推斷） |
 | source | 是 | 固定為「本日有據編輯室」 |
+| reviewer | 是 | 固定為 `"黃子彥"`。2026-09-05 起趨勢稿一律掛醫療審閱署名，前台 byline 顯示「審閱：黃子彥中醫師」，JSON-LD 輸出 Person 級 `reviewedBy` 與 `lastReviewed`（取自 `updatedDate`）。規則見 `docs/playbooks/medical-review.md` |
 | publishDate | 是 | YYYY-MM-DD（台灣日期） |
+| updatedDate | 否 | 有掛 `reviewer` 時**必填實際審閱日**——`lastReviewed` 取自這裡，只加署名不動日期等於宣告的審閱日早於實際審閱日 |
 | tags | 是 | 標籤陣列（**禁止含 `/`**） |
 | summary | 是 | 100-150 字摘要 |
 | intro | 否 | 2-4 句白話開頭介紹 |

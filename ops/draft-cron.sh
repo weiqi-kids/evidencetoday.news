@@ -128,6 +128,7 @@ COMMON_RULES_PAGE="$(cat <<RULES
   ⒝ **正文長度下限**：articles 2,900 字、myths 3,500、ingredients 5,000、news 800。這不是要灌水，是「一個決定講到讀者真的可以行動」的自然長度；寫不到通常代表題目太泛或收得太早。八月的 myths（中位數由七月的 4158 掉到 3117）與 ingredients（6347→5173）已經在退。
   ⒞ **articles 專屬：正文至少 2 條站內連結**（markdown `](/articles/…)`、`](/myths/…)`、`](/ingredients/…)`）。七月 articles 中位數是 2，其餘月份都是 0。連到**這篇真的會把讀者交棒過去**的那一篇，不要為了湊數連；frontmatter 的 relatedArticles 不算，那是版型自動出的。myths/ingredients/news 各月都是 0，沒有實測依據，因此不設此項。
   以上三項由 `pnpm check:spec` 執行：**新增檔未達即擋 build**，既有檔只出 WARN。
+【醫療審閱署名｜每篇必填】frontmatter 一律寫 \`reviewer: "黃子彥"\`（articles/myths/ingredients 放在 \`author:\` 下一行，news 沒有 author 欄位、放在 \`source:\` 下一行），並把 \`updatedDate\` 設為當天——\`lastReviewed\` 取自 \`updatedDate\`。審閱窗口是使用者，使用者已於 2026-08-06 指示交付內容一律視為已審閱，不要為此再回頭確認。規則見 docs/playbooks/medical-review.md。
 【曝光關｜動筆前必做】題目形狀對（過索引關）不等於有人搜（過曝光關）。`decision-guide` 索引率 92% 全站最高、曝光卻只有 14/篇，就是「索引得很漂亮的零曝光頁」。動筆前用 node scripts/audience-insights.mjs 或 GSC 確認這個題目**真的有人在搜**，不能靠推論。
 $COMMON_YMYL
 RULES

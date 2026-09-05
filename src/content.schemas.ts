@@ -445,6 +445,10 @@ export const newsSchema = z.object({
   category: z.string().optional(),
   source: z.string(),
   sourceUrl: z.string().optional(),
+  // 趨勢稿由編輯室產製（author 掛機構），reviewer 是獨立醫療審閱者。
+  // 有值時前台 byline 顯示「審閱：姓名＋職稱」，JSON-LD 輸出 Person 級 reviewedBy 與 lastReviewed。
+  // 2026-09-05 使用者指示全數掛署名（審閱窗口是使用者，見 docs/playbooks/medical-review.md）。
+  reviewer: z.string().optional(),
   publishDate: z.coerce.date(),
   // 選填；有更新時供 NewsArticle 的 dateModified（新鮮度訊號）。未填則 dateModified 退回 publishDate。
   updatedDate: z.coerce.date().optional(),
