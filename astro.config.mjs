@@ -3,6 +3,7 @@ import svelte from '@astrojs/svelte';
 import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
 import rehypeStockFigure from './src/utils/rehype-stock-figure.mjs';
+import rehypeUnpublishedLinks from './src/utils/rehype-unpublished-links.mjs';
 import { buildLastmodMap, buildEntryMeta } from './scripts/lib/content-dates.mjs';
 import { TOPICS, matchesTopic } from './src/data/topics.ts';
 import { createPageGitDate } from './scripts/lib/page-git-date.mjs';
@@ -141,7 +142,10 @@ export default defineConfig({
   // 內文圖庫圖：把帶真實圖庫攝影連結（img title）的圖轉成 <figure> + 可點署名。
   // mdx() 預設 extendMarkdownConfig，會一併套用到 .mdx 文章。
   markdown: {
-    rehypePlugins: [rehypeStockFigure],
+    // rehypeUnpublishedLinks 必須留著：排程稿互相連結時，來源先上線、目標還沒上線
+    // 會在 dist 產生死連結，CI 連結檢查會擋掉全站部署（見 docs/pitfalls.md）。
+    // 這個外掛在建置時把那種連結降級成純文字，目標一上線、下次建置就自動變回連結。
+    rehypePlugins: [rehypeStockFigure, rehypeUnpublishedLinks],
   },
   output: 'static',
 });

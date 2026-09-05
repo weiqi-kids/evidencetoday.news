@@ -148,13 +148,20 @@ if (warnings.length) {
  * 站內連結，但後者排在 08-25。已發布頁 → 未發布頁的連結在 dist 裡是死連結，
  * `pnpm build` 不會抱怨（Astro 不驗站內連結字串），CI 的 lychee 才會，
  * 於是 build 綠燈、部署紅燈。
- * 判定只看「來源已發布」這個方向：未發布 → 未發布是安全的，因為兩者上線時
- * 目標多半已在（同批排程），且雙方都還沒進 dist。
+ * ⚠️ 2026-09-05 修掉一個會漏掉大半地雷的判定錯誤。原本這裡只掃「已發布的來源」，
+ * 註解寫著「未發布 → 未發布是安全的，因為兩者上線時目標多半已在（同批排程）」。
+ * **那個假設不成立。** 同一批排程稿彼此的 publishDate 有先後，「來源先上線、目標還沒上線」
+ * 照樣會在來源上線那天變死連結。實例：中秋烤肉排 09-18，內文連到排 10-17 的生蠔那篇——
+ * 兩篇當時都還沒發布，舊判定完全看不見，但 09-18 當天部署就會紅。這種地雷當時有 24 條，
+ * 引爆日橫跨 09-14 到 11 月，而且沒有任何檢查看得到。
+ *
+ * 正確判準跟「有沒有發布」無關，只跟先後有關：**目標的 publishDate 晚於來源就會出事**，
+ * 出事時間點是來源上線那天。兩篇都已上線則無所謂（dist 裡兩個都在）。
  */
 {
   const linkErrors = [];
   const pubOf = new Map();          // "collection/slug" → publishDate
-  const bodies = [];                // 已發布稿的內文，供掃連結
+  const bodies = [];                // 全部稿件的內文（不只已發布的）
   for (const collection of Object.keys(PIPELINES)) {
     const dir = `${CONTENT_DIR}/${collection}`;
     if (!existsSync(dir)) continue;
@@ -164,18 +171,25 @@ if (warnings.length) {
       if (!m) continue;
       const slug = f.replace(/\.mdx?$/, '');
       pubOf.set(`${collection}/${slug}`, m[1]);
-      if (m[1] <= today) bodies.push({ from: `${collection}/${slug}`, body: raw.split('---').slice(2).join('---') });
+      bodies.push({ from: `${collection}/${slug}`, at: m[1], body: raw.split('---').slice(2).join('---') });
     }
   }
-  for (const { from, body } of bodies) {
+  for (const { from, at, body } of bodies) {
     for (const mm of body.matchAll(/\]\(\/(articles|myths|ingredients|news)\/([a-z0-9-]+)\/?[)"]/g)) {
       const target = `${mm[1]}/${mm[2]}`;
       const td = pubOf.get(target);
-      if (td && td > today) {
-        linkErrors.push(`${from} 內文連到尚未發布的 /${target}/（${td} 才發布）`);
+      if (!td) continue;
+      // 兩個條件要同時成立才會出事：
+      //   1. 目標晚於來源（td > at）——來源上線那一刻目標還不存在
+      //   2. 目標到現在都還沒上線（td > today）——否則兩篇早就都在 dist 裡了，
+      //      歷史上的先後順序已經不重要（漏掉這條會把幾十組陳年正常連結誤報成死連結）
+      if (td > at && td > today) {
+        const when = at <= today ? '現在就是死連結' : `${at} 來源上線時會爆`;
+        linkErrors.push(`${from}（${at}）內文連到 /${target}/（${td} 才發布）—— ${when}`);
       }
     }
   }
+  linkErrors.sort();
   if (linkErrors.length) {
     console.log(`\n內鏈指向未發布稿 ${linkErrors.length} 處（會讓 CI 連結檢查失敗、擋住部署）：`);
     for (const l of linkErrors) console.log(`  ✗ ${l}`);
