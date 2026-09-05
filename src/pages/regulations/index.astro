@@ -1,0 +1,337 @@
+---
+/**
+ * 跨國保健品法規對照（彙整頁）
+ *
+ * 為什麼要有這一頁：2026-09-05 GSC 顯示本站外部連結只有 52 條，扣掉自家 appi.news 的 41 條
+ * 只剩約 11 條、5 個網域，而且只有 1 條指向實際內容頁。內容品質與技術面都沒有問題
+ * （索引率 94%、「已檢索但未編入索引」只有 1 個），瓶頸在網域權威。
+ *
+ * 權威來自別人願意引用。散在 20 幾篇文章裡的對照表，記者不會逐頁去找；把它們收成一頁、
+ * 每格帶官方出處與查證日期，才是「可被引用的資產」。這一頁的目標讀者是**記者、編輯與 AI 搜尋**，
+ * 不是一般讀者——所以它長得像資料表而不像文章。
+ *
+ * 資料來源是 `src/data/regulations.ts`，由已查證過的文章逐格抽取而來（不另外研究，
+ * 避免引入未經查證的說法）。每一格都能追到官方文件。
+ */
+import Base from '@/layouts/Base.astro';
+import Breadcrumb from '@/components/ui/Breadcrumb.astro';
+import JsonLd from '@/components/seo/JsonLd.astro';
+import { getCollection } from 'astro:content';
+import { isPublicEntry } from '@/utils/visibility';
+import { WEBSITE_REF, PUBLISHER_REF, SITE_URL, ORG_ID } from '@/utils/schema-org';
+import { REGULATIONS, CARRY_LIMITS, LAST_VERIFIED } from '@/data/regulations';
+
+const title = '跨國保健品法規對照｜台灣・美國・日本・歐盟 - 本日有據';
+const description =
+  '同一種保健成分，在台灣、美國、日本、歐盟的法規定位為什麼不同？逐項對照法規身分、能否作為食品原料、官方允許的健康聲稱、限量與警語，每一格標明依據文件與查證日期。另附各類保健品帶回台灣的數量上限。';
+
+// 只列出「文章已經上線」的成分——連到未上線的稿會在 dist 產生死連結、擋掉全站部署。
+const publishedArticles = await getCollection('articles', (e) => isPublicEntry(e.data));
+const liveSlugs = new Set(publishedArticles.map((e) => e.id.replace(/\.mdx?$/, '')));
+const liveIngredients = await getCollection('ingredients', (e) => isPublicEntry(e.data));
+const liveIngredientSlugs = new Set(liveIngredients.map((e) => e.id.replace(/\.mdx?$/, '')));
+
+// 法規對照本身不依賴文章上線——全部列出，只有「完整說明」那條連結要看文章公開了沒。
+// （連到未上線的稿會在 dist 產生死連結、擋掉全站部署。）
+const substances = REGULATIONS;
+const findings = substances.flatMap((s) => s.originalFindings.map((f) => ({ name: s.name, text: f })));
+
+/* Dataset 結構化標記：讓這張表能被機器讀取，也是 AI 搜尋與資料聚合站引用的依據。 */
+const datasetSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Dataset',
+  '@id': `${SITE_URL}/regulations/#dataset`,
+  name: '跨國保健品法規對照表（台灣・美國・日本・歐盟）',
+  description,
+  url: `${SITE_URL}/regulations/`,
+  inLanguage: 'zh-Hant-TW',
+  isPartOf: WEBSITE_REF,
+  creator: { '@id': ORG_ID },
+  publisher: PUBLISHER_REF,
+  license: 'https://creativecommons.org/licenses/by/4.0/',
+  dateModified: LAST_VERIFIED,
+  keywords: [
+    '保健食品法規', '膳食補充劑', '食品原料', '新穎食品', '藥品分類',
+    '台灣食藥署', 'FDA', '厚生労働省', 'EFSA', '入境攜帶限量',
+  ],
+  variableMeasured: [...new Set(substances.flatMap((s) => s.columns.map((c) => c.label)))].map((label) => ({
+    '@type': 'PropertyValue',
+    name: `${label}的法規定位`,
+    description: `該成分在${label}的法規身分、可否作為食品原料、官方允許的健康聲稱與限量`,
+  })),
+  about: substances.map((s) => ({
+    '@type': 'Thing',
+    name: s.name,
+    alternateName: s.nameEn,
+    url: `${SITE_URL}/articles/${s.articleSlug}/`,
+  })),
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: '首頁', item: `${SITE_URL}/` },
+    { '@type': 'ListItem', position: 2, name: '跨國法規對照', item: `${SITE_URL}/regulations/` },
+  ],
+};
+---
+
+<Base title={title} description={description} ogTitle="跨國保健品法規對照" ogDescription={description}>
+  <Fragment slot="head">
+    <JsonLd data={datasetSchema} />
+    <JsonLd data={breadcrumbSchema} />
+  </Fragment>
+
+  <div class="wrap">
+    <Breadcrumb items={[{ label: '首頁', href: '/' }, { label: '跨國法規對照' }]} />
+
+    <header class="hd">
+      <h1>跨國保健品法規對照</h1>
+      <p class="lead">{description}</p>
+      <p class="asof">整份對照最後查證日：<time datetime={LAST_VERIFIED}>{LAST_VERIFIED}</time></p>
+    </header>
+
+    <section class="usage" aria-labelledby="usage-h">
+      <h2 id="usage-h">怎麼使用與引用這份對照</h2>
+      <ul>
+        <li><strong>每一格都能追到官方文件。</strong>格子下方的來源連結指向該國主管機關的原始頁面，並標明依據文件的發布或查證日期。</li>
+        <li><strong>寫「查無明文」時是真的查不到，不是省略。</strong>各國對同一件事未必都有規定；「這件事沒有明文」本身就是資訊，我們照實標示並說明查過哪裡。</li>
+        <li><strong>法規會變，請看日期。</strong>這類資料的半衰期大約一年。引用時建議一併註明查證日，或先到來源連結確認現況。</li>
+        <li><strong>可自由引用轉載</strong>，註明「本日有據」與本頁網址即可。發現錯誤請來信，我們會更正並在此標記。</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="grid-h">
+      <h2 id="grid-h">一、原料的跨國法規落差</h2>
+      {substances.length === 0 && <p class="empty">對照資料整理中。</p>}
+
+      {substances.map((s) => (
+        <article class="sub">
+          <header class="sub__hd">
+            <h3>{s.name}<span class="sub__en">{s.nameEn}</span></h3>
+            <p class="sub__verdict">{s.verdict}</p>
+            <p class="sub__links">
+              {liveSlugs.has(s.articleSlug)
+                ? <a href={`/articles/${s.articleSlug}/`}>完整說明</a>
+                : <span class="pending">完整說明即將上線</span>}
+              {s.ingredientSlug && liveIngredientSlugs.has(s.ingredientSlug) && (
+                <> ・ <a href={`/ingredients/${s.ingredientSlug}/`}>成分資料</a></>
+              )}
+            </p>
+          </header>
+
+          <div class="grid" role="table" aria-label={`${s.name}的跨國法規對照`}>
+            <div class="grid__head" role="row" style={`--cols:${s.columns.length}`}>
+              <span role="columnheader">項目</span>
+              {s.columns.map((c) => <span role="columnheader">{c.label}</span>)}
+            </div>
+            {s.rows.map((row) => (
+              <div class="grid__row" role="row" style={`--cols:${s.columns.length}`}>
+                <div class="grid__dim" role="rowheader">{row.dimension}</div>
+                {s.columns.map((j) => {
+                  const cell = row.cells[j.key];
+                  if (!cell) return <div class="cell cell--na" role="cell"><span class="cell__label" aria-hidden="true">{j.label}</span><p class="cell__text">—</p></div>;
+                  return (
+                    <div class="cell" role="cell">
+                      <span class="cell__label" aria-hidden="true">{j.label}</span>
+                      <p class="cell__text">{cell.text}</p>
+                      {(cell.sourceLabel || cell.asOf) && (
+                        <p class="cell__src">
+                          {cell.source
+                            ? <a href={cell.source} rel="nofollow noopener" target="_blank">{cell.sourceLabel ?? '出處'}</a>
+                            : <span>{cell.sourceLabel}</span>}
+                          {cell.asOf && <span class="cell__date">（{cell.asOf}）</span>}
+                        </p>
+                      )}
+                      {cell.note && <p class="cell__note">{cell.note}</p>}
+                    </div>
+                  );
+                })}
+              </div>
+            ))}
+          </div>
+        </article>
+      ))}
+    </section>
+
+    {CARRY_LIMITS.length > 0 && (
+      <section aria-labelledby="carry-h">
+        <h2 id="carry-h">二、帶回台灣的數量上限（依品類）</h2>
+        <p class="note">
+          台灣的入境限量是<strong>依品類</strong>而不是依國家訂的。同一趟旅程買的東西，
+          會因為它在台灣被歸成藥品、中藥材還是一般食品，適用完全不同的上限。
+        </p>
+        <div class="carry">
+          <div class="carry__head" role="row">
+            <span>品類</span><span>隨身攜帶</span><span>郵寄／網購</span><span>依據</span>
+          </div>
+          {CARRY_LIMITS.map((c) => (
+            <div class="carry__row">
+              <div class="carry__cat"><strong>{c.category}</strong></div>
+              <div><span class="carry__label" aria-hidden="true">隨身</span>{c.carry}</div>
+              <div><span class="carry__label" aria-hidden="true">郵寄</span>{c.mail}</div>
+              <div class="carry__basis">
+                {c.source
+                  ? <a href={c.source} rel="nofollow noopener" target="_blank">{c.basis}</a>
+                  : c.basis}
+                {c.asOf && <span class="cell__date">（{c.asOf}）</span>}
+                {c.caveat && <p class="cell__note">{c.caveat}</p>}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {findings.length > 0 && (
+      <section aria-labelledby="orig-h">
+        <h2 id="orig-h">三、這份對照裡屬於本站的原始整理</h2>
+        <p class="note">
+          以下幾點是我們自己查一手文件、下載官方開放資料比對後得到的，
+          在既有的中文資料裡查不到現成說法。列在這裡是為了讓引用者知道哪些需要註明出處，
+          也方便他人覆核。
+        </p>
+        <ul class="findings">
+          {findings.map((f) => (
+            <li><span class="findings__tag">{f.name}</span>{f.text}</li>
+          ))}
+        </ul>
+      </section>
+    )}
+  </div>
+</Base>
+
+<style>
+  .wrap {
+    max-width: 76rem;
+    margin: 0 auto;
+    padding: var(--space-page-y) var(--space-page-x);
+  }
+
+  .hd { margin-block: 1.5rem 2rem; }
+  .hd h1 { margin-bottom: 0.5rem; }
+  .lead { color: var(--color-ink-muted); max-width: 60ch; }
+  .asof { color: var(--color-ink-subtle); font-size: var(--text-meta); margin-top: 0.75rem; }
+
+  section { margin-block: var(--space-section-gap); }
+  section > h2 { margin-bottom: 0.75rem; }
+  .note { color: var(--color-ink-muted); max-width: 68ch; margin-bottom: 1.25rem; }
+  .empty { color: var(--color-ink-subtle); }
+
+  .usage {
+    background: var(--color-teal-subtle);
+    border-radius: var(--radius-card);
+    padding: 1.5rem;
+  }
+  .usage ul { margin: 0; padding-left: 1.25rem; }
+  .usage li { margin-block: 0.5rem; max-width: 68ch; }
+
+  .sub {
+    border: 1px solid var(--color-fog);
+    border-radius: var(--radius-card);
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+  .sub__hd { margin-bottom: 1rem; }
+  .sub__hd h3 { margin-bottom: 0.35rem; }
+  .sub__en {
+    color: var(--color-ink-subtle);
+    font-size: var(--text-meta);
+    margin-left: 0.5rem;
+    font-weight: 400;
+  }
+  .sub__verdict { max-width: 68ch; margin-bottom: 0.5rem; }
+  .sub__links { font-size: var(--text-meta); }
+  .pending { color: var(--color-ink-subtle); }
+
+  /* 手機：每個維度是一張卡，四個轄區直向堆疊（7×4 表格在 375px 會完全不能讀）。
+     ≥1024px 才切成五欄格線。 */
+  .grid__head { display: none; }
+  .grid__row {
+    border-top: 1px solid var(--color-fog);
+    padding-block: 1rem;
+  }
+  .grid__dim {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  .cell { margin-block: 0.75rem; }
+  .cell__label {
+    display: block;
+    font-size: var(--text-meta);
+    color: var(--color-ink-subtle);
+    margin-bottom: 0.15rem;
+  }
+  .cell__text { margin: 0; }
+  .cell__src {
+    font-size: var(--text-meta);
+    color: var(--color-ink-subtle);
+    margin: 0.25rem 0 0;
+  }
+  .cell__date { white-space: nowrap; }
+  .cell__note {
+    font-size: var(--text-meta);
+    color: var(--color-ink-subtle);
+    margin: 0.25rem 0 0;
+  }
+
+  .carry__head { display: none; }
+  .carry__row {
+    border-top: 1px solid var(--color-fog);
+    padding-block: 1rem;
+    display: grid;
+    gap: 0.4rem;
+  }
+  .carry__label {
+    display: inline-block;
+    min-width: 3.5rem;
+    color: var(--color-ink-subtle);
+    font-size: var(--text-meta);
+  }
+  .carry__basis { font-size: var(--text-meta); color: var(--color-ink-subtle); }
+
+  .findings { padding-left: 1.25rem; }
+  .findings li { margin-block: 0.6rem; max-width: 72ch; }
+  .findings__tag {
+    display: inline-block;
+    background: var(--color-teal-light);
+    border-radius: var(--radius-pill);
+    padding: 0.1rem 0.6rem;
+    margin-right: 0.5rem;
+    font-size: var(--text-meta);
+    white-space: nowrap;
+  }
+
+  @media (min-width: 1024px) {
+    .grid__head,
+    .grid__row {
+      display: grid;
+      grid-template-columns: 12rem repeat(var(--cols, 4), 1fr);
+      gap: 1rem;
+      align-items: start;
+    }
+    .grid__head {
+      font-weight: 600;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--color-fog);
+    }
+    .grid__dim { margin-bottom: 0; }
+    .cell { margin-block: 0; }
+    .cell__label { display: none; }
+
+    .carry__head,
+    .carry__row {
+      display: grid;
+      grid-template-columns: 14rem 1fr 1fr 1.2fr;
+      gap: 1rem;
+      align-items: start;
+    }
+    .carry__head {
+      font-weight: 600;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--color-fog);
+    }
+    .carry__label { display: none; }
+  }
+</style>

@@ -13,6 +13,10 @@ const contentLinks = [
 // Google News 追蹤連結（出版品 ID CAowh4bHDA）：通過 Publisher Center 後，
 // follower 是 Google News 的正向訊號，故放在「資源」欄與 RSS 同列為訂閱/追蹤管道。
 const resourceLinks: { label: string; href: string; external?: boolean }[] = [
+  // 跨國法規對照放在「資源」而不是導覽列：它的讀者是記者、編輯與 AI 搜尋，
+  // 是可被引用的資料表而非閱讀內容；導覽列已 8 項，再加會擠爆手機版。
+  // 放頁尾等於每一頁都連過去，對站內權威傳遞反而更有效。
+  { label: '跨國法規對照', href: '/regulations/' },
   { label: '搜尋', href: '/search/' },
   { label: 'RSS', href: '/rss.xml' },
   { label: '在 Google News 追蹤', href: 'https://news.google.com/publications/CAowh4bHDA', external: true },
