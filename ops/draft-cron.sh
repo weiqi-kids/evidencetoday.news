@@ -158,7 +158,7 @@ fi
 
 case "$TYPE" in
   news)
-    SELECT_BLOCK="撰寫趨勢文章。請依本 repo 的 AGENTS.md「撰寫趨勢文章」與 docs/news_sop.md 執行完整管線：Phase 1 用 WebSearch 跑 data/news-automation-config.json 的查詢建素材池（某組 allowed_domains 被封鎖回 400 整組全滅就記錄略過）；去重比對 data/processed-sources.json（已處理跳過，素材池空則靜默結束，印「無新草稿」）；列既有檔用 ls/Glob 勿 Read 目錄；Phase 2 執行 node scripts/audience-insights.mjs 讀三桶（topicCandidates 併素材池標 internal-demand、writingDirectives 注入撰文、siteOptimizations 收進 run summary 不自動改既有頁）；五維度加權選題。**門檻制（重要）：只有加權分數 ≥6.0 的高把握選題才成篇；當天沒有夠強的選題就什麼都別留、印「無新草稿」靜默結束。** 同主題分組、最高分者優先，本輪至多 1 份高把握工單。**寧可零產出，也不要為發而發**。門檻不必過嚴（趨勢新聞有時效性，壓著不發等於作廢），但要清楚 news 這條產線的定位：2026-08-11 實測，news 佔全站 28% 的篇數只換到 5% 的曝光（3.6/篇，同期 myths 27.5、articles 38.6），且六成從未取得任何曝光。**它的價值在時效與選題雷達，不在流量——不要用它衝量。** 相對地它的 CTR 5.0% 是全站最高，代表寫得不差，是題目本身的搜尋壽命短。**因此本輪選到的題目若屬「指引更新／法規變動／重大證據反轉」這類決策價值是長期的，就不要只寫成一則 news**：在 run summary 明確標記「建議升格為 articles 常青決策文」並寫清楚建議的 queryPattern（優先 taiwan-regulation-market），讓週一的 articles 產線接手。**標題鐵則：\`titleDisplay\` 必須是讀者會實際打進搜尋框的問句或具體疑問**（例：「更年期荷爾蒙療法的黑框警語拿掉了，代表可以放心用嗎？」），**嚴禁「健康雷達 YYYY-MM-DD」這類日報流水句型、嚴禁把期刊名或研究設計當標題主體**；並確認前 18 字單獨看仍讀得通（social-meta 的 shortTitle 會截斷）。" ;;
+    SELECT_BLOCK="撰寫趨勢文章。請依本 repo 的 AGENTS.md「撰寫趨勢文章」與 docs/news_sop.md 執行完整管線：Phase 1 用 WebSearch 跑 data/news-automation-config.json 的查詢建素材池（某組 allowed_domains 被封鎖回 400 整組全滅就記錄略過）；去重比對 data/processed-sources.json（已處理跳過，素材池空則靜默結束，印「無新草稿」）；列既有檔用 ls/Glob 勿 Read 目錄；Phase 2 執行 node scripts/audience-insights.mjs 讀三桶（topicCandidates 併素材池標 internal-demand、writingDirectives 注入撰文、siteOptimizations 收進 run summary 不自動改既有頁）；五維度加權選題。**門檻制（重要）：只有加權分數 ≥6.0 的高把握選題才成篇；當天沒有夠強的選題就什麼都別留、印「無新草稿」靜默結束。** 同主題分組、最高分者優先，本輪至多 1 份高把握工單。**寧可零產出，也不要為發而發**。門檻不必過嚴（趨勢新聞有時效性，壓著不發等於作廢），但要清楚 news 這條產線的定位：2026-08-11 實測，news 佔全站 28% 的篇數只換到 5% 的曝光（3.6/篇，同期 myths 27.5、articles 38.6），且六成從未取得任何曝光。**它的價值在時效與選題雷達，不在流量——不要用它衝量。** 相對地它的 CTR 5.0% 是全站最高，代表寫得不差，是題目本身的搜尋壽命短。**選到「指引更新／法規變動／重大證據反轉」這類題目時：照常寫成 news，同時在 run summary 標記「建議升格為 articles 常青決策文」與建議的 queryPattern（優先 taiwan-regulation-market），讓週一的 articles 產線再寫一篇常青版。兩者是加法不是二選一。** ⚠️ 2026-08-11 這裡原本寫的是「就不要只寫成一則 news、讓 articles 接手」，與上面的 ≥6.0 門檻夾成死結——能過門檻的重大題目幾乎必然就是那三類，於是每天的正確結論都是「無新草稿」，產線連續 18 天零產出（2026-08-19～09-05），而「無新草稿」是設計上的正常結局所以無人察覺。**改這一段時務必檢查它與門檻規則會不會又互相咬死。****標題鐵則：\`titleDisplay\` 必須是讀者會實際打進搜尋框的問句或具體疑問**（例：「更年期荷爾蒙療法的黑框警語拿掉了，代表可以放心用嗎？」），**嚴禁「健康雷達 YYYY-MM-DD」這類日報流水句型、嚴禁把期刊名或研究設計當標題主體**；並確認前 18 字單獨看仍讀得通（social-meta 的 shortTitle 會截斷）。" ;;
   articles)
     SELECT_BLOCK="撰寫常青文章內容（collection=articles）。**動筆前先讀 docs/playbooks/winning-article-formula.md（能贏的文章模子）**，再依 docs/content-guide.md 與既有篇章慣例撰寫。**選題鐵律：每篇題目必須同時具備該 playbook 的六基因**（①單一具體決定 ②「現在」觸發點 ③台灣在地限定 ④權威站沒寫的角度 ⑤切身後果 ⑥答案先行＋範圍狠收）；六基因不全就退化成排不上去的百科泛論、寧可不寫。**題型硬規則（2026-08-11 實測，索引率與曝光產出雙軌）：第一順位 queryPattern=taiwan-regulation-market**——曝光 397/篇，扣掉冠軍頁仍有 86/篇，是目前唯一被驗證能單篇帶進四位數曝光的形狀；題目要長成「某成分或產品在台灣的法規地位跟國外不同、代購或攜帶普遍、官方頁面難讀」。**第二順位 queryPattern=decision-guide**（索引率 92% 全站最高、曝光 38/篇、93% 有曝光；2026-08-11 曾誤判為 14/篇，那是拿剛發布幾天的稿當證據，08-21 已更正）。題目仍必須有實際搜尋量再動筆。**嚴禁在 articles 裡寫 queryPattern=myth-check**（索引率 56%、曝光 10/篇，且與 myths collection 自我競爭，闢謠題一律進 myths）；audience-stage-guide 索引率 88% 但曝光僅 10/篇（樣本已夠老，不是稿齡問題），沒有明確需求訊號就不要寫；comparison 要寫務必收窄成「選錯有後果的二選一」。細節見 docs/playbooks/winning-article-formula.md。**選題第一順位＝擴寫已有牽引力的主題叢集**：先 node scripts/audience-insights.mjs 讀三桶、並對照已有曝光/排名的主題（如 melatonin 等目前流量引擎），把單點頁擴成「主題叢集」（補相鄰子題、強化彼此內鏈）——但每個子題都要獨立通過六基因，別為湊叢集寫泛論。新題循 playbook 的選題法（進口/合法性、保健品×藥物交互作用、某關卡前要不要停、選錯有後果的二選一）。**選題第二順位＝把 news 產線抓到的重大轉向升格為常青決策文**：掃近 14 天 src/content/news/ 已產出的稿，挑出屬於「指引更新／法規變動／重大證據反轉」且站上**沒有**對應常青決策文的題目。news 是一日新聞會被埋掉，這類題目的決策價值是長期的。（2026-08-08 實例：FDA 移除更年期荷爾蒙治療黑框警語只進了一則 radar，而站上 6 篇更年期文全是保健品、沒有一篇談這個醫療決定。）輔助訊號：近 7 天排名 5–15 且有曝光的 query 看前 3 名競品缺口。**動筆前必做的排除檢查**：用 ls/Glob 列出 src/content/articles/ 全部檔名，並確認**排程稿**（publishDate 在未來、draft 非 true）沒有人在寫同一題——排程稿不在 dist 裡，用網站搜尋與 GSC 都看不到，只能直接看 src。2026-08-08 就是漏了這一步，在既有文裡加了一節，跟一篇 08-25 排程稿打對台。**只做常青內容、不要寫成新聞稿**；標題用讀者會打的問句而非名詞短語；列既有檔用 ls/Glob 勿 Read 目錄、避免與既有 slug 重複。本輪挑 1–2 個最高 ROI 主題成篇（寧少勿濫，YMYL）。" ;;
   ingredients)
@@ -250,9 +250,23 @@ fi
 # 只認 ?? 會漏抓，且 staged 稿會被下面 processed-sources 的 commit 一起掃進 main、繞過發佈流程。
 git restore --staged "$CONTENT_SUBDIR" 2>/dev/null || true   # 先解除 staged，統一回未追蹤狀態
 mapfile -t NEW_FILES < <(git status --porcelain -- "$CONTENT_SUBDIR" | awk '/^(\?\?|A )/{print $NF}')
+# 零產出是設計上允許的結局（門檻制），但「連續」零產出是故障訊號。
+# 2026-09-05：news 連續 18 天零產出無人察覺——因為零產出只 echo 到主機 log，
+# Slack 只在有新稿時才通知，而 processed-sources 的 commit 訊息又寫死成「草稿已入佇列」。
+# 這裡改成計數 + 達門檻就吵，避免同樣的靜默故障再發生一次。
+ZERO_STREAK_FILE="$CONF_DIR/zero-streak-$TYPE.txt"
+ZERO_ALERT_AT=3   # 連續幾次零產出就通知（news 每日跑＝3 天；週更型＝3 週）
 if [ ${#NEW_FILES[@]} -eq 0 ]; then
-  echo "[draft] 本次無新草稿（src/content/$TYPE/ 無未追蹤/新增檔）"
+  STREAK=$(( $(cat "$ZERO_STREAK_FILE" 2>/dev/null || echo 0) + 1 ))
+  echo "$STREAK" > "$ZERO_STREAK_FILE"
+  echo "[draft] 本次無新草稿（src/content/$TYPE/ 無未追蹤/新增檔）｜連續零產出 $STREAK 次"
+  if [ "$STREAK" -ge "$ZERO_ALERT_AT" ] && [ -n "$CH" ]; then
+    printf '⚠️ *%s 產線連續 %s 次零產出*\n\n選題階段有在跑（processed-sources 仍在更新），但沒有任何稿子成形。\n請查 /var/log/evidencetoday/draft-%s.log，並確認選題規則之間有沒有互相咬死。' \
+      "$LABEL" "$STREAK" "$TYPE" | "$REPO/ops/slack-notify.sh" "$CH" >/dev/null \
+      && echo "[draft] 已發零產出警報（連續 $STREAK 次）" || echo "[draft] ⚠️ 零產出警報發送失敗"
+  fi
 else
+  rm -f "$ZERO_STREAK_FILE"
   echo "[draft] 偵測到 ${#NEW_FILES[@]} 篇新草稿，逐一暫存+通知"
   for f in "${NEW_FILES[@]}"; do stage_and_notify "$f"; done
 fi
@@ -260,7 +274,15 @@ fi
 # news：保留 processed-sources.json 更新（避免重複選題），單獨提交
 if [ "$TYPE" = "news" ] && ! git diff --quiet -- data/processed-sources.json 2>/dev/null; then
   # commit 限定 pathspec：就算工作樹/索引還有其他東西（例如 agent 自行 add 的檔），也不會被掃進來
-  git commit -q -m "chore(news): 標記來源已處理（草稿已入自動發佈佇列）" -- data/processed-sources.json \
+  # 訊息必須反映實際結果：這道 commit 只要 processed-sources.json 有變就會發出，
+  # 零產出那天照樣執行。2026-09-05 查出產線靜默 18 天，git log 卻天天寫「草稿已入
+  # 自動發佈佇列」，正是這句寫死的訊息把故障偽裝成正常。
+  if [ ${#NEW_FILES[@]} -gt 0 ]; then
+    SRC_MSG="chore(news): 標記來源已處理（本輪產出 ${#NEW_FILES[@]} 篇草稿）"
+  else
+    SRC_MSG="chore(news): 標記來源已處理（本輪零產出，未成稿）"
+  fi
+  git commit -q -m "$SRC_MSG" -- data/processed-sources.json \
     && git push origin main \
     && echo "[draft] processed-sources.json 已提交" || echo "[draft] processed-sources.json 提交/push 失敗"
 fi

@@ -21,7 +21,7 @@
 | `claude-run.sh` | **所有 headless `claude` 呼叫的統一包裝**（跑 `claude-appi`、偵測 weekly/usage limit→寫冷卻旗標）。draft/news/optimize/perf 皆經此呼叫，勿再直接呼叫 `claude-appi`。 | 本檔 |
 | `gate-lib.sh` | 發佈產線共用函式庫（型別對應、Slack/Worker 讀寫）。被 draft/publish source。 | `slack-approval-gate.md` |
 | `slack-notify.sh` | 通用 Slack 發訊（`chat.postMessage`，含 `--thread`）。 | `slack-approval-gate.md` |
-| `draft-cron.sh <type>` | 撰寫出草稿→暫存→**自動標 approved（2026-08-06 業主裁示直接發佈制，不再發按鈕等人工 ✅）**。**articles 選題受「能贏的文章模子」六基因約束**（SELECT_BLOCK 已注入，見鐵則 8）。**news 維持每日、受標題形狀約束**（見鐵則 9），但**定位已改為選題雷達而非流量來源**（2026-08-11 實測：佔全站 28% 篇數只換到 5% 曝光、3.6/篇，六成從未有曝光；同期 myths 27.5、articles 38.6）——選到決策價值長期的題目要在 run summary 標記「建議升格為 articles 常青決策文」交給週一產線。**所有頁面型產線另受「七月標準」約束**（來源數／正文長度／articles 站內連結，`pnpm check:spec` 擋新增檔）。 | `slack-approval-gate.md`、`winning-article-formula.md` |
+| `draft-cron.sh <type>` | 撰寫出草稿→暫存→**自動標 approved（2026-08-06 業主裁示直接發佈制，不再發按鈕等人工 ✅）**。**articles 選題受「能贏的文章模子」六基因約束**（SELECT_BLOCK 已注入，見鐵則 8）。**news 維持每日、受標題形狀約束**（見鐵則 9），但**定位已改為選題雷達而非流量來源**（2026-08-11 實測：佔全站 28% 篇數只換到 5% 曝光、3.6/篇，六成從未有曝光；同期 myths 27.5、articles 38.6）——選到決策價值長期的題目要在 run summary 標記「建議升格為 articles 常青決策文」交給週一產線。**所有頁面型產線另受「七月標準」約束**（來源數／正文長度／articles 站內連結，`pnpm check:spec` 擋新增檔）。**零產出連續達 `ZERO_ALERT_AT` 次會發 Slack 警報**（計數檔 `$CONF_DIR/zero-streak-<type>.txt`，有產出即歸零）——零產出本身是門檻制允許的結局，但「連續」零產出是故障訊號。 | `slack-approval-gate.md`、`winning-article-formula.md` |
 | `publish-approved.sh` | 讀狀態→過完整 gate→發佈→連結生效後**直接發頻道**「已上線+連結」（直接發佈制，無 thread 錨點）。 | `slack-approval-gate.md` |
 | `news-cron.sh` | （備援，已停用）原 /news 全自動發布。 | `news_sop.md` |
 | `optimize-cron.sh` | 每日自我優化引擎（改既有頁→部署→發優化報報）。 | `daily-optimize.md` |
