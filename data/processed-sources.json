@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-09-06T06:18:55+08:00",
+  "lastRun": "2026-09-07T06:18:00+08:00",
   "processed": {
     "https://arxiv.org/pdf/2606.01428": {
       "processedAt": "2026-09-04T06:18:45+08:00",
@@ -1060,6 +1060,50 @@
     },
     "https://clinicaltrials.gov/study/NCT07755475": {
       "processedAt": "2026-09-03T06:20:08+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42522010/": {
+      "processedAt": "2026-09-07T06:18:00+08:00",
+      "outputFile": "src/content/news/radar-2026-09-07-06-01.md"
+    },
+    "PMID:42522010": {
+      "processedAt": "2026-09-07T06:18:00+08:00",
+      "outputFile": "src/content/news/radar-2026-09-07-06-01.md"
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42486145/": {
+      "processedAt": "2026-09-07T06:18:00+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42506429/": {
+      "processedAt": "2026-09-07T06:18:00+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42180603/": {
+      "processedAt": "2026-09-07T06:18:00+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42526758/": {
+      "processedAt": "2026-09-07T06:18:00+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41994089/": {
+      "processedAt": "2026-09-07T06:18:00+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41826924/": {
+      "processedAt": "2026-09-07T06:18:00+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42325726/": {
+      "processedAt": "2026-09-07T06:18:00+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42285567/": {
+      "processedAt": "2026-09-07T06:18:00+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42477287/": {
+      "processedAt": "2026-09-07T06:18:00+08:00",
       "outputFile": null
     }
   }
