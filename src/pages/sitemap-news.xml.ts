@@ -31,6 +31,13 @@ export const GET: APIRoute = async () => {
     .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime())
     .slice(0, MAX_URLS);
 
+  // 48 小時窗內若剛好沒有新聞（產線斷更），寧可 404 也不要回傳 0 筆的空 <urlset>——
+  // Google Search Console 會把「已提交但 0 網址」的 sitemap 記為錯誤（見 index.coverage 2026-09-06），
+  // 404 才是「這份 sitemap 這次沒東西」的正確表達。
+  if (entries.length === 0) {
+    return new Response(null, { status: 404 });
+  }
+
   const urls = entries
     .map((e) => {
       const slug = e.id.replace(/\.[^.]+$/, '');
