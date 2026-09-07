@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-09-07T06:18:00+08:00",
+  "lastRun": "2026-09-08T10:00:00+08:00",
   "processed": {
     "https://arxiv.org/pdf/2606.01428": {
       "processedAt": "2026-09-04T06:18:45+08:00",
@@ -14,50 +14,6 @@
       "processedAt": "2026-08-25T06:19:26+08:00",
       "outputFile": null
     },
-    "https://www.sciencedaily.com/news/mind_brain/nutrition/": {
-      "processedAt": "2026-08-05T06:20:00+08:00",
-      "outputFile": null
-    },
-    "https://www.nature.com/nature-index/topics/l3/clinical-nutrition": {
-      "processedAt": "2026-08-23T06:18:59+08:00",
-      "outputFile": null
-    },
-    "https://www.who.int/publications/m/item/nutrition-and-food-safety-news---may-june-2026": {
-      "processedAt": "2026-08-21T06:19:34+08:00",
-      "outputFile": null
-    },
-    "https://www.who.int/publications/m/item/nutrition-and-food-safety-news---january-february-2026": {
-      "processedAt": "2026-08-21T06:19:34+08:00",
-      "outputFile": null
-    },
-    "https://www.who.int/publications/m/item/nutrition-and-food-safety-news---march-april-2026": {
-      "processedAt": "2026-08-21T06:19:34+08:00",
-      "outputFile": null
-    },
-    "https://www.nature.com/articles/s41591-024-02891-1": {
-      "processedAt": "2026-08-21T06:19:34+08:00",
-      "outputFile": null
-    },
-    "https://www.sciencedaily.com/news/health_medicine/nutrition/": {
-      "processedAt": "2026-08-05T06:20:00+08:00",
-      "outputFile": null
-    },
-    "https://www.sciencedaily.com/releases/2026/07/260719035927.htm": {
-      "processedAt": "2026-08-10T06:19:57+08:00",
-      "outputFile": null
-    },
-    "http://www.sciencedaily.com/releases/2026/08/260807235103.htm": {
-      "processedAt": "2026-08-10T06:19:57+08:00",
-      "outputFile": null
-    },
-    "https://www.medscape.com/viewarticle/ultraprocessed-food-linked-increased-dementia-risk-poor-2026a1000euw": {
-      "processedAt": "2026-08-10T06:19:57+08:00",
-      "outputFile": null
-    },
-    "https://www.medscape.com/viewarticle/coffee-and-tea-may-protect-against-dementia-hold-decaf-2026a100046l": {
-      "processedAt": "2026-08-10T06:19:57+08:00",
-      "outputFile": null
-    },
     "https://www.cdc.gov.tw/Bulletin/Detail/vwMq9VkXIaV7FHyJgpk-5w?typeid=9": {
       "processedAt": "2026-08-06T11:08:34+08:00",
       "outputFile": "src/content/news/radar-2026-08-23-12-01.md"
@@ -65,10 +21,6 @@
     "https://www.cdc.gov.tw/Bulletin/Detail/Ay1_7PLUOICQg6JClwYiTA?typeid=MmgtpeidAR5Ooai4-fgHzQ": {
       "processedAt": "2026-08-06T11:08:34+08:00",
       "outputFile": "src/content/news/radar-2026-08-23-12-01.md"
-    },
-    "https://www.cdc.gov.tw/Bulletin/Detail/lFK7neXKyk54GdPYg_hNDg?typeid=9": {
-      "processedAt": "2026-08-06T06:20:00+08:00",
-      "outputFile": null
     },
     "https://www.cdc.gov.tw/Bulletin/Detail/I6r18LGy_-Y1I2Fj72gO2w?typeid=9": {
       "processedAt": "2026-08-03T06:19:00+08:00",
@@ -81,22 +33,6 @@
     "https://www.cdc.gov.tw/Bulletin/Detail/HqTIUKC58EK9fO9AVWU3Cg?typeid=9": {
       "processedAt": "2026-08-03T06:19:00+08:00",
       "outputFile": "src/content/news/radar-2026-08-03-06-01.md"
-    },
-    "https://pmc.ncbi.nlm.nih.gov/articles/PMC10824847/": {
-      "processedAt": "2026-07-29T06:30:00+08:00",
-      "outputFile": null
-    },
-    "https://www.who.int/news-room/events/detail/2026/07/06/default-calendar/forty-ninth-session-of-the-fao-who-codex-alimentarius-commission-adopts-new-standards": {
-      "processedAt": "2026-07-19T06:30:00+08:00",
-      "outputFile": null
-    },
-    "https://www.who.int/teams/nutrition-and-food-safety/food-and-nutrition-actions-in-health-systems": {
-      "processedAt": "2026-08-03T06:19:00+08:00",
-      "outputFile": null
-    },
-    "https://www.medrxiv.org/content/10.1101/2025.08.07.25333265.full.pdf": {
-      "processedAt": "2026-07-30T06:30:00+08:00",
-      "outputFile": null
     },
     "https://www.sciencedaily.com/releases/2026/07/260729010716.htm": {
       "processedAt": "2026-08-01T06:34:12+08:00",
@@ -118,45 +54,9 @@
       "processedAt": "2026-08-01T06:34:12+08:00",
       "outputFile": "src/content/news/radar-2026-08-01-06-01.md"
     },
-    "https://pmc.ncbi.nlm.nih.gov/articles/PMC9971819/": {
-      "processedAt": "2026-08-01T06:34:12+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/36866059/": {
-      "processedAt": "2026-08-01T06:34:12+08:00",
-      "outputFile": null
-    },
-    "https://www.who.int/news/item/28-01-2026-new-who-collaborating-centre-established-to-support-work-on-food-safety-and-healthy-diet": {
-      "processedAt": "2026-08-01T06:34:12+08:00",
-      "outputFile": null
-    },
-    "https://www.eurekalert.org/news-releases/1136411": {
-      "processedAt": "2026-08-01T06:34:12+08:00",
-      "outputFile": null
-    },
-    "https://www.eurekalert.org/news-releases/1122884": {
-      "processedAt": "2026-08-01T06:34:12+08:00",
-      "outputFile": null
-    },
-    "https://www.sciencedaily.com/releases/2026/06/260614012011.htm": {
-      "processedAt": "2026-08-01T06:34:12+08:00",
-      "outputFile": null
-    },
-    "https://www.sciencedaily.com/releases/2026/07/260727012128.htm": {
-      "processedAt": "2026-08-01T06:34:12+08:00",
-      "outputFile": null
-    },
     "https://www.eurekalert.org/news-releases/1136409": {
       "processedAt": "2026-07-31T06:17:00+08:00",
       "outputFile": "src/content/news/radar-2026-07-31-06-01.md"
-    },
-    "https://www.eurekalert.org/news-releases/1136452": {
-      "processedAt": "2026-07-31T06:17:00+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/41991268/": {
-      "processedAt": "2026-07-31T06:17:00+08:00",
-      "outputFile": null
     },
     "https://pubmed.ncbi.nlm.nih.gov/41999780/": {
       "processedAt": "2026-07-28T06:37:00+08:00",
@@ -165,18 +65,6 @@
     "https://pubmed.ncbi.nlm.nih.gov/41764841/": {
       "processedAt": "2026-07-28T06:37:00+08:00",
       "outputFile": "src/content/news/radar-2026-07-28-06-01.md"
-    },
-    "https://www.sciencedaily.com/releases/2026/07/260727012125.htm": {
-      "processedAt": "2026-07-28T06:37:00+08:00",
-      "outputFile": null
-    },
-    "https://www.eurekalert.org/news-releases/1136419": {
-      "processedAt": "2026-07-28T06:37:00+08:00",
-      "outputFile": null
-    },
-    "https://www.sciencedaily.com/releases/2026/07/260726015237.htm": {
-      "processedAt": "2026-07-28T06:37:00+08:00",
-      "outputFile": null
     },
     "https://pmc.ncbi.nlm.nih.gov/articles/PMC12862422/": {
       "processedAt": "2026-07-25T06:24:00+08:00",
@@ -190,26 +78,6 @@
       "processedAt": "2026-07-25T06:24:00+08:00",
       "outputFile": "src/content/news/radar-2026-07-25-06-01.md"
     },
-    "https://clinicaltrials.gov/study/NCT04067921": {
-      "processedAt": "2026-07-22T06:18:00+08:00",
-      "outputFile": null
-    },
-    "https://clinicaltrials.gov/study/NCT06714162": {
-      "processedAt": "2026-07-22T06:18:00+08:00",
-      "outputFile": null
-    },
-    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9036084/": {
-      "processedAt": "2026-07-22T06:18:00+08:00",
-      "outputFile": null
-    },
-    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7872721/": {
-      "processedAt": "2026-07-22T06:18:00+08:00",
-      "outputFile": null
-    },
-    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9178172/": {
-      "processedAt": "2026-07-22T06:18:00+08:00",
-      "outputFile": null
-    },
     "https://www.sciencedaily.com/releases/2026/07/260718010154.htm": {
       "processedAt": "2026-07-19T06:30:00+08:00",
       "outputFile": "src/content/news/radar-2026-07-19-06-01.md"
@@ -217,30 +85,6 @@
     "https://pubmed.ncbi.nlm.nih.gov/39775037/": {
       "processedAt": "2026-07-19T06:30:00+08:00",
       "outputFile": "src/content/news/radar-2026-07-19-06-01.md"
-    },
-    "https://www.sciencedaily.com/releases/2026/07/260716023605.htm": {
-      "processedAt": "2026-07-19T06:30:00+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/41883858/": {
-      "processedAt": "2026-07-19T06:30:00+08:00",
-      "outputFile": null
-    },
-    "https://www.eurekalert.org/news-releases/1133002": {
-      "processedAt": "2026-07-19T06:30:00+08:00",
-      "outputFile": null
-    },
-    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9603567/": {
-      "processedAt": "2026-07-19T06:30:00+08:00",
-      "outputFile": null
-    },
-    "https://pmc.ncbi.nlm.nih.gov/articles/PMC11174647/": {
-      "processedAt": "2026-07-03T06:19:28+08:00",
-      "outputFile": null
-    },
-    "https://www.nature.com/articles/s41598-026-45991-3": {
-      "processedAt": "2026-07-03T06:19:28+08:00",
-      "outputFile": null
     },
     "https://pmc.ncbi.nlm.nih.gov/articles/PMC12367323/": {
       "processedAt": "2026-06-16T08:29:14Z",
@@ -298,10 +142,6 @@
       "processedAt": "2026-06-18T22:37:00Z",
       "outputFile": "src/content/news/radar-2026-06-19-06-03.md"
     },
-    "https://www.eurekalert.org/news-releases/1130918": {
-      "processedAt": "2026-07-05T06:25:00+08:00",
-      "outputFile": null
-    },
     "https://www.sciencedaily.com/releases/2026/06/260619020512.htm": {
       "processedAt": "2026-06-19T22:35:33Z",
       "outputFile": "src/content/news/radar-2026-06-20-06-01.md"
@@ -342,14 +182,6 @@
       "processedAt": "2026-06-25T06:17:00+08:00",
       "outputFile": "src/content/news/radar-2026-06-25-06-01.md"
     },
-    "https://www.eurekalert.org/news-releases/1133115": {
-      "processedAt": "2026-06-25T06:17:00+08:00",
-      "outputFile": null
-    },
-    "https://www.nature.com/articles/s41591-024-02951-6": {
-      "processedAt": "2026-06-25T06:17:00+08:00",
-      "outputFile": null
-    },
     "https://www.sciencedaily.com/releases/2026/05/260523103906.htm": {
       "processedAt": "2026-06-26T06:17:00+08:00",
       "outputFile": "src/content/news/radar-2026-06-26-06-01.md"
@@ -362,53 +194,9 @@
       "processedAt": "2026-06-29T06:29:13+08:00",
       "outputFile": "src/content/news/radar-2026-06-29-06-01.md"
     },
-    "https://www.who.int/news-room/events/detail/2026/01/27/default-calendar/launch-of-the-who-guideline-on-policies-and-interventions-to-create-healthy-school-food-environments": {
-      "processedAt": "2026-07-04T06:20:12+08:00",
-      "outputFile": null
-    },
-    "https://www.who.int/teams/nutrition-and-food-safety/monitoring-nutritional-status-and-food-safety-and-events/foodborne-disease-estimates/2026-edition": {
-      "processedAt": "2026-07-04T06:20:12+08:00",
-      "outputFile": null
-    },
-    "https://www.who.int/news-room/events/detail/2026/06/04/default-calendar/who-estimates-of-the-global-burden-of-foodborne-diseases-2000-2021--key-findings-from-the-2026-edition": {
-      "processedAt": "2026-07-04T06:20:12+08:00",
-      "outputFile": null
-    },
-    "https://clinicaltrials.gov/study/NCT06837246": {
-      "processedAt": "2026-07-04T06:20:12+08:00",
-      "outputFile": null
-    },
-    "https://clinicaltrials.gov/study/NCT06515496": {
-      "processedAt": "2026-07-04T06:20:12+08:00",
-      "outputFile": null
-    },
-    "https://clinicaltrials.gov/study/NCT07421596": {
-      "processedAt": "2026-07-04T06:20:12+08:00",
-      "outputFile": null
-    },
-    "https://pmc.ncbi.nlm.nih.gov/articles/PMC10225323/": {
-      "processedAt": "2026-07-04T06:20:12+08:00",
-      "outputFile": null
-    },
-    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8308779/": {
-      "processedAt": "2026-07-04T06:20:12+08:00",
-      "outputFile": null
-    },
-    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11899439/": {
-      "processedAt": "2026-07-04T06:20:12+08:00",
-      "outputFile": null
-    },
-    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8215288/": {
-      "processedAt": "2026-07-04T06:20:12+08:00",
-      "outputFile": null
-    },
     "PMID:41314291": {
       "processedAt": "2026-07-05T06:25:00+08:00",
       "outputFile": "src/content/news/radar-2026-07-05-06-01.md"
-    },
-    "PMID:41201844": {
-      "processedAt": "2026-07-05T06:25:00+08:00",
-      "outputFile": null
     },
     "https://pmc.ncbi.nlm.nih.gov/articles/PMC13104065/": {
       "processedAt": "2026-07-07T06:29:08+08:00",
@@ -422,37 +210,9 @@
       "processedAt": "2026-07-07T06:29:08+08:00",
       "outputFile": "src/content/news/radar-2026-07-07-06-01.md"
     },
-    "https://www.sciencedaily.com/releases/2026/05/260528082501.htm": {
-      "processedAt": "2026-07-07T06:29:08+08:00",
-      "outputFile": null
-    },
-    "https://www.sciencedaily.com/releases/2026/06/260623083116.htm": {
-      "processedAt": "2026-07-07T06:29:08+08:00",
-      "outputFile": null
-    },
-    "https://www.eurekalert.org/news-releases/1127352": {
-      "processedAt": "2026-07-07T06:29:08+08:00",
-      "outputFile": null
-    },
     "PMID:41810309": {
       "processedAt": "2026-07-08T06:30:00+08:00",
       "outputFile": "src/content/news/radar-2026-07-08-06-01.md"
-    },
-    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12106159/": {
-      "processedAt": "2026-07-08T06:30:00+08:00",
-      "outputFile": null
-    },
-    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11349153/": {
-      "processedAt": "2026-07-08T06:30:00+08:00",
-      "outputFile": null
-    },
-    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10652859/": {
-      "processedAt": "2026-07-08T06:30:00+08:00",
-      "outputFile": null
-    },
-    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11747194/": {
-      "processedAt": "2026-07-08T06:30:00+08:00",
-      "outputFile": null
     },
     "PMID:37182743": {
       "processedAt": "2026-07-09T06:30:00+08:00",
@@ -470,38 +230,6 @@
       "processedAt": "2026-07-18T06:28:46+08:00",
       "outputFile": "src/content/news/radar-2026-07-18-06-01.md"
     },
-    "PMID:31478479": {
-      "processedAt": "2026-07-18T06:28:46+08:00",
-      "outputFile": null
-    },
-    "PMID:32945835": {
-      "processedAt": "2026-07-18T06:28:46+08:00",
-      "outputFile": null
-    },
-    "PMID:34159755": {
-      "processedAt": "2026-07-18T06:28:46+08:00",
-      "outputFile": null
-    },
-    "PMID:22212388": {
-      "processedAt": "2026-07-18T06:28:46+08:00",
-      "outputFile": null
-    },
-    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8382142/": {
-      "processedAt": "2026-07-18T06:28:46+08:00",
-      "outputFile": null
-    },
-    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8598185/": {
-      "processedAt": "2026-07-18T06:28:46+08:00",
-      "outputFile": null
-    },
-    "https://clinicaltrials.gov/study/NCT04820556": {
-      "processedAt": "2026-07-18T06:28:46+08:00",
-      "outputFile": null
-    },
-    "https://www.eurekalert.org/news-releases/1133167": {
-      "processedAt": "2026-07-27T06:35:00+08:00",
-      "outputFile": null
-    },
     "PMID:42037549": {
       "processedAt": "2026-07-20T06:30:00+08:00",
       "outputFile": "src/content/news/radar-2026-07-20-06-01.md"
@@ -518,34 +246,6 @@
       "processedAt": "2026-07-20T06:30:00+08:00",
       "outputFile": "src/content/news/radar-2026-07-20-06-01.md"
     },
-    "PMID:28137247": {
-      "processedAt": "2026-07-20T06:30:00+08:00",
-      "outputFile": null
-    },
-    "PMID:41991268": {
-      "processedAt": "2026-07-20T06:30:00+08:00",
-      "outputFile": null
-    },
-    "PMID:30149076": {
-      "processedAt": "2026-07-20T06:30:00+08:00",
-      "outputFile": null
-    },
-    "PMID:34371975": {
-      "processedAt": "2026-07-20T06:30:00+08:00",
-      "outputFile": null
-    },
-    "PMID:33362643": {
-      "processedAt": "2026-07-20T06:30:00+08:00",
-      "outputFile": null
-    },
-    "PMID:23886347": {
-      "processedAt": "2026-07-20T06:30:00+08:00",
-      "outputFile": null
-    },
-    "https://www.eurekalert.org/news-releases/1133679": {
-      "processedAt": "2026-07-20T06:30:00+08:00",
-      "outputFile": null
-    },
     "https://www.cdc.gov.tw/Bulletin/Detail/ooYAHNIiy663uxESIp_GrA?typeid=9": {
       "processedAt": "2026-07-21T06:28:13+08:00",
       "outputFile": "src/content/news/radar-2026-07-21-06-01.md"
@@ -558,70 +258,6 @@
       "processedAt": "2026-07-21T06:28:13+08:00",
       "outputFile": "src/content/news/radar-2026-07-21-06-01.md"
     },
-    "https://www.who.int/publications/m/item/the-state-of-food-security-and-nutrition-in-the-world-2026": {
-      "processedAt": "2026-07-23T06:19:53+08:00",
-      "outputFile": null
-    },
-    "https://www.who.int/teams/nutrition-and-food-safety/monitoring-nutritional-status-and-food-safety-and-events/foodborne-disease-estimates/2nd-edition-(2026)": {
-      "processedAt": "2026-07-23T06:19:53+08:00",
-      "outputFile": null
-    },
-    "https://www.who.int/campaigns/world-food-safety-day/2026": {
-      "processedAt": "2026-07-23T06:19:53+08:00",
-      "outputFile": null
-    },
-    "https://www.mohw.gov.tw/cp-3539-36715-1.html": {
-      "processedAt": "2026-07-23T06:19:53+08:00",
-      "outputFile": null
-    },
-    "https://www.mohw.gov.tw/cp-88-219-1.html": {
-      "processedAt": "2026-07-23T06:19:53+08:00",
-      "outputFile": null
-    },
-    "https://mohw.gov.tw/cp-5269-69826-1.html": {
-      "processedAt": "2026-07-23T06:19:53+08:00",
-      "outputFile": null
-    },
-    "https://www.mohw.gov.tw/cp-4350-46709-1.html": {
-      "processedAt": "2026-07-23T06:19:53+08:00",
-      "outputFile": null
-    },
-    "https://www.mohw.gov.tw/fp-3206-21515-1.html": {
-      "processedAt": "2026-07-23T06:19:53+08:00",
-      "outputFile": null
-    },
-    "https://www.mohw.gov.tw/cp-16-81071-1.html": {
-      "processedAt": "2026-07-23T06:19:53+08:00",
-      "outputFile": null
-    },
-    "https://dep.mohw.gov.tw/pro/cp-2731-86886-120.html": {
-      "processedAt": "2026-07-23T06:19:53+08:00",
-      "outputFile": null
-    },
-    "https://www.mohw.gov.tw/cp-3205-21635-1.html": {
-      "processedAt": "2026-07-23T06:19:53+08:00",
-      "outputFile": null
-    },
-    "https://www.mohw.gov.tw/cp-2627-19174-1.html": {
-      "processedAt": "2026-07-23T06:19:53+08:00",
-      "outputFile": null
-    },
-    "PMID:22257636": {
-      "processedAt": "2026-07-24T06:19:34+08:00",
-      "outputFile": null
-    },
-    "PMID:32808383": {
-      "processedAt": "2026-07-24T06:19:34+08:00",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Bulletin/Detail/64WhLC3Lcr6B4QUo04UA6A?typeid=9": {
-      "processedAt": "2026-07-24T06:19:34+08:00",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Bulletin/Detail/xA1_XN5UfsMHPB4HcMbnaw?typeId=9": {
-      "processedAt": "2026-07-24T06:19:34+08:00",
-      "outputFile": null
-    },
     "https://pubmed.ncbi.nlm.nih.gov/42271116/": {
       "processedAt": "2026-07-27T06:35:00+08:00",
       "outputFile": "src/content/news/radar-2026-07-27-06-01.md"
@@ -629,10 +265,6 @@
     "https://link.springer.com/article/10.1007/s40279-026-02464-x": {
       "processedAt": "2026-07-27T06:35:00+08:00",
       "outputFile": "src/content/news/radar-2026-07-27-06-01.md"
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/40069756/": {
-      "processedAt": "2026-07-27T06:35:00+08:00",
-      "outputFile": null
     },
     "https://www.eurekalert.org/news-releases/1136476": {
       "processedAt": "2026-07-29T06:30:00+08:00",
@@ -646,14 +278,6 @@
       "processedAt": "2026-07-29T06:30:00+08:00",
       "outputFile": "src/content/news/radar-2026-07-29-06-01.md"
     },
-    "https://medicalxpress.com/news/2026-07-diet-cholesterol-genes.html": {
-      "processedAt": "2026-07-29T06:30:00+08:00",
-      "outputFile": null
-    },
-    "https://www.medicaldaily.com/low-carb-keto-diet-ldl-cholesterol-lipid-panel-testing-476463": {
-      "processedAt": "2026-07-29T06:30:00+08:00",
-      "outputFile": null
-    },
     "https://www.healio.com/news/primary-care/20260728/healthy-diets-lower-risks-regardless-of-processing-levels": {
       "processedAt": "2026-07-30T06:30:00+08:00",
       "outputFile": "src/content/news/radar-2026-07-30-06-01.md"
@@ -665,154 +289,6 @@
     "https://www.news-medical.net/news/20260728/Nutritional-quality-matters-more-than-processing-level-for-long-term-health.aspx": {
       "processedAt": "2026-07-30T06:30:00+08:00",
       "outputFile": "src/content/news/radar-2026-07-30-06-01.md"
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/40657695/": {
-      "processedAt": "2026-07-30T06:30:00+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/35963372/": {
-      "processedAt": "2026-07-30T06:30:00+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/23891685/": {
-      "processedAt": "2026-07-30T06:30:00+08:00",
-      "outputFile": null
-    },
-    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12497593/": {
-      "processedAt": "2026-07-30T06:30:00+08:00",
-      "outputFile": null
-    },
-    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10305393/": {
-      "processedAt": "2026-07-30T06:30:00+08:00",
-      "outputFile": null
-    },
-    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8230806/": {
-      "processedAt": "2026-07-30T06:30:00+08:00",
-      "outputFile": null
-    },
-    "https://www.medrxiv.org/content/10.1101/2020.02.23.20026898.full.pdf": {
-      "processedAt": "2026-07-30T06:30:00+08:00",
-      "outputFile": null
-    },
-    "https://medicalxpress.com/news/2026-07-term-health-diet-quality-food.html": {
-      "processedAt": "2026-07-30T06:30:00+08:00",
-      "outputFile": null
-    },
-    "https://www.newswise.com/articles/for-long-term-health-diet-quality-matters-more-than-food-processing-level/?sc=c6311": {
-      "processedAt": "2026-07-30T06:30:00+08:00",
-      "outputFile": null
-    },
-    "https://bioengineer.org/diet-quality-matters-more-than-food-processing-for-long-term-health/": {
-      "processedAt": "2026-07-30T06:30:00+08:00",
-      "outputFile": null
-    },
-    "https://www.mohw.gov.tw/cp-16-61405-1.html": {
-      "processedAt": "2026-07-30T06:30:00+08:00",
-      "outputFile": null
-    },
-    "https://www.mohw.gov.tw/cp-6558-76599-1.html": {
-      "processedAt": "2026-07-30T06:30:00+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/31478479/": {
-      "processedAt": "2026-08-02T06:20:05+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/30294938/": {
-      "processedAt": "2026-08-02T06:20:05+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/37182743/": {
-      "processedAt": "2026-08-02T06:20:05+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/22212388/": {
-      "processedAt": "2026-08-02T06:20:05+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/28137247/": {
-      "processedAt": "2026-08-02T06:20:05+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/37466280/": {
-      "processedAt": "2026-08-02T06:20:05+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/34371975/": {
-      "processedAt": "2026-08-02T06:20:05+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/23886347/": {
-      "processedAt": "2026-08-02T06:20:05+08:00",
-      "outputFile": null
-    },
-    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11174647/": {
-      "processedAt": "2026-08-02T06:20:05+08:00",
-      "outputFile": null
-    },
-    "https://www.who.int/health-topics/food-safety": {
-      "processedAt": "2026-08-02T06:20:05+08:00",
-      "outputFile": null
-    },
-    "https://www.who.int/teams/nutrition-and-food-safety/monitoring-nutritional-status-and-food-safety-and-events": {
-      "processedAt": "2026-08-02T06:20:05+08:00",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/": {
-      "processedAt": "2026-08-05T06:20:00+08:00",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Bulletin/List/MmgtpeidAR5Ooai4-fgHzQ": {
-      "processedAt": "2026-08-05T06:20:00+08:00",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Category/MPage/g2B1VbUeuu_gEgdYmNiiKw": {
-      "processedAt": "2026-08-05T06:20:00+08:00",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Category/MPage/iclxC6BjjFmtM1oT54EVuw": {
-      "processedAt": "2026-08-05T06:20:00+08:00",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Category/MPage/7cc1CTepnQ7B7yBAdq6z7A": {
-      "processedAt": "2026-08-05T06:20:00+08:00",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Category/MPage/kVk7_6s4M5aVPmrKFUQCjQ": {
-      "processedAt": "2026-08-05T06:20:00+08:00",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Category/List/ZrvS2zJwZ03tl8CbKYdI8g": {
-      "processedAt": "2026-08-05T06:20:00+08:00",
-      "outputFile": null
-    },
-    "https://www.nature.com/subjects/randomized-controlled-trials/ejcn": {
-      "processedAt": "2026-08-05T06:20:00+08:00",
-      "outputFile": null
-    },
-    "https://www.nature.com/subjects/nutrition": {
-      "processedAt": "2026-08-05T06:20:00+08:00",
-      "outputFile": null
-    },
-    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12665681/": {
-      "processedAt": "2026-08-05T06:20:00+08:00",
-      "outputFile": null
-    },
-    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12910210/": {
-      "processedAt": "2026-08-05T06:20:00+08:00",
-      "outputFile": null
-    },
-    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12902778/": {
-      "processedAt": "2026-08-05T06:20:00+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/42555286/": {
-      "processedAt": "2026-08-07T06:19:48+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/39574193/": {
-      "processedAt": "2026-08-07T06:19:48+08:00",
-      "outputFile": null
     },
     "PMID:41189312": {
       "processedAt": "2026-08-08T06:36:43+08:00",
@@ -842,50 +318,6 @@
       "processedAt": "2026-08-08T06:36:43+08:00",
       "outputFile": "src/content/news/radar-2026-08-23-12-01.md"
     },
-    "https://newsroom.ucla.edu/releases/creatine-may-supercharge-immune-cells-key-to-fighting-cancer": {
-      "processedAt": "2026-08-08T06:36:43+08:00",
-      "outputFile": null
-    },
-    "https://www.sciencedaily.com/releases/2026/06/260630020231.htm": {
-      "processedAt": "2026-08-08T06:36:43+08:00",
-      "outputFile": null
-    },
-    "https://www.eurekalert.org/news-releases/1136444": {
-      "processedAt": "2026-08-08T06:36:43+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/42108202/": {
-      "processedAt": "2026-08-08T06:36:43+08:00",
-      "outputFile": null
-    },
-    "https://www.mohw.gov.tw/cp-16-40152-1.html": {
-      "processedAt": "2026-08-08T06:36:43+08:00",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/TravelEpidemic/Index/RzNQU2F5L2RhZmRBd2pzWU5tM0NDQT09": {
-      "processedAt": "2026-08-08T06:36:43+08:00",
-      "outputFile": null
-    },
-    "https://www.sciencedaily.com/news/health_medicine/dietary_supplements/": {
-      "processedAt": "2026-08-08T06:36:43+08:00",
-      "outputFile": null
-    },
-    "https://www.sciencedaily.com/news/health_medicine/vitamins/": {
-      "processedAt": "2026-08-08T06:36:43+08:00",
-      "outputFile": null
-    },
-    "https://www.sciencedaily.com/releases/2018/05/180528171511.htm": {
-      "processedAt": "2026-08-08T06:36:43+08:00",
-      "outputFile": null
-    },
-    "https://www.sciencedaily.com/news/health_medicine/vitamin_d/": {
-      "processedAt": "2026-08-08T06:36:43+08:00",
-      "outputFile": null
-    },
-    "https://www.sciencedaily.com/terms/glutamic_acid.htm": {
-      "processedAt": "2026-08-08T06:36:43+08:00",
-      "outputFile": null
-    },
     "https://doi.org/10.1016/j.cpblue.2026.100079": {
       "processedAt": "2026-08-09T06:37:32+08:00",
       "outputFile": "src/content/news/radar-2026-08-09-06-01.md"
@@ -893,98 +325,6 @@
     "https://www.sciencedaily.com/releases/2026/08/260801042811.htm": {
       "processedAt": "2026-08-09T06:37:32+08:00",
       "outputFile": "src/content/news/radar-2026-08-09-06-01.md"
-    },
-    "https://www.eurekalert.org/news-releases/1137190": {
-      "processedAt": "2026-08-09T06:37:32+08:00",
-      "outputFile": null
-    },
-    "https://www.sciencedaily.com/releases/2026/05/260512202350.htm": {
-      "processedAt": "2026-08-09T06:37:32+08:00",
-      "outputFile": null
-    },
-    "https://www.sciencedaily.com/releases/2026/03/260318033138.htm": {
-      "processedAt": "2026-08-09T06:37:32+08:00",
-      "outputFile": null
-    },
-    "https://www.sciencedaily.com/releases/2026/05/260515234759.htm": {
-      "processedAt": "2026-08-09T06:37:32+08:00",
-      "outputFile": null
-    },
-    "https://www.eurekalert.org/news-releases/1105383": {
-      "processedAt": "2026-08-09T06:37:32+08:00",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Category/MPage/94JVbJ2BFjR_3MTi-9s9Cg": {
-      "processedAt": "2026-08-09T06:37:32+08:00",
-      "outputFile": null
-    },
-    "https://sciencesources.eurekalert.org/newsroom/nutrition2026": {
-      "processedAt": "2026-08-09T06:37:32+08:00",
-      "outputFile": null
-    },
-    "https://www.sciencedaily.com/releases/2026/07/260731034135.htm": {
-      "processedAt": "2026-08-11T06:17:00+08:00",
-      "outputFile": null
-    },
-    "https://www.sciencedaily.com/releases/2026/05/260501234707.htm": {
-      "processedAt": "2026-08-11T06:17:00+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/33714191/": {
-      "processedAt": "2026-08-12T06:19:21+08:00",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Category/MPage/0IaI1fGlb_ZPJ_ER_aJWKg": {
-      "processedAt": "2026-08-12T06:19:21+08:00",
-      "outputFile": null
-    },
-    "https://www.nature.com/articles/s41430-026-01750-1": {
-      "processedAt": "2026-08-12T06:19:21+08:00",
-      "outputFile": null
-    },
-    "https://www.eurekalert.org/news-releases/1136588": {
-      "processedAt": "2026-08-12T06:19:21+08:00",
-      "outputFile": null
-    },
-    "PMID:42108202": {
-      "processedAt": "2026-08-15T06:19:22+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/33976376/": {
-      "processedAt": "2026-08-15T06:19:22+08:00",
-      "outputFile": null
-    },
-    "PMID:33976376": {
-      "processedAt": "2026-08-15T06:19:22+08:00",
-      "outputFile": null
-    },
-    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12952596/": {
-      "processedAt": "2026-08-15T06:19:22+08:00",
-      "outputFile": null
-    },
-    "https://pmc.ncbi.nlm.nih.gov/articles/PMC11173264/": {
-      "processedAt": "2026-08-15T06:19:22+08:00",
-      "outputFile": null
-    },
-    "https://pmc.ncbi.nlm.nih.gov/articles/PMC10857497/": {
-      "processedAt": "2026-08-15T06:19:22+08:00",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Bulletin/Detail/AXG37sOc0tSeYH5Utn2ndw?typeid=9": {
-      "processedAt": "2026-08-15T06:19:22+08:00",
-      "outputFile": null
-    },
-    "https://www.who.int/publications/m/item/world-food-safety-day-2026--from-burden-to-solutions---safe-food-everywhere": {
-      "processedAt": "2026-08-16T06:17:00+08:00",
-      "outputFile": null
-    },
-    "https://www.eurekalert.org/newsroom/nutrition2026/home?page=2": {
-      "processedAt": "2026-08-16T06:17:00+08:00",
-      "outputFile": null
-    },
-    "PMID:42271116": {
-      "processedAt": "2026-08-18T06:30:00+08:00",
-      "outputFile": null
     },
     "PMID:41635649": {
       "processedAt": "2026-08-18T06:30:00+08:00",
@@ -997,26 +337,6 @@
     "PMID:28642676": {
       "processedAt": "2026-08-18T06:30:00+08:00",
       "outputFile": "src/content/news/radar-2026-09-03-12-01.md"
-    },
-    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12106159/": {
-      "processedAt": "2026-08-22T06:19:06+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/28029852/": {
-      "processedAt": "2026-08-22T06:19:06+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/32808383/?dopt=Abstract": {
-      "processedAt": "2026-08-22T06:19:06+08:00",
-      "outputFile": null
-    },
-    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12590694/": {
-      "processedAt": "2026-08-22T06:19:06+08:00",
-      "outputFile": null
-    },
-    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12665681/": {
-      "processedAt": "2026-08-22T06:19:06+08:00",
-      "outputFile": null
     },
     "https://www.sciencedaily.com/releases/2026/08/260823015009.htm": {
       "processedAt": "2026-08-27T06:20:17+08:00",
@@ -1104,6 +424,38 @@
     },
     "https://pubmed.ncbi.nlm.nih.gov/42477287/": {
       "processedAt": "2026-09-07T06:18:00+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42220661/": {
+      "processedAt": "2026-09-08T10:00:00+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41628029/": {
+      "processedAt": "2026-09-08T10:00:00+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41622137/": {
+      "processedAt": "2026-09-08T10:00:00+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42225824/": {
+      "processedAt": "2026-09-08T10:00:00+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41733092/": {
+      "processedAt": "2026-09-08T10:00:00+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/40929526/": {
+      "processedAt": "2026-09-08T10:00:00+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/33714191/": {
+      "processedAt": "2026-09-08T10:00:00+08:00",
+      "outputFile": null
+    },
+    "https://www.mohw.gov.tw/cp-16-81071-1.html": {
+      "processedAt": "2026-09-08T10:00:00+08:00",
       "outputFile": null
     }
   }
