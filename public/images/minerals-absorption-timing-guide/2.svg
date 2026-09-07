@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600">
+  <style>
+    text{font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif;fill:#1E293B}
+    .title{font-size:28px;font-weight:700;fill:#1A4F8B}
+    .label{font-size:18px;font-weight:700}
+    .small{font-size:15px;fill:#64748B}
+    .panel{fill:#EEF4FB;stroke:#3E7CB1;stroke-width:2}
+    .line{stroke:#1A4F8B;stroke-width:3;fill:none}
+    .arrow{stroke:#E8923A;stroke-width:4;fill:none}
+  </style>
+
+  <rect width="960" height="600" fill="#FFFFFF"/>
+  <text x="48" y="52" class="title">小腸刷狀緣 DMT1 轉運體通道</text>
+  <text x="48" y="80" class="small">礦物質競爭進入示意圖｜箭頭表示進入方向</text>
+
+  <rect x="48" y="112" width="864" height="438" rx="18" class="panel"/>
+  <text x="78" y="145" class="label" fill="#1A4F8B">腸腔側</text>
+  <text x="78" y="520" class="label" fill="#1A4F8B">小腸上皮細胞內</text>
+
+  <path d="M150 180 Q170 155 190 180 T230 180 T270 180 T310 180 T350 180 T390 180 T430 180 T470 180 T510 180 T550 180 T590 180 T630 180 T670 180 T710 180 T750 180 T790 180 T830 180" stroke="#3E7CB1" stroke-width="16" fill="none"/>
+  <text x="690" y="168" class="small">刷狀緣</text>
+
+  <rect x="400" y="210" width="160" height="230" rx="80" fill="#FFFFFF" stroke="#1A4F8B" stroke-width="5"/>
+  <rect x="443" y="238" width="74" height="174" rx="36" fill="#EEF4FB" stroke="#3E7CB1" stroke-width="4"/>
+  <circle cx="480" cy="272" r="12" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="3"/>
+  <circle cx="480" cy="324" r="12" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="3"/>
+  <circle cx="480" cy="376" r="12" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="3"/>
+  <text x="580" y="270" class="label" fill="#1A4F8B">DMT1</text>
+  <text x="580" y="297" class="small">轉運體通道</text>
+  <text x="580" y="323" class="small">有限通道名額</text>
+
+  <circle cx="190" cy="250" r="24" fill="#E8923A"/>
+  <text x="176" y="256" font-size="16" font-weight="700" fill="#FFFFFF">Fe²⁺</text>
+  <text x="145" y="290" class="small">鐵</text>
+  <path d="M215 250 H430" class="arrow"/>
+  <path d="M430 250 l-14 -8 v16 z" fill="#E8923A"/>
+  <text x="235" y="232" class="small" fill="#E8923A">優先進入</text>
+
+  <circle cx="190" cy="345" r="24" fill="#3E7CB1"/>
+  <text x="174" y="351" font-size="16" font-weight="700" fill="#FFFFFF">Ca²⁺</text>
+  <text x="151" y="385" class="small">鈣</text>
+  <path d="M215 345 H392" class="line"/>
+  <path d="M392 345 l-13 -8 v16 z" fill="#1A4F8B"/>
+
+  <circle cx="190" cy="430" r="24" fill="#3E7CB1"/>
+  <text x="174" y="436" font-size="16" font-weight="700" fill="#FFFFFF">Mn²⁺</text>
+  <text x="145" y="470" class="small">錳</text>
+  <path d="M215 430 H360 Q390 430 410 405" class="line"/>
+  <path d="M410 405 l-15 3 10 11 z" fill="#1A4F8B"/>
+
+  <rect x="650" y="370" width="205" height="88" rx="12" fill="#FFFFFF" stroke="#E8923A" stroke-width="3"/>
+  <text x="675" y="402" class="label" fill="#E8923A">競爭進入</text>
+  <text x="675" y="430" class="small">同一通道，名額有限</text>
+  <text x="675" y="452" class="small">Fe²⁺、Ca²⁺、Mn²⁺ 排隊</text>
+<text x="940.8" y="585" text-anchor="end" font-family="sans-serif" font-size="17" fill="#64748B" fill-opacity="0.45" font-weight="600">本日有據</text></svg>
