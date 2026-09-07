@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600">
+  <style>
+    .title{font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif;font-weight:700;fill:#1A4F8B}
+    .label{font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif;font-size:18px;font-weight:700;fill:#1E293B}
+    .small{font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif;font-size:14px;fill:#64748B}
+    .mineral{font-family:Arial,sans-serif;font-size:15px;font-weight:700;fill:#FFFFFF}
+    .pct{font-family:Arial,sans-serif;font-size:13px;font-weight:700;fill:#1E293B}
+  </style>
+  <rect width="960" height="600" fill="#FFFFFF"/>
+  <text x="480" y="48" text-anchor="middle" class="title" font-size="30">複方礦物質一起補與分時補充</text>
+  <text x="480" y="76" text-anchor="middle" class="small">吸收效率比較示意｜數值僅作視覺比較，非醫療建議</text>
+
+  <rect x="40" y="105" width="410" height="430" rx="18" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="3"/>
+  <text x="245" y="145" text-anchor="middle" class="label" font-size="23">複方一起補</text>
+  <text x="245" y="170" text-anchor="middle" class="small">多種礦物質同時進入狹窄通道</text>
+  <path d="M115 220 L250 220 L300 260 L350 260" fill="none" stroke="#3E7CB1" stroke-width="10"/>
+  <path d="M115 275 L250 275 L300 260" fill="none" stroke="#3E7CB1" stroke-width="10"/>
+  <path d="M115 330 L250 330 L300 260" fill="none" stroke="#3E7CB1" stroke-width="10"/>
+  <path d="M115 385 L250 385 L300 260" fill="none" stroke="#3E7CB1" stroke-width="10"/>
+  <circle cx="300" cy="260" r="23" fill="#E8923A"/>
+  <text x="300" y="265" text-anchor="middle" class="mineral">競爭</text>
+  <rect x="82" y="207" width="55" height="26" rx="13" fill="#1A4F8B"/><text x="110" y="225" text-anchor="middle" class="mineral">Ca 鈣</text>
+  <rect x="82" y="262" width="55" height="26" rx="13" fill="#1A4F8B"/><text x="110" y="280" text-anchor="middle" class="mineral">Mg 鎂</text>
+  <rect x="82" y="317" width="55" height="26" rx="13" fill="#1A4F8B"/><text x="110" y="335" text-anchor="middle" class="mineral">Zn 鋅</text>
+  <rect x="82" y="372" width="55" height="26" rx="13" fill="#1A4F8B"/><text x="110" y="390" text-anchor="middle" class="mineral">Fe 鐵</text>
+  <text x="82" y="445" class="small">吸收率（示意）</text>
+  <text x="82" y="475" class="pct">Ca</text><rect x="120" y="463" width="95" height="18" rx="9" fill="#3E7CB1"/><text x="225" y="477" class="pct">28%</text>
+  <text x="82" y="500" class="pct">Mg</text><rect x="120" y="488" width="80" height="18" rx="9" fill="#3E7CB1"/><text x="210" y="502" class="pct">24%</text>
+  <text x="270" y="475" class="pct">Zn</text><rect x="305" y="463" width="68" height="18" rx="9" fill="#3E7CB1"/><text x="383" y="477" class="pct">20%</text>
+  <text x="270" y="500" class="pct">Fe</text><rect x="305" y="488" width="60" height="18" rx="9" fill="#3E7CB1"/><text x="375" y="502" class="pct">18%</text>
+
+  <rect x="510" y="105" width="410" height="430" rx="18" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="3"/>
+  <text x="715" y="145" text-anchor="middle" class="label" font-size="23">分時補充</text>
+  <text x="715" y="170" text-anchor="middle" class="small">分開時段，降低同時競爭</text>
+  <rect x="545" y="195" width="340" height="82" rx="12" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="2"/>
+  <text x="570" y="224" class="label" font-size="17">上午</text><rect x="650" y="207" width="55" height="26" rx="13" fill="#1A4F8B"/><text x="677" y="225" text-anchor="middle" class="mineral">Ca 鈣</text>
+  <rect x="735" y="214" width="95" height="18" rx="9" fill="#E8923A"/><text x="840" y="228" class="pct">52%</text>
+  <rect x="545" y="295" width="340" height="82" rx="12" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="2"/>
+  <text x="570" y="324" class="label" font-size="17">下午</text><rect x="650" y="307" width="55" height="26" rx="13" fill="#1A4F8B"/><text x="677" y="325" text-anchor="middle" class="mineral">Mg 鎂</text>
+  <rect x="735" y="314" width="88" height="18" rx="9" fill="#E8923A"/><text x="833" y="328" class="pct">48%</text>
+  <rect x="545" y="395" width="340" height="82" rx="12" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="2"/>
+  <text x="570" y="424" class="label" font-size="17">晚間</text><rect x="650" y="407" width="55" height="26" rx="13" fill="#1A4F8B"/><text x="677" y="425" text-anchor="middle" class="mineral">Zn 鋅</text>
+  <rect x="735" y="414" width="82" height="18" rx="9" fill="#E8923A"/><text x="827" y="428" class="pct">45%</text>
+  <text x="650" y="462" class="small">另依需求安排 Fe 鐵</text>
+  <text x="715" y="515" text-anchor="middle" class="small">各時段吸收率（示意）較高</text>
+<text x="940.8" y="585" text-anchor="end" font-family="sans-serif" font-size="17" fill="#64748B" fill-opacity="0.45" font-weight="600">本日有據</text></svg>
