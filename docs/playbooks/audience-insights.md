@@ -54,6 +54,7 @@
 - 只印 stdout、**不寫任何檔**（GSC 查詢詞屬商業內幕，不落地、不 commit）。
 - **session 啟動慣例**：見 `CLAUDE.md`「§ session 啟動行為」——每次開工先跑 `pnpm perf` 給經營建議。
 - **⚠️ GSC rowLimit 的排序陷阱（2026-08-04 修，會導出完全錯誤的結論）**：`gscQuery()` 沒帶 `orderBy`，GSC `searchAnalytics` 預設**依點擊排序**。舊版 `rowLimit: 15` 拿到的是「點擊最高的 15 筆」而非「曝光最高的 15 筆」，那 15 筆合計曝光僅 122／全站 4,112（3%），且**「有曝光、零點擊」的查詢會被結構性全數濾掉**——那正是 CTR 優化的對象。現在一次抓 `GSC_ROWS = 1000` 列回本地再各自排序，新增「⭐ 機會查詢（排名 5–20 且曝光 ≥20）」與「⚠️ 高曝光低 CTR」兩張表。改 rowLimit 前先想清楚這件事。
+- **⚠️ 頁面榜單一律先剔除 `#` fragment 列（2026-09-08 修）**：GSC page 維度會把「跳至章節」sitelinks 當成獨立的列回傳，但那不是獨立結果——它隨母頁的同一則 SERP 結果一起曝光（**曝光與母頁重複計算**），且只有使用者特意點那一條才記點擊，所以 **CTR 恆趨近 0、排名幾乎等同母頁**。放進榜單必定誤導：曾把全站表現最好的那一頁的錨點列送上「高曝光低 CTR」榜首，觸發一輪不該做的內容搶救。現在「Top 著陸頁」「高曝光低 CTR 頁面」「排名 >12 的低 CTR 頁」三張表都只吃非 fragment 列，剔除筆數會標在 Top 著陸頁標題上；被剔除的列**不丟掉**，另闢「ℹ️ 章節跳轉 sitelinks」一區依母頁彙總並寫明不可判讀，讓下一個人不必再查一次「這些曝光跑去哪了」。**站台層級總計（點擊／曝光／CTR／平均排名）不受影響也不要改**——那是 GSC 直接給的站台數字，沒有重複計算。查詢維度已實測沒有同類問題（GSC 不會在 query 維度回傳 fragment）。判讀細節見 `docs/pitfalls.md`「資料與判讀」。
 - **GSC 查詢層資料天生殘缺**：即使 rowLimit 拉到 1000，2026-08-04 實測只回 172 列、涵蓋 588 曝光＝**全站 14%**。其餘 86% 是 GSC 為隱私隱藏的稀有查詢，API 拿不到。**故選題與改寫優先序要以「頁面層」為準，查詢層只當佐證**——頁面層沒有這個匿名化缺口。
 
 ## 姊妹指令：`pnpm sitemap:submit`（提交 sitemap + 索引覆蓋率）
@@ -116,6 +117,18 @@ const expCtr = (p) => p <= 20 ? curve[Math.max(1, Math.round(p))] : p <= 30 ? .0
 
 現在頁面表也套 `position <= 12`（放寬到 12 是為了納入第 2 頁前段，那裡曝光仍可觀、標題確實影響點擊），並把排名更後面的另外列成一張表，標題直接寫明「這些是排名問題，不是標題問題」。**改這個門檻前先讀本節。**
 
+### 第三種外衣：page 維度的 `#` fragment 列（2026-09-08）
+
+前兩種是「拿排名很後面的頁比 CTR」與「跨 collection 比原始 CTR」，這一種更難察覺，因為它的**排名看起來很前面**——sitelinks 繼承母結果的位置，所以錨點列會排在母頁旁邊，卻幾乎零點擊，完美偽裝成「排第 4 名卻沒人點＝標題爛」。
+
+判準三條，符合任一條就不要拿它的 CTR 做判斷：
+
+1. URL 含 `#`。
+2. 它的排名與同一頁母體那一列幾乎同值。
+3. 同一母頁一次冒出好幾條（Google 章節跳轉連結一則結果最多顯示 4 條）。
+
+要看那一頁的真實表現，把錨點列的點擊併回母頁、除以**母頁的曝光**（不是兩者相加的曝光）。腳本端已處理；自己寫一次性分析時要記得補這道過濾，否則依 collection 彙總、每頁曝光、全站 CTR 全都會被灌水的分母拉低。現況跑 `pnpm perf`，看輸出最後那一區。
+
 ## 各 collection 產出效率（每頁曝光）
 
 同一份 GSC 頁面資料按 collection 彙總（排除 `#錨點` 重複計算），是決定「該多寫哪一類」的依據。2026-08-04：
@@ -132,6 +145,47 @@ const expCtr = (p) => p <= 20 ? curve[Math.max(1, Math.round(p))] : p <= 30 ? .0
 ⚠️ news 佔 26% 頁數只換到 5.4% 曝光（每頁效率是 articles 的 1/10），而且是**唯一要燒 token 的類型**（與 appi.news 共用週限額）——news 自動化降頻的正當理由是這個，不是「爬取預算」（那個假設已被 68% 索引率推翻）。
 ⚠️ `#錨點` URL 會被 GSC 單獨計曝光但幾乎不產生點擊（2026-08-04：單篇 3 個錨點共 632 曝光、0 點擊），彙總時務必濾掉，否則會低估全站 CTR。
 
+## 撞題比對 `queryHasExistingPage()`（決定一則查詢算不算「站內缺口」）
+
+住在 `scripts/lib/content-index.mjs`。三支策略（`strategySearchGap` / `strategyOnsiteSearch` / `strategyRankBoost`）
+都靠它判斷「這則查詢站上有沒有對應頁」，**判錯就會把已經寫過的題目當成缺口再提一次**。
+
+比對來源只讀 frontmatter，不讀正文：
+
+| 規則 | 資料來源 | 比對方式 |
+|---|---|---|
+| 1. 中文詞包含 | `title` + `tags` | query 以空白切詞，任一詞（長度 ≥2）是 haystack 的子字串 |
+| 2. 英文名／slug | `slug`、`titleEn`（整串＋括號／冒號拆段）、英數 `tags` | query 的「連續英數詞 n-gram」與名字**等值**比對，兩邊都先正規化（小寫、去連字號／空白／撇號） |
+| 3. 別名表 | `EXTRA_ALIASES` | 表裡的中文別名出現在 query 中 |
+
+規則 2 是 2026-09-08 補的。原本只有規則 1，於是**整群英文成分名查詢全部漏判**——
+站上成分頁的 `title` 是中文（「猴頭菇菌絲體」），讀者打的是 `lion's mane`，字串包不到。
+用的是 ingredients **既有的 `titleEn` 欄位**（`src/content.schemas.ts` 已定義），沒有為此改 schema。
+
+⚠️ **為什麼是「片語等值」而不是「子字串包含」**：名字若拿去做子字串比對，`iron` 會命中 `environment`、
+`tg` 會命中一堆東西。等值比對讓 `alpha lipoic acid` 對得上 `alpha-lipoic-acid`，同時不會把不相干的查詢吃進來。
+改這段前先想清楚這個取捨。
+
+### `EXTRA_ALIASES` 誰維護
+
+`slug` / `title` / `titleEn` / `tags` 四個欄位都推不出來的說法（頁面只在正文提到的次要成分名、
+簡體寫法、俗名，以及沒有 `titleEn` 欄位的 articles／myths 的英文縮寫）才進這張表。
+
+- **維護責任：內容／經營 session（分流 B）。**
+- 觸發時機：跑 `pnpm insights` 看到某則查詢明明站上有頁、卻仍被列進 `topicCandidates`。
+- **先問能不能改頁面**：把英文名補進該頁的 `titleEn` 或 `tags` 才是正解，別名表是最後手段——
+  補進 frontmatter 對讀者與搜尋引擎也有用，別名表只有這支腳本看得到。
+- 加完在 `content-index.test.mjs` 補一條測試，確認沒把不相干的查詢也吃進來。
+
+### 怎麼驗證改動
+
+```bash
+pnpm exec vitest run scripts/lib/content-index.test.mjs
+```
+
+要拿真實查詢驗，用 `data/topic-backlog.local.json` 裡那些 `relatedQueries`（`ingredient-english-name-queries`
+那筆就是專門記漏判群的），逐則丟進 `queryHasExistingPage()` 看判成什麼；本地層不在就退回手動列幾則英文成分名。
+
 ## 修改流程（加新策略）
 1. 在 `insight-strategies.mjs` 加 `(data,cfg)=>Bucket` 純函數，回 `emptyBucket()` 起手
 2. 在 `insight-strategies.test.mjs` 先寫失敗測試（命中 + 空資料 + 門檻邊界）
@@ -143,8 +197,11 @@ const expCtr = (p) => p <= 20 ? curve[Math.max(1, Math.round(p))] : p <= 30 ? .0
 - `data/audience-insights.json` **絕不可 commit**（含經營內幕；已在 .gitignore）
 - 時區一律台灣 (UTC+8)：用 entrypoint 的 `tw()/nowTw()`，勿用裸 `new Date()`
 - API/token 失敗一律回空桶 + exit 0，**不可擋發稿**
+- **拿 `topicCandidates` 當「站上沒有」的結論**：`queryHasExistingPage()` 只看 frontmatter，中文長尾（沒有空白可切詞的整句查詢）仍會漏判。最終判準是 `data/topic-backlog.json` 的 `collisionCheck`，見 [`topic-backlog.md`](./topic-backlog.md)
+- **改 `parseContentIndex()` 回傳欄位卻沒動測試**：`content-index.test.mjs` 用 `toEqual` 比對整個物件，加欄位一定要同步
 
 ## 驗證清單
 - [ ] `pnpm exec vitest run` 全綠
 - [ ] `pnpm insights` 本機實跑：有認證時印出三桶 JSON；無認證時印空桶不報錯
-- [ ] `git status` 確認 `data/audience-insights.json` 未被追蹤
+- [ ] `git status` 確認 `data/audience-insights.json` 與 `data/topic-backlog.local.json` 未被追蹤
+- [ ] 動過 `content-index.mjs` 就抽幾則英文成分名查詢實跑 `queryHasExistingPage()`，確認判成「站上已有」，並抽幾則不相干查詢確認沒被誤判成已有

@@ -62,3 +62,7 @@ public/og/**/*.zip
 # Audience insights — 私密經營數據，不 commit、不 deploy
 data/audience-insights.json
 data/seo-daily/
+
+# Topic backlog 本地層 — GSC 原始查詢字串與曝光／排名／需求分，不 commit、不 deploy。
+# 公開層 data/topic-backlog.json 照常追蹤，兩層以 id 對應（見 docs/playbooks/topic-backlog.md）。
+data/topic-backlog.local.json

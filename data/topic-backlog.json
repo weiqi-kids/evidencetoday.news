@@ -1,0 +1,610 @@
+{
+  "schemaVersion": 2,
+  "updatedAt": "2026-09-08T00:00:00+08:00",
+  "layer": "public",
+  "localLayer": "data/topic-backlog.local.json",
+  "note": "本檔是公開層：只放防撞題與工作流欄位。查詢字串、曝光／排名、需求分在本地層（gitignore），以 id 對應。本地層不存在時所有欄位仍可用，只是看不到需求數據。",
+  "seededFrom": {
+    "insightsGeneratedAt": "2026-09-08T08:26:54+08:00",
+    "note": "初始種入時逐筆以 grep src/content 比對站上既有 slug；比對結果記在每筆的 collisionCheck。"
+  },
+  "items": [
+    {
+      "id": "cbg-gummies-taiwan-legal",
+      "topic": "CBG 軟糖能不能帶回台灣？它跟 CBD 在法規上是同一件事嗎",
+      "queryPattern": "taiwan-regulation-market",
+      "contentType": "articles",
+      "source": "search-gap",
+      "rationale": "站上 CBD 有專篇，CBG 全站零提及（grep 0 命中），是同一個購買情境裡沒被回答的第二種大麻素。",
+      "suggestedAngle": "從「買的時候標的是 CBG 不是 CBD，法律上有差嗎」切入，落點在台灣毒品危害防制條例與食藥署對大麻二酚以外大麻素的認定。",
+      "collisionCheck": {
+        "checkedAt": "2026-09-08",
+        "method": "grep -ril CBG src/content",
+        "matchedSlugs": [],
+        "verdict": "clear"
+      },
+      "status": "candidate",
+      "claimedBy": null,
+      "claimedAt": null,
+      "slug": null,
+      "publishedAt": null,
+      "rejectedReason": null,
+      "notes": "動筆前重讀 cbd-products-bring-back-taiwan-legal-risk，明講「CBD 的部分看那篇」，避免兩篇互相蠶食。"
+    },
+    {
+      "id": "thailand-pharmacy-medicine-bring-back-taiwan",
+      "topic": "在泰國藥局買的藥，哪些不能帶回台灣？",
+      "queryPattern": "taiwan-regulation-market",
+      "contentType": "articles",
+      "source": "site-gap",
+      "rationale": "同構篇在日本（japan-drugstore-medicine-bring-back-taiwan）與韓國（korea-drugstore-medicine-bring-back-taiwan）都已存在且是本站產能最高的題型；泰國只有睡眠軟糖一篇，藥局藥品這一格是空的。泰國藥局成藥取得門檻與台灣落差大，屬切身後果題。",
+      "suggestedAngle": "以「泰國藥局櫃檯就買得到、台灣是處方藥或管制藥」的成分清單為骨架，逐項給海關與藥事法依據。",
+      "collisionCheck": {
+        "checkedAt": "2026-09-08",
+        "method": "grep -i 泰國 站內 title/tags 索引",
+        "matchedSlugs": [
+          "articles/thailand-sleep-gummies-bring-back-taiwan"
+        ],
+        "verdict": "clear"
+      },
+      "status": "candidate",
+      "claimedBy": null,
+      "claimedAt": null,
+      "slug": null,
+      "publishedAt": null,
+      "rejectedReason": null,
+      "notes": "與 thailand-sleep-gummies-bring-back-taiwan 雙向內鏈；睡眠軟糖那篇已講的成分不重複展開。"
+    },
+    {
+      "id": "australia-supplements-bring-back-taiwan",
+      "topic": "澳洲買的 Blackmores、Swisse 帶回台灣有沒有限制？",
+      "queryPattern": "taiwan-regulation-market",
+      "contentType": "articles",
+      "source": "site-gap",
+      "rationale": "澳洲兩大保健品牌在台灣代購普遍，站上 Blackmores／Swisse／澳洲 TGA 全部零覆蓋（grep 0 命中）；日本、韓國的同構篇都已產出，澳洲是缺口。",
+      "suggestedAngle": "從 TGA 的 listed medicines 制度與台灣「食品／藥品」二分的落差切入，說明為什麼同一瓶在澳洲是藥、在台灣可能連食品都進不來。",
+      "collisionCheck": {
+        "checkedAt": "2026-09-08",
+        "method": "grep -ril 'Blackmores|Swisse|TGA' src/content",
+        "matchedSlugs": [],
+        "verdict": "clear"
+      },
+      "status": "candidate",
+      "claimedBy": null,
+      "claimedAt": null,
+      "slug": null,
+      "publishedAt": null,
+      "rejectedReason": null,
+      "notes": "自用限量（12／36 瓶）已在四篇講過，本篇只引用不重寫，主體放 TGA 制度落差。"
+    },
+    {
+      "id": "take-prescription-medicine-abroad-from-taiwan",
+      "topic": "從台灣帶自己的處方藥出國，要準備什麼才不會在對方海關被扣？",
+      "queryPattern": "decision-guide",
+      "contentType": "articles",
+      "source": "site-gap",
+      "rationale": "站上跨國藥品題全部是「帶回台灣」方向，出境方向零覆蓋（隨身行李／託運／英文診斷書皆 0 命中）。",
+      "suggestedAngle": "以出發前一週的準備清單為結構：哪些藥需要英文診斷書、哪些國家對常見台灣處方藥（如含 codeine 的止咳藥）另有管制。",
+      "collisionCheck": {
+        "checkedAt": "2026-09-08",
+        "method": "grep -rl '隨身行李|託運|旅行' src/content",
+        "matchedSlugs": [],
+        "verdict": "clear"
+      },
+      "status": "candidate",
+      "claimedBy": null,
+      "claimedAt": null,
+      "slug": null,
+      "publishedAt": null,
+      "rejectedReason": null,
+      "notes": "需求未經 GSC 驗證，動筆前先在 pnpm perf／關鍵字工具確認有人搜；六基因第 2 條的觸發點成立，但第 5 條的後果強度要在寫作時撐起來。"
+    },
+    {
+      "id": "ginkgo-biloba",
+      "topic": "銀杏",
+      "queryPattern": null,
+      "contentType": null,
+      "source": "search-gap",
+      "rationale": null,
+      "suggestedAngle": null,
+      "collisionCheck": {
+        "checkedAt": "2026-09-08",
+        "method": "n/a",
+        "matchedSlugs": [],
+        "verdict": "n/a"
+      },
+      "status": "rejected",
+      "claimedBy": null,
+      "claimedAt": null,
+      "slug": null,
+      "publishedAt": null,
+      "rejectedReason": "站主長期指示不寫。再出現在 insights 輸出時直接略過，不要重新提案。",
+      "notes": null
+    },
+    {
+      "id": "vitamin-e-tocopheryl",
+      "topic": "維生素 E",
+      "queryPattern": null,
+      "contentType": null,
+      "source": "search-gap",
+      "rationale": null,
+      "suggestedAngle": null,
+      "collisionCheck": {
+        "checkedAt": "2026-09-08",
+        "method": "n/a",
+        "matchedSlugs": [],
+        "verdict": "n/a"
+      },
+      "status": "rejected",
+      "claimedBy": null,
+      "claimedAt": null,
+      "slug": null,
+      "publishedAt": null,
+      "rejectedReason": "站主長期指示不寫。再出現在 insights 輸出時直接略過，不要重新提案。",
+      "notes": null
+    },
+    {
+      "id": "mail-order-self-use-quota-general",
+      "topic": "網購保健食品郵寄回台灣，一次能寄多少（通則篇）",
+      "queryPattern": "taiwan-regulation-market",
+      "contentType": "articles",
+      "source": "site-gap",
+      "rationale": "曾被列為缺口，實際比對後發現自用限量規則已在四篇裡各自講過。",
+      "suggestedAngle": null,
+      "collisionCheck": {
+        "checkedAt": "2026-09-08",
+        "method": "grep -rl '12瓶|36瓶|自用' src/content",
+        "matchedSlugs": [
+          "articles/import-melatonin-taiwan-customs",
+          "articles/japan-supplements-bring-back-taiwan",
+          "articles/japan-drugstore-medicine-bring-back-taiwan",
+          "articles/glp1-weight-loss-drugs-bring-back-taiwan-legal-risk"
+        ],
+        "verdict": "collides"
+      },
+      "status": "rejected",
+      "claimedBy": null,
+      "claimedAt": null,
+      "slug": null,
+      "publishedAt": null,
+      "rejectedReason": "另立通則篇會與冠軍頁 import-melatonin-taiwan-customs 搶同一群查詢（winning-article-formula 邊界 1：同主題不疊第二篇法規文）。要補就補進既有篇的段落。",
+      "notes": null
+    },
+    {
+      "id": "upadacitinib-operator-query",
+      "topic": "upadacitinib",
+      "queryPattern": null,
+      "contentType": null,
+      "source": "search-gap",
+      "rationale": null,
+      "suggestedAngle": null,
+      "collisionCheck": {
+        "checkedAt": "2026-09-08",
+        "method": "n/a",
+        "matchedSlugs": [],
+        "verdict": "n/a"
+      },
+      "status": "rejected",
+      "claimedBy": null,
+      "claimedAt": null,
+      "slug": null,
+      "publishedAt": null,
+      "rejectedReason": "帶搜尋運算子的查詢，來源是工具或研究者而非一般讀者，不構成需求訊號。同型（含引號、減號）的候選一律略過。",
+      "notes": null
+    },
+    {
+      "id": "fish-oil-with-anticoagulant",
+      "topic": "吃抗凝血劑可以吃魚油嗎",
+      "queryPattern": "decision-guide",
+      "contentType": "articles",
+      "source": "search-gap",
+      "rationale": "insights 判為「站內無對應文章」，實際站上已有兩篇正面回答。",
+      "suggestedAngle": null,
+      "collisionCheck": {
+        "checkedAt": "2026-09-08",
+        "method": "grep -i 魚油 站內 title/tags 索引",
+        "matchedSlugs": [
+          "articles/fish-oil-blood-thinner-interaction",
+          "articles/aspirin-fish-oil-together-bleeding-risk"
+        ],
+        "verdict": "collides"
+      },
+      "status": "written",
+      "claimedBy": null,
+      "claimedAt": null,
+      "slug": "articles/fish-oil-blood-thinner-interaction",
+      "publishedAt": null,
+      "rejectedReason": null,
+      "notes": "這是既有頁的排名問題，屬 siteOptimizations（補強既有頁），不是新題。"
+    },
+    {
+      "id": "supplements-before-surgery",
+      "topic": "手術前保健食品要不要停",
+      "queryPattern": "decision-guide",
+      "contentType": "articles",
+      "source": "search-gap",
+      "rationale": null,
+      "suggestedAngle": null,
+      "collisionCheck": {
+        "checkedAt": "2026-09-08",
+        "method": "grep -i 開刀前 站內 title/tags 索引",
+        "matchedSlugs": [
+          "articles/stop-supplements-before-surgery"
+        ],
+        "verdict": "collides"
+      },
+      "status": "written",
+      "claimedBy": null,
+      "claimedAt": null,
+      "slug": "articles/stop-supplements-before-surgery",
+      "publishedAt": null,
+      "rejectedReason": null,
+      "notes": null
+    },
+    {
+      "id": "wound-recovery-forbidden-foods",
+      "topic": "有傷口不能吃蛋",
+      "queryPattern": "myth-check",
+      "contentType": "myths",
+      "source": "trend-radar",
+      "rationale": null,
+      "suggestedAngle": null,
+      "collisionCheck": {
+        "checkedAt": "2026-09-08",
+        "method": "grep -i 發物|忌口 站內 title/tags 索引",
+        "matchedSlugs": [
+          "myths/forbidden-foods-recovery-myth"
+        ],
+        "verdict": "collides"
+      },
+      "status": "written",
+      "claimedBy": null,
+      "claimedAt": null,
+      "slug": "myths/forbidden-foods-recovery-myth",
+      "publishedAt": null,
+      "rejectedReason": null,
+      "notes": "頁面已存在，正確動作是把「傷口」這個詞補進既有篇，不是開新篇。"
+    },
+    {
+      "id": "wound-alcohol-disinfection",
+      "topic": "傷口可以用酒精消毒嗎",
+      "queryPattern": "myth-check",
+      "contentType": "myths",
+      "source": "trend-radar",
+      "rationale": null,
+      "suggestedAngle": null,
+      "collisionCheck": {
+        "checkedAt": "2026-09-08",
+        "method": "grep -i 酒精 站內 title/tags 索引",
+        "matchedSlugs": [
+          "myths/alcohol-vs-iodine-wound-disinfection-myth"
+        ],
+        "verdict": "collides"
+      },
+      "status": "written",
+      "claimedBy": null,
+      "claimedAt": null,
+      "slug": "myths/alcohol-vs-iodine-wound-disinfection-myth",
+      "publishedAt": null,
+      "rejectedReason": null,
+      "notes": null
+    },
+    {
+      "id": "thailand-sleep-gummies",
+      "topic": "泰國睡眠軟糖帶回台灣",
+      "queryPattern": "taiwan-regulation-market",
+      "contentType": "articles",
+      "source": "trend-radar",
+      "rationale": null,
+      "suggestedAngle": null,
+      "collisionCheck": {
+        "checkedAt": "2026-09-08",
+        "method": "grep -i 軟糖 站內 title/tags 索引",
+        "matchedSlugs": [
+          "articles/thailand-sleep-gummies-bring-back-taiwan",
+          "articles/korea-sleep-gummies-bring-back-taiwan"
+        ],
+        "verdict": "collides"
+      },
+      "status": "written",
+      "claimedBy": null,
+      "claimedAt": null,
+      "slug": "articles/thailand-sleep-gummies-bring-back-taiwan",
+      "publishedAt": null,
+      "rejectedReason": null,
+      "notes": null
+    },
+    {
+      "id": "japan-drugstore-medicine",
+      "topic": "日本藥妝店的成藥帶回台灣",
+      "queryPattern": "taiwan-regulation-market",
+      "contentType": "articles",
+      "source": "trend-radar",
+      "rationale": null,
+      "suggestedAngle": null,
+      "collisionCheck": {
+        "checkedAt": "2026-09-08",
+        "method": "grep -i 藥妝 站內 title/tags 索引",
+        "matchedSlugs": [
+          "articles/japan-drugstore-medicine-bring-back-taiwan",
+          "articles/japan-otc-ingredient-red-lines",
+          "articles/japan-supplements-bring-back-taiwan"
+        ],
+        "verdict": "collides"
+      },
+      "status": "written",
+      "claimedBy": null,
+      "claimedAt": null,
+      "slug": "articles/japan-drugstore-medicine-bring-back-taiwan",
+      "publishedAt": null,
+      "rejectedReason": null,
+      "notes": "品牌名（大正）層級的查詢建議補進既有篇的成分對照表，不開新篇。"
+    },
+    {
+      "id": "perimenopause-cycle-shortening",
+      "topic": "40 歲月經週期變短",
+      "queryPattern": "audience-stage-guide",
+      "contentType": "articles",
+      "source": "search-gap",
+      "rationale": null,
+      "suggestedAngle": null,
+      "collisionCheck": {
+        "checkedAt": "2026-09-08",
+        "method": "grep -i 月經|更年期 站內 title/tags 索引",
+        "matchedSlugs": [
+          "articles/perimenopause-or-something-else-in-your-40s"
+        ],
+        "verdict": "collides"
+      },
+      "status": "written",
+      "claimedBy": null,
+      "claimedAt": null,
+      "slug": "articles/perimenopause-or-something-else-in-your-40s",
+      "publishedAt": null,
+      "rejectedReason": null,
+      "notes": null
+    },
+    {
+      "id": "us-lipid-guideline-2026",
+      "topic": "2026 美國最新血脂指標",
+      "queryPattern": "decision-guide",
+      "contentType": "articles",
+      "source": "search-gap",
+      "rationale": null,
+      "suggestedAngle": null,
+      "collisionCheck": {
+        "checkedAt": "2026-09-08",
+        "method": "grep -i 血脂 站內 title/tags 索引",
+        "matchedSlugs": [
+          "articles/statin-eligibility-us-guideline-taiwan-what-to-do",
+          "articles/cholesterol-report-ldl-hdl-triglycerides"
+        ],
+        "verdict": "collides"
+      },
+      "status": "written",
+      "claimedBy": null,
+      "claimedAt": null,
+      "slug": "articles/statin-eligibility-us-guideline-taiwan-what-to-do",
+      "publishedAt": null,
+      "rejectedReason": null,
+      "notes": null
+    },
+    {
+      "id": "cbti-where-to-find",
+      "topic": "CBT-I 認證與台灣哪裡做得到",
+      "queryPattern": "decision-guide",
+      "contentType": "articles",
+      "source": "search-gap",
+      "rationale": null,
+      "suggestedAngle": null,
+      "collisionCheck": {
+        "checkedAt": "2026-09-08",
+        "method": "grep -n 治療師|健保 src/content/articles/insomnia-cbti-guide.mdx",
+        "matchedSlugs": [
+          "articles/insomnia-cbti-guide"
+        ],
+        "verdict": "collides"
+      },
+      "status": "written",
+      "claimedBy": null,
+      "claimedAt": null,
+      "slug": "articles/insomnia-cbti-guide",
+      "publishedAt": null,
+      "rejectedReason": null,
+      "notes": "既有篇已有專節「台灣去哪裡做 CBT-I」與對應 FAQ。"
+    },
+    {
+      "id": "poag-glaucoma",
+      "topic": "原發性隅角開放性青光眼（POAG）",
+      "queryPattern": "decision-guide",
+      "contentType": "articles",
+      "source": "trend-radar",
+      "rationale": null,
+      "suggestedAngle": null,
+      "collisionCheck": {
+        "checkedAt": "2026-09-08",
+        "method": "grep -i 青光眼 站內 title/tags 索引",
+        "matchedSlugs": [
+          "articles/glaucoma-early-detection-guide"
+        ],
+        "verdict": "collides"
+      },
+      "status": "written",
+      "claimedBy": null,
+      "claimedAt": null,
+      "slug": "articles/glaucoma-early-detection-guide",
+      "publishedAt": null,
+      "rejectedReason": null,
+      "notes": null
+    },
+    {
+      "id": "glp1-microdosing",
+      "topic": "GLP-1 微劑量",
+      "queryPattern": "myth-check",
+      "contentType": "myths",
+      "source": "search-gap",
+      "rationale": null,
+      "suggestedAngle": null,
+      "collisionCheck": {
+        "checkedAt": "2026-09-08",
+        "method": "grep -i glp 站內 title/tags 索引",
+        "matchedSlugs": [
+          "myths/glp1-microdosing-safe-myth"
+        ],
+        "verdict": "collides"
+      },
+      "status": "written",
+      "claimedBy": null,
+      "claimedAt": null,
+      "slug": "myths/glp1-microdosing-safe-myth",
+      "publishedAt": null,
+      "rejectedReason": null,
+      "notes": null
+    },
+    {
+      "id": "berberine",
+      "topic": "小檗鹼（含通路／品牌層查詢）",
+      "queryPattern": "ingredient-explainer",
+      "contentType": "ingredients",
+      "source": "search-gap",
+      "rationale": null,
+      "suggestedAngle": null,
+      "collisionCheck": {
+        "checkedAt": "2026-09-08",
+        "method": "grep -i 小檗鹼 站內 title/tags 索引",
+        "matchedSlugs": [
+          "ingredients/berberine",
+          "articles/berberine-natural-ozempic-myth"
+        ],
+        "verdict": "collides"
+      },
+      "status": "written",
+      "claimedBy": null,
+      "claimedAt": null,
+      "slug": "ingredients/berberine",
+      "publishedAt": null,
+      "rejectedReason": null,
+      "notes": null
+    },
+    {
+      "id": "melatonin-cluster",
+      "topic": "褪黑激素（劑量／副作用／入境）",
+      "queryPattern": "taiwan-regulation-market",
+      "contentType": "articles",
+      "source": "trend-radar",
+      "rationale": "站上最大的既有叢集。",
+      "suggestedAngle": null,
+      "collisionCheck": {
+        "checkedAt": "2026-09-08",
+        "method": "grep -i 褪黑激素 站內 title/tags 索引",
+        "matchedSlugs": [
+          "articles/import-melatonin-taiwan-customs",
+          "articles/melatonin-dosage-how-many-mg",
+          "articles/melatonin-side-effects-safety",
+          "articles/melatonin-prescription-taiwan-gray-market",
+          "articles/buy-melatonin-taiwan-legal-options",
+          "articles/melatonin-why-otc-abroad-prescription-taiwan"
+        ],
+        "verdict": "collides"
+      },
+      "status": "written",
+      "claimedBy": null,
+      "claimedAt": null,
+      "slug": "articles/import-melatonin-taiwan-customs",
+      "publishedAt": null,
+      "rejectedReason": null,
+      "notes": "叢集已飽和（winning-article-formula 邊界 1）。這群查詢一律當既有頁的優化訊號處理，不新增同角度篇。"
+    },
+    {
+      "id": "cbd-taiwan",
+      "topic": "CBD 台灣",
+      "queryPattern": "taiwan-regulation-market",
+      "contentType": "articles",
+      "source": "search-gap",
+      "rationale": null,
+      "suggestedAngle": null,
+      "collisionCheck": {
+        "checkedAt": "2026-09-08",
+        "method": "grep -i cbd 站內 title/tags 索引",
+        "matchedSlugs": [
+          "articles/cbd-products-bring-back-taiwan-legal-risk"
+        ],
+        "verdict": "collides"
+      },
+      "status": "written",
+      "claimedBy": null,
+      "claimedAt": null,
+      "slug": "articles/cbd-products-bring-back-taiwan-legal-risk",
+      "publishedAt": null,
+      "rejectedReason": null,
+      "notes": null
+    },
+    {
+      "id": "gerd",
+      "topic": "胃食道逆流",
+      "queryPattern": "decision-guide",
+      "contentType": "articles",
+      "source": "search-gap",
+      "rationale": null,
+      "suggestedAngle": null,
+      "collisionCheck": {
+        "checkedAt": "2026-09-08",
+        "method": "grep -rl 胃食道逆流 src/content",
+        "matchedSlugs": [
+          "articles/gerd-acid-reflux-guide"
+        ],
+        "verdict": "collides"
+      },
+      "status": "written",
+      "claimedBy": null,
+      "claimedAt": null,
+      "slug": "articles/gerd-acid-reflux-guide",
+      "publishedAt": null,
+      "rejectedReason": null,
+      "notes": null
+    },
+    {
+      "id": "ingredient-english-name-queries",
+      "topic": "英文成分名查詢群（站上都有中文成分頁，insights 的比對抓不到）",
+      "queryPattern": "ingredient-explainer",
+      "contentType": "ingredients",
+      "source": "search-gap",
+      "rationale": "整群曾被 insights 判為「站內無對應文章」，實際逐一 grep 後每一則都對得上既有成分頁——當時 `queryHasExistingPage()` 只比對 title／tags 的字串包含，英文成分名不在中文標題裡就漏判。",
+      "suggestedAngle": null,
+      "collisionCheck": {
+        "checkedAt": "2026-09-08",
+        "method": "逐則 grep -ril 英文名 + 中文名 src/content",
+        "matchedSlugs": [
+          "ingredients/alpha-lipoic-acid",
+          "ingredients/ashwagandha",
+          "ingredients/beta-alanine",
+          "ingredients/beta-glucan",
+          "ingredients/colostrum",
+          "ingredients/l-carnitine",
+          "ingredients/chromium",
+          "ingredients/creatine",
+          "ingredients/green-tea-extract",
+          "ingredients/evening-primrose-oil",
+          "ingredients/gaba",
+          "ingredients/glutathione",
+          "ingredients/lions-mane",
+          "ingredients/hmb",
+          "ingredients/5-htp",
+          "ingredients/prebiotics",
+          "ingredients/l-theanine",
+          "ingredients/lactoferrin",
+          "ingredients/soy-isoflavones",
+          "ingredients/quercetin"
+        ],
+        "verdict": "collides"
+      },
+      "status": "written",
+      "claimedBy": null,
+      "claimedAt": null,
+      "slug": null,
+      "publishedAt": null,
+      "rejectedReason": null,
+      "notes": "正確動作是把英文成分名補進既有成分頁的 titleEn／tags，不是開新篇。撞題比對已於 2026-09-08 修好（slug 正規化＋titleEn／別名表，見 docs/playbooks/audience-insights.md），這群查詢不應再被判成缺口；再冒出來就對照本筆並回頭檢查 content-index.mjs。"
+    }
+  ]
+}

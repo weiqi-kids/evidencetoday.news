@@ -124,6 +124,7 @@ pnpm check:spec:all     # 全站規格盤點（恆 exit 0，人工普查用）
 | 任務 | 看哪份 |
 |---|---|
 | ⭐ 選題／寫新文章前先讀（能贏的文章模子·六基因；含 queryPattern 的索引率與曝光產出對照） | `docs/playbooks/winning-article-formula.md` |
+| 選題候選池（跨 session 累積／防撞題；`data/topic-backlog.json`） | `docs/playbooks/topic-backlog.md` |
 | 新增/修改/刪除 文章·闢謠·成分解析·Podcast·短影音·趨勢新聞 | `docs/content-guide.md` |
 | 撰寫趨勢新聞（自動化 SOP / 7 步驟） | `docs/news_sop.md`、`AGENTS.md`「撰寫趨勢文章」 |
 | 文章配圖（封面＋內文情境圖／圖庫優先） | `docs/playbooks/editor-images.md` |
