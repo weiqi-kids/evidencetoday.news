@@ -116,20 +116,42 @@ if [ -n "$(git status --porcelain -- src/content)" ]; then
   echo "[optimize] 清理後 src/content 殘留：$(git status --porcelain -- src/content | wc -l) 個（應為 0）"
 fi
 
+# ── 零產出（no-op）連續計數 ────────────────────────────────────────────────
+# no-op 本身是設計上允許的結局（當天沒有過 gate 的高 ROI 項目就不空 commit），
+# 但「連續」no-op 是故障訊號：run-log 只寫在主機 $REPORTS_DIR（repo 外），
+# 從 GitHub 看不到，產線死掉不會有人察覺（2026-09-08 查出 optimize 線長期沒有
+# 任何 optimize(...) commit，跟 news 那次靜默零產出是同一個結構性錯誤）。
+# 機制比照 ops/draft-cron.sh：計數檔放同一個 $CONF_DIR、有產出即 rm -f 歸零、
+# 連續達 ZERO_ALERT_AT 次就走 slack-notify.sh 吵一次。
+HEAD_AFTER="$(git rev-parse HEAD 2>/dev/null || echo unknown)"
+PRODUCED=0
+if [ "$HEAD_AFTER" != "$HEAD_BEFORE" ] && [ "$HEAD_BEFORE" != "unknown" ]; then PRODUCED=1; fi
+ZERO_STREAK_FILE="$CONF_DIR/zero-streak-optimize.txt"
+ZERO_ALERT_AT=3   # 連續幾次零產出就通知（本 job 每日跑＝3 天）
+ZERO_STREAK=0
+if [ "$DRY_RUN" = "1" ]; then
+  echo "[optimize] DRY_RUN=1，不計零產出連續次數"
+elif [ "$PRODUCED" = "1" ]; then
+  rm -f "$ZERO_STREAK_FILE"
+else
+  ZERO_STREAK=$(( $(cat "$ZERO_STREAK_FILE" 2>/dev/null || echo 0) + 1 ))
+  echo "$ZERO_STREAK" > "$ZERO_STREAK_FILE"
+  echo "[optimize] 本次零產出（HEAD 未變、無 optimize commit）｜連續零產出 $ZERO_STREAK 次"
+fi
+
 # ── Slack 通報「優化報報」頻道 ─────────────────────────────────────────────
 # 依「是否真的多了一個 daily-optimize commit」分流：已部署 / no-op / 失敗。
 # DRY_RUN=1 不發（乾跑不該打擾頻道）。slack-notify.sh 缺 token 會自行略過、不中斷。
 if [ "$DRY_RUN" = "1" ]; then
   echo "[optimize] DRY_RUN=1，略過 Slack 通報"
 elif [ -x "$SLACK_NOTIFY" ]; then
-  HEAD_AFTER="$(git rev-parse HEAD 2>/dev/null || echo unknown)"
   REPO_URL="https://github.com/weiqi-kids/evidencetoday.news"
 
   if [ "$CLAUDE_OK" = "0" ]; then
     MSG=":warning: *自動優化 $DATE — 執行失敗*
 headless claude 中斷，今日未產出。原始數據：\`$RAW\`
 詳見 log：\`/tmp/evidencetoday-optimize.log\`"
-  elif [ "$HEAD_AFTER" != "$HEAD_BEFORE" ] && [ "$HEAD_BEFORE" != "unknown" ]; then
+  elif [ "$PRODUCED" = "1" ]; then
     # 有新 commit → 已部署。取 commit 主旨 + 今日 ledger 條目組清單。
     SUBJECT="$(git log -1 --pretty=%s 2>/dev/null)"
     SHORT="$(git rev-parse --short HEAD 2>/dev/null)"
@@ -159,17 +181,20 @@ headless claude 中斷，今日未產出。原始數據：\`$RAW\`
         [ -z "$slug" ] && continue
         printf '• 〈%s〉：%s（%s）\n' "$(slug_title "$slug")" "$reason" "$(src_label "$src")"
       done
-    )"
-    [ -z "$ITEMS" ] && ITEMS="（ledger 無今日條目，詳見 run-log）"
+    )" || true
+    [ -z "$ITEMS" ] && ITEMS="（ledger 無今日條目，詳見 run-log）" || true
     MSG=":hammer_and_wrench: *自動優化 $DATE — 已部署*
 \`$SUBJECT\`
 $ITEMS
 :link: $REPO_URL/commit/$SHORT"
   else
     # HEAD 沒變 → no-op。盡量從 run-log 撈一句原因。
-    REASON="$(grep -m1 -iE 'no-?op|無高 ?ROI|今日無' "$RUNLOG" 2>/dev/null | sed 's/^[#>*[:space:]-]*//')"
-    [ -z "$REASON" ] && REASON="今日無過 gate 的高 ROI 項目，靜默結束（未空 commit）。"
-    MSG=":sleeping: *自動優化 $DATE — no-op*
+    # ⚠️ 這兩行都要吃掉非零退出：本腳本是 set -euo pipefail，grep 撈不到（exit 1）
+    # 或 [ -z ] 判否，都會讓腳本在 printf 發訊「之前」就結束——no-op 通報與零產出
+    # 警報因此永遠送不出去，等於自己製造靜默。
+    REASON="$(grep -m1 -iE 'no-?op|無高 ?ROI|今日無' "$RUNLOG" 2>/dev/null | sed 's/^[#>*[:space:]-]*//')" || true
+    [ -z "$REASON" ] && REASON="今日無過 gate 的高 ROI 項目，靜默結束（未空 commit）。" || true
+    MSG=":sleeping: *自動優化 $DATE — no-op（連續 $ZERO_STREAK 次零產出）*
 $REASON"
   fi
 
@@ -178,6 +203,15 @@ $REASON"
     || echo "[optimize] Slack 通報略過/失敗（缺 token 或 API 錯誤，不影響本次優化）"
 else
   echo "[optimize] 找不到 $SLACK_NOTIFY，略過 Slack 通報"
+fi
+
+# 連續零產出達門檻：在每日摘要之外另發一則警報（比照 draft-cron.sh），
+# 讓「產線還活著但什麼都沒產出」這件事有人看得到。DRY_RUN 不發。
+if [ "$DRY_RUN" != "1" ] && [ "$ZERO_STREAK" -ge "$ZERO_ALERT_AT" ] && [ -x "$SLACK_NOTIFY" ]; then
+  printf '⚠️ *每日優化引擎連續 %s 次零產出*\n\n迴圈有在跑，但沒有任何項目收斂到 commit。\n請查 /var/log/evidencetoday/optimize.log 與 run-log `%s`，確認是不是選題護欄（ledger 14 天去重／MAX_CHANGES／gate）互相咬死。' \
+    "$ZERO_STREAK" "$RUNLOG" | "$SLACK_NOTIFY" "$SLACK_CH_OPTIMIZE" >/dev/null 2>&1 \
+    && echo "[optimize] 已發零產出警報（連續 $ZERO_STREAK 次）" \
+    || echo "[optimize] ⚠️ 零產出警報發送失敗（缺 token 或 API 錯誤）"
 fi
 
 echo "[optimize] run-log：$RUNLOG"

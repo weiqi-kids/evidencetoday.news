@@ -122,14 +122,14 @@ YMYL
 # 頁面型專屬撰寫品質（配圖／結構化來源／審核委員會）
 COMMON_RULES_PAGE="$(cat <<RULES
 【子代理模型｜硬性省成本】凡用 Agent 工具派子代理一律顯式帶 model 參數，**嚴禁用預設模型（會落到 opus、最貴）**：撰寫與審核委員會一律 model='sonnet'（比照 docs/news_sop.md 設計 Sonnet x n）；僅純機械性檢查（連結驗 200、檔名格式）可用 model='haiku'。
-【撰寫品質｜比照 news 全管線】每篇：①平行撰寫（多篇時各派一個 Agent 同訊息並行，每個撰寫 Agent 帶 model='sonnet'）；②配圖每篇 1 封面+2 內文圖，先圖庫後生成、人物一律台灣人，封面寫 frontmatter heroImage/coverAlt/coverImageCredit、內文 2 張嚴格用 \`![<credit>](<full> "<creditUrl>")\`（unsplash/pexels 開頭），URL 先 curl -sI 驗 200，**嚴禁本地行內圖 \`](images/...)\`**（細節見 docs/playbooks/editor-images.md）；③來源鐵律：引用一律寫進 frontmatter 結構化 references（每筆 {title,type,url}，type 用 schema 列舉值，url 為可點 http(s)），**筆數依類型下限、且每筆都要有可點 url**（見下方「七月標準」；`pnpm check:spec` 會擋）；④動態審核委員會多輪修稿（每角色派 Agent 並行，審核委員 Agent 帶 model='sonnet'），連續 3 輪未收斂才停。
+【撰寫品質｜比照 news 全管線】每篇：①平行撰寫（多篇時各派一個 Agent 同訊息並行，每個撰寫 Agent 帶 model='sonnet'）；②配圖每篇 1 封面+2 內文圖，先圖庫後生成、人物一律台灣人，封面寫 frontmatter heroImage/coverAlt/coverImageCredit、內文 2 張嚴格用 \`![<credit>](<full> "<creditUrl>")\`（unsplash/pexels 開頭），URL 先 curl -sI 驗 200，**嚴禁本地行內圖 \`](images/...)\`**（細節見 docs/playbooks/editor-images.md）；③來源鐵律：引用一律寫進 frontmatter 結構化 references（每筆 {title,type,url}，type 用 schema 列舉值，url 為可點 http(s)），**筆數依類型下限、且每筆都要有可點 url**（見下方「七月標準」；\`pnpm check:spec\` 會擋）；④動態審核委員會多輪修稿（每角色派 Agent 並行，審核委員 Agent 帶 model='sonnet'），連續 3 輪未收斂才停。
 【七月標準｜硬性下限，2026-08-11 由 GSC 實測反推】2026 年 7 月那批 63 篇的曝光中位數是 14、僅 3 篇零曝光；3–6 月共 215 篇的中位數是 0、約六成零曝光。兩者差別不在有沒有爆紅篇（七月前三名只佔該月曝光 20%），而在**每一篇的規格**。扣掉前三名後，七月剩下的 60 篇仍有 30.5 曝光/篇，六月剩下的 58 篇只有 2.0。所以下面三項是下限不是建議，每篇都要達到：
   ⒜ **結構化 references 的可點來源數下限**（取七月同類型 P25）：articles 6、myths 10、ingredients 7、news 3。七月各類型的中位數是 12/12/10/4，3–6 月則是 3–5/4/5/1–2。湊數沒有意義——每一筆都要是這篇真的引用到的、可點的一級或同儕審查來源。
   ⒝ **正文長度下限**：articles 2,900 字、myths 3,500、ingredients 5,000、news 800。這不是要灌水，是「一個決定講到讀者真的可以行動」的自然長度；寫不到通常代表題目太泛或收得太早。八月的 myths（中位數由七月的 4158 掉到 3117）與 ingredients（6347→5173）已經在退。
-  ⒞ **articles 專屬：正文至少 2 條站內連結**（markdown `](/articles/…)`、`](/myths/…)`、`](/ingredients/…)`）。七月 articles 中位數是 2，其餘月份都是 0。連到**這篇真的會把讀者交棒過去**的那一篇，不要為了湊數連；frontmatter 的 relatedArticles 不算，那是版型自動出的。myths/ingredients/news 各月都是 0，沒有實測依據，因此不設此項。
-  以上三項由 `pnpm check:spec` 執行：**新增檔未達即擋 build**，既有檔只出 WARN。
+  ⒞ **articles 專屬：正文至少 2 條站內連結**（markdown \`](/articles/…)\`、\`](/myths/…)\`、\`](/ingredients/…)\`）。七月 articles 中位數是 2，其餘月份都是 0。連到**這篇真的會把讀者交棒過去**的那一篇，不要為了湊數連；frontmatter 的 relatedArticles 不算，那是版型自動出的。myths/ingredients/news 各月都是 0，沒有實測依據，因此不設此項。
+  以上三項由 \`pnpm check:spec\` 執行：**新增檔未達即擋 build**，既有檔只出 WARN。
 【醫療審閱署名｜每篇必填】frontmatter 一律寫 \`reviewer: "黃子彥"\`（articles/myths/ingredients 放在 \`author:\` 下一行，news 沒有 author 欄位、放在 \`source:\` 下一行），並把 \`updatedDate\` 設為當天——\`lastReviewed\` 取自 \`updatedDate\`。審閱窗口是使用者，使用者已於 2026-08-06 指示交付內容一律視為已審閱，不要為此再回頭確認。規則見 docs/playbooks/medical-review.md。
-【曝光關｜動筆前必做】題目形狀對（過索引關）不等於有人搜（過曝光關）。`decision-guide` 索引率 92% 全站最高、曝光卻只有 14/篇，就是「索引得很漂亮的零曝光頁」。動筆前用 node scripts/audience-insights.mjs 或 GSC 確認這個題目**真的有人在搜**，不能靠推論。
+【曝光關｜動筆前必做】題目形狀對（過索引關）不等於有人搜（過曝光關）。\`decision-guide\` 索引率 92% 全站最高、曝光卻只有 14/篇，就是「索引得很漂亮的零曝光頁」。動筆前用 node scripts/audience-insights.mjs 或 GSC 確認這個題目**真的有人在搜**，不能靠推論。
 $COMMON_YMYL
 RULES
 )"
@@ -159,13 +159,34 @@ fi
 
 case "$TYPE" in
   news)
-    SELECT_BLOCK="撰寫趨勢文章。請依本 repo 的 AGENTS.md「撰寫趨勢文章」與 docs/news_sop.md 執行完整管線：Phase 1 用 WebSearch 跑 data/news-automation-config.json 的查詢建素材池（某組 allowed_domains 被封鎖回 400 整組全滅就記錄略過）；去重比對 data/processed-sources.json（已處理跳過，素材池空則靜默結束，印「無新草稿」）。**去重保留期分兩級（2026-09-07 起，不要改回單一 90 天）：\`outputFile\` 有值＝已成稿，保留 \`dedup.retentionDays\`（90 天）；\`outputFile\` 為 null＝未成稿，只保留 \`dedup.unwrittenRetentionDays\`（14 天），過期即從名冊移除、可重新進池。**理由：未成稿多半是當天分數差一點，而研究與法規題材會發展，兩週後可能就夠格；2026-09-06 那輪素材池全空、選題階段連跑都沒跑到，就是被 90 天鎖死的結果。清名冊這一步要在建素材池「之前」做；列既有檔用 ls/Glob 勿 Read 目錄；Phase 2 執行 node scripts/audience-insights.mjs 讀三桶（topicCandidates 併素材池標 internal-demand、writingDirectives 注入撰文、siteOptimizations 收進 run summary 不自動改既有頁）；五維度加權選題。**門檻制（重要）：只有加權分數 ≥6.0 的高把握選題才成篇；當天沒有夠強的選題就什麼都別留、印「無新草稿」靜默結束。** 同主題分組、最高分者優先，本輪至多 1 份高把握工單。**寧可零產出，也不要為發而發**。門檻不必過嚴（趨勢新聞有時效性，壓著不發等於作廢），但要清楚 news 這條產線的定位：2026-08-11 實測，news 佔全站 28% 的篇數只換到 5% 的曝光（3.6/篇，同期 myths 27.5、articles 38.6），且六成從未取得任何曝光。**它的價值在時效與選題雷達，不在流量——不要用它衝量。** 相對地它的 CTR 5.0% 是全站最高，代表寫得不差，是題目本身的搜尋壽命短。**選到「指引更新／法規變動／重大證據反轉」這類題目時：照常寫成 news，同時在 run summary 標記「建議升格為 articles 常青決策文」與建議的 queryPattern（優先 taiwan-regulation-market），讓週一的 articles 產線再寫一篇常青版。兩者是加法不是二選一。** ⚠️ 2026-08-11 這裡原本寫的是「就不要只寫成一則 news、讓 articles 接手」，與上面的 ≥6.0 門檻夾成死結——能過門檻的重大題目幾乎必然就是那三類，於是每天的正確結論都是「無新草稿」，產線連續 18 天零產出（2026-08-19～09-05），而「無新草稿」是設計上的正常結局所以無人察覺。**改這一段時務必檢查它與門檻規則會不會又互相咬死。****標題鐵則：\`titleDisplay\` 必須是讀者會實際打進搜尋框的問句或具體疑問**（例：「更年期荷爾蒙療法的黑框警語拿掉了，代表可以放心用嗎？」），**嚴禁「健康雷達 YYYY-MM-DD」這類日報流水句型、嚴禁把期刊名或研究設計當標題主體**；並確認前 18 字單獨看仍讀得通（social-meta 的 shortTitle 會截斷）。" ;;
+    SELECT_BLOCK="撰寫趨勢文章。請依本 repo 的 AGENTS.md「撰寫趨勢文章」與 docs/news_sop.md 執行完整管線：Phase 1 用 WebSearch 跑 data/news-automation-config.json 的查詢建素材池（某組 allowed_domains 被封鎖回 400 整組全滅就記錄略過）；去重比對 data/processed-sources.json（已處理跳過，素材池空則靜默結束，印「無新草稿」）。**去重保留期分兩級（2026-09-07 起，不要改回單一 90 天）：\`outputFile\` 有值＝已成稿，保留 \`dedup.retentionDays\`（90 天）；\`outputFile\` 為 null＝未成稿，只保留 \`dedup.unwrittenRetentionDays\`（14 天），過期即從名冊移除、可重新進池。**理由：未成稿多半是當天分數差一點，而研究與法規題材會發展，兩週後可能就夠格；2026-09-06 那輪素材池全空、選題階段連跑都沒跑到，就是被 90 天鎖死的結果。清名冊這一步要在建素材池「之前」做；列既有檔用 ls/Glob 勿 Read 目錄；Phase 2 執行 node scripts/audience-insights.mjs 讀三桶（topicCandidates 併素材池標 internal-demand、writingDirectives 注入撰文、siteOptimizations 收進 run summary 不自動改既有頁）；五維度加權選題。**門檻制（重要）：門檻值一律讀 data/news-automation-config.json 的 \`editorial.scoreThreshold\`（該檔是門檻的唯一權威來源，本 prompt 刻意不複述數字；Phase 1 本來就要讀這個檔跑查詢，選題前把這個值讀出來用）。只有加權分數 ≥ 該值的高把握選題才成篇；當天沒有夠強的選題就什麼都別留、印「無新草稿」靜默結束。run summary 第一行必須印出「本輪門檻＝X」與各候選的分數，讓「門檻是多少、有沒有真的讀到」事後查得出來。** 同主題分組、最高分者優先，本輪至多 1 份高把握工單。**寧可零產出，也不要為發而發**。門檻不必過嚴（趨勢新聞有時效性，壓著不發等於作廢），但要清楚 news 這條產線的定位：2026-08-11 實測，news 佔全站 28% 的篇數只換到 5% 的曝光（3.6/篇，同期 myths 27.5、articles 38.6），且六成從未取得任何曝光。**它的價值在時效與選題雷達，不在流量——不要用它衝量。** 相對地它的 CTR 5.0% 是全站最高，代表寫得不差，是題目本身的搜尋壽命短。**選到「指引更新／法規變動／重大證據反轉」這類題目時：照常寫成 news，同時在 run summary 標記「建議升格為 articles 常青決策文」與建議的 queryPattern（優先 taiwan-regulation-market），讓週一的 articles 產線再寫一篇常青版。兩者是加法不是二選一。** ⚠️ 2026-08-11 這裡原本寫的是「就不要只寫成一則 news、讓 articles 接手」，與上面的分數門檻夾成死結——能過門檻的重大題目幾乎必然就是那三類，於是每天的正確結論都是「無新草稿」，產線連續 18 天零產出（2026-08-19～09-05），而「無新草稿」是設計上的正常結局所以無人察覺。**改這一段時務必檢查它與門檻規則會不會又互相咬死。****標題鐵則：\`titleDisplay\` 必須是讀者會實際打進搜尋框的問句或具體疑問**（例：「更年期荷爾蒙療法的黑框警語拿掉了，代表可以放心用嗎？」），**嚴禁「健康雷達 YYYY-MM-DD」這類日報流水句型、嚴禁把期刊名或研究設計當標題主體**；並確認前 18 字單獨看仍讀得通（social-meta 的 shortTitle 會截斷）。" ;;
   articles)
     SELECT_BLOCK="撰寫常青文章內容（collection=articles）。**動筆前先讀 docs/playbooks/winning-article-formula.md（能贏的文章模子）**，再依 docs/content-guide.md 與既有篇章慣例撰寫。**選題鐵律：每篇題目必須同時具備該 playbook 的六基因**（①單一具體決定 ②「現在」觸發點 ③台灣在地限定 ④權威站沒寫的角度 ⑤切身後果 ⑥答案先行＋範圍狠收）；六基因不全就退化成排不上去的百科泛論、寧可不寫。**題型硬規則（2026-08-11 實測，索引率與曝光產出雙軌）：第一順位 queryPattern=taiwan-regulation-market**——曝光 397/篇，扣掉冠軍頁仍有 86/篇，是目前唯一被驗證能單篇帶進四位數曝光的形狀；題目要長成「某成分或產品在台灣的法規地位跟國外不同、代購或攜帶普遍、官方頁面難讀」。**第二順位 queryPattern=decision-guide**（索引率 92% 全站最高、曝光 38/篇、93% 有曝光；2026-08-11 曾誤判為 14/篇，那是拿剛發布幾天的稿當證據，08-21 已更正）。題目仍必須有實際搜尋量再動筆。**嚴禁在 articles 裡寫 queryPattern=myth-check**（索引率 56%、曝光 10/篇，且與 myths collection 自我競爭，闢謠題一律進 myths）；audience-stage-guide 索引率 88% 但曝光僅 10/篇（樣本已夠老，不是稿齡問題），沒有明確需求訊號就不要寫；comparison 要寫務必收窄成「選錯有後果的二選一」。細節見 docs/playbooks/winning-article-formula.md。**選題第一順位＝擴寫已有牽引力的主題叢集**：先 node scripts/audience-insights.mjs 讀三桶、並對照已有曝光/排名的主題（如 melatonin 等目前流量引擎），把單點頁擴成「主題叢集」（補相鄰子題、強化彼此內鏈）——但每個子題都要獨立通過六基因，別為湊叢集寫泛論。新題循 playbook 的選題法（進口/合法性、保健品×藥物交互作用、某關卡前要不要停、選錯有後果的二選一）。**選題第二順位＝把 news 產線抓到的重大轉向升格為常青決策文**：掃近 14 天 src/content/news/ 已產出的稿，挑出屬於「指引更新／法規變動／重大證據反轉」且站上**沒有**對應常青決策文的題目。news 是一日新聞會被埋掉，這類題目的決策價值是長期的。（2026-08-08 實例：FDA 移除更年期荷爾蒙治療黑框警語只進了一則 radar，而站上 6 篇更年期文全是保健品、沒有一篇談這個醫療決定。）輔助訊號：近 7 天排名 5–15 且有曝光的 query 看前 3 名競品缺口。**動筆前必做的排除檢查**：用 ls/Glob 列出 src/content/articles/ 全部檔名，並確認**排程稿**（publishDate 在未來、draft 非 true）沒有人在寫同一題——排程稿不在 dist 裡，用網站搜尋與 GSC 都看不到，只能直接看 src。2026-08-08 就是漏了這一步，在既有文裡加了一節，跟一篇 08-25 排程稿打對台。**只做常青內容、不要寫成新聞稿**；標題用讀者會打的問句而非名詞短語；列既有檔用 ls/Glob 勿 Read 目錄、避免與既有 slug 重複。本輪挑 1–2 個最高 ROI 主題成篇（寧少勿濫，YMYL）。" ;;
   ingredients)
     SELECT_BLOCK="撰寫常青成分解析內容（collection=ingredients）。請依 docs/content-guide.md 與既有篇章慣例撰寫。**選題第一順位＝站內連結缺口**：掃站內既有文章/闢謠/趨勢中**反覆被提到、卻還沒有專屬成分頁**的成分（用 ls/Glob 列既有 ingredients、用 grep 找站內提及），優先補這些成分頁，讓站內互連更密、強化主題權威。輔助訊號：audience-insights demandScore 高、排名 5–15 競品成分頁缺口。**只做常青內容、不要寫成新聞稿**；避免與既有 slug 重複。本輪挑 1–2 個最高 ROI 成分成篇（寧少勿濫，YMYL）。" ;;
   myths)
-    SELECT_BLOCK="撰寫常青闢謠內容（collection=myths，發布前過 pnpm check:myths；版型刻意簡化，照 docs/content-guide.md 與 myths 慣例，勿加延伸閱讀/更正紀錄等區塊）。**選題第一順位＝當下正在流傳的謠言**：用 WebSearch 找此刻在社群/搜尋上熱傳的健康/營養謠言或誤解（時效性高、易被搜尋與分享者），優先闢這些。輔助訊號：audience-insights demandScore、可與當天 news 爭議點互導。**只做常青內容、不要寫成新聞稿**；列既有檔用 ls/Glob 勿 Read 目錄、避免與既有 slug 重複。本輪挑 1–2 則最高 ROI 謠言成篇（寧少勿濫，YMYL）。" ;;
+    SELECT_BLOCK="撰寫常青闢謠內容（collection=myths，發布前過 pnpm check:myths；版型刻意簡化，照 docs/content-guide.md 與 docs/page-rules/myths.md，勿加更正紀錄這類與閱讀動線無關的區塊）。
+
+【供給來源｜唯一】**只寫「此刻真的有人在傳」的謠言**（2026-09-08 業主裁示）。題庫式發想、憑印象覺得「大家應該常誤會」的題目一律不寫——沒有流傳證據就不是闢謠，是自問自答。動筆前必須先取到下列任一條管道的具體證據。四條都實測可從本機直連；反之 google.com／search.google.com 在本機連不上，不要浪費時間試：
+  Ⓐ **Cofacts 真的假的**（LINE 上被回報的訊息，最直接的流傳量證據）：POST https://api.cofacts.tw/graphql ——⚠️ 網址一定要用 api.cofacts.tw，打 cofacts-api.g0v.tw 會 303 轉址並把 POST body 丟掉、回 500。健康類看兩個分類：filter 的 categoryIds 用 [\"medical\", \"lT3h7XEBrIRcahlYugqq\"]（疾病醫藥／保健秘訣食品安全），配 createdAt 的 GTE 限近 90 天，orderBy 用 replyRequestCount DESC。證據＝訊息 id ＋ replyRequestCount（多少人在 LINE 上問這則）＋ createdAt。
+  Ⓑ **台灣事實查核中心**：https://tfc-taiwan.org.tw/feed/ （RSS）與 https://tfc-taiwan.org.tw/weekly-top-10-rumors/ （每週謠言 TOP10）。證據＝查核報告 URL ＋ 發布日 ＋（取自 TOP10 時）名次與週次。
+  Ⓒ **MyGoPen**：https://www.mygopen.com/feeds/posts/default?alt=rss （Blogger RSS，帶發布日期）。證據＝該篇 URL ＋ 發布日。
+  Ⓓ **GSC 實際被打進搜尋框的問句**：跑 node scripts/audience-insights.mjs，讀 data/audience-insights.json 的 topicCandidates——一句話有人搜，就是它正在流傳。證據＝查詢字串 ＋ evidence.impressions ＋ evidence.position。
+  Ⓔ **WebSearch 只能當佐證、不能當唯一證據**：用它回頭確認 Ⓐ–Ⓓ 命中的說法近期仍在社群／內容農場／短影音上流通，或補齊流傳版本的原話。單靠 WebSearch 的「感覺很多人在傳」不算證據。
+
+【判準｜刻意留活路，不要再夾出死結】⚠️ 2026-08-11 news 產線就是被兩條選題規則夾成死結，連續 18 天零產出而無人察覺（因為「無新草稿」是設計上的正常結局）。所以這裡只設**二值判準**，不設加權分數門檻：
+  ① 命中 Ⓐ–Ⓓ **任一條**即算有流傳證據，**不要求同時命中多條**、也不設「幾人回報以上」的量的下限。
+  ② 時間窗先抓近 90 天；四條都撈不到候選才放寬到 180 天；再撈不到才收工印「無新草稿」。
+  ③ **已被 TFC／MyGoPen 查核過不是排除理由**——那正是它在流傳的證明。本站要寫的是完整證據鏈與台灣情境版本；但**禁止改寫查核報告原文**，一級文獻自己找（七月標準：myths 可點來源 10 筆、正文 3,500 字）。
+  ④ 唯一的排除是撞題：用 ls/Glob 列 src/content/myths/ 既有檔名（勿 Read 目錄）並比對 mythClaim，同題就換下一個候選，**不是整輪放棄**。
+  ⑤ 本輪 1–2 則。候選只有 1 則就把那 1 則寫好，不要為湊 2 則而勉強，也不要因為湊不滿 2 則而整輪不寫。
+
+【證據要落地｜用既有 frontmatter 欄位，不要自創新欄位（Zod 會靜默剝除）】
+  ▸ rumorSources：每一筆寫成「管道＋可核對的識別＋日期＋量」，例如「Cofacts 訊息 LC8psZ8BEY7yIwhpgSU5（2026-07-30，24 人詢問）」「台灣事實查核中心 2026-08-17～23 每週謠言 TOP10 第 3 名」「GSC 查詢『吃抗凝血劑可以吃魚油嗎』近 28 天曝光 6、平均排名 12.3」。**禁止再填「長輩經驗談」「家庭群組轉傳」「短影音簡化說法」這類無法核對的泛稱**——它不算流傳證據，也會撞硬規則 13 跨頁樣板（pnpm check:boilerplate）。
+  ▸ spreadLevel：要對得上上面那個量（回報人數／TOP10 名次／曝光數），不要憑感覺填。
+  ▸ currentSituation／popularVersions／whyItSpreads：寫**這一則此刻的真實流傳形態**（在哪個平台、哪個版本的原話、為什麼這個版本現在有人信），不要寫放諸四海皆準的通則。
+【run summary｜stdout 必印】每篇一行：slug ｜ 證據管道（Ⓐ–Ⓓ）｜ 識別碼或 URL ｜ 量化數字 ｜ 證據日期。**零產出時也要逐條印出 Ⓐ–Ⓓ 各查了什麼、各自為什麼沒有候選**——2026-09-05 的教訓是零產出只留一行 log，故障就會被當成正常。
+【別把自己餓死｜兩個實測會導致零產出的坑，與選題無關】① 2026-08-14 與 09-04 兩輪零產出的原因是主 session 把撰寫子代理丟到背景後空等，被 600 秒上限砍斷——子代理要在**同一則訊息並行派出並等它們回傳**，不要進背景等待模式。② scripts/check-myth-quality.mjs 有 EXPECTED_PUBLISHED_COUNT 哨兵，新增 published 迷思後**必須同步把它調成實際篇數**，否則 pnpm check:myths 必掛、剛寫好的稿會被你自己刪掉。" ;;
   podcast)
     SELECT_BLOCK="你是『喜聞樂健』Podcast 的選題＋寫手。喜聞樂健是**單人主講**的健康科普聊天節目（每集約 15 分鐘）。本次產 **1 份逐字講稿**。
 【選題】用 WebSearch 找近期值得聊的熱門健康/營養話題（**健康為主、可踩社會熱點**，像泛科學那樣把硬知識講成能聊的故事）；優先能呼應站內既有深文、可在節目尾自然導流者；可參考 node scripts/audience-insights.mjs 高需求桶。
@@ -257,6 +278,9 @@ mapfile -t NEW_FILES < <(git status --porcelain -- "$CONTENT_SUBDIR" | awk '/^(\
 # 這裡改成計數 + 達門檻就吵，避免同樣的靜默故障再發生一次。
 ZERO_STREAK_FILE="$CONF_DIR/zero-streak-$TYPE.txt"
 ZERO_ALERT_AT=3   # 連續幾次零產出就通知（news 每日跑＝3 天；週更型＝3 週）
+# myths 例外（2026-09-08）：供給來源改成「唯一收當下實際在流傳的謠言」後選題面變窄，
+# 餓死風險比題庫式發想高；週更 3 次＝靜默三週才吵太慢，提前到連續 2 次（＝兩週沒稿）。
+[ "$TYPE" = "myths" ] && ZERO_ALERT_AT=2
 if [ ${#NEW_FILES[@]} -eq 0 ]; then
   STREAK=$(( $(cat "$ZERO_STREAK_FILE" 2>/dev/null || echo 0) + 1 ))
   echo "$STREAK" > "$ZERO_STREAK_FILE"

@@ -24,6 +24,7 @@
 - **ledger 去重視窗**：近 **14 天**動過的頁不再選（除非索引仍掛 0 且為高 ROI）。
 - **觸發時間**：台北 10:30 = UTC 02:30（吃當天 news 06:17 / sitemap+索引 09:00 / perf 09:30 的新鮮結果）。
 - **允許 no-op**：當天沒有過 gate 的高 ROI 項目 → 靜默結束、不空 commit。
+- **no-op 連續告警**：`ZERO_ALERT_AT=3`（寫在 `optimize-cron.sh`）。連續 3 次 no-op（本 job 每日跑＝3 天）就在每日摘要之外再發一則 Slack 警報；當天有 commit 即歸零。計數檔 `$CONF_DIR/zero-streak-optimize.txt`（主機 runtime，不進 repo）。
 - **資料來源**：`pnpm perf`、`pnpm insights`（含 `queriesLast7`/`queriesPrev7` 週對週）、`pnpm index:coverage`。
 
 ## 2. 每日 7 步迴圈
@@ -63,6 +64,9 @@ Read 它。再 Read `optimize-ledger.jsonl`，取近 14 天動過的 `slug` 集�
   `git diff` 對異動檔自動推 IndexNow（Bing/ChatGPT search 路徑）。(A) 衝索引的目標頁若想額外催 Google 重抓，可
   `node scripts/sitemap-submit.mjs`。最後把每個改過的 slug append 進 ledger。
 - 沒有過 gate 的高 ROI 項目 → **no-op**，只寫 run-log、不 commit。
+  **但 no-op 會被計數**（見 §1「no-op 連續告警」）：wrapper 以「HEAD 有沒有多一個 commit」判定本輪是否有產出，
+  零產出就把 `zero-streak-optimize.txt` 加一、有產出就刪檔歸零。no-op 是允許的結局，**連續** no-op 是故障訊號——
+  這條迴圈的痕跡（run-log、cron log）全在主機、不在 repo，沒有計數器的話產線死掉在 GitHub 上看不出來。
 - **工作樹清理（cron wrapper 自動做，不靠 prompt）**：claude 對該保留的改動已自行 commit/push；
   腳本結尾只要偵測到殘留未提交變更（DRY_RUN 的試改、gate 失敗 abort、no-op 前的試改），
   一律 `git stash -u && stash drop` 清回 HEAD——否則會污染隔天 `git pull --ff-only`（衝突）或被下次 run 誤 commit。
@@ -76,7 +80,8 @@ stdout 印 3 行內摘要。
 ### Step 6 — Slack 通報（優化報報頻道）
 cron wrapper 收尾時自動發一則摘要到 Slack「優化報報」頻道（`C0BCABEBHHD`），claude 本身不負責發。
 依結果分三類：**已部署**（HEAD 有新 commit → 列 commit 主旨＋今日 ledger 條目＋GitHub commit 連結）／
-**no-op**（HEAD 未變 → 一句原因）／**失敗**（claude 中斷）。`DRY_RUN=1` 不發。
+**no-op**（HEAD 未變 → 一句原因＋目前連續零產出次數）／**失敗**（claude 中斷）。`DRY_RUN=1` 不發、也不計數。
+連續零產出達 `ZERO_ALERT_AT` 次時，**另外**發一則 ⚠️ 警報（指向 cron log 與當日 run-log，提示檢查選題護欄是否互相咬死）。
 發送走 `slack-notify.sh`（讀 `SLACK_BOT_TOKEN` env 或 `slack-bot-token` 檔）；**缺 token 自動略過、不中斷優化**。
 頻道對照與 token 位置見記憶 `slack-channels` 與 `secrets.md` § Slack。
 
@@ -99,6 +104,10 @@ optimize(<area>): <一句話今日做了什麼>
 - **commit 進不該進的檔**：`data/audience-insights.json`、`reports/*.raw.txt`、raw 快照一律不 commit（`.gitignore` 已涵蓋部分，仍要顯式只 add 改動檔）。
 - **+8 重複時差**：cron 已 `TZ=Asia/Taipei`，再 +8 會讓日期/檔名多 8 小時。
 - **gate 沒過硬 push**：任何 gate fail 一律 abort，寧可 no-op 也不部署壞站。
+- **靜默死亡**：允許 no-op 的產線一定要配連續計數＋告警，否則「每天都正常結束、每天都沒產出」不會有人發現。
+  同一個錯誤在 news 產線上發生過（連續零產出 18 天無人察覺），修法見 `ops/README.md` 設計鐵則 12。
+- **`set -e` 把通報吃掉**：本腳本是 `set -euo pipefail`，收尾通報裡的 `grep`／`[ -z ... ] && ...`
+  一旦「什麼都沒撈到」就會讓腳本在發訊之前結束——警報反而發不出去。這幾行一律補 `|| true`。
 
 ## 5. 驗證清單（改完 cron / playbook 後）
 
@@ -106,6 +115,8 @@ optimize(<area>): <一句話今日做了什麼>
 - [ ] 乾跑：手動 `DRY_RUN=1 optimize-cron.sh`（prompt 收到 DRY_RUN 時只產 run-log、**不 commit/push**）→ 看 `reports/optimize-*.md` 合理。
 - [ ] crontab 時間為 UTC（Vixie 不支援 `CRON_TZ`），台北 10:30 = UTC 02:30，與 06:17/09:00/09:30 錯開。
 - [ ] 連續觀察數日 run-log：改動數 ≤5、無重複頁、no-op 日確實沒 commit。
+- [ ] no-op 計數會動：no-op 當天看 `$CONF_DIR/zero-streak-optimize.txt` 有加一，有 commit 的當天該檔消失。
+- [ ] 連續零產出達 `ZERO_ALERT_AT` 次時，「優化報報」頻道確實收到 ⚠️ 警報（而不是只有每日 no-op 摘要）。
 
 ## 相關
 

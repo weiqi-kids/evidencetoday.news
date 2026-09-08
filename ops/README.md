@@ -24,7 +24,7 @@
 | `draft-cron.sh <type>` | 撰寫出草稿→暫存→**自動標 approved（2026-08-06 業主裁示直接發佈制，不再發按鈕等人工 ✅）**。**articles 選題受「能贏的文章模子」六基因約束**（SELECT_BLOCK 已注入，見鐵則 8）。**news 維持每日、受標題形狀約束**（見鐵則 9），但**定位已改為選題雷達而非流量來源**（2026-08-11 實測：佔全站 28% 篇數只換到 5% 曝光、3.6/篇，六成從未有曝光；同期 myths 27.5、articles 38.6）——選到決策價值長期的題目要在 run summary 標記「建議升格為 articles 常青決策文」交給週一產線。**所有頁面型產線另受「七月標準」約束**（來源數／正文長度／articles 站內連結，`pnpm check:spec` 擋新增檔）。**零產出連續達 `ZERO_ALERT_AT` 次會發 Slack 警報**（計數檔 `$CONF_DIR/zero-streak-<type>.txt`，有產出即歸零）——零產出本身是門檻制允許的結局，但「連續」零產出是故障訊號。 | `slack-approval-gate.md`、`winning-article-formula.md` |
 | `publish-approved.sh` | 讀狀態→過完整 gate→發佈→連結生效後**直接發頻道**「已上線+連結」（直接發佈制，無 thread 錨點）。 | `slack-approval-gate.md` |
 | `news-cron.sh` | （備援，已停用）原 /news 全自動發布。 | `news_sop.md` |
-| `optimize-cron.sh` | 每日自我優化引擎（改既有頁→部署→發優化報報）。 | `daily-optimize.md` |
+| `optimize-cron.sh` | 每日自我優化引擎（改既有頁→部署→發優化報報）。**no-op 連續達 `ZERO_ALERT_AT` 次會發 Slack 警報**（計數檔 `$CONF_DIR/zero-streak-optimize.txt`，當天有 commit 即歸零），機制與 `draft-cron.sh` 同一套。 | `daily-optimize.md` |
 | `perf-report.sh` | 每 3 天 GA4+GSC 經營建議（避開 optimize 已做的事，發優化報報）。 | `audience-insights.md` |
 | `sitemap-submit.sh` | 每 3 天對 GSC 重提交 sitemap + 索引覆蓋率快照。 | — |
 | `googlenews-watch.sh` | 每週 Google News 曝光監測。 | — |
@@ -69,11 +69,13 @@
 10. **醫療審閱署名一律由管線自帶**：`draft-cron.sh` 的 `COMMON_RULES_PAGE` 要求每篇頁面型草稿寫 `reviewer: "黃子彥"` 並把 `updatedDate` 設為當天。2026-09-05 前這條不存在，於是自動產出的稿一篇都沒掛署名（news 116 篇全缺，靠當天補掛）——改這段時不要拿掉，否則會再度靜默累積無署名內容。規則見 `docs/playbooks/medical-review.md`。
 11. **news 產出頻率與標題形狀**：
    - **頻率＝維持每日**（`17 22 * * 0-6`）。2026-08-04 曾規劃降為週二/四/六，**2026-08-05 撤回，從未套用到主機**。撤回理由：當初的前提（索引率低、灌新 URL 會稀釋權重）已被後續數據推翻，且趨勢新聞位置校正後的 CTR 達成率是全站最高的一群。更關鍵的是**趨勢新聞有時效性——壓著不發等於作廢**，稿子排完就該送出去。
-   - **門檻**：`data/news-automation-config.json` 的 `scoreThreshold` / `soloArticleMinScore` 與 SELECT_BLOCK 的加權門檻，皆維持原值（2026-08-05 由降頻期的暫時提高值還原）。**實際數值以 `news-automation-config.json` 為準，不在本檔複述**。
+   - **門檻**：唯一權威來源是 `data/news-automation-config.json` 的 `editorial.scoreThreshold` / `soloArticleMinScore`，**本檔與任何 prompt 都不複述數值**。2026-09-08 前 SELECT_BLOCK 曾把成篇門檻硬寫在 prompt 裡，與 config 不一致而 config 被無聲覆蓋（agent 只看得到 prompt）；已改成「prompt 指示 agent 去讀 config 的 `scoreThreshold`」，並要求 run summary 印出本輪採用的門檻值，讓「有沒有真的讀到」可稽核。**要調門檻改 config 一處即可，不要再把數字寫回 prompt。**
    - **標題**（此項與降頻無關，保留）：`titleDisplay` 必須是讀者會實際打進搜尋框的問句，**嚴禁「健康雷達 YYYY-MM-DD」日報流水句型**、嚴禁把期刊名或研究設計當標題主體；並確認前 18 字單獨看讀得通（`social-meta.mjs` 的 `shortTitle()` 會截到 18 字）。
    - ⚠️ **news 的 `publishDate` 一律等於檔名的名目日期**（`radar-YYYY-MM-DD`），不可為了調整全站發文量而延後——2026-08-04 曾把 news 一併拉開，導致標題日期與實際發布日差了一個多月，等於發一批上線即過期的新聞。要調發文量請動 evergreen（articles/ingredients/myths）。
    - **⏰ 何時重新評估頻率**：到期日在 `docs/reminders.md`，評估流程與判準在 `docs/playbooks/news-cadence-review.md`。**判準用的數字一律當場跑指令取得**（`pnpm perf` / `pnpm index:coverage` / `pnpm stats`），不要在本檔寫死基準。
    - 改動時三處要一起改：本檔 crontab 區塊、`draft-cron.sh` 的 news SELECT_BLOCK、`news-automation-config.json`。
+12. **零產出／no-op 連續計數是產線的死亡偵測，不要拿掉**：`draft-cron.sh`（頁面型）與 `optimize-cron.sh` 共用同一套寫法——計數檔 `$CONF_DIR/zero-streak-<type>.txt`（optimize 為 `zero-streak-optimize.txt`）、有產出即 `rm -f` 歸零、連續達 `ZERO_ALERT_AT`（兩支皆 3）就走 `slack-notify.sh` 發一則警報。**由來**：這兩條產線的「零產出」都是門檻制/護欄允許的正常結局，而執行痕跡（run-log、cron log）都在主機、不在 repo，於是產線死掉在 GitHub 上完全看不出來——news 曾連續 18 天零產出無人察覺（2026-08-19～09-05），optimize 則在 2026-09-08 被查出長期沒有任何 `optimize(...)` commit。**新增任何「允許靜默結束」的自動化，一律要一起附上這個計數器。**
+13. **`set -euo pipefail` 的腳本裡，`grep`／`[ -z ... ] && ...` 一律補 `|| true`**：optimize-cron.sh 的 no-op 通報分支曾因 `REASON="$(grep ...)"` 撈不到而讓整支腳本在發訊「之前」結束——等於自己製造靜默。收尾通報段落的每一行都要能在「什麼都沒撈到」時活著跑完。
 
 ## crontab（在 `/etc/cron.d/evidencetoday`，單檔一專案；系統 TZ=UTC，排程以 UTC 寫，台北＝UTC+8）
 

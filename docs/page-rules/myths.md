@@ -4,6 +4,59 @@
 
 ---
 
+## 選題供給來源：唯一收「當下實際在流傳的謠言」
+
+2026-09-08 業主裁示：闢謠線的選題供給來源**只有一個**——此刻真的有人在傳的說法。
+題庫式發想（憑印象覺得「大家應該常誤會這個」）一律不做：沒有流傳證據就不是闢謠，是自問自答。
+規則寫在 `ops/draft-cron.sh` 的 myths `SELECT_BLOCK`，改動請一併更新本節。
+
+### 四條取證管道（都實測可從自動化主機直連；Google 網域連不上，別試）
+
+| 管道 | 端點 | 拿到的證據 |
+|---|---|---|
+| Cofacts 真的假的（LINE 回報訊息） | `POST https://api.cofacts.tw/graphql` | 訊息 id、`replyRequestCount`（多少人在 LINE 上問這則）、`createdAt` |
+| 台灣事實查核中心 | `https://tfc-taiwan.org.tw/feed/`、`https://tfc-taiwan.org.tw/weekly-top-10-rumors/` | 查核報告 URL、發布日、每週謠言 TOP10 的名次與週次 |
+| MyGoPen | `https://www.mygopen.com/feeds/posts/default?alt=rss` | 該篇 URL、發布日 |
+| GSC 實際被打進搜尋框的問句 | `node scripts/audience-insights.mjs` → `data/audience-insights.json` 的 `topicCandidates` | 查詢字串、`evidence.impressions`、`evidence.position` |
+
+- Cofacts 的健康題在兩個分類底下：`medical`（疾病、醫藥）與 `lT3h7XEBrIRcahlYugqq`（保健秘訣、食品安全）。
+- ⚠️ Cofacts 一定要打 `api.cofacts.tw`。打 `cofacts-api.g0v.tw` 會 303 轉址並把 POST body 丟掉、回 500，看起來像 API 壞了。
+- WebSearch **只能當佐證**（回頭確認說法近期仍在流通、補流傳版本的原話），不能當唯一證據。
+
+### 判準刻意是二值的，不設分數門檻
+
+命中上表**任一條**即算有流傳證據，不要求同時命中多條、不設「幾人回報以上」的下限。
+這是刻意的：news 線 2026-08-11 被兩條選題規則夾成死結，連續數週零產出而無人察覺，因為「無新草稿」是設計上的正常結局。
+改這一節時務必檢查新規則與既有門檻（七月標準、`check:myths`、撞題排除）會不會又互相咬死。
+
+- 時間窗先抓近 90 天；四條都撈不到候選才放寬到 180 天。
+- **已被 TFC／MyGoPen 查核過不是排除理由**，那正是它在流傳的證明；但禁止改寫查核報告原文，一級文獻要自己找。
+- 唯一的排除是撞題（既有 slug／`mythClaim` 相同）——換下一個候選，不是整輪放棄。
+
+### 證據要落地在既有 frontmatter 欄位
+
+不要為此加新欄位（`mythsSchema` 沒宣告的欄位會被 Zod 靜默剝除，見本檔 FAQ 那條的前例）。
+
+| 欄位 | 新要求 |
+|---|---|
+| `rumorSources` | 每筆＝「管道＋可核對的識別＋日期＋量」，例如「Cofacts 訊息 `<id>`（`<日期>`，`<n>` 人詢問）」「TFC 每週謠言 TOP10 `<週次>` 第 `<n>` 名」「GSC 查詢『…』近 28 天曝光 `<n>`、平均排名 `<x>`」。**禁止填「長輩經驗談」「家庭群組轉傳」這類無法核對的泛稱**——不算證據，且會撞硬規則 13 跨頁樣板 |
+| `spreadLevel` | 要對得上 `rumorSources` 裡的量，不憑感覺填 |
+| `currentSituation` / `popularVersions` / `whyItSpreads` | 寫這一則**此刻**的真實流傳形態（哪個平台、哪個版本的原話），不寫放諸四海皆準的通則 |
+
+run summary（cron stdout，落在 `/var/log/evidencetoday/draft-myths.log`）每篇一行印出「slug｜管道｜識別碼或 URL｜量化數字｜證據日期」；**零產出時要逐條印出四條管道各查了什麼、為什麼沒有候選**。
+
+### 連續零產出告警
+
+`ops/draft-cron.sh` 的 `ZERO_STREAK` 機制涵蓋 myths：連續零產出達門檻就發闢謠頻道 Slack 警報，有稿即歸零。
+myths 是週更且供給面比題庫式窄，門檻獨立設得比每日型的 news 更早觸發（見 `draft-cron.sh` 的 `ZERO_ALERT_AT`）。
+
+### 兩個與選題無關、但實測會造成零產出的坑
+
+1. 撰稿子代理被丟到背景後主 session 空等，會被 headless 的背景等待上限砍斷 → 子代理要在同一則訊息並行派出並等它們回傳。
+2. `scripts/check-myth-quality.mjs` 的 `EXPECTED_PUBLISHED_COUNT` 是哨兵：新增 published 迷思後沒同步調整，`pnpm check:myths` 必掛，剛寫好的稿會被產線自己刪掉。
+
+---
+
 ## 單篇頁：極簡，但分清楚擋的是什麼
 
 - ~~不要加「延伸閱讀」「相關內容」這類導覽區塊~~ → **2026-08-07 推翻，延伸閱讀已加上**。

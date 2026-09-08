@@ -29,7 +29,7 @@ export async function getStaticPaths() {
     getCollection('news', (e) => isPublicEntry(e.data)),
     getCollection('podcasts', (e) => isPublicEntry(e.data)),
     getCollection('videos', (e) => isPublicEntry(e.data)),
-    getCollection('topic-overviews', (e) => !e.data.draft),
+    getCollection('topic-overviews', (e) => isPublicEntry(e.data)),
   ]);
 
   const byDate = (a: { data: { publishDate: Date } }, b: { data: { publishDate: Date } }) =>
