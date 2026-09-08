@@ -26,6 +26,7 @@
 ## 前端 / 效能
 
 - [ ] Pagefind 搜尋頁改為動態載入
+- [ ] 訂閱機制：主線已定案（LINE 官方帳號），入口實作待動工；工具型頁面規格已寫、待動工 → [`superpowers/specs/subscription.md`](./superpowers/specs/subscription.md)、[`superpowers/specs/interactive-tools.md`](./superpowers/specs/interactive-tools.md)
 
 ---
 
