@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" width="960" height="600">
+<style>
+text{font-family:'Microsoft JhengHei','Noto Sans TC',sans-serif}
+.t{font-size:21px;font-weight:700;fill:#1A4F8B}
+.st{font-size:13px;fill:#64748B}
+.yr{font-size:15px;font-weight:700;fill:#fff}
+.lb{font-size:13px;font-weight:700;fill:#1E293B}
+.dc{font-size:11px;fill:#64748B}
+.nt{font-size:11px;fill:#64748B}
+</style>
+<rect width="960" height="600" fill="#fff"/>
+<rect width="960" height="76" fill="#EEF4FB"/>
+<text x="480" y="35" text-anchor="middle" class="t">適應原（Adaptogen）概念發展歷史時間軸</text>
+<text x="480" y="58" text-anchor="middle" class="st">從蘇聯藥理學研究到現代全球保健品市場</text>
+<line x1="90" y1="300" x2="872" y2="300" stroke="#3E7CB1" stroke-width="3"/>
+<polygon points="870,294 884,300 870,306" fill="#3E7CB1"/>
+<line x1="160" y1="244" x2="160" y2="290" stroke="#E8923A" stroke-width="2" stroke-dasharray="5,3"/>
+<circle cx="160" cy="300" r="11" fill="#E8923A" stroke="#fff" stroke-width="2.5"/>
+<rect x="78" y="130" width="164" height="114" rx="8" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="1.5"/>
+<rect x="78" y="130" width="164" height="30" rx="8" fill="#1A4F8B"/>
+<rect x="78" y="148" width="164" height="12" fill="#1A4F8B"/>
+<text x="160" y="151" text-anchor="middle" class="yr">1947 年</text>
+<text x="160" y="181" text-anchor="middle" class="lb">蘇聯藥理學家</text>
+<text x="160" y="200" text-anchor="middle" class="lb">拉扎列夫</text>
+<text x="160" y="220" text-anchor="middle" class="dc">首次提出</text>
+<text x="160" y="237" text-anchor="middle" class="dc">「適應原」術語</text>
+<line x1="360" y1="310" x2="360" y2="360" stroke="#E8923A" stroke-width="2" stroke-dasharray="5,3"/>
+<circle cx="360" cy="300" r="11" fill="#E8923A" stroke="#fff" stroke-width="2.5"/>
+<rect x="278" y="360" width="164" height="124" rx="8" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="1.5"/>
+<rect x="278" y="360" width="164" height="30" rx="8" fill="#1A4F8B"/>
+<rect x="278" y="378" width="164" height="12" fill="#1A4F8B"/>
+<text x="360" y="381" text-anchor="middle" class="yr">1969 年</text>
+<text x="360" y="411" text-anchor="middle" class="lb">布列赫曼與達爾狄莫夫</text>
+<text x="360" y="430" text-anchor="middle" class="lb">發表正式定義</text>
+<text x="360" y="452" text-anchor="middle" class="dc">確立三大判定標準：</text>
+<text x="360" y="468" text-anchor="middle" class="dc">無毒、非特異性、調節恆定</text>
+<line x1="580" y1="244" x2="580" y2="290" stroke="#3E7CB1" stroke-width="2" stroke-dasharray="5,3"/>
+<circle cx="580" cy="300" r="11" fill="#3E7CB1" stroke="#fff" stroke-width="2.5"/>
+<rect x="498" y="130" width="164" height="114" rx="8" fill="#EEF4FB" stroke="#3E7CB1" stroke-width="1.5"/>
+<rect x="498" y="130" width="164" height="30" rx="8" fill="#3E7CB1"/>
+<rect x="498" y="148" width="164" height="12" fill="#3E7CB1"/>
+<text x="580" y="151" text-anchor="middle" class="yr">2000 年代</text>
+<text x="580" y="181" text-anchor="middle" class="lb">草本植物進入</text>
+<text x="580" y="200" text-anchor="middle" class="lb">全球保健品市場</text>
+<text x="580" y="220" text-anchor="middle" class="dc">刺五加、紅景天等</text>
+<text x="580" y="237" text-anchor="middle" class="dc">風靡歐美消費市場</text>
+<line x1="780" y1="310" x2="780" y2="360" stroke="#3E7CB1" stroke-width="2" stroke-dasharray="5,3"/>
+<circle cx="780" cy="300" r="11" fill="#3E7CB1" stroke="#fff" stroke-width="2.5"/>
+<rect x="698" y="360" width="164" height="124" rx="8" fill="#EEF4FB" stroke="#3E7CB1" stroke-width="1.5"/>
+<rect x="698" y="360" width="164" height="30" rx="8" fill="#3E7CB1"/>
+<rect x="698" y="378" width="164" height="12" fill="#3E7CB1"/>
+<text x="780" y="381" text-anchor="middle" class="yr">現今・台灣</text>
+<text x="780" y="411" text-anchor="middle" class="lb">多元保健食品</text>
+<text x="780" y="430" text-anchor="middle" class="lb">蓬勃發展</text>
+<text x="780" y="452" text-anchor="middle" class="dc">天然草本適應原</text>
+<text x="780" y="468" text-anchor="middle" class="dc">消費者關注度持續提升</text>
+<text x="480" y="558" text-anchor="middle" class="nt">※ 相關保健食品非藥品，不具治療、診斷或預防疾病功效，購買前請諮詢專業醫療人員</text>
+<text x="940.8" y="585" text-anchor="end" font-family="sans-serif" font-size="17" fill="#64748B" fill-opacity="0.45" font-weight="600">本日有據</text></svg>
