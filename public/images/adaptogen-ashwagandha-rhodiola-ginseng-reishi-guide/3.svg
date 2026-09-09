@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" width="960" height="600">
+<style>
+  text { font-family: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif; }
+  .title { font-size:20px; font-weight:bold; fill:#1A4F8B; }
+  .sub { font-size:13px; fill:#1E293B; font-weight:bold; }
+  .label { font-size:11px; fill:#64748B; }
+  .val { font-size:11px; fill:#1E293B; }
+  .tag { font-size:10px; fill:#FFFFFF; font-weight:bold; }
+  .head { font-size:15px; font-weight:bold; fill:#FFFFFF; }
+  .note { font-size:9px; fill:#64748B; }
+</style>
+
+<!-- 背景 -->
+<rect width="960" height="600" fill="#FFFFFF"/>
+
+<!-- 標題列 -->
+<rect x="0" y="0" width="960" height="54" fill="#1A4F8B"/>
+<text x="480" y="34" text-anchor="middle" class="head" font-size="18">四種適應原成分比較一覽</text>
+<text x="480" y="50" text-anchor="middle" font-size="10" fill="#EEF4FB">適用情境・作用速度・適合族群・研究證據強度</text>
+
+<!-- 分隔線 -->
+<line x1="480" y1="54" x2="480" y2="580" stroke="#3E7CB1" stroke-width="1.5" stroke-dasharray="4,3"/>
+<line x1="0" y1="327" x2="960" y2="327" stroke="#3E7CB1" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+<!-- ===== 左上：南非醉茄 Ashwagandha ===== -->
+<rect x="10" y="62" width="460" height="258" rx="8" fill="#EEF4FB" stroke="#3E7CB1" stroke-width="1.5"/>
+<rect x="10" y="62" width="460" height="38" rx="8" fill="#1A4F8B"/>
+<rect x="10" y="88" width="460" height="12" fill="#1A4F8B"/>
+<text x="36" y="86" class="head">南非醉茄 Ashwagandha</text>
+<rect x="28" y="108" width="80" height="22" rx="4" fill="#3E7CB1"/>
+<text x="68" y="124" text-anchor="middle" class="tag">慢性壓力</text>
+<rect x="118" y="108" width="80" height="22" rx="4" fill="#E8923A"/>
+<text x="158" y="124" text-anchor="middle" class="tag">緩效型</text>
+<text x="28" y="158" class="sub">適用情境</text>
+<text x="28" y="174" class="val">長期壓力調節、焦慮緩解、睡眠品質提升</text>
+<text x="28" y="202" class="sub">作用速度</text>
+<text x="28" y="218" class="val">通常需 4–8 週持續補充才顯效</text>
+<text x="28" y="246" class="sub">適合族群</text>
+<text x="28" y="262" class="val">長期壓力大、失眠、容易緊張者</text>
+<text x="28" y="290" class="sub">研究證據強度</text>
+<rect x="28" y="298" width="80" height="12" rx="3" fill="#1A4F8B"/>
+<rect x="112" y="298" width="80" height="12" rx="3" fill="#1A4F8B"/>
+<rect x="196" y="298" width="80" height="12" rx="3" fill="#1A4F8B"/>
+<rect x="280" y="298" width="80" height="12" rx="3" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="1"/>
+<text x="380" y="309" class="note">★★★☆ 強</text>
+
+<!-- ===== 右上：紅景天 Rhodiola ===== -->
+<rect x="490" y="62" width="460" height="258" rx="8" fill="#EEF4FB" stroke="#3E7CB1" stroke-width="1.5"/>
+<rect x="490" y="62" width="460" height="38" rx="8" fill="#1A4F8B"/>
+<rect x="490" y="88" width="460" height="12" fill="#1A4F8B"/>
+<text x="516" y="86" class="head">紅景天 Rhodiola Rosea</text>
+<rect x="508" y="108" width="80" height="22" rx="4" fill="#3E7CB1"/>
+<text x="548" y="124" text-anchor="middle" class="tag">急性疲勞</text>
+<rect x="598" y="108" width="80" height="22" rx="4" fill="#E8923A"/>
+<text x="638" y="124" text-anchor="middle" class="tag">速效型</text>
+<text x="508" y="158" class="sub">適用情境</text>
+<text x="508" y="174" class="val">急性疲勞、高壓工作、體能恢復加速</text>
+<text x="508" y="202" class="sub">作用速度</text>
+<text x="508" y="218" class="val">單次補充數小時內即可感受效果</text>
+<text x="508" y="246" class="sub">適合族群</text>
+<text x="508" y="262" class="val">考試、出差前臨時需要提振精神者</text>
+<text x="508" y="290" class="sub">研究證據強度</text>
+<rect x="508" y="298" width="80" height="12" rx="3" fill="#1A4F8B"/>
+<rect x="592" y="298" width="80" height="12" rx="3" fill="#1A4F8B"/>
+<rect x="676" y="298" width="80" height="12" rx="3" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="1"/>
+<rect x="760" y="298" width="80" height="12" rx="3" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="1"/>
+<text x="860" y="309" class="note">★★☆☆ 中</text>
+
+<!-- ===== 左下：人參 Panax Ginseng ===== -->
+<rect x="10" y="335" width="460" height="255" rx="8" fill="#EEF4FB" stroke="#3E7CB1" stroke-width="1.5"/>
+<rect x="10" y="335" width="460" height="38" rx="8" fill="#1A4F8B"/>
+<rect x="10" y="361" width="460" height="12" fill="#1A4F8B"/>
+<text x="36" y="358" class="head">人參 Panax Ginseng</text>
+<rect x="28" y="380" width="80" height="22" rx="4" fill="#3E7CB1"/>
+<text x="68" y="396" text-anchor="middle" class="tag">認知活力</text>
+<rect x="118" y="380" width="80" height="22" rx="4" fill="#E8923A"/>
+<text x="158" y="396" text-anchor="middle" class="tag">中效型</text>
+<text x="28" y="430" class="sub">適用情境</text>
+<text x="28" y="446" class="val">提升專注力、記憶支持、抗疲勞</text>
+<text x="28" y="474" class="sub">作用速度</text>
+<text x="28" y="490" class="val">數天至 2 週後效果較明顯且穩定</text>
+<text x="28" y="518" class="sub">適合族群</text>
+<text x="28" y="534" class="val">腦力工作者、中年後體力下滑者</text>
+<text x="28" y="558" class="sub">研究證據強度</text>
+<rect x="28" y="566" width="80" height="12" rx="3" fill="#1A4F8B"/>
+<rect x="112" y="566" width="80" height="12" rx="3" fill="#1A4F8B"/>
+<rect x="196" y="566" width="80" height="12" rx="3" fill="#1A4F8B"/>
+<rect x="280" y="566" width="80" height="12" rx="3" fill="#1A4F8B"/>
+<text x="380" y="577" class="note">★★★★ 最強</text>
+
+<!-- ===== 右下：靈芝 Reishi ===== -->
+<rect x="490" y="335" width="460" height="255" rx="8" fill="#EEF4FB" stroke="#3E7CB1" stroke-width="1.5"/>
+<rect x="490" y="335" width="460" height="38" rx="8" fill="#1A4F8B"/>
+<rect x="490" y="361" width="460" height="12" fill="#1A4F8B"/>
+<text x="516" y="358" class="head">靈芝 Reishi（赤芝）</text>
+<rect x="508" y="380" width="80" height="22" rx="4" fill="#3E7CB1"/>
+<text x="548" y="396" text-anchor="middle" class="tag">免疫睡眠</text>
+<rect x="598" y="380" width="80" height="22" rx="4" fill="#E8923A"/>
+<text x="638" y="396" text-anchor="middle" class="tag">緩效型</text>
+<text x="508" y="430" class="sub">適用情境</text>
+<text x="508" y="446" class="val">免疫調節、改善睡眠深度、抗氧化</text>
+<text x="508" y="474" class="sub">作用速度</text>
+<text x="508" y="490" class="val">通常需 4 週以上持續使用才顯效</text>
+<text x="508" y="518" class="sub">適合族群</text>
+<text x="508" y="534" class="val">免疫功能偏低、睡眠品質欠佳者</text>
+<text x="508" y="558" class="sub">研究證據強度</text>
+<rect x="508" y="566" width="80" height="12" rx="3" fill="#1A4F8B"/>
+<rect x="592" y="566" width="80" height="12" rx="3" fill="#1A4F8B"/>
+<rect x="676" y="566" width="80" height="12" rx="3" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="1"/>
+<rect x="760" y="566" width="80" height="12" rx="3" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="1"/>
+<text x="860" y="577" class="note">★★☆☆ 中</text>
+<text x="940.8" y="585" text-anchor="end" font-family="sans-serif" font-size="17" fill="#64748B" fill-opacity="0.45" font-weight="600">本日有據</text></svg>
