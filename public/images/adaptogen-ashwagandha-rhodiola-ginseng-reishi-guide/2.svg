@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" width="960" height="600">
+<defs>
+  <marker id="a" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#1A4F8B"/></marker>
+  <marker id="b" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#E8923A"/></marker>
+  <marker id="c" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#3E7CB1"/></marker>
+  <marker id="d" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#64748B"/></marker>
+</defs>
+<style>text{font-family:'Microsoft JhengHei','Noto Sans TC',sans-serif;font-size:12px}.t{font-size:18px;font-weight:bold}.sm{font-size:11px}.bld{font-weight:bold}</style>
+<rect width="960" height="600" fill="#fff"/>
+<rect width="960" height="52" fill="#1A4F8B"/>
+<text x="480" y="31" text-anchor="middle" class="t" fill="#fff">HPA 軸壓力反應機轉示意圖</text>
+<text x="480" y="47" text-anchor="middle" class="sm" fill="#EEF4FB">大腦如何觸發皮質醇分泌，以及南非醉茄如何調節這條路徑</text>
+<rect x="10" y="58" width="455" height="28" rx="4" fill="#3E7CB1"/>
+<text x="238" y="77" text-anchor="middle" class="bld" fill="#fff">一般壓力反應路徑</text>
+<rect x="495" y="58" width="455" height="28" rx="4" fill="#E8923A"/>
+<text x="722" y="77" text-anchor="middle" class="bld" fill="#fff">南非醉茄調節後路徑</text>
+<line x1="480" y1="52" x2="480" y2="600" stroke="#EEF4FB" stroke-width="2"/>
+<rect x="105" y="97" width="260" height="44" rx="7" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+<text x="235" y="116" text-anchor="middle" class="bld" fill="#1E293B">大腦皮質</text>
+<text x="235" y="131" text-anchor="middle" class="sm" fill="#64748B">感知壓力 → 神經訊號傳遞</text>
+<line x1="235" y1="141" x2="235" y2="167" stroke="#1A4F8B" stroke-width="2" marker-end="url(#a)"/>
+<text x="248" y="158" class="sm" fill="#64748B">CRH ↑</text>
+<rect x="105" y="169" width="260" height="44" rx="7" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+<text x="235" y="188" text-anchor="middle" class="bld" fill="#1E293B">下視丘</text>
+<text x="235" y="203" text-anchor="middle" class="sm" fill="#64748B">分泌促腎上腺皮質激素釋放素</text>
+<line x1="235" y1="213" x2="235" y2="239" stroke="#1A4F8B" stroke-width="2" marker-end="url(#a)"/>
+<text x="248" y="230" class="sm" fill="#64748B">ACTH ↑</text>
+<rect x="105" y="241" width="260" height="44" rx="7" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+<text x="235" y="260" text-anchor="middle" class="bld" fill="#1E293B">腦下垂體</text>
+<text x="235" y="275" text-anchor="middle" class="sm" fill="#64748B">釋放促腎上腺皮質素</text>
+<line x1="235" y1="285" x2="235" y2="311" stroke="#1A4F8B" stroke-width="2" marker-end="url(#a)"/>
+<rect x="105" y="313" width="260" height="44" rx="7" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+<text x="235" y="332" text-anchor="middle" class="bld" fill="#1E293B">腎上腺皮質</text>
+<text x="235" y="347" text-anchor="middle" class="sm" fill="#64748B">受刺激大量合成皮質醇</text>
+<line x1="235" y1="357" x2="235" y2="383" stroke="#E8923A" stroke-width="2.5" marker-end="url(#b)"/>
+<rect x="85" y="385" width="300" height="50" rx="7" fill="#E8923A"/>
+<text x="235" y="406" text-anchor="middle" font-size="14" class="bld" fill="#fff">皮質醇過量分泌</text>
+<text x="235" y="424" text-anchor="middle" class="sm" fill="#fff">長期可能影響睡眠、免疫與代謝</text>
+<path d="M85 410 C42 410 42 265 105 191" stroke="#64748B" stroke-width="1.5" fill="none" stroke-dasharray="5,3" marker-end="url(#d)"/>
+<text x="20" y="310" font-size="10" fill="#64748B" transform="rotate(-90 20 310)" text-anchor="middle">負回饋（效果有限）</text>
+<rect x="585" y="97" width="260" height="44" rx="7" fill="#EEF4FB" stroke="#3E7CB1" stroke-width="2"/>
+<text x="715" y="116" text-anchor="middle" class="bld" fill="#1E293B">大腦皮質</text>
+<text x="715" y="131" text-anchor="middle" class="sm" fill="#64748B">感知壓力 → 神經訊號傳遞</text>
+<line x1="715" y1="141" x2="715" y2="167" stroke="#3E7CB1" stroke-width="2" marker-end="url(#c)"/>
+<rect x="585" y="169" width="260" height="44" rx="7" fill="#EEF4FB" stroke="#3E7CB1" stroke-width="2"/>
+<text x="715" y="188" text-anchor="middle" class="bld" fill="#1E293B">下視丘</text>
+<text x="715" y="203" text-anchor="middle" class="sm" fill="#64748B">CRH 釋放受醉茄素調節</text>
+<rect x="856" y="177" width="88" height="26" rx="4" fill="#1A4F8B"/>
+<text x="900" y="195" text-anchor="middle" font-size="10" fill="#fff" class="bld">醉茄素介入 ↓</text>
+<line x1="856" y1="190" x2="847" y2="190" stroke="#1A4F8B" stroke-width="1.5" marker-end="url(#a)"/>
+<line x1="715" y1="213" x2="715" y2="239" stroke="#3E7CB1" stroke-width="2" marker-end="url(#c)"/>
+<rect x="585" y="241" width="260" height="44" rx="7" fill="#EEF4FB" stroke="#3E7CB1" stroke-width="2"/>
+<text x="715" y="260" text-anchor="middle" class="bld" fill="#1E293B">腦下垂體</text>
+<text x="715" y="275" text-anchor="middle" class="sm" fill="#64748B">ACTH 分泌趨於平衡</text>
+<line x1="715" y1="285" x2="715" y2="311" stroke="#3E7CB1" stroke-width="2" marker-end="url(#c)"/>
+<rect x="585" y="313" width="260" height="44" rx="7" fill="#EEF4FB" stroke="#3E7CB1" stroke-width="2"/>
+<text x="715" y="332" text-anchor="middle" class="bld" fill="#1E293B">腎上腺皮質</text>
+<text x="715" y="347" text-anchor="middle" class="sm" fill="#64748B">皮質醇合成受到抑制調節</text>
+<rect x="856" y="321" width="88" height="26" rx="4" fill="#1A4F8B"/>
+<text x="900" y="339" text-anchor="middle" font-size="10" fill="#fff" class="bld">醉茄素介入 ↓</text>
+<line x1="856" y1="334" x2="847" y2="334" stroke="#1A4F8B" stroke-width="1.5" marker-end="url(#a)"/>
+<line x1="715" y1="357" x2="715" y2="383" stroke="#3E7CB1" stroke-width="2.5" marker-end="url(#c)"/>
+<rect x="565" y="385" width="300" height="50" rx="7" fill="#3E7CB1"/>
+<text x="715" y="406" text-anchor="middle" font-size="14" class="bld" fill="#fff">皮質醇趨於正常範圍</text>
+<text x="715" y="424" text-anchor="middle" class="sm" fill="#fff">有助於維持壓力適應平衡</text>
+<path d="M565 410 C522 410 522 265 585 191" stroke="#1A4F8B" stroke-width="1.5" fill="none" stroke-dasharray="5,3" marker-end="url(#a)"/>
+<text x="500" y="310" font-size="10" fill="#1A4F8B" transform="rotate(-90 500 310)" text-anchor="middle">負回饋增強</text>
+<rect x="10" y="452" width="940" height="138" rx="6" fill="#EEF4FB"/>
+<text x="480" y="472" text-anchor="middle" class="bld" fill="#1A4F8B">名詞說明</text>
+<rect x="30" y="482" width="12" height="12" fill="#E8923A"/>
+<text x="48" y="493" class="sm" fill="#1E293B">過量皮質醇：長期 HPA 軸持續活化，可能影響睡眠品質、免疫功能及代謝調節</text>
+<rect x="30" y="504" width="12" height="12" fill="#1A4F8B"/>
+<text x="48" y="515" class="sm" fill="#1E293B">醉茄素（Withanolides）：南非醉茄（Ashwagandha）的活性成分，研究探索其對 HPA 軸的調節潛力</text>
+<rect x="30" y="526" width="12" height="12" fill="#3E7CB1"/>
+<text x="48" y="537" class="sm" fill="#1E293B">調節後狀態：初步研究顯示可能有助維持皮質醇在正常範圍（相關研究持續進行，非醫療建議）</text>
+<line x1="30" y1="554" x2="70" y2="554" stroke="#64748B" stroke-width="1.5" stroke-dasharray="5,3"/>
+<text x="78" y="558" class="sm" fill="#64748B">負回饋路徑（左側：效果有限；右側：醉茄素介入後回饋增強）</text>
+<text x="480" y="580" text-anchor="middle" font-size="10" fill="#64748B">HPA 軸＝下視丘-腦下垂體-腎上腺軸　CRH＝促腎上腺皮質激素釋放素　ACTH＝促腎上腺皮質素</text>
+<text x="940.8" y="585" text-anchor="end" font-family="sans-serif" font-size="17" fill="#64748B" fill-opacity="0.45" font-weight="600">本日有據</text></svg>
