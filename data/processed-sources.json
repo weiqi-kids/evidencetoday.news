@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-09-09T06:19:46+08:00",
+  "lastRun": "2026-09-10T06:30:00+08:00",
   "processed": {
     "https://arxiv.org/pdf/2606.01428": {
       "processedAt": "2026-09-04T06:18:45+08:00",
@@ -472,6 +472,58 @@
     },
     "https://www.cdc.gov.tw/Bulletin/Detail/lFK7neXKyk54GdPYg_hNDg?typeid=9": {
       "processedAt": "2026-09-09T06:19:46+08:00",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/oyHltiYvWT0gsGvRdEgTQg?typeid=9": {
+      "processedAt": "2026-09-10T06:30:00+08:00",
+      "outputFile": "src/content/news/radar-2026-09-10-06-01.md"
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/30294938/": {
+      "processedAt": "2026-09-10T06:30:00+08:00",
+      "outputFile": null
+    },
+    "https://www.who.int/publications/m/item/the-state-of-food-security-and-nutrition-in-the-world-2026": {
+      "processedAt": "2026-09-10T06:30:00+08:00",
+      "outputFile": null
+    },
+    "https://www.who.int/news-room/events/detail/2026/01/27/default-calendar/launch-of-the-who-guideline-on-policies-and-interventions-to-create-healthy-school-food-environments": {
+      "processedAt": "2026-09-10T06:30:00+08:00",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/tntxPeGfJGwdxgFobfrgIQ?typeid=9": {
+      "processedAt": "2026-09-10T06:30:00+08:00",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/jGCZ7dyIP_ttSB5wIGWHWw?typeid=9": {
+      "processedAt": "2026-09-10T06:30:00+08:00",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/KeqvskR4zZf9xWQ5AmaJNg?typeid=9": {
+      "processedAt": "2026-09-10T06:30:00+08:00",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/b0wgGgjwnwETbZrPEdiB4g?typeid=9": {
+      "processedAt": "2026-09-10T06:30:00+08:00",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/lq6aEif3tymMNvCHCPUGkg?typeid=9": {
+      "processedAt": "2026-09-10T06:30:00+08:00",
+      "outputFile": null
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12665681/": {
+      "processedAt": "2026-09-10T06:30:00+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42023455/": {
+      "processedAt": "2026-09-10T06:30:00+08:00",
+      "outputFile": null
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC13046400/": {
+      "processedAt": "2026-09-10T06:30:00+08:00",
+      "outputFile": null
+    },
+    "https://clinicaltrials.gov/study/NCT07766642": {
+      "processedAt": "2026-09-10T06:30:00+08:00",
       "outputFile": null
     }
   }
