@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-09-10T06:30:00+08:00",
+  "lastRun": "2026-09-11T06:17:00+08:00",
   "processed": {
     "https://arxiv.org/pdf/2606.01428": {
       "processedAt": "2026-09-04T06:18:45+08:00",
@@ -334,10 +334,6 @@
       "processedAt": "2026-08-18T06:30:00+08:00",
       "outputFile": "src/content/news/radar-2026-09-03-12-01.md"
     },
-    "https://www.sciencedaily.com/releases/2026/08/260823015009.htm": {
-      "processedAt": "2026-08-27T06:20:17+08:00",
-      "outputFile": null
-    },
     "https://arxiv.org/pdf/2512.07531": {
       "processedAt": "2026-08-29T06:20:00+08:00",
       "outputFile": null
@@ -524,6 +520,34 @@
     },
     "https://clinicaltrials.gov/study/NCT07766642": {
       "processedAt": "2026-09-10T06:30:00+08:00",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Category/ListContent/XIyBaj7WM3xs94V4Q8cicg?uaid=8TLKEpCU8z7SHUO56U2BHQ": {
+      "processedAt": "2026-09-11T06:17:00+08:00",
+      "outputFile": "src/content/news/radar-2026-09-11-06-01.md"
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/Q8zNdJFLrJQ8ymZWL8bUqw?typeid=9": {
+      "processedAt": "2026-09-11T06:17:00+08:00",
+      "outputFile": "src/content/news/radar-2026-09-11-06-01.md"
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/LQD50YJwZzsM53SLFyd1rg?typeid=9": {
+      "processedAt": "2026-09-11T06:17:00+08:00",
+      "outputFile": "src/content/news/radar-2026-09-11-06-01.md"
+    },
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12106159/": {
+      "processedAt": "2026-09-11T06:17:00+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41798849/": {
+      "processedAt": "2026-09-11T06:17:00+08:00",
+      "outputFile": null
+    },
+    "https://www.eurekalert.org/news-releases/1136588": {
+      "processedAt": "2026-09-11T06:17:00+08:00",
+      "outputFile": null
+    },
+    "https://www.who.int/teams/nutrition-and-food-safety/monitoring-nutritional-status-and-food-safety-and-events/foodborne-disease-estimates/2nd-edition-(2026)": {
+      "processedAt": "2026-09-11T06:17:00+08:00",
       "outputFile": null
     }
   }
