@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600" role="img" aria-label="三種超出研究證據邊界的控糖補充品行銷話術：短期效果誇大為長期、延緩說成阻斷、輔助角色說成主角">
+  <style>
+    text{font-family:Arial,"Noto Sans TC",sans-serif;fill:#1E293B}
+    .title{font-size:28px;font-weight:700;fill:#1A4F8B}
+    .sub{font-size:15px;fill:#64748B}
+    .box{fill:#FFF4F3;stroke:#C2413B;stroke-width:2}
+    .head{font-size:21px;font-weight:700;fill:#1A4F8B}
+    .label{font-size:15px;font-weight:700}
+    .note{font-size:14px;fill:#64748B}
+    .num{fill:#E8923A}
+    .white{fill:#FFF;font-size:16px;font-weight:700}
+    .blue{stroke:#3E7CB1;fill:none;stroke-width:4}
+    .orange{stroke:#E8923A;fill:none;stroke-width:4}
+    .red{stroke:#C2413B;fill:none;stroke-width:4}
+  </style>
+
+  <rect width="960" height="600" fill="#FFFFFF"/>
+  <text x="480" y="48" text-anchor="middle" class="title">三種超出研究證據邊界的控糖補充品話術</text>
+  <text x="480" y="79" text-anchor="middle" class="sub">把有限證據，說成更大的醫療效果</text>
+
+  <rect x="24" y="120" width="290" height="420" rx="14" class="box"/>
+  <circle cx="53" cy="157" r="18" class="num"/>
+  <text x="53" y="163" text-anchor="middle" class="white">1</text>
+  <text x="82" y="164" class="head">短期 → 長期</text>
+  <text x="169" y="213" text-anchor="middle" class="label">把一餐觀察推成長期結論</text>
+  <text x="73" y="270" text-anchor="middle" class="label">一餐血糖峰值</text>
+  <text x="265" y="270" text-anchor="middle" class="label">長期糖化血色素</text>
+  <line x1="78" y1="300" x2="252" y2="300" class="orange"/>
+  <path d="M252 300l-12-8v16z" fill="#E8923A"/>
+  <line x1="151" y1="284" x2="177" y2="316" class="red"/>
+  <line x1="177" y1="284" x2="151" y2="316" class="red"/>
+  <text x="169" y="367" text-anchor="middle" class="note">短期指標 ≠ 長期結果</text>
+  <text x="169" y="405" text-anchor="middle" class="label" fill="#C2413B">不可直接推論</text>
+
+  <rect x="335" y="120" width="290" height="420" rx="14" class="box"/>
+  <circle cx="364" cy="157" r="18" class="num"/>
+  <text x="364" y="163" text-anchor="middle" class="white">2</text>
+  <text x="393" y="164" class="head">延緩 → 阻斷</text>
+  <text x="480" y="213" text-anchor="middle" class="label">把部分影響說成完全阻止</text>
+  <text x="405" y="260" text-anchor="middle" class="label">部分延緩</text>
+  <line x1="366" y1="292" x2="454" y2="292" class="blue"/>
+  <rect x="427" y="276" width="12" height="32" fill="#E8923A"/>
+  <text x="550" y="260" text-anchor="middle" class="label">完全阻斷</text>
+  <line x1="493" y1="292" x2="575" y2="292" class="blue"/>
+  <rect x="526" y="274" width="18" height="36" fill="#C2413B"/>
+  <line x1="520" y1="256" x2="560" y2="328" class="red"/>
+  <line x1="560" y1="256" x2="520" y2="328" class="red"/>
+  <text x="480" y="367" text-anchor="middle" class="note">延緩不等於阻斷</text>
+  <text x="480" y="405" text-anchor="middle" class="label" fill="#C2413B">不可誇大效果</text>
+
+  <rect x="646" y="120" width="290" height="420" rx="14" class="box"/>
+  <circle cx="675" cy="157" r="18" class="num"/>
+  <text x="675" y="163" text-anchor="middle" class="white">3</text>
+  <text x="704" y="164" class="head">輔助 → 主角</text>
+  <text x="791" y="213" text-anchor="middle" class="label">把補充品放到核心行動之前</text>
+  <text x="711" y="255" text-anchor="middle" class="label">合理定位</text>
+  <rect x="670" y="273" width="110" height="34" rx="6" fill="#EEF4FB" stroke="#3E7CB1"/>
+  <text x="725" y="296" text-anchor="middle" class="label">飲食＋運動</text>
+  <line x1="725" y1="307" x2="725" y2="330" class="blue"/>
+  <rect x="670" y="333" width="110" height="34" rx="6" fill="#FFF1DF" stroke="#E8923A"/>
+  <text x="725" y="356" text-anchor="middle" class="label">補充品：輔助</text>
+  <text x="873" y="255" text-anchor="middle" class="label">誤置</text>
+  <rect x="818" y="273" width="110" height="34" rx="6" fill="#FFF1DF" stroke="#E8923A"/>
+  <text x="873" y="296" text-anchor="middle" class="label">補充品</text>
+  <line x1="873" y1="307" x2="873" y2="330" class="blue"/>
+  <rect x="818" y="333" width="110" height="34" rx="6" fill="#EEF4FB" stroke="#3E7CB1"/>
+  <text x="873" y="356" text-anchor="middle" class="label">飲食＋運動</text>
+  <line x1="805" y1="250" x2="932" y2="389" class="red"/>
+  <line x1="932" y1="250" x2="805" y2="389" class="red"/>
+  <text x="791" y="430" text-anchor="middle" class="note">補充品不能取代核心行動</text>
+<text x="940.8" y="585" text-anchor="end" font-family="sans-serif" font-size="17" fill="#64748B" fill-opacity="0.45" font-weight="600">本日有據</text></svg>
