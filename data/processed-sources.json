@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-09-11T06:17:00+08:00",
+  "lastRun": "2026-09-12T06:32:51+08:00",
   "processed": {
     "https://arxiv.org/pdf/2606.01428": {
       "processedAt": "2026-09-04T06:18:45+08:00",
@@ -334,14 +334,6 @@
       "processedAt": "2026-08-18T06:30:00+08:00",
       "outputFile": "src/content/news/radar-2026-09-03-12-01.md"
     },
-    "https://arxiv.org/pdf/2512.07531": {
-      "processedAt": "2026-08-29T06:20:00+08:00",
-      "outputFile": null
-    },
-    "https://www.nature.com/subjects/study-design/ejcn": {
-      "processedAt": "2026-08-29T06:20:00+08:00",
-      "outputFile": null
-    },
     "https://pubmed.ncbi.nlm.nih.gov/31558379/": {
       "processedAt": "2026-09-02T06:21:10+08:00",
       "outputFile": null
@@ -549,6 +541,22 @@
     "https://www.who.int/teams/nutrition-and-food-safety/monitoring-nutritional-status-and-food-safety-and-events/foodborne-disease-estimates/2nd-edition-(2026)": {
       "processedAt": "2026-09-11T06:17:00+08:00",
       "outputFile": null
+    },
+    "https://www.frontiersin.org/journals/public-health/articles/10.3389/fpubh.2026.1871771/full": {
+      "processedAt": "2026-09-12T06:32:51+08:00",
+      "outputFile": "src/content/news/radar-2026-09-12-06-01.md"
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC13435322/": {
+      "processedAt": "2026-09-12T06:32:51+08:00",
+      "outputFile": "src/content/news/radar-2026-09-12-06-01.md"
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42553631/": {
+      "processedAt": "2026-09-12T06:32:51+08:00",
+      "outputFile": "src/content/news/radar-2026-09-12-06-01.md"
+    },
+    "PMID:42553631": {
+      "processedAt": "2026-09-12T06:32:51+08:00",
+      "outputFile": "src/content/news/radar-2026-09-12-06-01.md"
     }
   }
 }
