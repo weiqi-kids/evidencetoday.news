@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600">
+  <style>
+    .title{font:700 30px "Noto Sans TC",sans-serif;fill:#1A4F8B}
+    .sub{font:400 16px "Noto Sans TC",sans-serif;fill:#64748B}
+    .name{font:700 22px "Noto Sans TC",sans-serif;fill:#1E293B}
+    .label{font:500 15px "Noto Sans TC",sans-serif;fill:#64748B}
+    .value{font:600 16px "Noto Sans TC",sans-serif;fill:#1A4F8B}
+  </style>
+  <rect width="960" height="600" fill="#FFFFFF"/>
+  <text x="480" y="58" text-anchor="middle" class="title">控糖補充品成分比較</text>
+  <text x="480" y="88" text-anchor="middle" class="sub">作用機制與研究強度對照｜摘要性示意</text>
+
+  <g transform="translate(45,125)">
+    <rect width="270" height="405" rx="18" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+    <circle cx="135" cy="68" r="38" fill="#3E7CB1"/>
+    <path d="M119 76c12-31 38-32 40-31-2 27-18 42-40 31Z" fill="#FFFFFF"/>
+    <path d="M120 76c12-7 24-17 35-29" fill="none" stroke="#3E7CB1" stroke-width="3"/>
+    <text x="135" y="145" text-anchor="middle" class="name">桑葉萃取</text>
+    <text x="135" y="190" text-anchor="middle" class="label">作用機制</text>
+    <text x="135" y="220" text-anchor="middle" class="value">抑制 α-葡萄糖苷酶</text>
+    <text x="45" y="285" class="label">研究強度</text>
+    <rect x="45" y="302" width="180" height="16" rx="8" fill="#D5E2F0"/>
+    <rect x="45" y="302" width="92" height="16" rx="8" fill="#E8923A"/>
+    <text x="135" y="355" text-anchor="middle" class="value">中</text>
+  </g>
+
+  <g transform="translate(345,125)">
+    <rect width="270" height="405" rx="18" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+    <circle cx="135" cy="68" r="38" fill="#3E7CB1"/>
+    <circle cx="119" cy="57" r="8" fill="#FFFFFF"/><circle cx="151" cy="57" r="8" fill="#FFFFFF"/>
+    <circle cx="135" cy="82" r="8" fill="#FFFFFF"/>
+    <line x1="125" y1="62" x2="130" y2="76" stroke="#FFFFFF" stroke-width="4"/>
+    <line x1="145" y1="62" x2="140" y2="76" stroke="#FFFFFF" stroke-width="4"/>
+    <text x="135" y="145" text-anchor="middle" class="name">小蘗鹼</text>
+    <text x="135" y="190" text-anchor="middle" class="label">作用機制</text>
+    <text x="135" y="220" text-anchor="middle" class="value">活化 AMPK 路徑</text>
+    <text x="45" y="285" class="label">研究強度</text>
+    <rect x="45" y="302" width="180" height="16" rx="8" fill="#D5E2F0"/>
+    <rect x="45" y="302" width="162" height="16" rx="8" fill="#E8923A"/>
+    <text x="135" y="355" text-anchor="middle" class="value">高</text>
+  </g>
+
+  <g transform="translate(645,125)">
+    <rect width="270" height="405" rx="18" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+    <circle cx="135" cy="68" r="38" fill="#3E7CB1"/>
+    <path d="M116 53c12-10 35-6 39 11 4 18-11 31-27 27-17-4-24-25-12-38Z" fill="#FFFFFF"/>
+    <path d="M130 48c-6 17-5 32 1 43" fill="none" stroke="#3E7CB1" stroke-width="3"/>
+    <text x="135" y="145" text-anchor="middle" class="name">白腎豆</text>
+    <text x="135" y="190" text-anchor="middle" class="label">作用機制</text>
+    <text x="135" y="220" text-anchor="middle" class="value">抑制 α-澱粉酶</text>
+    <text x="45" y="285" class="label">研究強度</text>
+    <rect x="45" y="302" width="180" height="16" rx="8" fill="#D5E2F0"/>
+    <rect x="45" y="302" width="65" height="16" rx="8" fill="#E8923A"/>
+    <text x="135" y="355" text-anchor="middle" class="value">中低</text>
+  </g>
+<text x="940.8" y="585" text-anchor="end" font-family="sans-serif" font-size="17" fill="#64748B" fill-opacity="0.45" font-weight="600">本日有據</text></svg>
