@@ -1,0 +1,78 @@
+<svg viewBox="0 0 960 600" width="960" height="600" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    text { font-family: '微軟正黑體', 'Microsoft JhengHei', 'PingFang TC', 'Noto Sans CJK TC', sans-serif; }
+  </style>
+  <!-- Background -->
+  <rect width="960" height="600" fill="#FFFFFF"/>
+  <!-- Title bar -->
+  <rect x="0" y="0" width="960" height="72" fill="#1A4F8B"/>
+  <text x="480" y="44" text-anchor="middle" fill="#FFFFFF" font-size="26" font-weight="bold">免疫平衡：過弱與過強的兩端</text>
+  <text x="480" y="64" text-anchor="middle" fill="#EEF4FB" font-size="13">Immune Balance vs Immune Boost</text>
+
+  <!-- Left block: Too Weak -->
+  <rect x="40" y="110" width="240" height="320" rx="12" fill="#EEF4FB" stroke="#3E7CB1" stroke-width="2"/>
+  <rect x="40" y="110" width="240" height="44" rx="12" fill="#3E7CB1"/>
+  <rect x="40" y="132" width="240" height="22" fill="#3E7CB1"/>
+  <text x="160" y="138" text-anchor="middle" fill="#FFFFFF" font-size="16" font-weight="bold">免疫過弱</text>
+  <text x="160" y="190" text-anchor="middle" fill="#1A4F8B" font-size="14" font-weight="bold">Too Weak</text>
+  <line x1="80" y1="205" x2="240" y2="205" stroke="#3E7CB1" stroke-width="1" stroke-dasharray="4,3"/>
+  <circle cx="100" cy="235" r="8" fill="#3E7CB1"/>
+  <text x="118" y="240" fill="#1E293B" font-size="13">容易反覆感染</text>
+  <circle cx="100" cy="270" r="8" fill="#3E7CB1"/>
+  <text x="118" y="275" fill="#1E293B" font-size="13">傷口癒合緩慢</text>
+  <circle cx="100" cy="305" r="8" fill="#3E7CB1"/>
+  <text x="118" y="310" fill="#1E293B" font-size="13">疲勞、抵抗力差</text>
+  <circle cx="100" cy="340" r="8" fill="#3E7CB1"/>
+  <text x="118" y="345" fill="#1E293B" font-size="13">對病原體防禦不足</text>
+  <text x="160" y="400" text-anchor="middle" fill="#64748B" font-size="12">⬇ 防禦力不足</text>
+
+  <!-- Right block: Too Active -->
+  <rect x="680" y="110" width="240" height="320" rx="12" fill="#FFF5EE" stroke="#E8923A" stroke-width="2"/>
+  <rect x="680" y="110" width="240" height="44" rx="12" fill="#E8923A"/>
+  <rect x="680" y="132" width="240" height="22" fill="#E8923A"/>
+  <text x="800" y="138" text-anchor="middle" fill="#FFFFFF" font-size="16" font-weight="bold">免疫過強</text>
+  <text x="800" y="190" text-anchor="middle" fill="#E8923A" font-size="14" font-weight="bold">Too Active</text>
+  <line x1="720" y1="205" x2="880" y2="205" stroke="#E8923A" stroke-width="1" stroke-dasharray="4,3"/>
+  <circle cx="700" cy="235" r="8" fill="#E8923A"/>
+  <text x="718" y="240" fill="#1E293B" font-size="13">紅斑性狼瘡</text>
+  <circle cx="700" cy="270" r="8" fill="#E8923A"/>
+  <text x="718" y="275" fill="#1E293B" font-size="13">類風濕性關節炎</text>
+  <circle cx="700" cy="305" r="8" fill="#E8923A"/>
+  <text x="718" y="310" fill="#1E293B" font-size="13">過敏／氣喘反應</text>
+  <circle cx="700" cy="340" r="8" fill="#E8923A"/>
+  <text x="718" y="345" fill="#1E293B" font-size="13">攻擊自身正常組織</text>
+  <text x="800" y="400" text-anchor="middle" fill="#64748B" font-size="12">⬆ 過度反應</text>
+
+  <!-- Center block: Balance -->
+  <rect x="345" y="100" width="270" height="350" rx="16" fill="#1A4F8B"/>
+  <text x="480" y="135" text-anchor="middle" fill="#FFFFFF" font-size="18" font-weight="bold">免疫調節</text>
+  <text x="480" y="156" text-anchor="middle" fill="#EEF4FB" font-size="12">Immune Regulation</text>
+  <!-- Balance scale icon -->
+  <line x1="480" y1="175" x2="480" y2="210" stroke="#E8923A" stroke-width="3"/>
+  <line x1="415" y1="210" x2="545" y2="210" stroke="#E8923A" stroke-width="3"/>
+  <line x1="415" y1="210" x2="415" y2="235" stroke="#EEF4FB" stroke-width="2"/>
+  <line x1="545" y1="210" x2="545" y2="235" stroke="#EEF4FB" stroke-width="2"/>
+  <rect x="398" y="235" width="36" height="16" rx="4" fill="#3E7CB1"/>
+  <rect x="528" y="235" width="36" height="16" rx="4" fill="#3E7CB1"/>
+  <circle cx="480" cy="172" r="6" fill="#E8923A"/>
+  <line x1="365" y1="268" x2="595" y2="268" stroke="#3E7CB1" stroke-width="1" stroke-dasharray="4,3"/>
+  <circle cx="375" cy="295" r="6" fill="#E8923A"/>
+  <text x="390" y="300" fill="#EEF4FB" font-size="12">辨識並消滅真正威脅</text>
+  <circle cx="375" cy="322" r="6" fill="#E8923A"/>
+  <text x="390" y="327" fill="#EEF4FB" font-size="12">避免攻擊自身組織</text>
+  <circle cx="375" cy="349" r="6" fill="#E8923A"/>
+  <text x="390" y="354" fill="#EEF4FB" font-size="12">維持動態平衡狀態</text>
+  <circle cx="375" cy="376" r="6" fill="#E8923A"/>
+  <text x="390" y="381" fill="#EEF4FB" font-size="12">配合生活習慣調整</text>
+  <rect x="370" y="405" width="220" height="30" rx="8" fill="#E8923A"/>
+  <text x="480" y="425" text-anchor="middle" fill="#FFFFFF" font-size="13" font-weight="bold">健康關鍵：調節而非增強</text>
+
+  <!-- Arrows -->
+  <polygon points="300,270 340,255 340,285" fill="#3E7CB1"/>
+  <polygon points="660,270 620,255 620,285" fill="#E8923A"/>
+
+  <!-- Bottom note -->
+  <rect x="0" y="530" width="960" height="70" fill="#EEF4FB"/>
+  <text x="480" y="558" text-anchor="middle" fill="#1A4F8B" font-size="13" font-weight="bold">⚠ 本圖僅供健康教育參考，如有免疫相關症狀，請諮詢醫療專業人員。</text>
+  <text x="480" y="583" text-anchor="middle" fill="#64748B" font-size="12">免疫系統的運作受遺傳、環境、飲食及生活型態等多重因素影響，個人差異大。</text>
+<text x="940.8" y="585" text-anchor="end" font-family="sans-serif" font-size="17" fill="#64748B" fill-opacity="0.45" font-weight="600">本日有據</text></svg>
