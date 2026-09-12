@@ -8,7 +8,7 @@ const MYTH_DIR = 'src/content/myths';
 // N, got N-2）看起來像內容遺失，不像是這個常數自己錯了。
 // 2026-09-02：曾被提前調到 113（當時 113 個檔裡有 2 篇仍在 under-review），
 // 連續兩天擋住大腦層；改回與實際相符的 111。
-const EXPECTED_PUBLISHED_COUNT = 111;
+const EXPECTED_PUBLISHED_COUNT = 116;   // 2026-09-12：+5（本批闢謠，皆 status: published）
 const FORBIDDEN = [
   'TODO',
   'source needed',

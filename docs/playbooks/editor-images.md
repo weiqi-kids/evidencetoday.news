@@ -212,6 +212,35 @@ GITHUB_TOKEN=$(gh auth token) pnpm covers:backfill         # 寫入後補 coverA
 
 GitHub Pages 部署有 concurrency group，**同時只跑一個**。連續 push（例如使用者在前台連存幾次）會讓新部署**取消**還在跑的舊部署 → `gh run list` 看到一排 `cancelled` 是正常的，不是 build fail。只要最新 commit 是目標的祖先，**等最後一筆 `success` 即全部上線**；停止 push 約 5–6 分鐘（含 Pagefind 索引＋連結檢查）會自然完成。等待用 `until gh run list --workflow "Deploy to GitHub Pages" --limit 1 | grep -q completed; do sleep 20; done`。
 
+### E. `scripts/make-cover.mjs`：產生本地 webp 封面（2026-09-12 新增）
+
+`backfill-covers.mjs` 寫的是**外連圖庫網址**；本節這支寫的是**本地檔**，兩者用途不同，不要互相取代。
+
+```bash
+GITHUB_TOKEN=$(gh auth token) node scripts/make-cover.mjs <slug> "<英文搜圖關鍵字>"
+GITHUB_TOKEN=$(gh auth token) node scripts/make-cover.mjs --batch <json>   # [{slug, keyword}, ...]
+```
+
+流程：打 `/stock` worker 取圖 → `sharp` 裁成 **1280×720** → 轉 webp（品質從 82 往下調到落進 ≤170KB）
+→ 存成 `public/covers/<slug>.webp`。frontmatter 寫 `coverImage: "/covers/<slug>.webp"`。
+
+**為什麼要本地檔而不是外連**：
+1. `check-spec.mjs` 對 `/` 開頭的路徑會 `existsSync` 驗檔案真的存在；外連網址它只驗格式，
+   哪天圖床失效變破圖不會有任何檢查發現。
+2. 外連圖床曾整批回 403，一旦被擋前台就是一排破圖。
+3. 業主 2026-09-12 指示一律本地 webp。
+
+**內建的兩道防線**：
+- **站上已用過的圖 id 去重**（掃全部 collection 的 `photo-xxx` / `photos/123`）。
+- **攝影者黑名單 `BLOCKED_CREDITS`**：圖庫上有品牌自己上傳的產品照，選到等於在頁面放業配，
+  違反硬規則 9。2026-09-05 與 09-12 兩次都選到同一個保健品牌——**換了不同張圖，所以 id 去重擋不住**，
+  才改成比對攝影者名稱。日後再遇到同類型就往那個陣列加。
+
+**⚠️ 這支腳本不寫 `coverAlt`，也不該寫。** 機器沒看過圖就寫 alt 等於編造無障礙描述。
+實測價值：2026-09-12 那批 10 張圖選了三輪才全對，中途出現過**五金賣場**（要的是超市貨架）、
+**餐廳擺盤**（要的是鐵劑）、**露出品牌壓紋的巧克力**、**化妝品調配**（要的是食用油）。
+**這些全部通過 HTTP 驗證，光看網址一個都看不出來**——所以規矩是逐張看過再寫 alt。
+
 ## 驗證清單
 
 - `pnpm test`（含 `content.schemas.test.ts`、`git-commit`/`image-compress`/`tags-suggest`、worker `index.test.ts`）全綠。
