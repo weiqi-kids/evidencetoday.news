@@ -1,7 +1,55 @@
 {
   "version": 1,
-  "lastRun": "2026-09-13T06:20:00+08:00",
+  "lastRun": "2026-09-14T06:20:00+08:00",
   "processed": {
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC11174647/": {
+      "processedAt": "2026-09-14T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC13097937/": {
+      "processedAt": "2026-09-14T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12952190/": {
+      "processedAt": "2026-09-14T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC13278862/": {
+      "processedAt": "2026-09-14T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://www.who.int/campaigns/world-food-safety-day/2026": {
+      "processedAt": "2026-09-14T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://www.who.int/publications/m/item/nutrition-and-food-safety-news---may-june-2026": {
+      "processedAt": "2026-09-14T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://www.who.int/publications/m/item/nutrition-and-food-safety-news---march-april-2026": {
+      "processedAt": "2026-09-14T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://www.who.int/publications/m/item/nutrition-and-food-safety-news---january-february-2026": {
+      "processedAt": "2026-09-14T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://www.who.int/teams/nutrition-and-food-safety/safe-healthy-and-sustainable-diets": {
+      "processedAt": "2026-09-14T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://clinicaltrials.gov/study/NCT06714162": {
+      "processedAt": "2026-09-14T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://clinicaltrials.gov/study/NCT06515496": {
+      "processedAt": "2026-09-14T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://clinicaltrials.gov/study/NCT04067921": {
+      "processedAt": "2026-09-14T06:20:00+08:00",
+      "outputFile": null
+    },
     "https://arxiv.org/pdf/2606.01428": {
       "processedAt": "2026-09-04T06:18:45+08:00",
       "outputFile": null
