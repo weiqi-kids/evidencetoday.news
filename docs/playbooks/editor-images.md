@@ -235,11 +235,20 @@ GITHUB_TOKEN=$(gh auth token) node scripts/make-cover.mjs --batch <json>   # [{s
 - **攝影者黑名單 `BLOCKED_CREDITS`**：圖庫上有品牌自己上傳的產品照，選到等於在頁面放業配，
   違反硬規則 9。2026-09-05 與 09-12 兩次都選到同一個保健品牌——**換了不同張圖，所以 id 去重擋不住**，
   才改成比對攝影者名稱。日後再遇到同類型就往那個陣列加。
+  **同一條線上還有醫療機構**：診所、醫院、戒癮中心上傳的圖是它們自己的行銷素材，
+  放上去等於把本站做成診所頁，一樣踩硬規則 9（2026-09-13 選到 Diamond Rehab Thailand，
+  已補上 `rehab` / `clinic` / `hospital` / `medical center` 的比對）。
 
 **⚠️ 這支腳本不寫 `coverAlt`，也不該寫。** 機器沒看過圖就寫 alt 等於編造無障礙描述。
 實測價值：2026-09-12 那批 10 張圖選了三輪才全對，中途出現過**五金賣場**（要的是超市貨架）、
 **餐廳擺盤**（要的是鐵劑）、**露出品牌壓紋的巧克力**、**化妝品調配**（要的是食用油）。
 **這些全部通過 HTTP 驗證，光看網址一個都看不出來**——所以規矩是逐張看過再寫 alt。
+
+2026-09-13 那批再次驗證同一件事，而且錯法是新的：搜「pharmacy shelf vitamin bottles」
+拿到**法國芳療店貨架**（€ 價標、法文告示，圖上還是某個品牌的整排產品），
+搜「suitcase packing travel medication」拿到的行李平舖裡**一件藥品都沒有**，
+另一張則是**嚴重失焦**的藥板特寫。關鍵字愈抽象愈容易歪，
+改成具體物件（`vitamin capsules spilling from bottle`、`weekly pill organizer box`）後一次就對。
 
 ## 驗證清單
 

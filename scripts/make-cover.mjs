@@ -50,8 +50,16 @@ function usedIds() {
  * 攝影者黑名單：圖庫上有品牌自己上傳的產品照，選到就等於在首頁放業配。
  * 硬規則 9 禁止把網站做成產品頁，而這種圖每次都通過 HTTP 驗證，光看網址看不出來。
  * 2026-09-05 與 09-12 兩次都選到同一個品牌（換了不同張圖，所以圖片 id 去重擋不住）。
+ * 同樣要擋的還有醫療機構：診所／醫院／戒癮中心上傳的圖是它們的行銷素材，
+ * 放上去等於把本站做成診所頁，一樣踩硬規則 9。
  */
-const BLOCKED_CREDITS = [/beelith/i, /\bUSA\b.*supplement/i, /pharma(ceutical)?s?\s*(inc|ltd|co)/i];
+const BLOCKED_CREDITS = [
+  /beelith/i,
+  /\bUSA\b.*supplement/i,
+  /pharma(ceutical)?s?\s*(inc|ltd|co)/i,
+  /\brehab\b/i, // 2026-09-13 選到 Diamond Rehab Thailand
+  /\bclinic\b|\bhospital\b|\bmedical\s+cent(er|re)\b/i,
+];
 
 async function pick(keyword, used) {
   // worker 是 POST + { keywords }，不是 query string（照 scripts/backfill-covers.mjs 的用法）

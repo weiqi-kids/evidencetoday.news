@@ -94,7 +94,6 @@ function futureDates(collection, today) {
 
 const today = todayTaipei();
 const errors = [];
-let hasLinkErrors = false;   // 內鏈指向未發布稿；與排程破洞分開計數，補法不同
 const warnings = [];
 
 console.log(`發文排程健檢（台北時間 ${today}）\n`);
@@ -184,17 +183,22 @@ if (warnings.length) {
       //   2. 目標到現在都還沒上線（td > today）——否則兩篇早就都在 dist 裡了，
       //      歷史上的先後順序已經不重要（漏掉這條會把幾十組陳年正常連結誤報成死連結）
       if (td > at && td > today) {
-        const when = at <= today ? '現在就是死連結' : `${at} 來源上線時會爆`;
-        linkErrors.push(`${from}（${at}）內文連到 /${target}/（${td} 才發布）—— ${when}`);
+        const when = at <= today ? '現在就降級為純文字' : `${at} 來源上線時會是純文字`;
+        linkErrors.push(`${from}（${at}）內文連到 /${target}/（${td} 才發布）—— ${when}，${td} 後自動變回連結`);
       }
     }
   }
   linkErrors.sort();
   if (linkErrors.length) {
-    console.log(`\n內鏈指向未發布稿 ${linkErrors.length} 處（會讓 CI 連結檢查失敗、擋住部署）：`);
-    for (const l of linkErrors) console.log(`  ✗ ${l}`);
-    console.log('\n補法：把連結拿掉（保留語意），或把目標稿的 publishDate 提前到來源之前。');
-    hasLinkErrors = true;
+    // 2026-09-13 起降為警告：`src/utils/rehype-unpublished-links.mjs` 會在建置時把這種連結
+    // 降級成純文字，所以「死連結擋住部署」那個後果已經不存在了（實測：掃 dist 1,787 個 html
+    // 對 112 個未公開頁，殘留連結 0）。留著報是因為還有一個真實但輕微的代價——
+    // 那條連結會在兩篇上線日之間消失，站內動線與權重短少一條。
+    // **不要為了消掉這幾行去挪 publishDate**：動排程的風險遠高於少一條連結兩天
+    // （中秋烤肉排錯日期就是排程 churn 的產物，見 docs/pitfalls.md）。
+    console.log(`\n內鏈指向未發布稿 ${linkErrors.length} 處（建置時會自動降級成純文字，不擋部署）：`);
+    for (const l of linkErrors) console.log(`  · ${l}`);
+    console.log('\n可不處理。真的想保住那條連結才動手：把目標稿的 publishDate 提前到來源之前。');
   }
 }
 
@@ -206,6 +210,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-if (hasLinkErrors) process.exit(1);
-
-console.log('\n排程健檢通過：無破洞、無指向未發布稿的內鏈。');
+console.log('\n排程健檢通過：無破洞。');

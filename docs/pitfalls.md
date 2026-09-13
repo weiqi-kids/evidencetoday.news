@@ -3,6 +3,8 @@
 每一條都是**實際壞過一次**才寫下來的。動手前先掃自己那一類。
 
 > 本檔只記「機制」與「怎麼避免」，不記當時的數字或當下狀態。要看現況請跑指令（`pnpm stats` / `check:schedule` / `perf` / `index:coverage`）。
+>
+> ⚠️ **用腳本改這份檔案時，`String.replace` 的替換字串一律改傳函式**（`t.replace(a, () => b)`）。本檔條目裡有 `$`、反引號、`<`、引號；替換字串中的 `$&`、``$` ``、`$'` 會被展開，其中 `$'` 代表「比對處之後的全部原文」——2026-09-12 就因此把整份檔案複製了一次（342 行 vs 應有的 184），而被它吃掉的正好是「`$` 會出事」那一條。同理也不要用 shell 的字串或 heredoc 改它。
 
 ---
 
@@ -14,166 +16,7 @@
   範圍在 2026-08-06 釐清：這條擋的是導覽區塊，**不是**該篇自己的內容。當天新增了「那，實際上該怎麼做？」（`safeActions`／`avoidActions`／`whenToSeekProfessionalAdvice`），因為那三欄從建站起就逐篇寫在 frontmatter、前兩者還是 required，卻從來沒有任何模板讀過——74 篇的「該做／別做／何時就醫」讀者一個字都看不到。要再加區塊仍請先確認屬於哪一類。
   - **例外：FAQ 是刻意保留的固定區塊**。曾因 `mythsSchema` 漏宣告 `faq` 欄，Zod 靜默剝除 → FAQ 從未顯示、FAQPage JSON-LD 也輸不出來。補欄位後生效，勿再移除。
 - **正文寫 `P<0.001` 這種統計符號會讓整站 build 失敗**（2026-09-12）：MDX 把「`<` 後面接數字」當成 JSX 開標籤，錯誤訊息是
-  `Unexpected character '0' (U+0030) before name, expected a character that can start a name, such as a letter, '：`check-content.mjs` 對「被碰到的檔案」重掃全文，既有內文原本只因不在 diff 裡而被 grandfather。掛署名前先跑 `node scripts/check-content.mjs <檔案>`，ERROR 同一個 commit 修掉。
-
-## 排程與可見性
-
-- **排程稿可見性只有 HTML 路由套 `isPublicEntry`**：`.txt`／RSS／`llms-full.txt`／tags 頁曾只濾 `!data.draft` → 未來日期排程稿提前洩全文。新增前台讀 collection 的路由**一律用 `isPublicEntry(data)`**；`src/utils/visibility.test.ts` 有防回歸測試會擋。
-- **news 排程不可被「拉開節奏」波及**：radar 稿的**檔名與標題都自帶日期**（`radar-YYYY-MM-DD-…`／「健康雷達 YYYY-MM-DD」）。曾在調整全站發文頻率時把 news 一起拉開 → 標題寫某日的稿被排到一個多月後才發，等於發一批一上線就過期的新聞。**重排全站排程時 news 必須排除在外，一律回到檔名的名目日期**（見 `playbooks/news-article.md`）。要調整發文量請動 evergreen（articles/ingredients/myths）。
-- **排程破洞沒有任何自動檢查看得到**（少發一天不會讓 build 紅），只能靠 `pnpm check:schedule`。動完排程一定要跑。
-- **自動發文可能連到「還沒上線的排程稿」，而這會擋掉全站部署**（2026-08-24 實際發生）：cron 自動發布的文章若在內文連向一篇尚未到 `publishDate` 的稿，該連結在 `dist` 就是死連結，`check:site` 會讓 build 紅 → **從那一刻起所有人的部署都失敗**，包含與此無關的修改。症狀是 GitHub Actions 連續 failure、而錯誤只有一行「站內死連結」。`pnpm check:schedule` 從原始碼就能抓到（訊息更清楚），但**它不在 CI 裡**，所以只有人主動跑才看得見。動完排程、或發現部署連續失敗時，第一件事就是跑它。修法有兩種：把目標稿的 `publishDate` 提前到來源之前（保住內鏈，較佳），或把連結拿掉只留語意；前者會在原本的日期留下破洞，記得把後面的稿往前挪一天補上。
-- **節氣／節慶文照「檔案順序」往後接，就會排到節慶結束之後**（2026-08-31 抓到）：一批 60 篇的家族稿是按主題分組依序排日期的，`mid-autumn-bbq-food-safety` 因此落在 2026-10-18——但 2026 中秋是**國曆 9/25**，等於中秋過完 23 天才上線，整篇白寫。同批的年菜稿排 10-19，而 2027 除夕是 2/5，早了三個半月。**這個風險在該批的規劃文件裡已經寫過（「J 組要照農曆與節氣排」），卻沒有在排程時執行**——寫下來不等於做到。做法：**排程前先查該年的國曆日期，節慶文一律排在節慶前一到兩週**（要留得出被 Google 索引的時間，當天發等於沒發）。2026-2027 關鍵日期記在 `docs/reminders.md`。
-- **排程稿互相連結：「來源先上線、目標還沒上線」，而守門看不到（2026-09-05 修，這是同一個坑的第四次）**：`check-schedule.mjs` 原本只掃「已發布的來源」，註解還寫著「未發布 → 未發布是安全的，因為兩者上線時目標多半已在（同批排程）」。**那個假設不成立**——同一批排程稿彼此的 `publishDate` 有先後，來源先上線那天目標還不存在，dist 裡就是死連結。實例：中秋烤肉排 09-18，內文連到排 10-17 的生蠔那篇，兩篇當時都還沒發布，舊判定完全看不見。這樣的地雷當時累積了 **18 條**，引爆日橫跨 09-14 到 11 月，而且沒有任何檢查抓得到。
-  **正確判準跟「有沒有發布」無關，只跟先後有關**：目標 `publishDate` 晚於來源、且目標到現在還沒上線，就會在來源上線那天爆。（只寫「目標晚於來源」會把幾十組陳年正常連結誤報——兩篇都早就上線的話，dist 裡兩個都在，先後順序不重要。）
-  **現在有兩道防線**：`check-schedule.mjs` 會逐條列出「哪一天會爆」；`src/utils/rehype-unpublished-links.mjs` 在建置時把指向未公開頁的站內連結降級成純文字，**目標一上線、下次建置自動變回連結**。有了後者，作者可以放心互相連結，不必先算兩篇的先後順序——但前者仍要跑，因為它會告訴你哪些連結目前是失效的。
-- **`relatedArticles` 這類「手動關聯」欄位過去沒套 `isPublicEntry`，是死連結的第二個來源**（2026-09-02 修）：`articles/[slug].astro` 與 `ingredients/[slug].astro` 解析 `relatedX` 時用的是 `.filter(Boolean)`——那只擋得掉「這個 id 不存在」，擋不掉「這篇還沒到 `publishDate`」。未公開的稿在 `dist` 裡沒有頁面，渲染出來就是死連結，`check:site` 會讓 build 紅、擋掉全站部署。實際案例：cron 自動發布的 `ingredients/dong-quai` 在 `relatedArticles` 與正文各填了四篇 10 月底才上線的節氣文。**這是硬規則 12 的漏網之魚——當時只檢查了 `getCollection` 的呼叫點，沒檢查 `getEntry`。** 已改成共用的 `resolveManual()` 並套 `isPublicEntry`；日後新增任何「用 id 取單篇再渲染連結」的地方，都要記得過這一關。
-- **Astro 5 content-layer 快取**：改 `content.schemas.ts` 欄位後，本機 `pnpm build` 可能沿用 `.astro/data-store.json` 舊解析結果（新欄位仍被剝除、前台看不到）。驗證 schema 改動請先 `rm -rf .astro dist` 再 build。CI 每次全新 checkout 無此問題。
-
-## 版面與樣式
-
-- **Article.astro `cards` variant 曾遺漏 `max-width: none`** → blocks 被限制在 68ch。改 variant 記得兩件事都設：透明背景 + 解除寬度上限。
-- **Podcast 連結 slug 一律用 `stripPodcastSlug()`**，不可用 `stripExt()`，否則單集頁連結壞掉。
-- **不要用 `:global()` 覆蓋 layout 的 class**，改用 variant prop；layout 管骨架、page 管皮膚。
-- **`!important` 存量遷移中**：`check-design.mjs` 的禁 `!important` 規則尚未啟用（存量在 `global.css`）。清零進度與清單見 `scripts/check-design.mjs` 檔頭 TODO，不要寫進文件。
-
-## 資料與判讀
-
-- **跨 collection 比 CTR 會得到相反結論**：各 collection 的平均排名差距很大，直接比原始 CTR 會把「排名差異」誤讀成「標題爛」，曾據此誤判某些分類該全面改寫標題。**談 CTR 一律先做位置校正**（算法見 `playbooks/audience-insights.md`）。
-- **剛上線的稿不能當「表現差」的證據**：未滿一週、Google 還沒爬完的稿，曝光與索引率本來就低。評估成效時只計已上線一段時間的稿，否則新稿必然拉低平均，會做出錯誤的減量決定。
-- **把「批次品質差異」誤讀成「內容隨時間衰退」**（2026-08-11）：依「發布至今幾天」分組看曝光，每種類型都在 60 天後崩掉（news 7.3→0.3、myths 33.0→4.8），看起來是乾淨的衰退曲線。錯在年齡分組同時也把發布月份分了組——60 天以上那格裝的正是 3–6 月那批（索引率 38–76%），60 天以內裝的是七月那批（97%）。**驗法：把同一批內容放進三個等長觀測窗回看**；實測每一批都持平或上升，沒有一批下降。兩種解讀導出相反行動（「等它回補」vs「那批已經定型」），所以**任何「隨時間變差」的結論都要先做分窗回看**。推導與數字見 `playbooks/winning-article-formula.md`。
-- **用 `updatedDate` 分群做批次分析，會把品質訊號洗掉**（2026-08-21）：`buildLastmodMap()` 取的是 `updatedDate ?? publishDate`，那對 sitemap 是對的，對批次分析是錯的。任何一次批次編輯（補 seoTitle、收斂標籤、掛署名）都會把一堆舊頁搬進當月——實測 lastmod 分群說八月有 267 頁、還有 14 頁落在「十月」，publishDate 分群是 134 頁。`index-coverage.mjs` 的「依發布月份索引率」原本就是用 lastmod，等於每做一次批次編輯就把它要量的東西抹掉一次。已改用 `buildPublishDateMap()`。**規則：凡是「依批次／依時間」的分析一律用 `publishDate`，`updatedDate` 只給 sitemap 用。**
-- **比較題型／批次產出前，先確認各桶稿齡相當**（2026-08-21）：08-11 依「`decision-guide` 曝光 14/篇」把它降順位，十天後同一批是 38/篇——那 13 篇當時才發布幾天。這跟上一條「剛上線的稿不能當表現差的證據」是同一個坑，但换了個外衣：不是拿單篇當證據，是拿**稿齡不同的兩個桶子**互比。比之前先把每桶限縮在「已發布滿 30 天」。
-- **GSC page 維度的 `#` fragment 列不是獨立結果，CTR 完全不可判讀**（2026-09-08）：URL 含 `#` 的列是 Google SERP 上的「跳至章節」sitelinks，隨母頁的同一則結果一起曝光——**曝光與母頁重複計算**（同一批 SERP 的切片，不是額外流量），而只有使用者特意點那一條才記點擊。所以這種列的 CTR 恆趨近 0，跟標題寫得好不好無關，而它的排名會與母頁幾乎同值（sitelinks 繼承母結果位置）。放進「高曝光低 CTR」榜單就是**必定誤導**：曾因此把全站表現最好的一頁當成「待搶救的爛標題」，觸發一整輪不該做的調查。
-  **判準**：看到「排名很前面卻幾乎零點擊」的頁，第一件事是確認 URL 有沒有 `#`；有的話該看的是母頁那一列（真實 CTR ＝ 母頁與錨點的點擊合併除以母頁曝光），不是錨點列。同理，凡是把 page 列加總起來的分析（依 collection 彙總、每頁曝光、全站 CTR）都要先濾掉 fragment 列，否則分母灌水。站台層級總計是 GSC 直接給的數字，沒有這個問題。
-  **這不是內容寫壞**，是「排得夠前面 + 有側欄目錄」的自然結果，也通常是加分（在 SERP 佔更多版面）。要處理的是報表，不是內容——`perf-snapshot.mjs` 已把 fragment 列從所有榜單剔除、另闢一區標示（見 `playbooks/audience-insights.md`）；自己寫一次性分析腳本時要記得補這道過濾。現況跑 `pnpm perf` 看那一區。
-- **評估發文頻率不要看單期數字，要看方向**：全站曝光仍在成長時優先「別亂動結構」。流程見 `playbooks/news-cadence-review.md`。
-
-## 產線靜默故障：兩條規則互相咬死，而「零產出」是設計上的正常結局（2026-09-05）
-
-**現象**：趨勢新聞連續 18 天（08-19～09-05）沒有任何新稿，但 git log 每天都有
-`chore(news): 標記來源已處理（草稿已入自動發佈佇列）`，看起來一切正常；`pnpm stats`
-要到排程稿全部見底才看得出來，而那時已經過了 16 天。
-
-**根因是兩條規則夾成死結**：
-1. 既有的門檻制——「只有加權分數 ≥6.0 的高把握選題才成篇，否則印『無新草稿』靜默結束」
-2. 2026-08-11 我加的——「選到『指引更新／法規變動／重大證據反轉』就不要只寫成 news，
-   讓 articles 接手」
-
-健康領域能過 ≥6.0 的重大題目，幾乎必然就是那三類。於是能過門檻的都被交棒、過不了的本來
-就不寫，每天的**正確**結論都是零產出。**兩條各自合理的規則，交集是空集合。**
-
-**為什麼沒人發現，三個原因疊在一起**：
-- 零產出是門檻制允許的結局，不是錯誤，所以不會有 exit code 或 error
-- 零產出只 `echo` 到主機 log，Slack 只在「有新稿」時才通知
-- `processed-sources.json` 的 commit 訊息是寫死的字串「草稿已入自動發佈佇列」，零產出那天
-  照樣發出——**這句訊息主動把故障偽裝成正常**
-- 還有一個副作用：零產出照樣消耗素材（Phase 1 的去重在選題之前），被標記的題目永遠不會
-  再被選，等於每天燒掉 1–17 筆候選卻毫無產出
-
-**已做的修正**：解開死結（改成「照常寫 news，同時標記建議升格 articles」，加法不是二選一）、
-commit 訊息改成反映實際產出篇數、連續零產出達門檻發 Slack 警報。
-
-**規則**：
-1. **改選題規則時，要檢查它與既有門檻／排除規則的交集是不是空集合。** 每條規則單看都合理，
-   合起來可能讓「什麼都不做」變成唯一正確解。
-2. **任何「什麼都沒做」的正常結局，都必須能被計數與告警。** 靜默的成功與靜默的失敗長得一樣。
-3. **commit／log 訊息不准寫死成「成功」的敘述**，必須反映該次實際結果。
-
-## 自動化與 token
-
-- **headless 派子代理不帶 model ＝ 默默用 opus、燒爆額度**：cron orchestrator 雖然自己跑 sonnet，但它派出的撰寫／審核 `Agent` 不帶 model 會落到帳號預設（opus）。撰寫委員會一律顯式 `model='sonnet'`（見 `AGENTS.md` 並行紀律、`ops/README.md`）。談「cron 燒 token」先查子代理 model。
-- **營運帳號與 appi.news 共用同一個週限額**：撞限額時本站的 cron 會一起空跑。`claude-run.sh` 撞限額會寫冷卻旗標，冷卻期內 `bootstrap.sh` 只跳過 claude 型 job、純資料型照跑。現況看 `/etn-cron`。
-- **遠端 CCR 環境 WebFetch 被沙箱封鎖**（PubMed/RSS 403），新聞管線為 WebSearch-only，用 `site:` 定向搜尋。
-- **`pnpm build 2>&1 | tail -25` 會吃掉真正的離開碼，把失敗的建置報成成功**（2026-09-01 差點誤報）：管線的離開碼取自最後一個指令（`tail`），`tail` 永遠回 0。當時 build 其實在第一秒就死於 `ERROR packages field missing or empty`，輸出只剩那兩行，看起來卻像「跑完了」。**要判斷 build 有沒有過，一律寫成 `pnpm build > 檔案 2>&1; echo "EXIT=$?"` 再看檔案**，不要用管線接 tail/head/grep。同理適用於所有 gate 腳本。
-- **`pnpm-workspace.yaml` 憑空出現且只有 `allowBuilds` 欄位 ＝ 被 pnpm 10 汙染過，pnpm 9 會完全動不了**（2026-09-01 再次踩到）：症狀是連 `pnpm --version` 都回 `ERROR packages field missing or empty`。這個檔**不在 git 追蹤裡**，直接 `rm -f pnpm-workspace.yaml` 即可，不必修內容。本專案鎖 pnpm 9（CI 也是），誤用 pnpm 10+ 執行任何指令都會重新產生它。
-
-
-- **列表頁未被索引 ≠ 站上有缺陷（2026-08-06 查證，不要再查一次）**：曾發現 `/articles/`、`/ingredients/`、`/news/`、`/videos/` 未索引，而 `/myths/`、`/topics/`、`/podcasts/` 已索引，直覺會去找 noindex／canonical／內鏈的差異。**七頁逐項比對後完全相同**：canonical 皆正確自指、無 noindex、都在 sitemap、導覽列在 1,233 頁裡都是真 `<a href>`（不是 script 內字串）。唯一差別是 URL Inspection 的 `lastCrawlTime`——已索引的三頁被爬過，未索引的四頁**從未被爬**，`pageFetchState`／`robotsTxtState` 全為 `UNSPECIFIED`（代表「還沒檢查」而非「檢查不過」）。`referringUrls: 0` 同理是未處理的結果，不是原因。
-  推論時要避開的錯：**別用「列表頁沒索引」解釋該分類索引率低**。實測 `/articles/` 一樣沒被爬，底下卻有 77% 已索引；`/ingredients/` 也沒被爬，底下只有 58%。兩者不連動。
-  對症的動作只有一個：`URL is unknown to Google` 的頁可靠 `pnpm sitemap:submit` 讓 Google 發現；已經是 `Discovered - currently not indexed` 的，Google 早就知道了，重送無效，只能等爬取排程。
-
-## 資料結構（查過一次，不用再查）
-
-- **闢謠每篇有「兩份平行版本」，這是設計不是 bug**：`check-myth-quality.mjs` 強制 MDX **body** 必須含 8 個 section（30 秒快速結論／坊間怎麼流傳／科學證據怎麼看／白話辯證／哪些人要特別小心／FAQ／References／健康資訊提醒），但 `myths/[slug].astro` **完全不渲染 body**（沒有 `<Content />`），前台看到的是從 **frontmatter** 渲染的同名區塊。body 只流向 `.txt` 端點（AI／GEO 用）。
-  2026-08-06 量測：body 段落出現在 HTML 的比例中位數 62%，18/58 篇低於一半——乍看像「大量內容被藏起來」。但改用**具名來源密度**（食藥署／WHO／FDA／Cochrane／查核中心等）比對，58 篇裡只有 3 篇的 body 比頁面多，且差距是 15:11、8:7、1:0。**結論：落差主要在敘事散文，不是證據流失，前台版本沒有比較差。** 不要為了「露出 body」去加 `<Content />`，那會讓每頁出現兩份近似內容。
-- **`check-myth-quality.mjs` 的 `FORBIDDEN_BODY_SECTION_TITLES` 禁止 body 寫「正確做法」「一般人最安全做法」「什麼時候該尋求專業意見」**，因為那些內容的正本在 frontmatter（`safeActions` / `avoidActions` / `whenToSeekProfessionalAdvice`），2026-08-06 起由前台「那，實際上該怎麼做？」區塊渲染。要改這類內容改 frontmatter，不要往 body 加 section，gate 會擋。
-- **schema 死欄位盤點（2026-08-06）**：宣告了但沒有任何程式讀取的欄位——`articles`：`evidenceBasis`、`targetAudience`（0/129 從沒人填，純殘留）；`ingredients`：`mechanism`(8 篇有值)、`pathwaySteps`(1 篇)；`news`：`editorPick`(103 篇有值)；`videos`：`evidenceBasis`、`targetAudience`(5/5)；`myths`：另有 10 個 metadata 欄（`spreadLevel` 全站只有 2 種值、`disclosureStatus` 只有 1 種，屬樣板，露出反而是重複內容）。
-  查法：把 `content.schemas.ts` 的欄位名對整個 repo（排除 `src/content/`）做全字比對。**加欄位前先想清楚誰會讀它**——`medicalDisclaimer` 與 `safeActions` 就是「required 欄位寫了兩年沒人渲染」的前例。
-## 資產產出
-
-- **OG 圖字型「Bold」曾其實是細體**：`*-Bold-static.ttf` 原檔是可變字型直接複製、沒有真的 instance 成 `wght=700`，satori 渲染時字重等於 Regular。要更新這類靜態字型，須用 `fonttools varLib.instancer NotoSansTC-Regular.ttf wght=400/700 -o ...` 產生真正定死權重的實例，不能只是複製可變字型或改檔名。驗證：渲染一段 `fontWeight:700` 文字，比對是否真的比 400 粗。
-- **字型子集化的權重要兩邊同步**：`Base.astro` 的 import 與 `subset-fonts.mjs` 的 `WEIGHTS` 不一致時，該權重不會被切塊（fallback 到整包或缺字）。見 `playbooks/ci-cd.md`。
-
-## 守門機制本身的坑（2026-08-07）
-
-寫 gate 的時候最容易犯的錯，是**測到的不是你以為在測的東西**。這一天連踩四個：
-
-- **規則只擋某一種寫法，等於沒擋**：`check-design` 規則 1 只擋 `font-size: NNpx`，
-  於是 `0.7rem` 全數合法。全站 40 處低於 18px 下限的字級就是這樣長出來的。
-  判準：下限要用「算出來的值」守，不要用「有沒有寫某個單位」守。
-- **門檻把樣板算進去，就永遠測不到問題**：`check-site` 第一版量闢謠頁站內出口是 2，
-  看起來達標。實際上那 2 個是 `/disclosure/`（署名列的固定連結）和一張 `.png` 圖卡下載——
-  扣掉每頁都有的樣板連結與資產之後是 **0**。拿改動前的版本回頭驗一次，是唯一能確認
-  「這道 gate 真的會擋住它該擋的東西」的方法。
-- **過濾條件下手太重，會製造假違規**：同一支 gate 一律剝掉 `<nav>`，結果把
-  `.topic-hubs`（所屬健康專題，內容是依該頁自己的主題判定出來的真出口）也剝掉了，
-  憑空生出 11 篇假違規。剝的時候要指名版型導覽（breadcrumb / topnav / toc），不要剝類別。
-- **序列化偷換內容**：`check-boilerplate` 用 `Array.join()` 比對陣列欄位，物件陣列
-  全部變成 `"[object Object]"`，於是報出「109 篇 faq 逐字相同」這種假違規。比對前先
-  確認序列化後的字串真的代表原本的內容。
-
-## 本機是 Windows 時，換行符會讓守門腳本誤報（2026-08-24）
-
-Git 的 `autocrlf` 在 checkout 時把 LF 換成 CRLF，而多數守門腳本用 `/^---
-/` 這類正則解析
-frontmatter——多出來的 `
-` 會讓它們判定「找不到 frontmatter」，回報一個**根本不存在的錯誤**。
-
-實際踩到的情境：`git pull` 拉進新稿後跑 `pnpm check:news`，新檔被報「找不到 frontmatter」。
-檔案完全正常，CI 在 Linux 上也正常。
-
-**每次 pull 完、跑任何守門腳本之前，先把 `src/content` 正規化成 LF**：
-
-```bash
-python -c "
-import glob
-for p in glob.glob('src/content/**/*.md',recursive=True)+glob.glob('src/content/**/*.mdx',recursive=True):
-    b=open(p,'rb').read()
-    if b'
-' in b: open(p,'wb').write(b.replace(b'
-',b'
-'))
-"
-```
-
-轉完 `git status` 不會多出變動（git 端本來就存 LF），但 `git status` 仍可能把大量檔案顯示成
-`M`——那是 stat 快取，跑 `git update-index --refresh` 就會消失，**不是真的有變動**。
-判斷有沒有實質差異一律用 `git diff --ignore-all-space --name-only`。
-
-## 要求「有值」而不要求「值正確」，比沒有要求更糟（2026-08-07）
-
-`utils/myths/validate.ts` 曾要求「`shareCardImage` 或 `ogImage` 至少一個」。
-規則本身沒有錯，但沒有任何機制檢查那個值對不對——結果 74/76 篇指向同兩張 radar SVG，
-而那兩張圖裡**烤死了**「維他命 C 能預防感冒嗎？」與「喝檸檬水真的可以排毒嗎？」的字樣
-與 `aria-label`。於是藍光眼鏡、氣炸鍋、大骨湯、電子煙等頁面的卡片縮圖，寫的是完全不相干
-的問題。連維生素 C 那篇自己掛的都是檸檬水那張——沒有任何一篇是對的。
-必填欄位如果沒有配套的正確性檢查，最可能的結果是「大家隨便填一個值讓 gate 過」。
-寧可不要求，也不要製造這種假合規。
-
-## 守門清單漏掉一個 collection，等於那個 collection 沒有守門（2026-08-08）
-
-`check-boilerplate.mjs` 的 `COLLECTIONS` 原本只列 articles/myths/ingredients/news。
-videos 不在裡面，於是「5 支短影音頁彼此重複、Google 收錄 0/6」這件事，兩道 gate 都沒看到。
-新增 collection 時必須同步加進那份清單。
-
-但這件事還有第二層，比補清單更重要：**videos 的內容全在 frontmatter，原始碼層的正文是空的**，
-所以就算加進清單，n-gram 那一關也照樣看不到——真正造成重複的是**版型**
-（「繼續看」印出鄰篇的完整描述）。這種重複只有在組裝後才存在。
-因此渲染層的重複檢查加在 `check-site.mjs`（規則 4c），不是 check-boilerplate。
-
-量渲染重複時**一定要先剝掉 `<script>`／`<style>`**：Astro 的 hydration script 每頁都一樣，
-不剝的話任何頁型都會量出 88% 這種數字。我第一次就是這樣誤判，差點照著假數字去改版型。
-, or '_'`
+  `Unexpected character '0' (U+0030) before name, expected a character that can start a name, such as a letter, '$', or '_'`
   ——完全看不出跟統計寫法有關，而且只報第一個命中處，修掉一個還會再冒下一個。健康內容幾乎篇篇都會寫到
   `P<0.05`、`<0.001`、`BMI<18.5`、`每日 <250 mg`，所以這是高頻踩點。
   **frontmatter 不受影響**（那是 YAML），只有正文會炸；同一份稿 YAML 裡的 `P<0.008` 沒事、正文的 `P<0.001` 會死，
@@ -192,7 +35,9 @@ videos 不在裡面，於是「5 支短影音頁彼此重複、Google 收錄 0/6
 - **節氣／節慶文照「檔案順序」往後接，就會排到節慶結束之後**（2026-08-31 抓到）：一批 60 篇的家族稿是按主題分組依序排日期的，`mid-autumn-bbq-food-safety` 因此落在 2026-10-18——但 2026 中秋是**國曆 9/25**，等於中秋過完 23 天才上線，整篇白寫。同批的年菜稿排 10-19，而 2027 除夕是 2/5，早了三個半月。**這個風險在該批的規劃文件裡已經寫過（「J 組要照農曆與節氣排」），卻沒有在排程時執行**——寫下來不等於做到。做法：**排程前先查該年的國曆日期，節慶文一律排在節慶前一到兩週**（要留得出被 Google 索引的時間，當天發等於沒發）。2026-2027 關鍵日期記在 `docs/reminders.md`。
 - **排程稿互相連結：「來源先上線、目標還沒上線」，而守門看不到（2026-09-05 修，這是同一個坑的第四次）**：`check-schedule.mjs` 原本只掃「已發布的來源」，註解還寫著「未發布 → 未發布是安全的，因為兩者上線時目標多半已在（同批排程）」。**那個假設不成立**——同一批排程稿彼此的 `publishDate` 有先後，來源先上線那天目標還不存在，dist 裡就是死連結。實例：中秋烤肉排 09-18，內文連到排 10-17 的生蠔那篇，兩篇當時都還沒發布，舊判定完全看不見。這樣的地雷當時累積了 **18 條**，引爆日橫跨 09-14 到 11 月，而且沒有任何檢查抓得到。
   **正確判準跟「有沒有發布」無關，只跟先後有關**：目標 `publishDate` 晚於來源、且目標到現在還沒上線，就會在來源上線那天爆。（只寫「目標晚於來源」會把幾十組陳年正常連結誤報——兩篇都早就上線的話，dist 裡兩個都在，先後順序不重要。）
-  **現在有兩道防線**：`check-schedule.mjs` 會逐條列出「哪一天會爆」；`src/utils/rehype-unpublished-links.mjs` 在建置時把指向未公開頁的站內連結降級成純文字，**目標一上線、下次建置自動變回連結**。有了後者，作者可以放心互相連結，不必先算兩篇的先後順序——但前者仍要跑，因為它會告訴你哪些連結目前是失效的。
+  **現在有兩道防線**：`check-schedule.mjs` 會逐條列出受影響的連結；`src/utils/rehype-unpublished-links.mjs` 在建置時把指向未公開頁的站內連結降級成純文字，**目標一上線、下次建置自動變回連結**。有了後者，作者可以放心互相連結，不必先算兩篇的先後順序。
+- **守門訊息本身會過期，而過期的嚇人訊息會誘發不必要的排程 churn**（2026-09-13）：`check-schedule.mjs` 原本把上面那類內鏈報成錯誤、訊息寫「會讓 CI 連結檢查失敗、擋住部署」並 `exit 1`。那句話在 rehype 外掛上線後就不成立了，但沒人回頭改——**於是每個看到它的 session 都會想挪 `publishDate` 把它消掉，而動排程的風險遠高於少一條連結兩天**（中秋烤肉排錯日期正是排程 churn 的產物）。已改為警告並寫明真實後果：那條連結在兩篇上線日之間是純文字，之後自動復原。
+  **驗證某道守門是不是在說謊，要直接觀察產物**：掃 `dist` 全部 html，找有沒有任何 `href` 指向目前未公開的內容頁，預期為 0（2026-09-13 實測 1,787 個 html 對 112 個未公開頁，殘留 0）。讀程式碼推理得不到這個答案。
 - **`relatedArticles` 這類「手動關聯」欄位過去沒套 `isPublicEntry`，是死連結的第二個來源**（2026-09-02 修）：`articles/[slug].astro` 與 `ingredients/[slug].astro` 解析 `relatedX` 時用的是 `.filter(Boolean)`——那只擋得掉「這個 id 不存在」，擋不掉「這篇還沒到 `publishDate`」。未公開的稿在 `dist` 裡沒有頁面，渲染出來就是死連結，`check:site` 會讓 build 紅、擋掉全站部署。實際案例：cron 自動發布的 `ingredients/dong-quai` 在 `relatedArticles` 與正文各填了四篇 10 月底才上線的節氣文。**這是硬規則 12 的漏網之魚——當時只檢查了 `getCollection` 的呼叫點，沒檢查 `getEntry`。** 已改成共用的 `resolveManual()` 並套 `isPublicEntry`；日後新增任何「用 id 取單篇再渲染連結」的地方，都要記得過這一關。
 - **Astro 5 content-layer 快取**：改 `content.schemas.ts` 欄位後，本機 `pnpm build` 可能沿用 `.astro/data-store.json` 舊解析結果（新欄位仍被剝除、前台看不到）。驗證 schema 改動請先 `rm -rf .astro dist` 再 build。CI 每次全新 checkout 無此問題。
 
@@ -267,6 +112,8 @@ commit 訊息改成反映實際產出篇數、連續零產出達門檻發 Slack 
 - **schema 死欄位盤點（2026-08-06）**：宣告了但沒有任何程式讀取的欄位——`articles`：`evidenceBasis`、`targetAudience`（0/129 從沒人填，純殘留）；`ingredients`：`mechanism`(8 篇有值)、`pathwaySteps`(1 篇)；`news`：`editorPick`(103 篇有值)；`videos`：`evidenceBasis`、`targetAudience`(5/5)；`myths`：另有 10 個 metadata 欄（`spreadLevel` 全站只有 2 種值、`disclosureStatus` 只有 1 種，屬樣板，露出反而是重複內容）。
   查法：把 `content.schemas.ts` 的欄位名對整個 repo（排除 `src/content/`）做全字比對。**加欄位前先想清楚誰會讀它**——`medicalDisclaimer` 與 `safeActions` 就是「required 欄位寫了兩年沒人渲染」的前例。
 ## 資產產出
+
+- **封面搜圖的關鍵字愈抽象，選錯的機率愈高，而且錯得看不出來**（2026-09-13 再次驗證）：`pharmacy shelf vitamin bottles` 拿到**法國芳療店貨架**（歐元價標、法文告示、整排某品牌產品），`suitcase packing travel medication` 拿到的行李平舖裡**一件藥品都沒有**，另一張則是嚴重失焦。改成具體物件（`vitamin capsules spilling from bottle`、`weekly pill organizer box`）後一次就對。**這些全部通過 HTTP 驗證**——所以規矩仍是逐張看過再寫 alt，見 `playbooks/editor-images.md`。
 
 - **OG 圖字型「Bold」曾其實是細體**：`*-Bold-static.ttf` 原檔是可變字型直接複製、沒有真的 instance 成 `wght=700`，satori 渲染時字重等於 Regular。要更新這類靜態字型，須用 `fonttools varLib.instancer NotoSansTC-Regular.ttf wght=400/700 -o ...` 產生真正定死權重的實例，不能只是複製可變字型或改檔名。驗證：渲染一段 `fontWeight:700` 文字，比對是否真的比 400 粗。
 - **字型子集化的權重要兩邊同步**：`Base.astro` 的 import 與 `subset-fonts.mjs` 的 `WEIGHTS` 不一致時，該權重不會被切塊（fallback 到整包或缺字）。見 `playbooks/ci-cd.md`。
