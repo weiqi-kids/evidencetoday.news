@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" width="960" height="600">
+  <style>
+    text { font-family: sans-serif; }
+    .h1 { font-size:20px; font-weight:bold; fill:#FFFFFF; }
+    .pt { font-size:14px; font-weight:bold; fill:#1A4F8B; }
+    .lbl { font-size:12px; fill:#1E293B; }
+    .sub { font-size:11px; fill:#64748B; }
+    .acc { font-size:12px; font-weight:bold; fill:#E8923A; }
+    .wh { fill:#FFFFFF; font-size:12px; font-weight:bold; }
+  </style>
+
+  <rect width="960" height="600" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="960" height="58" rx="0" fill="#1A4F8B"/>
+  <text x="480" y="36" text-anchor="middle" class="h1">素食者 Omega-3 三種來源比較</text>
+
+  <!-- Panel 1 -->
+  <rect x="28" y="72" width="278" height="508" rx="12" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+  <rect x="28" y="72" width="278" height="44" rx="12" fill="#1A4F8B"/>
+  <rect x="28" y="100" width="278" height="16" fill="#1A4F8B"/>
+  <text x="167" y="100" text-anchor="middle" class="h1" font-size="14">① 植物性 ALA</text>
+
+  <circle cx="167" cy="175" r="32" fill="#3E7CB1" opacity="0.18" stroke="#3E7CB1" stroke-width="1.5"/>
+  <text x="167" y="170" text-anchor="middle" font-size="22">🌱</text>
+  <text x="167" y="190" text-anchor="middle" class="lbl">亞麻籽</text>
+
+  <circle cx="100" cy="270" r="28" fill="#3E7CB1" opacity="0.18" stroke="#3E7CB1" stroke-width="1.5"/>
+  <text x="100" y="264" text-anchor="middle" font-size="18">🫙</text>
+  <text x="100" y="283" text-anchor="middle" class="lbl">奇亞籽</text>
+
+  <circle cx="234" cy="270" r="28" fill="#3E7CB1" opacity="0.18" stroke="#3E7CB1" stroke-width="1.5"/>
+  <text x="234" y="264" text-anchor="middle" font-size="18">🌰</text>
+  <text x="234" y="283" text-anchor="middle" class="lbl">核桃</text>
+
+  <line x1="167" y1="313" x2="167" y2="358" stroke="#E8923A" stroke-width="2.5" stroke-dasharray="5,3"/>
+  <polygon points="167,368 160,353 174,353" fill="#E8923A"/>
+
+  <rect x="97" y="376" width="140" height="44" rx="8" fill="#E8923A" opacity="0.15" stroke="#E8923A" stroke-width="1.5"/>
+  <text x="167" y="394" text-anchor="middle" class="acc">體內轉換率</text>
+  <text x="167" y="412" text-anchor="middle" class="acc" font-size="15">僅 5–10%</text>
+
+  <text x="167" y="448" text-anchor="middle" class="lbl">→ EPA / DHA（少量）</text>
+  <text x="167" y="468" text-anchor="middle" class="sub">轉換效率因人而異</text>
+  <text x="167" y="486" text-anchor="middle" class="sub">整體補充效果有限</text>
+
+  <!-- Panel 2 -->
+  <rect x="341" y="72" width="278" height="508" rx="12" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+  <rect x="341" y="72" width="278" height="44" rx="12" fill="#1A4F8B"/>
+  <rect x="341" y="100" width="278" height="16" fill="#1A4F8B"/>
+  <text x="480" y="100" text-anchor="middle" class="h1" font-size="14">② 魚類（間接來源）</text>
+
+  <circle cx="480" cy="175" r="32" fill="#3E7CB1" opacity="0.25" stroke="#3E7CB1" stroke-width="1.5"/>
+  <text x="480" y="168" text-anchor="middle" font-size="20">🦠</text>
+  <text x="480" y="188" text-anchor="middle" class="lbl">微藻</text>
+  <text x="480" y="206" text-anchor="middle" class="sub">EPA/DHA 真正源頭</text>
+
+  <line x1="480" y1="218" x2="480" y2="258" stroke="#3E7CB1" stroke-width="2"/>
+  <polygon points="480,268 473,253 487,253" fill="#3E7CB1"/>
+  <text x="497" y="246" class="sub">攝食</text>
+
+  <circle cx="480" cy="310" r="34" fill="#3E7CB1" opacity="0.18" stroke="#3E7CB1" stroke-width="1.5"/>
+  <text x="480" y="302" text-anchor="middle" font-size="22">🐟</text>
+  <text x="480" y="322" text-anchor="middle" class="lbl">深海魚</text>
+
+  <rect x="390" y="360" width="180" height="46" rx="8" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="1.5"/>
+  <text x="480" y="378" text-anchor="middle" class="sub">EPA/DHA 累積於</text>
+  <text x="480" y="396" text-anchor="middle" class="lbl">魚油 ／ 魚肉中</text>
+
+  <text x="480" y="440" text-anchor="middle" class="sub">素食者無法直接食用</text>
+  <text x="480" y="458" text-anchor="middle" class="sub">且有重金屬汙染疑慮</text>
+  <text x="480" y="476" text-anchor="middle" class="sub">須透過第三方加工</text>
+
+  <!-- Panel 3 -->
+  <rect x="654" y="72" width="278" height="508" rx="12" fill="#EEF4FB" stroke="#E8923A" stroke-width="2.5"/>
+  <rect x="654" y="72" width="278" height="44" rx="12" fill="#E8923A"/>
+  <rect x="654" y="100" width="278" height="16" fill="#E8923A"/>
+  <text x="793" y="100" text-anchor="middle" class="h1" font-size="14">③ 藻油（直接補充）</text>
+
+  <ellipse cx="793" cy="210" rx="48" ry="60" fill="#E8923A" opacity="0.18" stroke="#E8923A" stroke-width="2"/>
+  <text x="793" y="200" text-anchor="middle" font-size="30">💊</text>
+  <text x="793" y="238" text-anchor="middle" class="acc" font-size="14">藻油膠囊</text>
+
+  <rect x="713" y="270" width="160" height="50" rx="8" fill="#E8923A" opacity="0.12" stroke="#E8923A" stroke-width="1.5"/>
+  <text x="793" y="289" text-anchor="middle" class="acc">直接萃取自微藻</text>
+  <text x="793" y="308" text-anchor="middle" class="lbl">跳過魚類中間環節</text>
+
+  <text x="793" y="350" text-anchor="middle" class="lbl" fill="#1A4F8B">✓ 素食者友善</text>
+  <text x="793" y="374" text-anchor="middle" class="lbl" fill="#1A4F8B">✓ 直接獲取 EPA / DHA</text>
+  <text x="793" y="398" text-anchor="middle" class="lbl" fill="#1A4F8B">✓ 無海洋汙染顧慮</text>
+  <text x="793" y="422" text-anchor="middle" class="lbl" fill="#1A4F8B">✓ 環境永續</text>
+
+  <rect x="713" y="450" width="160" height="50" rx="10" fill="#E8923A"/>
+  <text x="793" y="469" text-anchor="middle" class="wh">素食者補充</text>
+  <text x="793" y="488" text-anchor="middle" class="wh">EPA/DHA 最佳途徑</text>
+
+  <text x="480" y="592" text-anchor="middle" class="sub">本圖僅供參考，實際補充需求請諮詢醫師或營養師</text>
+<text x="940.8" y="585" text-anchor="end" font-family="sans-serif" font-size="17" fill="#64748B" fill-opacity="0.45" font-weight="600">本日有據</text></svg>
