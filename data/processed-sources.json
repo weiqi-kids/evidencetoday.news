@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-09-14T06:20:00+08:00",
+  "lastRun": "2026-09-14T22:19:04.581Z",
   "processed": {
     "https://pmc.ncbi.nlm.nih.gov/articles/PMC11174647/": {
       "processedAt": "2026-09-14T06:20:00+08:00",
@@ -52,10 +52,6 @@
     },
     "https://arxiv.org/pdf/2606.01428": {
       "processedAt": "2026-09-04T06:18:45+08:00",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Category/List/UVFDcMSRGZ0DX7NHPi8Lsw": {
-      "processedAt": "2026-08-31T06:18:00+08:00",
       "outputFile": null
     },
     "https://www.cdc.gov.tw/Bulletin/Detail/vwMq9VkXIaV7FHyJgpk-5w?typeid=9": {
@@ -129,18 +125,6 @@
     "https://pubmed.ncbi.nlm.nih.gov/39775037/": {
       "processedAt": "2026-07-19T06:30:00+08:00",
       "outputFile": "src/content/news/radar-2026-07-19-06-01.md"
-    },
-    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12367323/": {
-      "processedAt": "2026-06-16T08:29:14Z",
-      "outputFile": "src/content/news/radar-2026-06-16-16-01.md"
-    },
-    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12736498/": {
-      "processedAt": "2026-06-16T08:29:14Z",
-      "outputFile": "src/content/news/radar-2026-06-16-16-02.md"
-    },
-    "https://www.who.int/news/item/04-06-2026-unsafe-food-causes-866-million-illnesses-and-1.5-million-deaths-annually--young-children-at-highest-risk": {
-      "processedAt": "2026-06-16T08:29:14Z",
-      "outputFile": "src/content/news/radar-2026-06-16-16-03.md"
     },
     "PMID:41338694": {
       "processedAt": "2026-06-18T07:35:00Z",
@@ -656,6 +640,14 @@
     },
     "https://pubmed.ncbi.nlm.nih.gov/31478479/": {
       "processedAt": "2026-09-13T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11747194/": {
+      "processedAt": "2026-09-14T22:19:04.581Z",
+      "outputFile": null
+    },
+    "https://www.who.int/news/item/04-06-2026-unsafe-food-causes-866-million-illnesses-and-1.5-million-deaths-annually--young-children-at-highest-risk": {
+      "processedAt": "2026-09-14T22:19:04.581Z",
       "outputFile": null
     }
   }
