@@ -1,0 +1,82 @@
+<svg viewBox="0 0 960 600" width="960" height="600" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans TC','Microsoft JhengHei','PingFang TC',sans-serif">
+  <rect width="960" height="600" fill="#FFFFFF"/>
+  <!-- Title bar -->
+  <rect x="0" y="0" width="960" height="72" fill="#1A4F8B"/>
+  <text x="480" y="44" text-anchor="middle" fill="#FFFFFF" font-size="22" font-weight="bold">Akkermansia：科學研究 vs 行銷宣稱</text>
+  <text x="480" y="64" text-anchor="middle" fill="#EEF4FB" font-size="13">科學實際結果與市場行銷宣稱的對照比較</text>
+  <!-- Divider line center -->
+  <line x1="480" y1="88" x2="480" y2="572" stroke="#E8923A" stroke-width="3" stroke-dasharray="6,4"/>
+  <!-- VS badge -->
+  <circle cx="480" cy="330" r="22" fill="#E8923A"/>
+  <text x="480" y="336" text-anchor="middle" fill="#FFFFFF" font-size="14" font-weight="bold">VS</text>
+
+  <!-- LEFT PANEL -->
+  <rect x="28" y="88" width="424" height="484" rx="10" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+  <rect x="28" y="88" width="424" height="52" rx="10" fill="#1A4F8B"/>
+  <rect x="28" y="120" width="424" height="20" fill="#1A4F8B"/>
+  <text x="240" y="121" text-anchor="middle" fill="#FFFFFF" font-size="16" font-weight="bold">🔬 科學研究顯示</text>
+
+  <!-- Left items -->
+  <rect x="48" y="158" width="384" height="68" rx="8" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="1.5"/>
+  <circle cx="72" cy="192" r="12" fill="#1A4F8B"/>
+  <text x="72" y="197" text-anchor="middle" fill="#FFFFFF" font-size="11" font-weight="bold">1</text>
+  <text x="94" y="186" fill="#1E293B" font-size="14" font-weight="bold">小規模人體試驗</text>
+  <text x="94" y="207" fill="#64748B" font-size="12">受試者人數約 40–90 人，樣本數有限</text>
+
+  <rect x="48" y="238" width="384" height="68" rx="8" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="1.5"/>
+  <circle cx="72" cy="272" r="12" fill="#1A4F8B"/>
+  <text x="72" y="277" text-anchor="middle" fill="#FFFFFF" font-size="11" font-weight="bold">2</text>
+  <text x="94" y="266" fill="#1E293B" font-size="14" font-weight="bold">特定族群代謝改善</text>
+  <text x="94" y="287" fill="#64748B" font-size="12">主要針對肥胖或胰島素阻抗成人</text>
+
+  <rect x="48" y="318" width="384" height="68" rx="8" fill="#FFFFFF" stroke="#E8923A" stroke-width="2"/>
+  <circle cx="72" cy="352" r="12" fill="#E8923A"/>
+  <text x="72" y="357" text-anchor="middle" fill="#FFFFFF" font-size="11" font-weight="bold">3</text>
+  <text x="94" y="346" fill="#1E293B" font-size="14" font-weight="bold">歐盟新食品原料認證（2022）</text>
+  <text x="94" y="367" fill="#64748B" font-size="12">通過歐盟安全審查，屬法規核准依據</text>
+
+  <rect x="48" y="398" width="384" height="68" rx="8" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="1.5"/>
+  <circle cx="72" cy="432" r="12" fill="#1A4F8B"/>
+  <text x="72" y="437" text-anchor="middle" fill="#FFFFFF" font-size="11" font-weight="bold">4</text>
+  <text x="94" y="426" fill="#1E293B" font-size="14" font-weight="bold">長期數據尚不足</text>
+  <text x="94" y="447" fill="#64748B" font-size="12">目前缺乏超過 3 個月的長期追蹤研究</text>
+
+  <text x="240" y="536" text-anchor="middle" fill="#3E7CB1" font-size="12">資料來源：同行評審期刊研究</text>
+
+  <!-- RIGHT PANEL -->
+  <rect x="508" y="88" width="424" height="484" rx="10" fill="#FFF7F0" stroke="#E8923A" stroke-width="2"/>
+  <rect x="508" y="88" width="424" height="52" rx="10" fill="#E8923A"/>
+  <rect x="508" y="120" width="424" height="20" fill="#E8923A"/>
+  <text x="720" y="121" text-anchor="middle" fill="#FFFFFF" font-size="16" font-weight="bold">📢 常見行銷宣稱</text>
+
+  <!-- Right items -->
+  <rect x="528" y="158" width="384" height="68" rx="8" fill="#FFFFFF" stroke="#E8923A" stroke-width="1.5"/>
+  <circle cx="552" cy="192" r="12" fill="#E8923A"/>
+  <text x="552" y="197" text-anchor="middle" fill="#FFFFFF" font-size="14">✕</text>
+  <text x="574" y="186" fill="#1E293B" font-size="14" font-weight="bold">延長壽命</text>
+  <text x="574" y="207" fill="#64748B" font-size="12">目前無人體長壽研究支持</text>
+
+  <rect x="528" y="238" width="384" height="68" rx="8" fill="#FFFFFF" stroke="#E8923A" stroke-width="1.5"/>
+  <circle cx="552" cy="272" r="12" fill="#E8923A"/>
+  <text x="552" y="277" text-anchor="middle" fill="#FFFFFF" font-size="14">✕</text>
+  <text x="574" y="266" fill="#1E293B" font-size="14" font-weight="bold">抗老化效果</text>
+  <text x="574" y="287" fill="#64748B" font-size="12">動物研究結果，尚未在人體驗證</text>
+
+  <rect x="528" y="318" width="384" height="68" rx="8" fill="#FFFFFF" stroke="#E8923A" stroke-width="1.5"/>
+  <circle cx="552" cy="352" r="12" fill="#E8923A"/>
+  <text x="552" y="357" text-anchor="middle" fill="#FFFFFF" font-size="14">✕</text>
+  <text x="574" y="346" fill="#1E293B" font-size="14" font-weight="bold">全面改善腸道健康</text>
+  <text x="574" y="367" fill="#64748B" font-size="12">適用族群與效果因人而異</text>
+
+  <rect x="528" y="398" width="384" height="68" rx="8" fill="#FFFFFF" stroke="#E8923A" stroke-width="1.5"/>
+  <circle cx="552" cy="432" r="12" fill="#E8923A"/>
+  <text x="552" y="437" text-anchor="middle" fill="#FFFFFF" font-size="14">✕</text>
+  <text x="574" y="426" fill="#1E293B" font-size="14" font-weight="bold">適合所有人使用</text>
+  <text x="574" y="447" fill="#64748B" font-size="12">特定族群（如免疫低下者）需謹慎</text>
+
+  <text x="720" y="536" text-anchor="middle" fill="#E8923A" font-size="12">⚠ 宣稱與現有科學證據不符</text>
+
+  <!-- Footer -->
+  <rect x="0" y="572" width="960" height="28" fill="#EEF4FB"/>
+  <text x="480" y="591" text-anchor="middle" fill="#64748B" font-size="11">本圖僅供衛教資訊參考，不構成醫療建議；個人狀況請諮詢醫師或營養師</text>
+<text x="940.8" y="585" text-anchor="end" font-family="sans-serif" font-size="17" fill="#64748B" fill-opacity="0.45" font-weight="600">本日有據</text></svg>
