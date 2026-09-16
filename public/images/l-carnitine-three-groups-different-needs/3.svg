@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" width="960" height="600">
+  <defs>
+    <style>text{font-family:'Microsoft JhengHei','Noto Sans TC','Apple LiGothic',sans-serif;}</style>
+  </defs>
+  <rect width="960" height="600" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="960" height="68" fill="#1A4F8B"/>
+  <text x="480" y="38" text-anchor="middle" fill="#FFFFFF" font-size="21" font-weight="bold">左旋肉鹼補充：效益高低對比</text>
+  <text x="480" y="58" text-anchor="middle" fill="#EEF4FB" font-size="13">哪些族群最可能有感・哪些邊際效益有限</text>
+  <rect x="28" y="82" width="434" height="478" rx="10" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+  <rect x="28" y="82" width="434" height="48" rx="10" fill="#1A4F8B"/>
+  <rect x="28" y="112" width="434" height="18" fill="#1A4F8B"/>
+  <text x="245" y="114" text-anchor="middle" fill="#FFFFFF" font-size="17" font-weight="bold">✓  效益較高族群</text>
+  <circle cx="68" cy="175" r="17" fill="#1A4F8B"/>
+  <text x="68" y="181" text-anchor="middle" fill="#FFFFFF" font-size="17" font-weight="bold">✓</text>
+  <text x="96" y="170" fill="#1E293B" font-size="14" font-weight="bold">素食者／純素者</text>
+  <text x="96" y="188" fill="#64748B" font-size="12">飲食缺乏肉鹼來源，體內基準值偏低</text>
+  <circle cx="68" cy="232" r="17" fill="#1A4F8B"/>
+  <text x="68" y="238" text-anchor="middle" fill="#FFFFFF" font-size="17" font-weight="bold">✓</text>
+  <text x="96" y="227" fill="#1E293B" font-size="14" font-weight="bold">代謝相關疾病患者</text>
+  <text x="96" y="245" fill="#64748B" font-size="12">醫師評估後，特定代謝障礙可能受益</text>
+  <circle cx="68" cy="289" r="17" fill="#1A4F8B"/>
+  <text x="68" y="295" text-anchor="middle" fill="#FFFFFF" font-size="17" font-weight="bold">✓</text>
+  <text x="96" y="284" fill="#1E293B" font-size="14" font-weight="bold">精子活動力偏低者</text>
+  <text x="96" y="302" fill="#64748B" font-size="12">相關研究顯示對男性生育指標有輔助效果</text>
+  <circle cx="68" cy="346" r="17" fill="#E8923A"/>
+  <text x="68" y="352" text-anchor="middle" fill="#FFFFFF" font-size="17" font-weight="bold">✓</text>
+  <text x="96" y="341" fill="#1E293B" font-size="14" font-weight="bold">搭配高強度有氧運動</text>
+  <text x="96" y="359" fill="#64748B" font-size="12">運動中脂肪酸利用需求高，補充效果相對明顯</text>
+  <line x1="48" y1="384" x2="444" y2="384" stroke="#3E7CB1" stroke-width="1" stroke-dasharray="5,4"/>
+  <rect x="48" y="396" width="394" height="56" rx="8" fill="#1A4F8B" opacity="0.09"/>
+  <text x="245" y="419" text-anchor="middle" fill="#1A4F8B" font-size="13" font-weight="bold">體內肉鹼可能不足或需求較高</text>
+  <text x="245" y="438" text-anchor="middle" fill="#64748B" font-size="12">建議在醫師或專業人員指導下評估使用</text>
+  <rect x="498" y="82" width="434" height="478" rx="10" fill="#FFF8F3" stroke="#E8923A" stroke-width="2"/>
+  <rect x="498" y="82" width="434" height="48" rx="10" fill="#E8923A"/>
+  <rect x="498" y="112" width="434" height="18" fill="#E8923A"/>
+  <text x="715" y="114" text-anchor="middle" fill="#FFFFFF" font-size="17" font-weight="bold">✗  效益有限族群</text>
+  <circle cx="538" cy="175" r="17" fill="#E8923A"/>
+  <text x="538" y="182" text-anchor="middle" fill="#FFFFFF" font-size="18" font-weight="bold">✗</text>
+  <text x="566" y="170" fill="#1E293B" font-size="14" font-weight="bold">葷食且代謝正常者</text>
+  <text x="566" y="188" fill="#64748B" font-size="12">飲食已能攝取足夠肉鹼，額外補充空間有限</text>
+  <circle cx="538" cy="232" r="17" fill="#E8923A"/>
+  <text x="538" y="239" text-anchor="middle" fill="#FFFFFF" font-size="18" font-weight="bold">✗</text>
+  <text x="566" y="227" fill="#1E293B" font-size="14" font-weight="bold">缺乏運動搭配</text>
+  <text x="566" y="245" fill="#64748B" font-size="12">無運動刺激下，脂肪酸轉換的效益難以發揮</text>
+  <circle cx="538" cy="289" r="17" fill="#E8923A"/>
+  <text x="538" y="296" text-anchor="middle" fill="#FFFFFF" font-size="18" font-weight="bold">✗</text>
+  <text x="566" y="284" fill="#1E293B" font-size="14" font-weight="bold">期待快速顯著減脂</text>
+  <text x="566" y="302" fill="#64748B" font-size="12">現有研究不支持單靠補充即能大幅減脂</text>
+  <circle cx="538" cy="346" r="17" fill="#E8923A"/>
+  <text x="538" y="353" text-anchor="middle" fill="#FFFFFF" font-size="18" font-weight="bold">✗</text>
+  <text x="566" y="341" fill="#1E293B" font-size="14" font-weight="bold">未調整整體生活習慣</text>
+  <text x="566" y="359" fill="#64748B" font-size="12">補充劑無法取代均衡飲食與規律運動</text>
+  <line x1="518" y1="384" x2="914" y2="384" stroke="#E8923A" stroke-width="1" stroke-dasharray="5,4"/>
+  <rect x="518" y="396" width="394" height="56" rx="8" fill="#E8923A" opacity="0.09"/>
+  <text x="715" y="419" text-anchor="middle" fill="#C8620A" font-size="13" font-weight="bold">一般健康成人的邊際效益通常有限</text>
+  <text x="715" y="438" text-anchor="middle" fill="#64748B" font-size="12">優先從飲食（紅肉、乳製品）攝取為宜</text>
+  <text x="480" y="574" text-anchor="middle" fill="#94A3B8" font-size="11">本圖僅供健康教育參考，不作為醫療建議，補充前請諮詢醫師或合格專業人員。</text>
+<text x="940.8" y="585" text-anchor="end" font-family="sans-serif" font-size="17" fill="#64748B" fill-opacity="0.45" font-weight="600">本日有據</text></svg>
