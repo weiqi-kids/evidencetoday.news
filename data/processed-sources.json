@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-09-15T22:26:48.680Z",
+  "lastRun": "2026-09-16T22:19:36.618Z",
   "processed": {
     "https://pmc.ncbi.nlm.nih.gov/articles/PMC11174647/": {
       "processedAt": "2026-09-14T06:20:00+08:00",
@@ -125,30 +125,6 @@
     "https://pubmed.ncbi.nlm.nih.gov/39775037/": {
       "processedAt": "2026-07-19T06:30:00+08:00",
       "outputFile": "src/content/news/radar-2026-07-19-06-01.md"
-    },
-    "PMID:41338694": {
-      "processedAt": "2026-06-18T07:35:00Z",
-      "outputFile": "src/content/news/radar-2026-06-18-06-01.md"
-    },
-    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12902778/": {
-      "processedAt": "2026-06-18T07:35:00Z",
-      "outputFile": "src/content/news/radar-2026-06-18-06-02.md"
-    },
-    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12816316/": {
-      "processedAt": "2026-06-18T07:35:00Z",
-      "outputFile": "src/content/news/radar-2026-06-18-06-02.md"
-    },
-    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12910210/": {
-      "processedAt": "2026-06-18T07:35:00Z",
-      "outputFile": "src/content/news/radar-2026-06-18-06-02.md"
-    },
-    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12348695/": {
-      "processedAt": "2026-06-18T07:35:00Z",
-      "outputFile": "src/content/news/radar-2026-06-18-06-03.md"
-    },
-    "https://pmc.ncbi.nlm.nih.gov/articles/PMC11827344/": {
-      "processedAt": "2026-06-18T07:35:00Z",
-      "outputFile": "src/content/news/radar-2026-06-18-06-03.md"
     },
     "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11663920/": {
       "processedAt": "2026-06-18T22:37:00Z",
@@ -365,26 +341,6 @@
     "PMID:28642676": {
       "processedAt": "2026-08-18T06:30:00+08:00",
       "outputFile": "src/content/news/radar-2026-09-03-12-01.md"
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/31558379/": {
-      "processedAt": "2026-09-02T06:21:10+08:00",
-      "outputFile": null
-    },
-    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12437512/": {
-      "processedAt": "2026-09-02T06:21:10+08:00",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Bulletin/Detail/9d0rrbxdmnVB0m9XpKX52Q?typeid=9": {
-      "processedAt": "2026-09-02T06:21:10+08:00",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Bulletin/Detail/ZE59NhApqeBL6fVS-Qau9g?typeid=9": {
-      "processedAt": "2026-09-02T06:21:10+08:00",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Bulletin/Detail/ukDZa_z9j_qFxscMcULvog?typeid=9": {
-      "processedAt": "2026-09-02T06:21:10+08:00",
-      "outputFile": null
     },
     "https://www.mohw.gov.tw/cp-2704-86886-1.html": {
       "processedAt": "2026-09-03T06:20:08+08:00",
@@ -668,6 +624,18 @@
     },
     "https://pubmed.ncbi.nlm.nih.gov/42231909/": {
       "processedAt": "2026-09-16T06:30:00+08:00",
+      "outputFile": null
+    },
+    "https://sciencedaily.com/releases/2026/09/260915100000.htm": {
+      "processedAt": "2026-09-16T22:19:36.618Z",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/W70xBVcVMlduu5t2M1dOiA?typeId=9": {
+      "processedAt": "2026-09-16T22:19:36.618Z",
+      "outputFile": null
+    },
+    "https://www.who.int/teams/nutrition-and-food-safety/monitoring-nutritional-status-and-food-safety-and-events": {
+      "processedAt": "2026-09-16T22:19:36.618Z",
       "outputFile": null
     }
   }
