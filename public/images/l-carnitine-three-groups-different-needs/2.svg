@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" width="960" height="600">
+<style>text{font-family:'Noto Sans TC','微軟正黑體',sans-serif}</style>
+<rect width="960" height="600" fill="#FFFFFF"/>
+<rect width="960" height="72" fill="#1A4F8B"/>
+<text x="480" y="38" text-anchor="middle" font-size="22" font-weight="bold" fill="#FFFFFF">左旋肉鹼（L-Carnitine）三大補充族群</text>
+<text x="480" y="58" text-anchor="middle" font-size="13" fill="#EEF4FB">各族群補充邏輯與關鍵重點對比</text>
+<rect x="32" y="80" width="282" height="468" fill="#EEF4FB" rx="12"/>
+<rect x="32" y="80" width="282" height="6" fill="#E8923A" rx="3"/>
+<rect x="129" y="116" width="88" height="9" fill="#3E7CB1" rx="2"/>
+<rect x="113" y="107" width="16" height="27" fill="#1A4F8B" rx="3"/>
+<rect x="197" y="107" width="16" height="27" fill="#1A4F8B" rx="3"/>
+<text x="173" y="156" text-anchor="middle" font-size="17" font-weight="bold" fill="#1A4F8B">健身塑身族</text>
+<text x="173" y="173" text-anchor="middle" font-size="11" fill="#64748B">Fitness / Fat Loss</text>
+<line x1="52" y1="183" x2="294" y2="183" stroke="#3E7CB1" stroke-width="0.8" opacity="0.4"/>
+<text x="52" y="205" font-size="12" fill="#E8923A" font-weight="bold">▌ 前提條件</text>
+<text x="62" y="223" font-size="12" fill="#1E293B">• 需配合高強度有氧運動</text>
+<text x="62" y="241" font-size="12" fill="#1E293B">• 建議搭配低碳飲食</text>
+<text x="62" y="259" font-size="12" fill="#1E293B">• 單獨補充效果有限</text>
+<text x="52" y="284" font-size="12" fill="#E8923A" font-weight="bold">▌ 最適族群</text>
+<text x="62" y="302" font-size="12" fill="#1E293B">• 素食者（肉鹼攝取較少）</text>
+<text x="62" y="320" font-size="12" fill="#1E293B">• 補充效益相對最為顯著</text>
+<text x="52" y="345" font-size="12" fill="#E8923A" font-weight="bold">▌ 作用機轉</text>
+<text x="62" y="363" font-size="12" fill="#1E293B">• 協助脂肪酸進入粒線體</text>
+<text x="62" y="381" font-size="12" fill="#1E293B">• 提升脂肪作為燃料比例</text>
+<rect x="339" y="80" width="282" height="468" fill="#EEF4FB" rx="12"/>
+<rect x="339" y="80" width="282" height="6" fill="#1A4F8B" rx="3"/>
+<path d="M480,148 C466,135 456,128 456,121 C456,114 460,111 466,112 C470,113 474,118 480,125 C486,118 490,113 494,112 C500,111 504,114 504,121 C504,128 494,135 480,148Z" fill="#E8923A"/>
+<text x="480" y="164" text-anchor="middle" font-size="17" font-weight="bold" fill="#1A4F8B">心血管保健族</text>
+<text x="480" y="181" text-anchor="middle" font-size="11" fill="#64748B">Cardiovascular Support</text>
+<line x1="359" y1="191" x2="601" y2="191" stroke="#3E7CB1" stroke-width="0.8" opacity="0.4"/>
+<text x="359" y="213" font-size="12" fill="#E8923A" font-weight="bold">▌ 核心邏輯</text>
+<text x="369" y="231" font-size="12" fill="#1E293B">• 心肌能量 60–70% 來自脂肪酸</text>
+<text x="369" y="249" font-size="12" fill="#1E293B">• 肉鹼支持心肌能量代謝</text>
+<text x="369" y="267" font-size="12" fill="#1E293B">• 輔助心臟維持運作效能</text>
+<text x="359" y="292" font-size="12" fill="#E8923A" font-weight="bold">▌ 注意事項</text>
+<rect x="359" y="300" width="260" height="54" fill="#FDF0E4" rx="6"/>
+<text x="369" y="320" font-size="12" fill="#1E293B">⚠ TMAO 疑慮：腸道菌叢</text>
+<text x="369" y="340" font-size="12" fill="#1E293B">  可能代謝肉鹼產生 TMAO</text>
+<text x="359" y="377" font-size="12" fill="#E8923A" font-weight="bold">▌ 適用情境</text>
+<text x="369" y="395" font-size="12" fill="#1E293B">• 心臟功能需額外支持者</text>
+<text x="369" y="413" font-size="12" fill="#1E293B">• 建議諮詢專業醫療人員</text>
+<rect x="646" y="80" width="282" height="468" fill="#EEF4FB" rx="12"/>
+<rect x="646" y="80" width="282" height="6" fill="#3E7CB1" rx="3"/>
+<circle cx="787" cy="120" r="18" fill="none" stroke="#1A4F8B" stroke-width="3"/>
+<line x1="800" y1="107" x2="816" y2="93" stroke="#1A4F8B" stroke-width="3" stroke-linecap="round"/>
+<line x1="805" y1="93" x2="816" y2="93" stroke="#1A4F8B" stroke-width="3" stroke-linecap="round"/>
+<line x1="816" y1="93" x2="816" y2="104" stroke="#1A4F8B" stroke-width="3" stroke-linecap="round"/>
+<text x="787" y="164" text-anchor="middle" font-size="17" font-weight="bold" fill="#1A4F8B">備孕男性族</text>
+<text x="787" y="181" text-anchor="middle" font-size="11" fill="#64748B">Male Fertility</text>
+<line x1="666" y1="191" x2="908" y2="191" stroke="#3E7CB1" stroke-width="0.8" opacity="0.4"/>
+<text x="666" y="213" font-size="12" fill="#E8923A" font-weight="bold">▌ 分佈特點</text>
+<text x="676" y="231" font-size="12" fill="#1E293B">• 肉鹼高度集中於附睪</text>
+<text x="676" y="249" font-size="12" fill="#1E293B">• 精子成熟的關鍵微環境</text>
+<text x="666" y="274" font-size="12" fill="#E8923A" font-weight="bold">▌ 作用機轉</text>
+<text x="676" y="292" font-size="12" fill="#1E293B">• 改善精子粒線體能量供應</text>
+<text x="676" y="310" font-size="12" fill="#1E293B">• 提升精子活動力</text>
+<text x="676" y="328" font-size="12" fill="#1E293B">• 支持精子游動功能</text>
+<text x="666" y="353" font-size="12" fill="#E8923A" font-weight="bold">▌ 補充建議</text>
+<text x="676" y="371" font-size="12" fill="#1E293B">• 精子生成週期約 72 天</text>
+<text x="676" y="389" font-size="12" fill="#1E293B">• 建議持續補充 3 個月以上</text>
+<rect y="554" width="960" height="46" fill="#EEF4FB"/>
+<text x="480" y="574" text-anchor="middle" font-size="11" fill="#64748B">本圖僅供健康資訊參考，實際補充需求請諮詢醫療專業人員</text>
+<text x="480" y="591" text-anchor="middle" font-size="10" fill="#9BA8B7">資料來源：學術文獻整理，圖解僅供教育用途</text>
+<text x="940.8" y="585" text-anchor="end" font-family="sans-serif" font-size="17" fill="#64748B" fill-opacity="0.45" font-weight="600">本日有據</text></svg>
