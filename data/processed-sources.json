@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-09-16T22:19:36.618Z",
+  "lastRun": "2026-09-17T22:39:32.903Z",
   "processed": {
     "https://pmc.ncbi.nlm.nih.gov/articles/PMC11174647/": {
       "processedAt": "2026-09-14T06:20:00+08:00",
@@ -125,26 +125,6 @@
     "https://pubmed.ncbi.nlm.nih.gov/39775037/": {
       "processedAt": "2026-07-19T06:30:00+08:00",
       "outputFile": "src/content/news/radar-2026-07-19-06-01.md"
-    },
-    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11663920/": {
-      "processedAt": "2026-06-18T22:37:00Z",
-      "outputFile": "src/content/news/radar-2026-06-19-06-01.md"
-    },
-    "https://www.sciencedaily.com/releases/2026/04/260414075637.htm": {
-      "processedAt": "2026-06-18T22:37:00Z",
-      "outputFile": "src/content/news/radar-2026-06-19-06-02.md"
-    },
-    "https://www.sciencedaily.com/releases/2026/02/260227071914.htm": {
-      "processedAt": "2026-06-18T22:37:00Z",
-      "outputFile": "src/content/news/radar-2026-06-19-06-02.md"
-    },
-    "https://www.sciencedaily.com/releases/2025/12/251214100928.htm": {
-      "processedAt": "2026-06-18T22:37:00Z",
-      "outputFile": "src/content/news/radar-2026-06-19-06-03.md"
-    },
-    "https://www.thelancet.com/journals/lanepe/article/PIIS2666-7762(25)00262-5/fulltext": {
-      "processedAt": "2026-06-18T22:37:00Z",
-      "outputFile": "src/content/news/radar-2026-06-19-06-03.md"
     },
     "https://www.sciencedaily.com/releases/2026/06/260619020512.htm": {
       "processedAt": "2026-06-19T22:35:33Z",
@@ -341,18 +321,6 @@
     "PMID:28642676": {
       "processedAt": "2026-08-18T06:30:00+08:00",
       "outputFile": "src/content/news/radar-2026-09-03-12-01.md"
-    },
-    "https://www.mohw.gov.tw/cp-2704-86886-1.html": {
-      "processedAt": "2026-09-03T06:20:08+08:00",
-      "outputFile": null
-    },
-    "https://clinicaltrials.gov/study/NCT07766408": {
-      "processedAt": "2026-09-03T06:20:08+08:00",
-      "outputFile": null
-    },
-    "https://clinicaltrials.gov/study/NCT07755475": {
-      "processedAt": "2026-09-03T06:20:08+08:00",
-      "outputFile": null
     },
     "https://pubmed.ncbi.nlm.nih.gov/42522010/": {
       "processedAt": "2026-09-07T06:18:00+08:00",
@@ -636,6 +604,74 @@
     },
     "https://www.who.int/teams/nutrition-and-food-safety/monitoring-nutritional-status-and-food-safety-and-events": {
       "processedAt": "2026-09-16T22:19:36.618Z",
+      "outputFile": null
+    },
+    "https://www.nature.com/articles/s41591-025-03842-0": {
+      "processedAt": "2026-09-18T06:39:25+08:00",
+      "outputFile": "src/content/news/radar-2026-09-18-06-01.md"
+    },
+    "https://www.nature.com/articles/s41591-025-04087-7": {
+      "processedAt": "2026-09-18T06:39:25+08:00",
+      "outputFile": "src/content/news/radar-2026-09-18-06-01.md"
+    },
+    "https://www.nature.com/articles/s41591-025-04085-9": {
+      "processedAt": "2026-09-18T06:39:25+08:00",
+      "outputFile": "src/content/news/radar-2026-09-18-06-01.md"
+    },
+    "https://www.nature.com/articles/s41591-025-04088-6": {
+      "processedAt": "2026-09-18T06:39:25+08:00",
+      "outputFile": "src/content/news/radar-2026-09-18-06-01.md"
+    },
+    "https://www.nature.com/articles/s41591-025-04089-5": {
+      "processedAt": "2026-09-18T06:39:25+08:00",
+      "outputFile": "src/content/news/radar-2026-09-18-06-01.md"
+    },
+    "https://www.nature.com/articles/s43016-026-01372-7": {
+      "processedAt": "2026-09-18T06:39:25+08:00",
+      "outputFile": "src/content/news/radar-2026-09-18-06-01.md"
+    },
+    "https://www.nature.com/articles/s43016-026-01371-8": {
+      "processedAt": "2026-09-18T06:39:25+08:00",
+      "outputFile": "src/content/news/radar-2026-09-18-06-01.md"
+    },
+    "https://www.mohw.gov.tw/cp-2704-86886-1.html": {
+      "processedAt": "2026-09-18T06:39:25+08:00",
+      "outputFile": null
+    },
+    "https://clinicaltrials.gov/study/NCT07766408": {
+      "processedAt": "2026-09-18T06:39:25+08:00",
+      "outputFile": null
+    },
+    "https://clinicaltrials.gov/study/NCT07426406": {
+      "processedAt": "2026-09-18T06:39:25+08:00",
+      "outputFile": null
+    },
+    "https://www.sciencedaily.com/releases/2026/07/260708022206.htm": {
+      "processedAt": "2026-09-18T06:39:25+08:00",
+      "outputFile": null
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12902778/": {
+      "processedAt": "2026-09-18T06:39:25+08:00",
+      "outputFile": null
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12816316/": {
+      "processedAt": "2026-09-18T06:39:25+08:00",
+      "outputFile": null
+    },
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12910210/": {
+      "processedAt": "2026-09-18T06:39:25+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42237711/": {
+      "processedAt": "2026-09-18T06:39:25+08:00",
+      "outputFile": null
+    },
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12665681/": {
+      "processedAt": "2026-09-18T06:39:25+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41333064/": {
+      "processedAt": "2026-09-18T06:39:25+08:00",
       "outputFile": null
     }
   }
