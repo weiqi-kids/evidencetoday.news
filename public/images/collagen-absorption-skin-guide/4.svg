@@ -1,0 +1,62 @@
+<svg viewBox="0 0 960 600" width="960" height="600" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .title { font: bold 30px "Noto Sans CJK TC","Microsoft JhengHei",sans-serif; fill: #1A4F8B; }
+    .sub { font: 18px "Noto Sans CJK TC","Microsoft JhengHei",sans-serif; fill: #64748B; }
+    .card-title { font: bold 22px "Noto Sans CJK TC","Microsoft JhengHei",sans-serif; fill: #1A4F8B; }
+    .card-text { font: 16px "Noto Sans CJK TC","Microsoft JhengHei",sans-serif; fill: #1E293B; }
+    .card-sub { font: 14px "Noto Sans CJK TC","Microsoft JhengHei",sans-serif; fill: #64748B; }
+    .num { font: bold 17px "Noto Sans CJK TC","Microsoft JhengHei",sans-serif; fill: #E8923A; }
+  </style>
+
+  <rect x="0" y="0" width="960" height="600" fill="#FFFFFF"/>
+  <text x="480" y="52" text-anchor="middle" class="title">口服膠原蛋白效果，取決於三大因素</text>
+  <text x="480" y="82" text-anchor="middle" class="sub">年齡、飲食基礎、每日劑量共同決定成效</text>
+
+  <!-- Card 1: 年齡 -->
+  <g>
+    <rect x="60" y="130" width="260" height="380" rx="16" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+    <rect x="60" y="130" width="260" height="8" rx="4" fill="#1A4F8B"/>
+    <circle cx="190" cy="220" r="46" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="3"/>
+    <path d="M170 235 Q190 195 210 235" fill="none" stroke="#1A4F8B" stroke-width="4" stroke-linecap="round"/>
+    <line x1="170" y1="235" x2="210" y2="235" stroke="#1A4F8B" stroke-width="4" stroke-linecap="round"/>
+    <text x="190" y="300" text-anchor="middle" class="card-title">因素一：年齡</text>
+    <text x="190" y="335" text-anchor="middle" class="card-text">纖維母細胞</text>
+    <text x="190" y="360" text-anchor="middle" class="card-text">合成膠原蛋白能力</text>
+    <text x="190" y="385" text-anchor="middle" class="card-text">隨年齡增長而下降</text>
+    <text x="190" y="425" text-anchor="middle" class="card-sub">年紀越大，體感效果</text>
+    <text x="190" y="447" text-anchor="middle" class="card-sub">可能越不明顯</text>
+  </g>
+
+  <!-- Card 2: 飲食基礎 -->
+  <g>
+    <rect x="350" y="130" width="260" height="380" rx="16" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+    <rect x="350" y="130" width="260" height="8" rx="4" fill="#1A4F8B"/>
+    <circle cx="480" cy="220" r="46" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="3"/>
+    <circle cx="480" cy="220" r="20" fill="none" stroke="#E8923A" stroke-width="4"/>
+    <line x1="480" y1="200" x2="480" y2="240" stroke="#E8923A" stroke-width="4" stroke-linecap="round"/>
+    <line x1="460" y1="220" x2="500" y2="220" stroke="#E8923A" stroke-width="4" stroke-linecap="round"/>
+    <text x="480" y="300" text-anchor="middle" class="card-title">因素二：飲食基礎</text>
+    <text x="480" y="335" text-anchor="middle" class="card-text">維生素C 為合成</text>
+    <text x="480" y="360" text-anchor="middle" class="card-text">膠原蛋白的必要輔因子</text>
+    <text x="480" y="385" text-anchor="middle" class="card-text">日常飲食需一併補足</text>
+    <text x="480" y="425" text-anchor="middle" class="card-sub">缺乏輔因子，補充效果</text>
+    <text x="480" y="447" text-anchor="middle" class="card-sub">可能大打折扣</text>
+  </g>
+
+  <!-- Card 3: 每日劑量 -->
+  <g>
+    <rect x="640" y="130" width="260" height="380" rx="16" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+    <rect x="640" y="130" width="260" height="8" rx="4" fill="#1A4F8B"/>
+    <circle cx="770" cy="220" r="46" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="3"/>
+    <rect x="750" y="200" width="40" height="40" rx="6" fill="none" stroke="#1A4F8B" stroke-width="4"/>
+    <line x1="750" y1="216" x2="790" y2="216" stroke="#1A4F8B" stroke-width="3"/>
+    <text x="770" y="300" text-anchor="middle" class="card-title">因素三：每日劑量</text>
+    <text x="770" y="335" text-anchor="middle" class="card-text">有效範圍約落在</text>
+    <text x="770" y="360" text-anchor="middle" class="num">2.5 克 ～ 10 克</text>
+    <text x="770" y="385" text-anchor="middle" class="card-text">（中位數約 3.5 克）</text>
+    <text x="770" y="425" text-anchor="middle" class="card-sub">劑量不足區間，較難</text>
+    <text x="770" y="447" text-anchor="middle" class="card-sub">觀察到明顯變化</text>
+  </g>
+
+  <text x="480" y="570" text-anchor="middle" class="sub">三項條件同時到位，才較可能觀察到明顯變化</text>
+<text x="940.8" y="585" text-anchor="end" font-family="sans-serif" font-size="17" fill="#64748B" fill-opacity="0.45" font-weight="600">本日有據</text></svg>
