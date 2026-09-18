@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" width="960" height="600">
+  <rect x="0" y="0" width="960" height="600" fill="#FFFFFF"/>
+  <text x="480" y="48" text-anchor="middle" font-family="Noto Sans CJK TC, sans-serif" font-size="26" font-weight="bold" fill="#1A4F8B">補充滿八週 vs 不滿八週：改善幅度差異（統合分析）</text>
+  <text x="480" y="76" text-anchor="middle" font-family="Noto Sans CJK TC, sans-serif" font-size="15" fill="#64748B">2023年《Nutrients》統合分析・26篇隨機對照試驗・共1721位受試者</text>
+
+  <rect x="60" y="110" width="840" height="410" rx="10" fill="#EEF4FB"/>
+
+  <line x1="120" y1="470" x2="880" y2="470" stroke="#1A4F8B" stroke-width="2"/>
+
+  <text x="290" y="500" text-anchor="middle" font-family="Noto Sans CJK TC, sans-serif" font-size="19" font-weight="bold" fill="#1E293B">保濕改善</text>
+  <rect x="200" y="390" width="90" height="80" fill="#3E7CB1"/>
+  <text x="245" y="380" text-anchor="middle" font-family="Noto Sans CJK TC, sans-serif" font-size="14" fill="#1E293B">改善幅度：中等</text>
+  <text x="245" y="450" text-anchor="middle" font-family="Noto Sans CJK TC, sans-serif" font-size="13" fill="#FFFFFF">&lt; 8 週</text>
+
+  <rect x="300" y="230" width="90" height="240" fill="#E8923A"/>
+  <text x="345" y="220" text-anchor="middle" font-family="Noto Sans CJK TC, sans-serif" font-size="14" font-weight="bold" fill="#1A4F8B">改善幅度：明顯較大</text>
+  <text x="345" y="450" text-anchor="middle" font-family="Noto Sans CJK TC, sans-serif" font-size="13" fill="#FFFFFF">≥ 8 週</text>
+
+  <text x="670" y="500" text-anchor="middle" font-family="Noto Sans CJK TC, sans-serif" font-size="19" font-weight="bold" fill="#1E293B">彈性改善</text>
+  <rect x="580" y="435" width="90" height="35" fill="#3E7CB1"/>
+  <text x="625" y="425" text-anchor="middle" font-family="Noto Sans CJK TC, sans-serif" font-size="14" fill="#1E293B">效果不明顯</text>
+  <text x="625" y="461" text-anchor="middle" font-family="Noto Sans CJK TC, sans-serif" font-size="13" fill="#FFFFFF">&lt; 8 週</text>
+
+  <rect x="680" y="200" width="90" height="270" fill="#E8923A"/>
+  <text x="725" y="190" text-anchor="middle" font-family="Noto Sans CJK TC, sans-serif" font-size="14" font-weight="bold" fill="#1A4F8B">改善幅度：明顯較大</text>
+  <text x="725" y="450" text-anchor="middle" font-family="Noto Sans CJK TC, sans-serif" font-size="13" fill="#FFFFFF">≥ 8 週</text>
+
+  <rect x="200" y="130" width="190" height="34" rx="6" fill="#1A4F8B"/>
+  <text x="295" y="152" text-anchor="middle" font-family="Noto Sans CJK TC, sans-serif" font-size="14" fill="#FFFFFF">統計顯著（p &lt; 0.00001）</text>
+  <rect x="580" y="130" width="190" height="34" rx="6" fill="#1A4F8B"/>
+  <text x="675" y="152" text-anchor="middle" font-family="Noto Sans CJK TC, sans-serif" font-size="14" fill="#FFFFFF">統計顯著（p &lt; 0.00001）</text>
+
+  <rect x="380" y="545" width="20" height="20" fill="#3E7CB1"/>
+  <text x="408" y="561" font-family="Noto Sans CJK TC, sans-serif" font-size="14" fill="#1E293B">補充未滿 8 週</text>
+  <rect x="560" y="545" width="20" height="20" fill="#E8923A"/>
+  <text x="588" y="561" font-family="Noto Sans CJK TC, sans-serif" font-size="14" fill="#1E293B">補充滿 8 週以上</text>
+<text x="940.8" y="585" text-anchor="end" font-family="sans-serif" font-size="17" fill="#64748B" fill-opacity="0.45" font-weight="600">本日有據</text></svg>
