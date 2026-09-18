@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-09-17T22:39:32.903Z",
+  "lastRun": "2026-09-18T22:19:41.926Z",
   "processed": {
     "https://pmc.ncbi.nlm.nih.gov/articles/PMC11174647/": {
       "processedAt": "2026-09-14T06:20:00+08:00",
@@ -48,10 +48,6 @@
     },
     "https://clinicaltrials.gov/study/NCT04067921": {
       "processedAt": "2026-09-14T06:20:00+08:00",
-      "outputFile": null
-    },
-    "https://arxiv.org/pdf/2606.01428": {
-      "processedAt": "2026-09-04T06:18:45+08:00",
       "outputFile": null
     },
     "https://www.cdc.gov.tw/Bulletin/Detail/vwMq9VkXIaV7FHyJgpk-5w?typeid=9": {
@@ -125,18 +121,6 @@
     "https://pubmed.ncbi.nlm.nih.gov/39775037/": {
       "processedAt": "2026-07-19T06:30:00+08:00",
       "outputFile": "src/content/news/radar-2026-07-19-06-01.md"
-    },
-    "https://www.sciencedaily.com/releases/2026/06/260619020512.htm": {
-      "processedAt": "2026-06-19T22:35:33Z",
-      "outputFile": "src/content/news/radar-2026-06-20-06-01.md"
-    },
-    "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON596": {
-      "processedAt": "2026-06-19T22:35:33Z",
-      "outputFile": "src/content/news/radar-2026-06-20-06-02.md"
-    },
-    "https://www.eurekalert.org/news-releases/1132626": {
-      "processedAt": "2026-06-19T22:35:33Z",
-      "outputFile": "src/content/news/radar-2026-06-20-06-03.md"
     },
     "https://www.eurekalert.org/news-releases/1124831": {
       "processedAt": "2026-06-20T22:38:46Z",
@@ -659,7 +643,7 @@
       "outputFile": null
     },
     "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12910210/": {
-      "processedAt": "2026-09-18T06:39:25+08:00",
+      "processedAt": "2026-09-19T06:20:00+08:00",
       "outputFile": null
     },
     "https://pubmed.ncbi.nlm.nih.gov/42237711/": {
@@ -672,6 +656,42 @@
     },
     "https://pubmed.ncbi.nlm.nih.gov/41333064/": {
       "processedAt": "2026-09-18T06:39:25+08:00",
+      "outputFile": null
+    },
+    "https://www.mohw.gov.tw/cp-88-219-1.html": {
+      "processedAt": "2026-09-19T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://www.mohw.gov.tw/cp-3539-36715-1.html": {
+      "processedAt": "2026-09-19T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://www.mohw.gov.tw/cp-4350-46709-1.html": {
+      "processedAt": "2026-09-19T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://mohw.gov.tw/cp-5269-69826-1.html": {
+      "processedAt": "2026-09-19T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://www.mohw.gov.tw/fp-3206-21515-1.html": {
+      "processedAt": "2026-09-19T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://www.mohw.gov.tw/cp-16-40152-1.html": {
+      "processedAt": "2026-09-19T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://www.mohw.gov.tw/cp-2627-19174-1.html": {
+      "processedAt": "2026-09-19T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://www.mohw.gov.tw/cp-3205-21635-1.html": {
+      "processedAt": "2026-09-19T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://www.eurekalert.org/news-releases/1122884": {
+      "processedAt": "2026-09-19T06:20:00+08:00",
       "outputFile": null
     }
   }
