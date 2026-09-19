@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-09-18T22:19:41.926Z",
+  "lastRun": "2026-09-20T06:36:00+08:00",
   "processed": {
     "https://pmc.ncbi.nlm.nih.gov/articles/PMC11174647/": {
       "processedAt": "2026-09-14T06:20:00+08:00",
@@ -121,14 +121,6 @@
     "https://pubmed.ncbi.nlm.nih.gov/39775037/": {
       "processedAt": "2026-07-19T06:30:00+08:00",
       "outputFile": "src/content/news/radar-2026-07-19-06-01.md"
-    },
-    "https://www.eurekalert.org/news-releases/1124831": {
-      "processedAt": "2026-06-20T22:38:46Z",
-      "outputFile": "src/content/news/radar-2026-06-21-06-01.md"
-    },
-    "topic:檸檬水排毒反應": {
-      "processedAt": "2026-06-20T22:38:46Z",
-      "outputFile": "src/content/news/radar-2026-06-21-06-02.md"
     },
     "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12318760/": {
       "processedAt": "2026-06-24T06:32:58+08:00",
@@ -692,6 +684,22 @@
     },
     "https://www.eurekalert.org/news-releases/1122884": {
       "processedAt": "2026-09-19T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42428677/": {
+      "processedAt": "2026-09-20T06:36:00+08:00",
+      "outputFile": "src/content/news/radar-2026-09-20-06-01.md"
+    },
+    "PMID:42428677": {
+      "processedAt": "2026-09-20T06:36:00+08:00",
+      "outputFile": "src/content/news/radar-2026-09-20-06-01.md"
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41702347/": {
+      "processedAt": "2026-09-20T06:36:00+08:00",
+      "outputFile": null
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC6455094/": {
+      "processedAt": "2026-09-20T06:36:00+08:00",
       "outputFile": null
     }
   }
