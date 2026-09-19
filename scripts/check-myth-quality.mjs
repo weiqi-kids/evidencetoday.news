@@ -8,7 +8,12 @@ const MYTH_DIR = 'src/content/myths';
 // N, got N-2）看起來像內容遺失，不像是這個常數自己錯了。
 // 2026-09-02：曾被提前調到 113（當時 113 個檔裡有 2 篇仍在 under-review），
 // 連續兩天擋住大腦層；改回與實際相符的 111。
-const EXPECTED_PUBLISHED_COUNT = 116;   // 2026-09-12：+5（本批闢謠，皆 status: published）
+// 2026-09-19：同一個錯又來一次——工作樹裡一筆**未提交**的異動把值調到 118（當時 118 個檔裡
+// 有 2 篇仍是 under-review），09-18 起再度擋住大腦層。當天先還原成 116，同一回合把那 2 篇
+// （fecal-transplant-cancer-cure-myth、nail-vertical-ridges-disease-myth，皆 08-07 產出後
+// 未經放行、needsEditorialReview: false）正式放行為 published，值才隨之調到 118。
+// 順序永遠是「先改稿的 status，再調這個數字」，反過來就會重演上面兩次。
+const EXPECTED_PUBLISHED_COUNT = 118;   // 2026-09-19：+2（放行 08-07 兩篇待審稿）
 const FORBIDDEN = [
   'TODO',
   'source needed',
