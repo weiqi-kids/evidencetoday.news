@@ -1,0 +1,46 @@
+<svg viewBox="0 0 960 600" width="960" height="600" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .title { font-family: "Noto Sans CJK TC", "PingFang TC", sans-serif; font-size: 30px; font-weight: 700; fill: #1A4F8B; }
+    .sub { font-family: "Noto Sans CJK TC", "PingFang TC", sans-serif; font-size: 16px; fill: #64748B; }
+    .label { font-family: "Noto Sans CJK TC", "PingFang TC", sans-serif; font-size: 20px; font-weight: 700; fill: #1E293B; }
+    .zone { font-family: "Noto Sans CJK TC", "PingFang TC", sans-serif; font-size: 16px; font-weight: 700; fill: #3E7CB1; }
+    .note { font-family: "Noto Sans CJK TC", "PingFang TC", sans-serif; font-size: 14px; fill: #64748B; }
+  </style>
+
+  <rect x="0" y="0" width="960" height="600" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="960" height="96" fill="#EEF4FB"/>
+  <text x="40" y="46" class="title">經前症候群（PMS）常見保健成分‧實證強度比較</text>
+  <text x="40" y="76" class="sub">依現有研究資料的相對證據強度排列，僅供概念參考，非療效保證</text>
+
+  <text x="470" y="128" class="zone" text-anchor="middle">弱</text>
+  <text x="740" y="128" class="zone" text-anchor="middle">中等</text>
+  <rect x="380" y="140" width="240" height="10" rx="5" fill="#EEF4FB" stroke="#3E7CB1" stroke-width="1"/>
+  <rect x="620" y="140" width="240" height="10" rx="5" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="1"/>
+  <line x1="620" y1="140" x2="620" y2="530" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4,4"/>
+
+  <!-- 月見草油：弱 -->
+  <text x="340" y="205" class="label" text-anchor="end">月見草油</text>
+  <rect x="380" y="188" width="480" height="20" rx="10" fill="#EEF4FB"/>
+  <rect x="380" y="188" width="90" height="20" rx="10" fill="#3E7CB1"/>
+  <circle cx="470" cy="198" r="11" fill="#3E7CB1" stroke="#FFFFFF" stroke-width="2"/>
+
+  <!-- 貞節樹（西洋牡荊）：弱至中等 -->
+  <text x="340" y="305" class="label" text-anchor="end">貞節樹（西洋牡荊）</text>
+  <rect x="380" y="288" width="480" height="20" rx="10" fill="#EEF4FB"/>
+  <rect x="380" y="288" width="320" height="20" rx="10" fill="#3E7CB1"/>
+  <circle cx="700" cy="298" r="11" fill="#3E7CB1" stroke="#FFFFFF" stroke-width="2"/>
+
+  <!-- 維生素B6：中等 -->
+  <text x="340" y="405" class="label" text-anchor="end">維生素 B6</text>
+  <rect x="380" y="388" width="480" height="20" rx="10" fill="#EEF4FB"/>
+  <rect x="380" y="388" width="390" height="20" rx="10" fill="#E8923A"/>
+  <circle cx="770" cy="398" r="11" fill="#E8923A" stroke="#FFFFFF" stroke-width="2"/>
+
+  <!-- 鈣：中等 -->
+  <text x="340" y="505" class="label" text-anchor="end">鈣</text>
+  <rect x="380" y="488" width="480" height="20" rx="10" fill="#EEF4FB"/>
+  <rect x="380" y="488" width="370" height="20" rx="10" fill="#E8923A"/>
+  <circle cx="750" cy="498" r="11" fill="#E8923A" stroke="#FFFFFF" stroke-width="2"/>
+
+  <text x="40" y="570" class="note">說明：橫軸為證據強度的相對排序（弱→中等），非精確數值；個人適用性請諮詢專業人員。</text>
+<text x="940.8" y="585" text-anchor="end" font-family="sans-serif" font-size="17" fill="#64748B" fill-opacity="0.45" font-weight="600">本日有據</text></svg>
