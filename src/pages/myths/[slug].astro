@@ -48,7 +48,9 @@ const mythReviewedBy = mythIndependentReviewer
     : null;
 const articleLd = {
   '@context': 'https://schema.org',
-  '@type': 'Article',
+  // 與 articles／ingredients 同一套雙型別（2026-09-20 補齊）：闢謠內容本質是健康資訊查證，
+  // 理應與其他內容型一致標為 MedicalWebPage，而不是只有裸 Article。
+  '@type': ['Article', 'MedicalWebPage'],
   '@id': `${canonical}#article`,
   headline: social.title,
   description: social.description,
@@ -58,6 +60,7 @@ const articleLd = {
   dateModified: d.updatedDate.toISOString(),
   author: buildPerson(d.author),
   ...(mythReviewedBy ? { reviewedBy: mythReviewedBy, lastReviewed: d.updatedDate.toISOString() } : {}),
+  medicalAudience: { '@type': 'MedicalAudience', audienceType: 'Patient' },
   publisher: PUBLISHER_REF,
   isPartOf: WEBSITE_REF,
   ...(mythCitations ? { citation: mythCitations } : {}),
