@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-09-21T06:17:00+08:00",
+  "lastRun": "2026-09-22T06:35:00+08:00",
   "processed": {
     "https://pmc.ncbi.nlm.nih.gov/articles/PMC11174647/": {
       "processedAt": "2026-09-14T06:20:00+08:00",
@@ -305,42 +305,6 @@
     "PMID:42522010": {
       "processedAt": "2026-09-07T06:18:00+08:00",
       "outputFile": "src/content/news/radar-2026-09-07-06-01.md"
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/42486145/": {
-      "processedAt": "2026-09-07T06:18:00+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/42506429/": {
-      "processedAt": "2026-09-07T06:18:00+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/42180603/": {
-      "processedAt": "2026-09-07T06:18:00+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/42526758/": {
-      "processedAt": "2026-09-07T06:18:00+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/41994089/": {
-      "processedAt": "2026-09-07T06:18:00+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/41826924/": {
-      "processedAt": "2026-09-07T06:18:00+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/42325726/": {
-      "processedAt": "2026-09-07T06:18:00+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/42285567/": {
-      "processedAt": "2026-09-07T06:18:00+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/42477287/": {
-      "processedAt": "2026-09-07T06:18:00+08:00",
-      "outputFile": null
     },
     "https://pubmed.ncbi.nlm.nih.gov/42220661/": {
       "processedAt": "2026-09-08T10:00:00+08:00",
@@ -704,6 +668,30 @@
     },
     "https://www.sciencedaily.com/releases/2026/09/260915100000.htm": {
       "processedAt": "2026-09-21T06:17:00+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42486145/": {
+      "processedAt": "2026-09-22T06:35:00+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42506429/": {
+      "processedAt": "2026-09-22T06:35:00+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41994089/": {
+      "processedAt": "2026-09-22T06:35:00+08:00",
+      "outputFile": "src/content/news/radar-2026-09-22-06-01.md"
+    },
+    "PMID:41994089": {
+      "processedAt": "2026-09-22T06:35:00+08:00",
+      "outputFile": "src/content/news/radar-2026-09-22-06-01.md"
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42325726/": {
+      "processedAt": "2026-09-22T06:35:00+08:00",
+      "outputFile": null
+    },
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8308779/": {
+      "processedAt": "2026-09-22T06:35:00+08:00",
       "outputFile": null
     }
   }
