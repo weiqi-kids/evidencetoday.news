@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-09-22T06:35:00+08:00",
+  "lastRun": "2026-09-23T06:17:34+08:00",
   "processed": {
     "https://pmc.ncbi.nlm.nih.gov/articles/PMC11174647/": {
       "processedAt": "2026-09-14T06:20:00+08:00",
@@ -311,31 +311,31 @@
       "outputFile": null
     },
     "https://pubmed.ncbi.nlm.nih.gov/41628029/": {
-      "processedAt": "2026-09-08T10:00:00+08:00",
+      "processedAt": "2026-09-23T06:17:34+08:00",
       "outputFile": null
     },
     "https://pubmed.ncbi.nlm.nih.gov/41622137/": {
-      "processedAt": "2026-09-08T10:00:00+08:00",
+      "processedAt": "2026-09-23T06:17:34+08:00",
       "outputFile": null
     },
     "https://pubmed.ncbi.nlm.nih.gov/42225824/": {
-      "processedAt": "2026-09-08T10:00:00+08:00",
+      "processedAt": "2026-09-23T06:17:34+08:00",
       "outputFile": null
     },
     "https://pubmed.ncbi.nlm.nih.gov/41733092/": {
-      "processedAt": "2026-09-08T10:00:00+08:00",
+      "processedAt": "2026-09-23T06:17:34+08:00",
       "outputFile": null
     },
     "https://pubmed.ncbi.nlm.nih.gov/40929526/": {
-      "processedAt": "2026-09-08T10:00:00+08:00",
+      "processedAt": "2026-09-23T06:17:34+08:00",
       "outputFile": null
     },
     "https://pubmed.ncbi.nlm.nih.gov/33714191/": {
-      "processedAt": "2026-09-08T10:00:00+08:00",
+      "processedAt": "2026-09-23T06:17:34+08:00",
       "outputFile": null
     },
     "https://www.mohw.gov.tw/cp-16-81071-1.html": {
-      "processedAt": "2026-09-08T10:00:00+08:00",
+      "processedAt": "2026-09-23T06:17:34+08:00",
       "outputFile": null
     },
     "https://pubmed.ncbi.nlm.nih.gov/42375769/": {
@@ -705,6 +705,30 @@
     "PMID:42748429": {
       "processedAt": "2026-09-22T12:00:00+08:00",
       "outputFile": "src/content/news/radar-2026-09-22-18-01.md"
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/31842490/": {
+      "processedAt": "2026-09-23T06:17:34+08:00",
+      "outputFile": "src/content/news/radar-2026-09-23-06-01.md"
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC9369961/": {
+      "processedAt": "2026-09-23T06:17:34+08:00",
+      "outputFile": "src/content/news/radar-2026-09-23-06-01.md"
+    },
+    "https://www.sciencedirect.com/science/article/abs/pii/S0049384803005504": {
+      "processedAt": "2026-09-23T06:17:34+08:00",
+      "outputFile": "src/content/news/radar-2026-09-23-06-01.md"
+    },
+    "https://www.cmuh.cmu.edu.tw/HealthEdus/Detail?no=5523": {
+      "processedAt": "2026-09-23T06:17:34+08:00",
+      "outputFile": "src/content/news/radar-2026-09-23-06-01.md"
+    },
+    "https://www.healthnews.com.tw/article/50648": {
+      "processedAt": "2026-09-23T06:17:34+08:00",
+      "outputFile": "src/content/news/radar-2026-09-23-06-01.md"
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41826924/": {
+      "processedAt": "2026-09-23T06:17:34+08:00",
+      "outputFile": null
     }
   }
 }
