@@ -1,6 +1,6 @@
 {
  "schemaVersion": 2,
- "updatedAt": "2026-09-22T20:00:00+08:00",
+ "updatedAt": "2026-09-22T22:00:00+08:00",
  "layer": "public",
  "localLayer": "data/topic-backlog.local.json",
  "note": "本檔是公開層：只放防撞題與工作流欄位。查詢字串、曝光／排名、需求分在本地層（gitignore），以 id 對應。本地層不存在時所有欄位仍可用，只是看不到需求數據。",
@@ -966,17 +966,17 @@
    "source": "site-gap",
    "rationale": "站上跨境題全是「人帶回來」，郵包／快遞這條路徑只在褪黑激素專文裡出現過，保健食品（食品類）的郵寄規則零覆蓋。",
    "suggestedAngle": "食品類與藥品類郵寄規則分開講；錠狀膠囊食品的數量認定、輸入查驗免申請的條件。不碰褪黑激素的郵寄（既有文的地盤）。",
-   "slug": null,
+   "slug": "articles/overseas-online-supplements-mail-to-taiwan-rules",
    "collisionCheck": {
     "checkedAt": "2026-09-21",
     "method": "以主題詞對 src/content/articles 與 myths 的 title 做正則比對，並人工讀過同叢集既有篇目",
     "matchedSlugs": [],
     "verdict": "clear"
    },
-   "status": "candidate",
-   "claimedBy": null,
-   "claimedAt": null,
-   "publishedAt": null,
+   "status": "written",
+   "claimedBy": "session-2026-09-22-slot2-batch2",
+   "claimedAt": "2026-09-22",
+   "publishedAt": "2026-10-05",
    "rejectedReason": null,
    "notes": "叢集一｜跨境與法規。規劃見 docs/audits/2026-09-21-three-topic-clusters-plan.md"
   },
@@ -1252,17 +1252,17 @@
    "source": "site-gap",
    "rationale": "站上有 statin × 紅麴與 statin 用藥門檻兩篇，Q10 這個最常被藥局推薦的搭配沒有專文。",
    "suggestedAngle": "隨機試驗與統合分析對肌肉症狀的結論；什麼症狀要回診而不是自己加保健品。",
-   "slug": null,
+   "slug": "articles/statin-coq10-need-or-not",
    "collisionCheck": {
     "checkedAt": "2026-09-21",
     "method": "以主題詞對 src/content/articles 與 myths 的 title 做正則比對，並人工讀過同叢集既有篇目",
     "matchedSlugs": [],
     "verdict": "clear"
    },
-   "status": "candidate",
-   "claimedBy": null,
-   "claimedAt": null,
-   "publishedAt": null,
+   "status": "written",
+   "claimedBy": "session-2026-09-22-slot2-batch2",
+   "claimedAt": "2026-09-22",
+   "publishedAt": "2026-10-06",
    "rejectedReason": null,
    "notes": "叢集二｜正在吃藥的人怎麼配。規劃見 docs/audits/2026-09-21-three-topic-clusters-plan.md"
   },
@@ -1494,17 +1494,17 @@
    "source": "site-gap",
    "rationale": "站上只有肌酸使用者的腎功能紅字一篇，一般族群的 eGFR 判讀零覆蓋。",
    "suggestedAngle": "KDIGO 分期需要搭配尿蛋白與持續三個月才成立；年齡造成的自然下降。與肌酸酐篇互連。",
-   "slug": null,
+   "slug": "articles/egfr-60-90-kidney-function-what-it-means",
    "collisionCheck": {
     "checkedAt": "2026-09-21",
     "method": "以主題詞對 src/content/articles 與 myths 的 title 做正則比對，並人工讀過同叢集既有篇目",
     "matchedSlugs": [],
     "verdict": "clear"
    },
-   "status": "candidate",
-   "claimedBy": null,
-   "claimedAt": null,
-   "publishedAt": null,
+   "status": "written",
+   "claimedBy": "session-2026-09-22-slot2-batch2",
+   "claimedAt": "2026-09-22",
+   "publishedAt": "2026-10-07",
    "rejectedReason": null,
    "notes": "叢集三｜健檢報告紅字。規劃見 docs/audits/2026-09-21-three-topic-clusters-plan.md"
   },
@@ -1727,6 +1727,72 @@
    "publishedAt": "2026-09-25",
    "rejectedReason": null,
    "notes": "叢集三｜健檢報告紅字。規劃見 docs/audits/2026-09-21-three-topic-clusters-plan.md"
+  },
+  {
+   "id": "flu-vaccine-2026-public-who-and-same-day",
+   "topic": "2026 公費流感疫苗開打前：誰符合資格、能不能跟新冠或肺炎鏈球菌疫苗同一天打？",
+   "queryPattern": "decision-guide",
+   "contentType": "articles",
+   "source": "editor",
+   "rationale": "公費流感疫苗通常 10 月開打，站上只有「打了還是得流感」一篇，資格與同日接種的決策沒有專文。",
+   "suggestedAngle": null,
+   "slug": "articles/flu-vaccine-2026-public-who-and-same-day",
+   "collisionCheck": {
+    "checkedAt": "2026-09-22",
+    "method": "以主題詞比對 articles 與 myths 的 title",
+    "matchedSlugs": [],
+    "verdict": "clear"
+   },
+   "status": "written",
+   "claimedBy": "session-2026-09-22-slot2-batch2",
+   "claimedAt": "2026-09-22",
+   "publishedAt": "2026-09-27",
+   "rejectedReason": null,
+   "notes": "第二時段週日「時事連動」。規劃見 docs/audits/2026-09-21-three-topic-clusters-plan.md"
+  },
+  {
+   "id": "norovirus-home-vomiting-diarrhea-what-to-do",
+   "topic": "家裡有人上吐下瀉：諾羅病毒怎麼消毒、多久會好、什麼時候要看醫生？",
+   "queryPattern": "decision-guide",
+   "contentType": "articles",
+   "source": "editor",
+   "rationale": "秋冬是諾羅病毒好發季，站上零覆蓋；居家消毒（酒精無效、要用漂白水）是讀者最常做錯的事。",
+   "suggestedAngle": null,
+   "slug": "articles/norovirus-home-vomiting-diarrhea-what-to-do",
+   "collisionCheck": {
+    "checkedAt": "2026-09-22",
+    "method": "以主題詞比對 articles 與 myths 的 title",
+    "matchedSlugs": [],
+    "verdict": "clear"
+   },
+   "status": "written",
+   "claimedBy": "session-2026-09-22-slot2-batch2",
+   "claimedAt": "2026-09-22",
+   "publishedAt": "2026-10-04",
+   "rejectedReason": null,
+   "notes": "第二時段週日「時事連動」。規劃見 docs/audits/2026-09-21-three-topic-clusters-plan.md"
+  },
+  {
+   "id": "low-mood-poor-sleep-two-weeks-when-to-see-psychiatry",
+   "topic": "睡不好、提不起勁超過兩週：什麼時候該看身心科？",
+   "queryPattern": "decision-guide",
+   "contentType": "articles",
+   "source": "editor",
+   "rationale": "10/10 世界精神衛生日；站上睡眠內容多但全在補充品與助眠，何時就醫的判斷零覆蓋。",
+   "suggestedAngle": null,
+   "slug": "articles/low-mood-poor-sleep-two-weeks-when-to-see-psychiatry",
+   "collisionCheck": {
+    "checkedAt": "2026-09-22",
+    "method": "以主題詞比對 articles 與 myths 的 title",
+    "matchedSlugs": [],
+    "verdict": "clear"
+   },
+   "status": "written",
+   "claimedBy": "session-2026-09-22-slot2-batch2",
+   "claimedAt": "2026-09-22",
+   "publishedAt": "2026-10-11",
+   "rejectedReason": null,
+   "notes": "第二時段週日「時事連動」。規劃見 docs/audits/2026-09-21-three-topic-clusters-plan.md"
   }
  ]
 }

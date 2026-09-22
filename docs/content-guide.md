@@ -460,7 +460,14 @@ relatedVideos: ["sprouted-potato"]       # 連到 src/content/videos/sprouted-po
 | `myths` | 2 天 1 篇 | 同上，寧可少而深 |
 
 所以 `ingredients` 隔一天沒稿是**正常的**，隔三天才算破洞。改節奏就改 `everyNDays`，
-不要去改判定邏輯。要調整節奏前先讀 `docs/playbooks/news-cadence-review.md`——
+不要去改判定邏輯。
+
+**文章線的「第二時段」另外數每天篇數**（2026-09-22 加）。業主 2026-09-21 決定文章每天再加一篇，
+由三個主題叢集輪替、週日做時事連動（規劃見 `docs/audits/2026-09-21-three-topic-clusters-plan.md`）。
+上面的破洞判定只看「每天至少一篇」，第二時段斷了不會被發現，所以 `PIPELINES.articles` 另有
+`dailyTarget: 2` 與 `dailyTargetFrom`：從起算日到「最後一個達到 2 篇的日子」之間，少於 2 篇的日子會逐日列成**警告**。
+只警告不擋——第二時段是手動產出，偶爾空一天不該讓整條 CI 變紅；範圍只算到最後一個達標日，
+再往後是還沒排到的前緣，那是跑道問題不是破洞。要停掉第二時段，刪掉這兩個欄位即可。要調整節奏前先讀 `docs/playbooks/news-cadence-review.md`——
 曝光還在成長時改發文節奏，等於在最不該實驗的時候實驗。
 
 跑道門檻抓 10 天而不是 7 天，是因為 evergreen 每週才一批（`ingredients` 週二 /

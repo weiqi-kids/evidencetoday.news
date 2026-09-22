@@ -31,7 +31,7 @@ const CONTENT_DIR = 'src/content';
  * 撞到限額那批就會空跑，得留得起一次 miss 的餘裕。
  */
 const PIPELINES = {
-  articles: { label: '文章', cron: '每週日', runwayDays: 10, everyNDays: 1 },
+  articles: { label: '文章', cron: '每週日', runwayDays: 10, everyNDays: 1, dailyTarget: 2, dailyTargetFrom: '2026-09-23' },
   ingredients: { label: '成分解析', cron: '每週二', runwayDays: 10, everyNDays: 2 },
   myths: { label: '闢謠', cron: '每週四', runwayDays: 10, everyNDays: 2 },
   news: { label: '趨勢新聞', cron: '每日', runwayDays: null, everyNDays: 1 }, // 只看破洞，不看跑道
@@ -50,6 +50,13 @@ const PIPELINES = {
  *
  * ⚠️ news 必須維持 1：它是每日 cron 產出、publishDate 等於檔名日期，
  * 中間空一天代表 cron 沒跑成功，那正是要被抓出來的事。
+ *
+ * dailyTarget / dailyTargetFrom = 每日目標篇數與起算日（2026-09-22 加，只有 articles 有）。
+ * 業主 2026-09-21 決定文章每天再加一篇（「第二時段」，三個主題叢集輪替＋週日時事連動，
+ * 規劃見 docs/audits/2026-09-21-three-topic-clusters-plan.md）。上面的破洞判定只看「每天至少一篇」，
+ * 第二時段哪天斷了完全不會被發現——所以另外數每一天的篇數。
+ * 範圍刻意只到「最後一個達標日」：再往後是第二時段還沒排到的前緣，那是跑道問題不是破洞。
+ * 只警告不擋：第二時段是手動產出，偶爾空一天不該讓整條 CI 變紅。
  */
 
 /** 台北時間（UTC+8）的今天，YYYY-MM-DD。專案硬規則 4：日期一律 UTC+8。 */
@@ -127,6 +134,23 @@ for (const [collection, cfg] of Object.entries(PIPELINES)) {
 
   if (gaps.length) {
     errors.push(`${cfg.label}（${collection}）排程破洞 ${gaps.length} 處：${gaps.join('、')}`);
+  }
+
+  // 每日目標篇數（第二時段）
+  if (cfg.dailyTarget) {
+    const perDay = {};
+    for (const e of entries) perDay[e.date] = (perDay[e.date] || 0) + 1;
+    const from = cfg.dailyTargetFrom > addDays(today, 1) ? cfg.dailyTargetFrom : addDays(today, 1);
+    const hit = Object.keys(perDay).filter((d) => d >= from && perDay[d] >= cfg.dailyTarget).sort();
+    if (hit.length) {
+      const until = hit[hit.length - 1];
+      const short = [];
+      for (let d = from; d <= until; d = addDays(d, 1)) if ((perDay[d] || 0) < cfg.dailyTarget) short.push(`${d}（${perDay[d] || 0} 篇）`);
+      console.log(`  ${''.padEnd(5)}     第二時段（每日 ${cfg.dailyTarget} 篇）排到 ${until}，其間未達標 ${short.length} 天`);
+      if (short.length) warnings.push(`${cfg.label}第二時段未達每日 ${cfg.dailyTarget} 篇：${short.join('、')}`);
+    } else {
+      warnings.push(`${cfg.label}：${from} 起沒有任何一天達到每日 ${cfg.dailyTarget} 篇，第二時段可能停了`);
+    }
   }
   if (cfg.runwayDays !== null && runway < cfg.runwayDays) {
     warnings.push(

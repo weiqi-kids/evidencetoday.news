@@ -693,6 +693,18 @@
     "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8308779/": {
       "processedAt": "2026-09-22T06:35:00+08:00",
       "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/-EYGFSc-mTOTTawYvm91GA?typeid=9": {
+      "processedAt": "2026-09-22T12:00:00+08:00",
+      "outputFile": "src/content/news/radar-2026-09-22-12-01.md"
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/CqW5UAMFqpDkwJWfWG-WGw?typeid=9": {
+      "processedAt": "2026-09-22T12:00:00+08:00",
+      "outputFile": "src/content/news/radar-2026-09-22-12-01.md"
+    },
+    "PMID:42748429": {
+      "processedAt": "2026-09-22T12:00:00+08:00",
+      "outputFile": "src/content/news/radar-2026-09-22-18-01.md"
     }
   }
 }
