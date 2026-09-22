@@ -163,10 +163,19 @@ function targetFiles() {
   if (fileArgs.length) return fileArgs.filter((f) => /\.mdx?$/.test(f));
   const run = (cmd) => { try { return execSync(cmd, { stdio: ["ignore", "pipe", "ignore"] }).toString().trim(); } catch { return null; } };
   if (ALL) {
-    const out = run("git ls-files 'src/**/*.md' 'src/**/*.mdx'");
-    return out ? out.split("\n").filter(Boolean) : [];
+    // 不要在這裡用帶引號的 pathspec。`execSync` 在 Windows 走 cmd.exe，單引號是字面字元，
+    // git 會收到 `'src/**/*.md'` 這個含引號的字串而比對到 0 個檔——於是全站盤點靜默空轉，
+    // 而且因為 --all 恆 exit 0，看起來永遠是「通過」。過濾交給 JS，跨 shell 都安全。
+    const out = run("git ls-files src");
+    return out ? out.split("\n").filter((f) => /^src\/.*\.mdx?$/.test(f)) : [];
   }
-  const base = run("git merge-base origin/main HEAD");
+  // CI 直推 main 時 origin/main 就是 HEAD，merge-base 的 diff 必然為空、守門空轉。
+  // CI 會帶 GATE_BASE_SHA（＝ push 事件的 github.event.before），改比對「這次 push 帶進來的檔案」。
+  // 為什麼需要：有一條發文路徑完全不經本機 build（repo 外的工具透過 GitHub API 直接提交），
+  // 對它而言 CI 是唯一的關卡。詳見 check-spec.mjs 的 gateBase() 註解。
+  const envSha = (process.env.GATE_BASE_SHA || "").trim();
+  const useEnv = /^[0-9a-f]{40}$/.test(envSha) && !/^0+$/.test(envSha) && run(`git cat-file -t ${envSha}`) === "commit";
+  const base = useEnv ? envSha : run("git merge-base origin/main HEAD");
   if (!base) { console.log("內容守門：抓不到 git base（origin/main），跳過變動掃描。"); return null; }
   const sets = [
     run(`git diff --name-only --diff-filter=ACMR ${base} HEAD`),
@@ -225,10 +234,15 @@ if (warns.length) {
   console.error(`內容守門 WARN（軟訊號 ${warns.length}，未達 3 層不擋）：`);
   for (const w of warns) console.error(`  · [${w.layer}] ${w.file}：${w.label}（${w.text}）`);
 }
-if (errors.length && !ALL) {
-  console.error(`\n去 AI 味違規 ${errors.length} 處（擋 build）：`);
+if (errors.length) {
+  console.error(`\n去 AI 味違規 ${errors.length} 處${ALL ? "（全站盤點，不擋）" : "（擋 build）"}：`);
   for (const e of errors) console.error(`  ✗ ${e.loc} ${e.label}：${e.text}`);
   console.error(`\n改法見記憶 content-no-ai-flavor：AI 出初稿、人味靠最後 20% 手動微調。`);
-  process.exit(1);
+  if (!ALL) process.exit(1);
+  // --all 恆 exit 0（人工普查用），但**不能因此謊報**。2026-09-21 以前這裡會把 ERROR 整批丟掉、
+  // 然後印「無 AI 味 ERROR」——盤點工具回報一個它根本沒在看的結論，比沒有工具更糟。
+  const nFiles = new Set(errors.map((e) => String(e.loc).split(":")[0])).size;
+  console.log(`\n全站盤點完成：掃 ${files.length} 檔，AI 味 ERROR ${errors.length} 處（分布於 ${nFiles} 檔），WARN ${warns.length} 則。`);
+  process.exit(0);
 }
 console.log(`內容守門通過：掃 ${files.length} 檔，無 AI 味 ERROR${warns.length ? `（${warns.length} 則 WARN 見上）` : ""}。`);

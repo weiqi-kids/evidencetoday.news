@@ -80,6 +80,23 @@ indexnow (ubuntu-latest, needs: deploy)   ← 2026-07-20 加入，搜尋引擎�
 
 > 注意：獨立的 `content-audit.yml` workflow（PR/push/每週排程）現跑 `pnpm check:content:all`（全站普查、恆 exit 0、只出報告），供曝光盤點；**真正擋部署的是 deploy.yml build job 內 `pnpm build` 串的 check-content**（提交前即擋）。
 
+### content-gate job（2026-09-21 加入，**不擋部署**、只告警）
+
+上一節的設計有一個前提：每個提交的人都先在本機跑過 `pnpm build`。**有一條發文路徑不成立**——
+repo 外的工具透過 GitHub API 直接提交文章（commit 訊息 `content: <標題>`），它沒有本機，CI 是唯一的關卡，
+而 build job 裡的守門對直推 main 恆掃 0 檔。
+
+`content-gate` job 只在 `push` 事件跑，把 `github.event.before` 以環境變數 `GATE_BASE_SHA` 傳給
+`check-content.mjs` 與 `check-spec.mjs`，兩支腳本收到合法的 commit SHA 就改用它當比對基準，
+檢查的是「這次 push 帶進來的內容檔」。任一未過 → job 失敗（workflow 亮紅燈）並發 Slack，點名檔案與違反的條目。
+
+- **為什麼不擋部署**：`schedule` 與 `workflow_dispatch` 沒有 `before`，腳本會退回原本的 merge-base 行為（掃 0 檔）。
+  若把它放進 build 或讓 deploy `needs` 它，效果是「擋到下一個整點的排程部署為止」——只製造延遲，不製造約束。
+  要改成硬擋，在 `deploy.needs` 加上 `content-gate` 即可，但請先想清楚上面這件事。
+- **本機乾跑**：`GATE_BASE_SHA=<某個舊 commit 的完整 SHA> node scripts/check-spec.mjs`，可以回測那個 commit 之後進來的所有內容。
+- `check-spec.mjs` 同時會擋兩種讓 MDX 編譯失敗的寫法（正文裡的 `<!-- -->` 與「`<` 緊接數字」），
+  不分新增或既有一律報錯並點名行號——這兩種各讓全站部署紅過一次，而 MDX 自己的錯誤訊息看不出原因。
+
 ### Action 版本鎖定
 
 | Action | 當前 | 最新（2026-05-15） | 備註 |

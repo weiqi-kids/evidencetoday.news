@@ -75,6 +75,7 @@ function collectionOf(file) {
  * gate 說通過卻在 build 才炸，比沒有 gate 更誤導人，所以在這裡先驗一次。
  */
 function frontmatterError(raw) {
+  raw = raw.replace(/\r\n/g, "\n"); // Windows 工作區常是 CRLF；Astro 吃得下，這裡不該誤報
   const m = raw.match(/^---\n([\s\S]*?)\n---\n/);
   if (!m) return raw.startsWith("---") ? "frontmatter 分隔線格式不正確（需為單獨一行的 --- 並以換行結尾）" : null;
   try {
@@ -83,6 +84,28 @@ function frontmatterError(raw) {
   } catch (e) {
     return `frontmatter YAML 無法解析：${String(e.message).split("\n")[0]}`;
   }
+}
+
+/**
+ * 只看 .mdx 的正文（.md 不經 MDX 編譯、frontmatter 是 YAML，都不受影響）。
+ * 程式碼區塊與行內程式碼先挖掉——那裡面的 `<` 是合法的。
+ */
+function mdxSyntaxError(file) {
+  if (!file.endsWith(".mdx")) return null;
+  const raw = readFileSync(file, "utf8").replace(/\r\n/g, "\n");
+  const parts = raw.split(/^---\s*$/m);
+  if (parts.length < 3) return null;
+  const fmLines = (parts[0] + "---" + parts[1] + "---").split("\n").length - 1;
+  const blank = (s) => s.replace(/[^\n]/g, " ");
+  const body = parts.slice(2).join("---").replace(/```[\s\S]*?```/g, blank).replace(/`[^`\n]*`/g, blank);
+  const lines = body.split("\n");
+  for (let i = 0; i < lines.length; i++) {
+    const ln = fmLines + i + 1;
+    if (/<!--/.test(lines[i])) return `第 ${ln} 行有 HTML 註解 <!-- -->：MDX 不支援，會讓全站 build 失敗（要註解請用 {/* */}）`;
+    const m = lines[i].match(/(?<!\\)<\d[^\s<]*/); // `\<5%` 是合法的 MDX 跳脫，不算
+    if (m) return `第 ${ln} 行的「${m[0]}」：MDX 把「<」接數字當成標籤開頭，會讓全站 build 失敗（寫成 &lt; 或在 < 後加空格）`;
+  }
+  return null;
 }
 
 function measure(file) {
@@ -111,13 +134,33 @@ function measure(file) {
   };
 }
 
+/**
+ * 比對基準。預設是 `merge-base origin/main HEAD`——那在本機成立（origin/main 還是舊的），
+ * 但在 CI 直推 main 時 origin/main 就是 HEAD，diff 必然為空、守門空轉。
+ * 有一條發文路徑完全不經本機：repo 外的工具透過 GitHub API 直接提交（2026-08 起數十篇），
+ * 對它而言 CI 是唯一的關卡。所以 CI 會帶 `GATE_BASE_SHA`（＝ push 事件的 `github.event.before`），
+ * 讓這裡比對「這次 push 帶進來的檔案」。排程與手動觸發沒有 before，維持原行為。
+ */
+function gateBase() {
+  const sha = (process.env.GATE_BASE_SHA || "").trim();
+  if (/^[0-9a-f]{40}$/.test(sha) && !/^0+$/.test(sha) && run(`git cat-file -t ${sha}`) === "commit") return sha;
+  return run("git merge-base origin/main HEAD");
+}
+
 /** 回傳 [{file, added}]；抓不到 base 回 null。 */
 function targetFiles() {
   if (ALL) {
-    const out = run("git ls-files 'src/content/**/*.mdx' 'src/content/**/*.md'");
-    return out ? out.split("\n").map((f) => ({ file: f, added: false })) : [];
+    // 帶引號的 pathspec 在 Windows 會失效（execSync 走 cmd.exe，單引號是字面字元），
+    // 全站盤點會靜默掃 0 檔卻回報通過。過濾交給 JS，見 check-content.mjs 同一處註解。
+    const out = run("git ls-files src/content");
+    return out
+      ? out
+          .split("\n")
+          .filter((f) => /^src\/content\/.*\.mdx?$/.test(f))
+          .map((f) => ({ file: f, added: false }))
+      : [];
   }
-  const base = run("git merge-base origin/main HEAD");
+  const base = gateBase();
   if (!base) { console.log("規格守門：抓不到 git base（origin/main），跳過。"); return null; }
 
   const seen = new Map();
@@ -156,6 +199,14 @@ for (const { file, added } of files) {
   const fmErr = frontmatterError(readFileSync(file, "utf8"));
   if (fmErr) {
     errors.push({ file, col, miss: [fmErr] });
+    continue;
+  }
+  // 同理：會讓 MDX 編譯失敗的寫法也是語法錯誤，一個檔案就能讓全站部署紅燈
+  // （2026-09-12 的 `P<0.001`、2026-09-17 的 HTML 註解紅了五小時）。MDX 自己的錯誤訊息
+  // 完全看不出原因，這裡直接點名行號。
+  const mdxErr = mdxSyntaxError(file);
+  if (mdxErr) {
+    errors.push({ file, col, miss: [mdxErr] });
     continue;
   }
   if (m.refs < spec.refs) miss.push(`可點來源 ${m.refs} 筆（下限 ${spec.refs}）`);

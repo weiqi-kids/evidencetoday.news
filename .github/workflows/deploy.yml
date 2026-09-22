@@ -99,6 +99,66 @@ jobs:
         with:
           path: dist/
 
+  # 「這次 push 帶進來的內容」專用守門。
+  #
+  # 為什麼需要：build job 裡的 check:content / check:spec 比對的是 merge-base origin/main HEAD，
+  # 直推 main 時那就是 HEAD 自己，掃 0 檔——設計上真正的擋點在「提交前的本機 pnpm build」。
+  # 但有一條發文路徑完全不經本機：repo 外的工具透過 GitHub API 直接提交。對它而言 CI 是唯一的關卡，
+  # 而那道關卡一直是空的。2026-09-21 回測過去 8 天：該路徑進來的 12 篇文章有 8 篇未達七月標準、
+  # 22 處 AI 味 ERROR（含虛構的第一人稱臨床經驗），全部無聲進了 main。
+  #
+  # 為什麼獨立成 job 而不放進 build：放進 build 就會擋部署，而每小時的 schedule 觸發沒有
+  # `before` 可比、會照常放行——等於「擋一小時後自己解除」，只製造延遲不製造約束。
+  # 獨立 job 的效果是：部署照常，但這個 workflow 會亮紅燈並發 Slack 點名哪幾篇、違反哪幾條。
+  # 真正的約束應該做在上游那支工具裡；要改成硬擋，把 deploy 的 needs 加上 content-gate 即可。
+  content-gate:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Content gates on pushed files
+        id: gates
+        env:
+          GATE_BASE_SHA: ${{ github.event.before }}
+        run: |
+          set +e
+          node scripts/check-content.mjs 2>&1 | tee /tmp/gate-content.txt; c=${PIPESTATUS[0]}
+          node scripts/check-spec.mjs    2>&1 | tee /tmp/gate-spec.txt;    s=${PIPESTATUS[0]}
+          { grep -E '^\s+✗ ' /tmp/gate-content.txt /tmp/gate-spec.txt | sed -E 's#^/tmp/gate-[a-z]+\.txt:\s+##' | cut -c1-220 | head -12; } > /tmp/gate-summary.txt
+          [ "$c" -eq 0 ] && [ "$s" -eq 0 ]
+
+      - name: Notify Slack
+        if: failure() && steps.gates.conclusion == 'failure'
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
+        run: |
+          if [ -z "$SLACK_BOT_TOKEN" ] || [ -z "$SLACK_CHANNEL_ID" ]; then echo "Slack secrets not set; skip."; exit 0; fi
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          TEXT="$(printf '⚠️ 剛推上 main 的內容未過守門（commit %s）。部署沒有被擋、內容已上線，但請儘快修正：\n%s\n完整清單：%s' "${GITHUB_SHA::7}" "$(cat /tmp/gate-summary.txt)" "$RUN_URL")"
+          curl -sf -X POST https://slack.com/api/chat.postMessage \
+            -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
+            -H 'Content-type: application/json; charset=utf-8' \
+            -d "$(jq -n --arg ch "$SLACK_CHANNEL_ID" --arg t "$TEXT" '{channel:$ch,text:$t}')"
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
