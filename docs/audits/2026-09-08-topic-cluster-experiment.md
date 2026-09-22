@@ -67,3 +67,16 @@
    - `black-fungus` 的變化只能當輔助佐證，不能單獨當結論。
 4. 教訓提醒：**剛上線的稿不能當「表現差」的證據**（曾用發布只有幾天的稿判定某題型無效，
    十天後數字翻了兩倍多）。
+
+## ⚠️ 對照 hub 的同主題鄰頁有事實更正（2026-09-22）
+
+`import-melatonin-taiwan-customs` **本身一個字都沒動**，但同主題的五篇鄰頁因法規事實過時而更正：
+`melatonin-older-adults`、`melatonin-dosage-how-many-mg`、`melatonin-jet-lag-how-to-use`、
+`buy-melatonin-taiwan-legal-options`、`melatonin-prescription-taiwan-gray-market`。
+
+原因：它們寫「台灣唯一合法的褪黑激素是亞眠靚」，但食藥署在 115 年 3 月 17 日另核發了
+「泰豪眠長效錠 2 毫克」（Circadin，衛部藥輸字第029116號，須由醫師處方）。YMYL 站上的過時法規
+不能等實驗結束再改。改動只涉及法規敘述與少量連結，不新增指向對照 hub 的連結。
+
+**複查時的解讀**：若 `import-melatonin-taiwan-customs` 上升，要考慮鄰頁更新這個次要混淆變項；
+影響應該很小（鄰頁只改了幾句話），但不能完全排除。
