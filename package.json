@@ -34,7 +34,9 @@
     "check:boilerplate": "node scripts/check-boilerplate.mjs",
     "check:boilerplate:report": "node scripts/check-boilerplate.mjs --report",
     "check:spec": "node scripts/check-spec.mjs",
-    "check:spec:all": "node scripts/check-spec.mjs --all"
+    "check:spec:all": "node scripts/check-spec.mjs --all",
+    "audit:pmids": "node scripts/audit-pmids.mjs",
+    "audit:regulation": "node scripts/audit-ingredient-regulation.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.14",

@@ -59,6 +59,7 @@ const BLOCKED_CREDITS = [
   /pharma(ceutical)?s?\s*(inc|ltd|co)/i,
   /\brehab\b/i, // 2026-09-13 選到 Diamond Rehab Thailand
   /\bclinic\b|\bhospital\b|\bmedical\s+cent(er|re)\b/i,
+  /\baesthetics?\b/i, // 醫美診所（2026-09-22 選到 EL Aesthetics）
 ];
 
 async function pick(keyword, used) {

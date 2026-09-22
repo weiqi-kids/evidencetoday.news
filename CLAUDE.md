@@ -85,6 +85,10 @@ pnpm check:site         # 全站結構守門（掃 dist/：頁型站內出口、
 pnpm check:boilerplate  # 跨檔樣板守門（欄位成批複製、正文跨檔重複率；pnpm build 自動先跑）
 pnpm check:spec         # 內容規格守門「七月標準」：來源數／正文長度／articles 站內連結（pnpm build 自動先跑）
 pnpm check:spec:all     # 全站規格盤點（恆 exit 0，人工普查用）
+
+# — 事實盤點（恆 exit 0，報出來的要人工確認再改）—
+pnpm audit:pmids        # 全站 PMID 真偽：不存在／寫的作者不是該 PMID 的作者／年份對不上
+pnpm audit:regulation   # 成分頁 × 食藥署食品原料平臺：平臺列「不得使用」、頁面卻沒講的
 ```
 
 ---
