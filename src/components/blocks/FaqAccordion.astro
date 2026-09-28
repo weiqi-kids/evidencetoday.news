@@ -3,7 +3,13 @@ interface Props {
   items: Array<{ question: string; answer: string }>;
 }
 const { items } = Astro.props;
-const defaultExpandedCount = items.length > 8 ? 5 : items.length;
+// 全部預設展開（2026-09-27）。原本超過 8 題只展開前 5 題，第 6 題以後藏在點擊後面——
+// 那正是官方 snippet 指引點名不要做的事：內容要被 featured snippet／PAA／AI Overviews
+// 取用，就必須對人類立即可見，不可藏在展開區或分頁介面
+// （https://developers.google.com/search/docs/appearance/snippet ）。
+// FAQ rich result 2026-05-07 退場後，可見性是這些問答唯一還有效的槓桿，不該為版面收掉。
+// 保留 <details> 讓使用者仍可自行收合。
+const defaultExpandedCount = items.length;
 ---
 
 <div class="faq-accordion">

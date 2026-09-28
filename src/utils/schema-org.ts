@@ -27,6 +27,9 @@ export const ORGANIZATION = {
 } as const;
 
 /** 完整 WebSite 實體，publisher 以 @id 參照 Organization。每頁由 Base layout 輸出一次。 */
+// 🔴 2026-09-27 移除 potentialAction/SearchAction：sitelinks 搜尋框這個搜尋結果功能
+//    Google 已於 2024-11 停止使用，標記留著不會有任何效果。站內搜尋本身不受影響。
+//    判準來源：seo-ops rules/jsonld-rules.json（structuredData.deprecated）。
 export const WEBSITE = {
   '@type': 'WebSite',
   '@id': WEBSITE_ID,
@@ -35,11 +38,6 @@ export const WEBSITE = {
   url: `${SITE_URL}/`,
   inLanguage: 'zh-Hant-TW',
   publisher: { '@id': ORG_ID },
-  potentialAction: {
-    '@type': 'SearchAction',
-    target: `${SITE_URL}/search/?q={search_term_string}`,
-    'query-input': 'required name=search_term_string',
-  },
 } as const;
 
 /** 內容頁用的輕量參照（避免每頁重述完整實體）。 */

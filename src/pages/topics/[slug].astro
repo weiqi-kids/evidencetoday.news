@@ -251,8 +251,14 @@ const breadcrumbSchema = {
     <section class="topic-section topic-faq">
       <h2>常見疑問</h2>
       <div class="faq-list">
+        {/*
+          open：預設展開。FAQ rich result 已於 2026-05-07 完全退場，問答要被 featured
+          snippet／PAA／AI Overviews 取用，官方唯一的要求是「內容對人類立即可見，不可藏在
+          展開區」（https://developers.google.com/search/docs/appearance/snippet ）。
+          站內 FaqAccordion.astro 用 defaultExpandedCount 做同一件事，這裡對齊它的意圖。
+        */}
         {topic.faq.map((item) => (
-          <details class="faq-item">
+          <details class="faq-item" open>
             <summary>{item.question}</summary>
             <p>{item.answer}</p>
           </details>
