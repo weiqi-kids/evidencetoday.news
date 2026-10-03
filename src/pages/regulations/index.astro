@@ -18,7 +18,7 @@ import Breadcrumb from '@/components/ui/Breadcrumb.astro';
 import JsonLd from '@/components/seo/JsonLd.astro';
 import { getCollection } from 'astro:content';
 import { isPublicEntry } from '@/utils/visibility';
-import { WEBSITE_NODE, PUBLISHER_NODE, SITE_URL } from '@/utils/schema-org';
+import { PUBLISHER_NODE, SITE_URL } from '@/utils/schema-org';
 import { REGULATIONS, CARRY_LIMITS, LAST_VERIFIED } from '@/data/regulations';
 
 const title = '跨國保健品法規對照｜台灣・美國・日本・歐盟 - 本日有據';
@@ -45,8 +45,9 @@ const datasetSchema = {
   description,
   url: `${SITE_URL}/regulations/`,
   inLanguage: 'zh-Hant-TW',
-  // 三欄都用帶 @type 的具名節點，Dataset 驗證器不跨 script 解析純 @id 參照。
-  isPartOf: WEBSITE_NODE,
+  // 用帶 @type 的具名節點；純 @id 參照會被判「物件類型無效」。
+  // 不放 isPartOf：Google 的 Dataset 規格裡這欄只收「所屬的更大資料集」，
+  // 填 WebSite 會被判型別無效。本頁與站台的隸屬關係由 Base layout 的站台 @graph 表達。
   creator: PUBLISHER_NODE,
   publisher: PUBLISHER_NODE,
   license: 'https://creativecommons.org/licenses/by/4.0/',
