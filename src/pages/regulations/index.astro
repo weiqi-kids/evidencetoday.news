@@ -18,7 +18,7 @@ import Breadcrumb from '@/components/ui/Breadcrumb.astro';
 import JsonLd from '@/components/seo/JsonLd.astro';
 import { getCollection } from 'astro:content';
 import { isPublicEntry } from '@/utils/visibility';
-import { WEBSITE_REF, PUBLISHER_REF, SITE_URL, ORG_ID } from '@/utils/schema-org';
+import { WEBSITE_NODE, PUBLISHER_NODE, SITE_URL } from '@/utils/schema-org';
 import { REGULATIONS, CARRY_LIMITS, LAST_VERIFIED } from '@/data/regulations';
 
 const title = '跨國保健品法規對照｜台灣・美國・日本・歐盟 - 本日有據';
@@ -45,9 +45,10 @@ const datasetSchema = {
   description,
   url: `${SITE_URL}/regulations/`,
   inLanguage: 'zh-Hant-TW',
-  isPartOf: WEBSITE_REF,
-  creator: { '@id': ORG_ID },
-  publisher: PUBLISHER_REF,
+  // 三欄都用帶 @type 的具名節點，Dataset 驗證器不跨 script 解析純 @id 參照。
+  isPartOf: WEBSITE_NODE,
+  creator: PUBLISHER_NODE,
+  publisher: PUBLISHER_NODE,
   license: 'https://creativecommons.org/licenses/by/4.0/',
   dateModified: LAST_VERIFIED,
   keywords: [

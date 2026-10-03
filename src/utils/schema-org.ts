@@ -45,6 +45,25 @@ export const PUBLISHER_REF = { '@id': ORG_ID } as const;
 export const WEBSITE_REF = { '@id': WEBSITE_ID } as const;
 
 /**
+ * 帶 @type 的具名參照。Google 的 Dataset 驗證器不會跨 <script> 去解析 @id，
+ * 只看到 { '@id': … } 就判成「物件類型無效」（2026-10-03 GSC 回報 /regulations/
+ * 的 publisher / isPartOf / creator 三欄）。獨立輸出的標記（Dataset 等）改用這組：
+ * 仍帶同一個 @id 讓實體能跟 Base layout 的站台 @graph 合併，但自己就看得出型別。
+ */
+export const PUBLISHER_NODE = {
+  '@type': 'Organization',
+  '@id': ORG_ID,
+  name: '本日有據',
+  url: `${SITE_URL}/`,
+} as const;
+export const WEBSITE_NODE = {
+  '@type': 'WebSite',
+  '@id': WEBSITE_ID,
+  name: '本日有據',
+  url: `${SITE_URL}/`,
+} as const;
+
+/**
  * 站台實體圖（Organization + WebSite，皆帶 @id）。由 Base layout 在每頁輸出一次，
  * 讓所有內容頁的 publisher / isPartOf @id 參照都能在同頁解析，利於搜尋引擎與 AI 合併實體。
  */
