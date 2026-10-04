@@ -110,10 +110,6 @@
    "processedAt": "2026-07-19T06:30:00+08:00",
    "outputFile": "src/content/news/radar-2026-07-19-06-01.md"
   },
-  "PMID:41314291": {
-   "processedAt": "2026-07-05T06:25:00+08:00",
-   "outputFile": "src/content/news/radar-2026-07-05-06-01.md"
-  },
   "https://pmc.ncbi.nlm.nih.gov/articles/PMC13104065/": {
    "processedAt": "2026-07-07T06:29:08+08:00",
    "outputFile": "src/content/news/radar-2026-07-07-06-01.md"
@@ -394,46 +390,6 @@
    "processedAt": "2026-09-18T06:39:25+08:00",
    "outputFile": "src/content/news/radar-2026-09-18-06-01.md"
   },
-  "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12910210/": {
-   "processedAt": "2026-09-19T06:20:00+08:00",
-   "outputFile": null
-  },
-  "https://www.mohw.gov.tw/cp-88-219-1.html": {
-   "processedAt": "2026-09-19T06:20:00+08:00",
-   "outputFile": null
-  },
-  "https://www.mohw.gov.tw/cp-3539-36715-1.html": {
-   "processedAt": "2026-09-19T06:20:00+08:00",
-   "outputFile": null
-  },
-  "https://www.mohw.gov.tw/cp-4350-46709-1.html": {
-   "processedAt": "2026-09-19T06:20:00+08:00",
-   "outputFile": null
-  },
-  "https://mohw.gov.tw/cp-5269-69826-1.html": {
-   "processedAt": "2026-09-19T06:20:00+08:00",
-   "outputFile": null
-  },
-  "https://www.mohw.gov.tw/fp-3206-21515-1.html": {
-   "processedAt": "2026-09-19T06:20:00+08:00",
-   "outputFile": null
-  },
-  "https://www.mohw.gov.tw/cp-16-40152-1.html": {
-   "processedAt": "2026-09-19T06:20:00+08:00",
-   "outputFile": null
-  },
-  "https://www.mohw.gov.tw/cp-2627-19174-1.html": {
-   "processedAt": "2026-09-19T06:20:00+08:00",
-   "outputFile": null
-  },
-  "https://www.mohw.gov.tw/cp-3205-21635-1.html": {
-   "processedAt": "2026-09-19T06:20:00+08:00",
-   "outputFile": null
-  },
-  "https://www.eurekalert.org/news-releases/1122884": {
-   "processedAt": "2026-09-19T06:20:00+08:00",
-   "outputFile": null
-  },
   "https://pubmed.ncbi.nlm.nih.gov/42428677/": {
    "processedAt": "2026-09-20T06:36:00+08:00",
    "outputFile": "src/content/news/radar-2026-09-20-06-01.md"
@@ -441,14 +397,6 @@
   "PMID:42428677": {
    "processedAt": "2026-09-20T06:36:00+08:00",
    "outputFile": "src/content/news/radar-2026-09-20-06-01.md"
-  },
-  "https://pubmed.ncbi.nlm.nih.gov/41702347/": {
-   "processedAt": "2026-09-20T06:36:00+08:00",
-   "outputFile": null
-  },
-  "https://pmc.ncbi.nlm.nih.gov/articles/PMC6455094/": {
-   "processedAt": "2026-09-20T06:36:00+08:00",
-   "outputFile": null
   },
   "https://www.sciencedaily.com/releases/2026/09/260915100000.htm": {
    "processedAt": "2026-09-21T06:17:00+08:00",
@@ -788,6 +736,30 @@
   },
   "https://clinicaltrials.gov/study/NCT07426406": {
    "processedAt": "2026-10-03T06:21:08+08:00",
+   "outputFile": null
+  },
+  "https://pubmed.ncbi.nlm.nih.gov/42271116": {
+   "processedAt": "2026-10-05T06:17:00+08:00",
+   "outputFile": null
+  },
+  "https://pubmed.ncbi.nlm.nih.gov/41556351/": {
+   "processedAt": "2026-10-05T06:17:00+08:00",
+   "outputFile": null
+  },
+  "https://pubmed.ncbi.nlm.nih.gov/41761730/": {
+   "processedAt": "2026-10-05T06:17:00+08:00",
+   "outputFile": null
+  },
+  "https://pubmed.ncbi.nlm.nih.gov/42325320/": {
+   "processedAt": "2026-10-05T06:17:00+08:00",
+   "outputFile": null
+  },
+  "https://www.nature.com/subjects/nutritional-supplements": {
+   "processedAt": "2026-10-05T06:17:00+08:00",
+   "outputFile": null
+  },
+  "https://www.sciencedaily.com/news/mind_brain/nutrition/": {
+   "processedAt": "2026-10-05T06:17:00+08:00",
    "outputFile": null
   }
  }
