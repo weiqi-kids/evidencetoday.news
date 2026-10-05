@@ -35,10 +35,11 @@ const articleCounts = ARTICLE_CATEGORIES.reduce<Record<ArticleCategorySlug, numb
 );
 const visibleCategories = ARTICLE_CATEGORIES.filter((category) => articleCounts[category.slug] > 0);
 const social = listSocial('articles');
+const description = '常見保健品與藥物的疑問，白話整理研究重點：能不能帶回台灣、吃多少、副作用與搭配注意事項';
 const listSchema = buildCollectionPage({
   path: '/articles/',
   name: '文章',
-  description: social.description,
+  description,
   items: articles.map((a) => ({ url: `/articles/${stripExt(a.id)}/`, name: a.data.title })),
 });
 const crumbSchema = buildBreadcrumbList([{ label: '首頁', href: '/' }, { label: '文章' }]);
@@ -46,10 +47,10 @@ const crumbSchema = buildBreadcrumbList([{ label: '首頁', href: '/' }, { label
 
 <List
   title="文章"
-  description={social.description}
+  description={description}
   seoTitle={social.title}
   socialTitle={social.title}
-  socialDescription={social.description}
+  socialDescription={description}
   ogImage={social.image}
   category="article"
   breadcrumbItems={[{ label: '首頁', href: '/' }, { label: '文章' }]}

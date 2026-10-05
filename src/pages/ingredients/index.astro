@@ -14,10 +14,11 @@ function stripExt(id: string): string {
 const ingredients = (await getCollection('ingredients', (e) => isPublicEntry(e.data)))
   .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
 const social = listSocial('ingredients');
+const description = '成分的實證程度、常見劑量範圍、副作用與不同產品之間的差異，白話整理給一般人看';
 const listSchema = buildCollectionPage({
   path: '/ingredients/',
   name: '成分解析',
-  description: social.description,
+  description,
   items: ingredients.map((i) => ({ url: `/ingredients/${stripExt(i.id)}/`, name: i.data.title })),
 });
 const crumbSchema = buildBreadcrumbList([{ label: '首頁', href: '/' }, { label: '成分解析' }]);
@@ -25,10 +26,10 @@ const crumbSchema = buildBreadcrumbList([{ label: '首頁', href: '/' }, { label
 
 <List
   title="成分解析"
-  description={social.description}
+  description={description}
   seoTitle={social.title}
   socialTitle={social.title}
-  socialDescription={social.description}
+  socialDescription={description}
   ogImage={social.image}
   category="ingredient"
   breadcrumbItems={[{ label: '首頁', href: '/' }, { label: '成分解析' }]}
