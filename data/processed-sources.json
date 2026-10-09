@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-10-09T06:48:37.260075+08:00",
+  "lastRun": "2026-10-10T06:30:46+08:00",
   "processed": {
     "https://doi.org/10.1017/S0007114526108150": {
       "processedAt": "2026-10-08T06:42:35+08:00",
@@ -768,6 +768,38 @@
     },
     "https://www.cdc.gov.tw/Bulletin/Detail/PkxM8mKEAbKUXcS81xFuxQ?typeid=9": {
       "processedAt": "2026-10-09T06:48:37.260075+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/39116016/": {
+      "processedAt": "2026-10-10T06:30:46+08:00",
+      "outputFile": "src/content/news/radar-2026-10-10-06-01.md"
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/33888596/": {
+      "processedAt": "2026-10-10T06:30:46+08:00",
+      "outputFile": "src/content/news/radar-2026-10-10-06-01.md"
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/35303905/": {
+      "processedAt": "2026-10-10T06:30:46+08:00",
+      "outputFile": "src/content/news/radar-2026-10-10-06-01.md"
+    },
+    "https://www.airitilibrary.com/Article/Detail/P20150616003-N202312060002-00001": {
+      "processedAt": "2026-10-10T06:30:46+08:00",
+      "outputFile": "src/content/news/radar-2026-10-10-06-01.md"
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/33976376/": {
+      "processedAt": "2026-10-10T06:30:46+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42521227/": {
+      "processedAt": "2026-10-10T06:30:46+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42100281/": {
+      "processedAt": "2026-10-10T06:30:46+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41470897/": {
+      "processedAt": "2026-10-10T06:30:46+08:00",
       "outputFile": null
     }
   }
