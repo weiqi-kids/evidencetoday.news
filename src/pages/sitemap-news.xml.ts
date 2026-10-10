@@ -31,12 +31,9 @@ export const GET: APIRoute = async () => {
     .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime())
     .slice(0, MAX_URLS);
 
-  // 48 小時窗內若剛好沒有新聞（產線斷更），寧可 404 也不要回傳 0 筆的空 <urlset>——
-  // Google Search Console 會把「已提交但 0 網址」的 sitemap 記為錯誤（見 index.coverage 2026-09-06），
-  // 404 才是「這份 sitemap 這次沒東西」的正確表達。
-  if (entries.length === 0) {
-    return new Response(null, { status: 404 });
-  }
+  // 48 小時窗內沒有新聞（產線斷更）時回 200＋空 <urlset>，不回 404。
+  // 空 urlset 是合法的 News sitemap；404 會讓 GSC 把已提交的 sitemap 記成「無法擷取」錯誤
+  // （2026-09-06 曾改成 404，2026-10-10 改回）。
 
   const urls = entries
     .map((e) => {
@@ -59,8 +56,7 @@ export const GET: APIRoute = async () => {
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
-${urls}
-</urlset>`;
+${urls ? `${urls}\n` : ''}</urlset>`;
 
   return new Response(xml, {
     headers: { 'Content-Type': 'application/xml; charset=utf-8' },
