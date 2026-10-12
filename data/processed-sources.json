@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-10-12T06:47:03+08:00",
+  "lastRun": "2026-10-13T06:22:35+08:00",
   "processed": {
     "https://doi.org/10.1017/S0007114526108150": {
       "processedAt": "2026-10-08T06:42:35+08:00",
@@ -717,6 +717,66 @@
     "https://pubmed.ncbi.nlm.nih.gov/41695109/": {
       "processedAt": "2026-10-12T06:47:03+08:00",
       "outputFile": "src/content/news/radar-2026-10-12-06-01.md"
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41594884/": {
+      "processedAt": "2026-10-13T06:22:35+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41826924/": {
+      "processedAt": "2026-10-13T06:22:35+08:00",
+      "outputFile": null
+    },
+    "https://www.who.int/teams/nutrition-and-food-safety/standards-and-scientific-advice-on-food-and-nutrition": {
+      "processedAt": "2026-10-13T06:22:35+08:00",
+      "outputFile": null
+    },
+    "https://www.who.int/news-room/events/detail/2026/01/27/default-calendar/launch-of-the-who-guideline-on-policies-and-interventions-to-create-healthy-school-food-environments": {
+      "processedAt": "2026-10-13T06:22:35+08:00",
+      "outputFile": null
+    },
+    "https://www.who.int/teams/nutrition-and-food-safety/food-and-nutrition-actions-in-health-systems": {
+      "processedAt": "2026-10-13T06:22:35+08:00",
+      "outputFile": null
+    },
+    "https://www.who.int/brunei/news/detail-global/12-05-2026-who-launches-revamped-shake-package-to-help-reduce-salt-intake": {
+      "processedAt": "2026-10-13T06:22:35+08:00",
+      "outputFile": null
+    },
+    "https://www.who.int/news-room/events/detail/2026/07/06/default-calendar/forty-ninth-session-of-the-fao-who-codex-alimentarius-commission-adopts-new-standards": {
+      "processedAt": "2026-10-13T06:22:35+08:00",
+      "outputFile": null
+    },
+    "https://sciencedaily.com/releases/2026/07/260716023605.htm": {
+      "processedAt": "2026-10-13T06:22:35+08:00",
+      "outputFile": null
+    },
+    "https://sciencedaily.com/releases/2026/09/260915100000.htm": {
+      "processedAt": "2026-10-13T06:22:35+08:00",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/CdbgopQoFEjbaRObY4JebA?typeId=9": {
+      "processedAt": "2026-10-13T06:22:35+08:00",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/3CucThQ1cwcHAYxKfc3T5A?typeid=MmgtpeidAR5Ooai4-fgHzQ": {
+      "processedAt": "2026-10-13T06:22:35+08:00",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/oK_5RuMcEfhPiXKxOXcUGg?typeId=9": {
+      "processedAt": "2026-10-13T06:22:35+08:00",
+      "outputFile": null
+    },
+    "PMID:41707760": {
+      "processedAt": "2026-10-13T06:22:35+08:00",
+      "outputFile": null
+    },
+    "PMID:42437546": {
+      "processedAt": "2026-10-13T06:22:35+08:00",
+      "outputFile": null
+    },
+    "PMID:42023455": {
+      "processedAt": "2026-10-13T06:22:35+08:00",
+      "outputFile": null
     }
   }
 }
