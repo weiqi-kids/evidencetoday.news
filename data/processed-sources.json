@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-10-13T06:22:35+08:00",
+  "lastRun": "2026-10-14T06:35:50+08:00",
   "processed": {
     "https://doi.org/10.1017/S0007114526108150": {
       "processedAt": "2026-10-08T06:42:35+08:00",
@@ -402,66 +402,6 @@
       "processedAt": "2026-09-29T06:49:05+08:00",
       "outputFile": "src/content/news/radar-2026-09-29-06-01.md"
     },
-    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12106159/": {
-      "processedAt": "2026-09-29T06:49:05+08:00",
-      "outputFile": null
-    },
-    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11349153/": {
-      "processedAt": "2026-09-29T06:49:05+08:00",
-      "outputFile": null
-    },
-    "https://pmc.ncbi.nlm.nih.gov/articles/PMC13097937/": {
-      "processedAt": "2026-09-29T06:49:05+08:00",
-      "outputFile": null
-    },
-    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12952190/": {
-      "processedAt": "2026-09-29T06:49:05+08:00",
-      "outputFile": null
-    },
-    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11174647/": {
-      "processedAt": "2026-09-29T06:49:05+08:00",
-      "outputFile": null
-    },
-    "https://www.who.int/teams/nutrition-and-food-safety/monitoring-nutritional-status-and-food-safety-and-events/foodborne-disease-estimates/2nd-edition-(2026)": {
-      "processedAt": "2026-09-29T06:49:05+08:00",
-      "outputFile": null
-    },
-    "https://www.who.int/campaigns/world-food-safety-day/2026": {
-      "processedAt": "2026-09-29T06:49:05+08:00",
-      "outputFile": null
-    },
-    "https://www.who.int/publications/m/item/nutrition-and-food-safety-news---may-june-2026": {
-      "processedAt": "2026-09-29T06:49:05+08:00",
-      "outputFile": null
-    },
-    "https://www.who.int/publications/m/item/nutrition-and-food-safety-news---march-april-2026": {
-      "processedAt": "2026-09-29T06:49:05+08:00",
-      "outputFile": null
-    },
-    "https://www.who.int/publications/m/item/nutrition-and-food-safety-news---january-february-2026": {
-      "processedAt": "2026-09-29T06:49:05+08:00",
-      "outputFile": null
-    },
-    "https://www.who.int/teams/nutrition-and-food-safety/safe-healthy-and-sustainable-diets": {
-      "processedAt": "2026-09-29T06:49:05+08:00",
-      "outputFile": null
-    },
-    "https://clinicaltrials.gov/study/NCT06515496": {
-      "processedAt": "2026-09-29T06:49:05+08:00",
-      "outputFile": null
-    },
-    "https://clinicaltrials.gov/study/NCT06714162": {
-      "processedAt": "2026-09-29T06:49:05+08:00",
-      "outputFile": null
-    },
-    "https://clinicaltrials.gov/study/NCT04067921": {
-      "processedAt": "2026-09-29T06:49:05+08:00",
-      "outputFile": null
-    },
-    "https://www.sciencedaily.com/releases/2026/05/260519003103.htm": {
-      "processedAt": "2026-09-29T06:49:05+08:00",
-      "outputFile": null
-    },
     "https://pubmed.ncbi.nlm.nih.gov/41857820/": {
       "processedAt": "2026-10-03T06:21:08+08:00",
       "outputFile": null
@@ -776,6 +716,58 @@
     },
     "PMID:42023455": {
       "processedAt": "2026-10-13T06:22:35+08:00",
+      "outputFile": null
+    },
+    "https://doi.org/10.1016/j.tjnut.2026.101373": {
+      "processedAt": "2026-10-14T06:35:50+08:00",
+      "outputFile": "src/content/news/radar-2026-10-14-06-01.md"
+    },
+    "https://temertymedicine.utoronto.ca/news/full-fat-dairy-shows-benefits-without-raising-body-fat-or-cholesterol-study-finds": {
+      "processedAt": "2026-10-14T06:35:50+08:00",
+      "outputFile": "src/content/news/radar-2026-10-14-06-01.md"
+    },
+    "https://sciencedaily.com/releases/2026/08/260808234948.htm": {
+      "processedAt": "2026-10-14T06:35:50+08:00",
+      "outputFile": "src/content/news/radar-2026-10-14-06-01.md"
+    },
+    "https://sciencedaily.com/releases/2026/10/261006234505.htm": {
+      "processedAt": "2026-10-14T06:35:50+08:00",
+      "outputFile": "src/content/news/radar-2026-10-14-06-01.md"
+    },
+    "PMID:41769658": {
+      "processedAt": "2026-10-14T06:35:50+08:00",
+      "outputFile": null
+    },
+    "PMID:41804836": {
+      "processedAt": "2026-10-14T06:35:50+08:00",
+      "outputFile": null
+    },
+    "https://www.who.int/news-room/events/detail/2026/06/04/default-calendar/who-estimates-of-the-global-burden-of-foodborne-diseases-2000-2021--key-findings-from-the-2026-edition": {
+      "processedAt": "2026-10-14T06:35:50+08:00",
+      "outputFile": null
+    },
+    "https://www.who.int/health-topics/micronutrients": {
+      "processedAt": "2026-10-14T06:35:50+08:00",
+      "outputFile": null
+    },
+    "https://www.who.int/teams/nutrition-and-food-safety/monitoring-nutritional-status-and-food-safety-and-events/foodborne-disease-estimates/2026-edition": {
+      "processedAt": "2026-10-14T06:35:50+08:00",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/6ouyl_LV7L3lYiZHkgBscA?typeId=9": {
+      "processedAt": "2026-10-14T06:35:50+08:00",
+      "outputFile": null
+    },
+    "https://sciencedaily.com/releases/2026/10/261008102700.htm": {
+      "processedAt": "2026-10-14T06:35:50+08:00",
+      "outputFile": null
+    },
+    "http://www.sciencedaily.com/releases/2026/10/261011211613.htm": {
+      "processedAt": "2026-10-14T06:35:50+08:00",
+      "outputFile": null
+    },
+    "https://clinicaltrials.gov/study/NCT04820556": {
+      "processedAt": "2026-10-14T06:35:50+08:00",
       "outputFile": null
     }
   }
