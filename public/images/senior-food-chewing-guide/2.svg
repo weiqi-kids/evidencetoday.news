@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" width="960" height="600" role="img" aria-labelledby="title desc">
+  <title id="title">咀嚼不便與吞嚥警訊</title>
+  <desc id="desc">圖中分欄列出咀嚼不便與吞嚥警訊，並提醒反覆出現時尋求專業評估。</desc>
+  <rect width="960" height="600" fill="#FFFFFF"/>
+  <text x="480" y="72" text-anchor="middle" fill="#1A4F8B" font-size="34" font-weight="700" font-family="sans-serif">咀嚼不便與吞嚥警訊</text>
+  <rect x="55" y="118" width="410" height="382" rx="18" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+  <rect x="495" y="118" width="410" height="382" rx="18" fill="#FFF8F0" stroke="#E8923A" stroke-width="2"/>
+  <rect x="55" y="118" width="410" height="72" rx="18" fill="#1A4F8B"/>
+  <rect x="55" y="170" width="410" height="20" fill="#1A4F8B"/>
+  <rect x="495" y="118" width="410" height="72" rx="18" fill="#3E7CB1"/>
+  <rect x="495" y="170" width="410" height="20" fill="#3E7CB1"/>
+  <text x="260" y="164" text-anchor="middle" fill="#FFFFFF" font-size="25" font-weight="700" font-family="sans-serif">咀嚼不便</text>
+  <text x="700" y="164" text-anchor="middle" fill="#FFFFFF" font-size="25" font-weight="700" font-family="sans-serif">吞嚥警訊</text>
+  <circle cx="100" cy="245" r="8" fill="#E8923A"/>
+  <text x="126" y="253" fill="#1E293B" font-size="22" font-family="sans-serif">避開較硬的食物</text>
+  <circle cx="100" cy="325" r="8" fill="#E8923A"/>
+  <text x="126" y="333" fill="#1E293B" font-size="22" font-family="sans-serif">食物不容易咬碎</text>
+  <circle cx="100" cy="405" r="8" fill="#E8923A"/>
+  <text x="126" y="413" fill="#1E293B" font-size="22" font-family="sans-serif">咀嚼需要較長時間</text>
+  <circle cx="540" cy="245" r="8" fill="#E8923A"/>
+  <text x="566" y="253" fill="#1E293B" font-size="22" font-family="sans-serif">吃東西或喝水時咳嗽</text>
+  <circle cx="540" cy="325" r="8" fill="#E8923A"/>
+  <text x="566" y="333" fill="#1E293B" font-size="22" font-family="sans-serif">覺得食物卡在喉嚨</text>
+  <circle cx="540" cy="405" r="8" fill="#E8923A"/>
+  <text x="566" y="413" fill="#1E293B" font-size="22" font-family="sans-serif">吞嚥後聲音聽起來濕濁</text>
+  <line x1="95" y1="526" x2="865" y2="526" stroke="#CBD5E1" stroke-width="1.5"/>
+  <text x="480" y="562" text-anchor="middle" fill="#64748B" font-size="18" font-family="sans-serif">若症狀反覆出現，請尋求專業評估。</text>
+<text x="940.8" y="585" text-anchor="end" font-family="sans-serif" font-size="17" fill="#64748B" fill-opacity="0.45" font-weight="600">本日有據</text></svg>
