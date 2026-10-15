@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-10-15T06:22:00+08:00",
+  "lastRun": "2026-10-16T06:20:51+08:00",
   "processed": {
     "https://doi.org/10.1017/S0007114526108150": {
       "processedAt": "2026-10-08T06:42:35+08:00",
@@ -824,6 +824,54 @@
     },
     "https://clinicaltrials.gov/study/NCT06714162": {
       "processedAt": "2026-10-15T06:22:00+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42108202/": {
+      "processedAt": "2026-10-16T06:20:51+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42353595/": {
+      "processedAt": "2026-10-16T06:20:51+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42288917/": {
+      "processedAt": "2026-10-16T06:20:51+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41880968/": {
+      "processedAt": "2026-10-16T06:20:51+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41695959/": {
+      "processedAt": "2026-10-16T06:20:51+08:00",
+      "outputFile": null
+    },
+    "https://www.who.int/health-topics/food-safety": {
+      "processedAt": "2026-10-16T06:20:51+08:00",
+      "outputFile": null
+    },
+    "https://www.mohw.gov.tw/cp-3539-36715-1.html": {
+      "processedAt": "2026-10-16T06:20:51+08:00",
+      "outputFile": null
+    },
+    "https://www.mohw.gov.tw/cp-6559-76194-1.html": {
+      "processedAt": "2026-10-16T06:20:51+08:00",
+      "outputFile": null
+    },
+    "https://www.mohw.gov.tw/cp-2627-19174-1.html": {
+      "processedAt": "2026-10-16T06:20:51+08:00",
+      "outputFile": null
+    },
+    "https://www.mohw.gov.tw/cp-4259-46884-1.html": {
+      "processedAt": "2026-10-16T06:20:51+08:00",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/uyGn5mXv3-AgOOe_wmLO_g?typeid=9": {
+      "processedAt": "2026-10-16T06:20:51+08:00",
+      "outputFile": null
+    },
+    "https://www.sciencedaily.com/releases/2026/05/260519003103.htm": {
+      "processedAt": "2026-10-16T06:20:51+08:00",
       "outputFile": null
     }
   }
