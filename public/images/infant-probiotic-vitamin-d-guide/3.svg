@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" width="960" height="600" role="img" aria-labelledby="title desc">
+  <title id="title">兒科諮詢前，家長可以準備的資料</title>
+  <desc id="desc">家長準備嬰兒出生與餵養資料、產品標示及健康用藥資訊，供兒科諮詢時核對。</desc>
+  <style>
+    text { font-family: system-ui, sans-serif; }
+    .title { fill: #1A4F8B; font-size: 30px; font-weight: 700; }
+    .sub { fill: #64748B; font-size: 16px; }
+    .card { fill: #EEF4FB; stroke: #1A4F8B; stroke-width: 1.5; }
+    .num { fill: #1A4F8B; font-size: 14px; font-weight: 700; }
+    .head { fill: #1E293B; font-size: 18px; font-weight: 700; }
+    .body { fill: #64748B; font-size: 15px; }
+  </style>
+  <rect width="960" height="600" fill="#FFFFFF"/>
+  <text class="title" x="36" y="57">兒科諮詢前，家長可以準備的資料</text>
+  <text class="sub" x="36" y="88">整理寶寶的成長、餵養與健康資訊，讓看診時更容易核對</text>
+  <rect x="36" y="111" width="888" height="4" rx="2" fill="#3E7CB1"/>
+  <rect class="card" x="36" y="137" width="168" height="286" rx="14"/>
+  <circle cx="62" cy="168" r="16" fill="#FFFFFF"/>
+  <text class="num" x="62" y="173" text-anchor="middle">01</text>
+  <text class="head" x="52" y="215">月齡與出生史</text>
+  <line x1="52" y1="232" x2="188" y2="232" stroke="#3E7CB1"/>
+  <text class="body" x="52" y="264">嬰兒月齡</text>
+  <text class="body" x="52" y="291">出生週數與體重</text>
+  <text class="body" x="52" y="318">出生相關紀錄</text>
+  <text class="body" x="52" y="345">健兒手冊或紀錄</text>
+  <rect class="card" x="216" y="137" width="168" height="286" rx="14"/>
+  <circle cx="242" cy="168" r="16" fill="#FFFFFF"/>
+  <text class="num" x="242" y="173" text-anchor="middle">02</text>
+  <text class="head" x="232" y="215">餵奶方式</text>
+  <line x1="232" y1="232" x2="368" y2="232" stroke="#3E7CB1"/>
+  <text class="body" x="232" y="264">母乳與配方奶</text>
+  <text class="body" x="232" y="291">親餵或瓶餵情形</text>
+  <text class="body" x="232" y="318">約略每日奶量</text>
+  <text class="body" x="232" y="345">可記錄餵奶次數</text>
+  <rect class="card" x="396" y="137" width="168" height="286" rx="14"/>
+  <circle cx="422" cy="168" r="16" fill="#FFFFFF"/>
+  <text class="num" x="422" y="173" text-anchor="middle">03</text>
+  <text class="head" x="412" y="215">副食品進度</text>
+  <line x1="412" y1="232" x2="548" y2="232" stroke="#3E7CB1"/>
+  <text class="body" x="412" y="264">開始時間與進度</text>
+  <text class="body" x="412" y="291">已嘗試的食物</text>
+  <text class="body" x="412" y="318">目前食用狀況</text>
+  <text class="body" x="412" y="345">食量或接受度變化</text>
+  <rect class="card" x="576" y="137" width="168" height="286" rx="14"/>
+  <circle cx="602" cy="168" r="16" fill="#FFFFFF"/>
+  <text class="num" x="602" y="173" text-anchor="middle">04</text>
+  <text class="head" x="592" y="215">補充品標示</text>
+  <line x1="592" y1="232" x2="728" y2="232" stroke="#3E7CB1"/>
+  <text class="body" x="592" y="264">產品名稱</text>
+  <text class="body" x="592" y="291">成分與產品標示</text>
+  <text class="body" x="592" y="318">帶上包裝或照片</text>
+  <text class="body" x="592" y="345">方便看診時核對</text>
+  <rect class="card" x="756" y="137" width="168" height="286" rx="14"/>
+  <circle cx="782" cy="168" r="16" fill="#FFFFFF"/>
+  <text class="num" x="782" y="173" text-anchor="middle">05</text>
+  <text class="head" x="772" y="215">健康與用藥</text>
+  <line x1="772" y1="232" x2="908" y2="232" stroke="#3E7CB1"/>
+  <text class="body" x="772" y="264">慢性疾病</text>
+  <text class="body" x="772" y="291">目前使用的藥物</text>
+  <text class="body" x="772" y="318">持續中的治療</text>
+  <text class="body" x="772" y="345">相關健康紀錄</text>
+  <rect x="36" y="451" width="888" height="92" rx="16" fill="#1A4F8B"/>
+  <circle cx="82" cy="497" r="22" fill="#FFFFFF"/>
+  <path d="M73 500h18M82 491v18M76 486h12" fill="none" stroke="#3E7CB1" stroke-width="2.5" stroke-linecap="round"/>
+  <text x="120" y="489" fill="#FFFFFF" font-size="18" font-weight="700">帶上紀錄與產品標示</text>
+  <text x="120" y="516" fill="#FFFFFF" font-size="15">與兒科醫師共同核對，作為諮詢時的參考</text>
+  <circle cx="883" cy="497" r="8" fill="#E8923A"/>
+<text x="940.8" y="585" text-anchor="end" font-family="sans-serif" font-size="17" fill="#64748B" fill-opacity="0.45" font-weight="600">本日有據</text></svg>
