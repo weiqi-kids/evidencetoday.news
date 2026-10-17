@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-10-16T22:40:53.185Z",
+  "lastRun": "2026-10-17T22:23:43.238Z",
   "processed": {
     "https://doi.org/10.1017/S0007114526108150": {
       "processedAt": "2026-10-08T06:42:35+08:00",
@@ -73,14 +73,6 @@
     "https://onlinelibrary.wiley.com/doi/10.1155/tsm2/5557511": {
       "processedAt": "2026-07-25T06:24:00+08:00",
       "outputFile": "src/content/news/radar-2026-07-25-06-01.md"
-    },
-    "https://www.sciencedaily.com/releases/2026/07/260718010154.htm": {
-      "processedAt": "2026-07-19T06:30:00+08:00",
-      "outputFile": "src/content/news/radar-2026-07-19-06-01.md"
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/39775037/": {
-      "processedAt": "2026-07-19T06:30:00+08:00",
-      "outputFile": "src/content/news/radar-2026-07-19-06-01.md"
     },
     "PMID:42037549": {
       "processedAt": "2026-07-20T06:30:00+08:00",
@@ -393,74 +385,6 @@
     "https://dep.mohw.gov.tw/DOMHAOH/cp-4912-78611-107.html": {
       "processedAt": "2026-09-29T06:49:05+08:00",
       "outputFile": "src/content/news/radar-2026-09-29-06-01.md"
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/41857820/": {
-      "processedAt": "2026-10-03T06:21:08+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/23891685/": {
-      "processedAt": "2026-10-03T06:21:08+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/15051593/": {
-      "processedAt": "2026-10-03T06:21:08+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/23591150": {
-      "processedAt": "2026-10-03T06:21:08+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/41770781/": {
-      "processedAt": "2026-10-03T06:21:08+08:00",
-      "outputFile": null
-    },
-    "https://www.mohw.gov.tw/cp-2638-22511-1.html": {
-      "processedAt": "2026-10-03T06:21:08+08:00",
-      "outputFile": null
-    },
-    "https://www.mohw.gov.tw/cp-2638-22395-1.html": {
-      "processedAt": "2026-10-03T06:21:08+08:00",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Bulletin/Detail/lFK7neXKyk54GdPYg_hNDg?typeid=9": {
-      "processedAt": "2026-10-03T06:21:08+08:00",
-      "outputFile": null
-    },
-    "https://www.nature.com/articles/s41591-026-04675-1": {
-      "processedAt": "2026-10-03T06:21:08+08:00",
-      "outputFile": null
-    },
-    "https://www.who.int/news/item/04-06-2026-unsafe-food-causes-866-million-illnesses-and-1.5-million-deaths-annually--young-children-at-highest-risk": {
-      "processedAt": "2026-10-03T06:21:08+08:00",
-      "outputFile": null
-    },
-    "https://www.mohw.gov.tw/cp-2704-86886-1.html": {
-      "processedAt": "2026-10-03T06:21:08+08:00",
-      "outputFile": null
-    },
-    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12902778/": {
-      "processedAt": "2026-10-03T06:21:08+08:00",
-      "outputFile": null
-    },
-    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12816316/": {
-      "processedAt": "2026-10-03T06:21:08+08:00",
-      "outputFile": null
-    },
-    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12665681/": {
-      "processedAt": "2026-10-03T06:21:08+08:00",
-      "outputFile": null
-    },
-    "https://pmc.ncbi.nlm.nih.gov/articles/PMC13125875/": {
-      "processedAt": "2026-10-03T06:21:08+08:00",
-      "outputFile": null
-    },
-    "https://clinicaltrials.gov/study/NCT07766408": {
-      "processedAt": "2026-10-03T06:21:08+08:00",
-      "outputFile": null
-    },
-    "https://clinicaltrials.gov/study/NCT07426406": {
-      "processedAt": "2026-10-03T06:21:08+08:00",
-      "outputFile": null
     },
     "https://pubmed.ncbi.nlm.nih.gov/42271116": {
       "processedAt": "2026-10-05T06:17:00+08:00",
@@ -905,6 +829,14 @@
     "https://www.sciencedaily.com/releases/2026/06/260614011843.htm": {
       "processedAt": "2026-10-16T22:40:53.185Z",
       "outputFile": null
+    },
+    "PMID:41844283": {
+      "processedAt": "2026-10-17T22:23:43.238Z",
+      "outputFile": "src/content/news/radar-2026-10-18-06-01.md"
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41844283/": {
+      "processedAt": "2026-10-17T22:23:43.238Z",
+      "outputFile": "src/content/news/radar-2026-10-18-06-01.md"
     }
   }
 }
