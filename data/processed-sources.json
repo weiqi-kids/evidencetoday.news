@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-10-17T22:23:43.238Z",
+  "lastRun": "2026-10-18T22:22:20.147Z",
   "processed": {
     "https://doi.org/10.1017/S0007114526108150": {
       "processedAt": "2026-10-08T06:42:35+08:00",
@@ -73,22 +73,6 @@
     "https://onlinelibrary.wiley.com/doi/10.1155/tsm2/5557511": {
       "processedAt": "2026-07-25T06:24:00+08:00",
       "outputFile": "src/content/news/radar-2026-07-25-06-01.md"
-    },
-    "PMID:42037549": {
-      "processedAt": "2026-07-20T06:30:00+08:00",
-      "outputFile": "src/content/news/radar-2026-07-20-06-01.md"
-    },
-    "https://pmc.ncbi.nlm.nih.gov/articles/PMC13112187/": {
-      "processedAt": "2026-07-20T06:30:00+08:00",
-      "outputFile": "src/content/news/radar-2026-07-20-06-01.md"
-    },
-    "https://www.sciencedaily.com/releases/2026/05/260511213144.htm": {
-      "processedAt": "2026-07-20T06:30:00+08:00",
-      "outputFile": "src/content/news/radar-2026-07-20-06-01.md"
-    },
-    "https://www.eurekalert.org/news-releases/1127648": {
-      "processedAt": "2026-07-20T06:30:00+08:00",
-      "outputFile": "src/content/news/radar-2026-07-20-06-01.md"
     },
     "https://www.cdc.gov.tw/Bulletin/Detail/ooYAHNIiy663uxESIp_GrA?typeid=9": {
       "processedAt": "2026-07-21T06:28:13+08:00",
@@ -385,30 +369,6 @@
     "https://dep.mohw.gov.tw/DOMHAOH/cp-4912-78611-107.html": {
       "processedAt": "2026-09-29T06:49:05+08:00",
       "outputFile": "src/content/news/radar-2026-09-29-06-01.md"
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/42271116": {
-      "processedAt": "2026-10-05T06:17:00+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/41556351/": {
-      "processedAt": "2026-10-05T06:17:00+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/41761730/": {
-      "processedAt": "2026-10-05T06:17:00+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/42325320/": {
-      "processedAt": "2026-10-05T06:17:00+08:00",
-      "outputFile": null
-    },
-    "https://www.nature.com/subjects/nutritional-supplements": {
-      "processedAt": "2026-10-05T06:17:00+08:00",
-      "outputFile": null
-    },
-    "https://www.sciencedaily.com/news/mind_brain/nutrition/": {
-      "processedAt": "2026-10-05T06:17:00+08:00",
-      "outputFile": null
     },
     "https://doi.org/10.1093/eurheartj/ehag519": {
       "processedAt": "2026-10-06T06:30:00+08:00",
@@ -837,6 +797,34 @@
     "https://pubmed.ncbi.nlm.nih.gov/41844283/": {
       "processedAt": "2026-10-17T22:23:43.238Z",
       "outputFile": "src/content/news/radar-2026-10-18-06-01.md"
+    },
+    "https://www.sciencedaily.com/releases/2026/10/261002080017.htm": {
+      "processedAt": "2026-10-18T22:22:20.147Z",
+      "outputFile": "src/content/news/radar-2026-10-08-06-01.md"
+    },
+    "https://sciencedaily.com/releases/2026/09/260930225503.htm": {
+      "processedAt": "2026-10-18T22:22:20.147Z",
+      "outputFile": "src/content/news/radar-2026-10-18-06-01.md"
+    },
+    "https://www.mohw.gov.tw/cp-16-88158-1.html": {
+      "processedAt": "2026-10-18T22:22:20.147Z",
+      "outputFile": null
+    },
+    "https://www.who.int/news/item/04-06-2026-unsafe-food-causes-866-million-illnesses-and-1.5-million-deaths-annually--young-children-at-highest-risk": {
+      "processedAt": "2026-10-18T22:22:20.147Z",
+      "outputFile": null
+    },
+    "https://www.who.int/publications/m/item/the-state-of-food-security-and-nutrition-in-the-world-2026": {
+      "processedAt": "2026-10-18T22:22:20.147Z",
+      "outputFile": null
+    },
+    "PMID:41736089": {
+      "processedAt": "2026-10-18T22:22:20.147Z",
+      "outputFile": null
+    },
+    "PMID:41770781": {
+      "processedAt": "2026-10-18T22:22:20.147Z",
+      "outputFile": null
     }
   }
 }
