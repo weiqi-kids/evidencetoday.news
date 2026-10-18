@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600" role="img" aria-labelledby="title desc">
+  <title id="title">單方葉黃素與 AREDS2 研究配方</title>
+  <desc id="desc">比較一般單方葉黃素補充品與多種營養素組成的 AREDS2 研究配方，並說明研究對象有特定條件。</desc>
+  <style>
+    text { font-family: Arial, "Noto Sans TC", sans-serif; }
+    .title { fill: #1A4F8B; font-size: 30px; font-weight: 700; }
+    .head { fill: #1A4F8B; font-size: 23px; font-weight: 700; }
+    .body { fill: #1E293B; font-size: 20px; }
+    .note { fill: #64748B; font-size: 17px; }
+  </style>
+  <rect width="960" height="600" fill="#FFFFFF"/>
+  <text x="480" y="68" text-anchor="middle" class="title">葉黃素補充品 ≠ AREDS2 研究配方</text>
+  <rect x="55" y="112" width="405" height="330" rx="16" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+  <text x="257" y="162" text-anchor="middle" class="head">一般單方葉黃素補充品</text>
+  <line x1="95" y1="184" x2="420" y2="184" stroke="#3E7CB1" stroke-width="2"/>
+  <circle cx="257" cy="255" r="43" fill="#E8923A"/>
+  <text x="257" y="263" text-anchor="middle" fill="#FFFFFF" font-size="21" font-weight="700">葉黃素</text>
+  <text x="257" y="337" text-anchor="middle" class="body">單一成分</text>
+  <text x="257" y="375" text-anchor="middle" class="note">一般補充品示意</text>
+  <rect x="500" y="112" width="405" height="330" rx="16" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+  <text x="702" y="162" text-anchor="middle" class="head">AREDS2 研究配方</text>
+  <line x1="540" y1="184" x2="865" y2="184" stroke="#3E7CB1" stroke-width="2"/>
+  <rect x="575" y="216" width="255" height="68" rx="12" fill="#3E7CB1"/>
+  <text x="702" y="258" text-anchor="middle" fill="#FFFFFF" font-size="21" font-weight="700">多種營養素組成</text>
+  <text x="702" y="326" text-anchor="middle" class="body">研究配方</text>
+  <text x="702" y="366" text-anchor="middle" class="note">研究對象有特定條件</text>
+  <rect x="55" y="470" width="850" height="82" rx="12" fill="#FFFFFF" stroke="#E8923A" stroke-width="3"/>
+  <text x="480" y="505" text-anchor="middle" fill="#1E293B" font-size="20" font-weight="700">研究對象：特定階段的年齡相關性黃斑部病變患者</text>
+  <text x="480" y="535" text-anchor="middle" class="note">研究配方與研究對象，不會自動適用於所有人或所有葉黃素產品</text>
+<text x="940.8" y="585" text-anchor="end" font-family="sans-serif" font-size="17" fill="#64748B" fill-opacity="0.45" font-weight="600">本日有據</text></svg>
