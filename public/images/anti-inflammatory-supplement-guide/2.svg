@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600" role="img" aria-labelledby="title desc">
+  <title id="title">保健成分比較：可以先看什麼？</title>
+  <desc id="desc">四欄並列呈現益生菌的菌株與研究對象、薑黃素的配方與吸收、維生素 D 的個人需要，以及魚油的 EPA 與 DHA 含量。</desc>
+  <style>
+    text { font-family: sans-serif; }
+    .title { fill: #1A4F8B; font-size: 32px; font-weight: 700; }
+    .name { fill: #1A4F8B; font-size: 22px; font-weight: 700; }
+    .label { fill: #1E293B; font-size: 18px; }
+    .icon { fill: none; stroke: #3E7CB1; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+    .accent { fill: #E8923A; }
+  </style>
+  <rect width="960" height="600" fill="#FFFFFF"/>
+  <text class="title" x="480" y="82" text-anchor="middle">挑選保健成分，先看這些問題</text>
+  <rect x="40" y="132" width="212" height="400" rx="18" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+  <rect x="276" y="132" width="212" height="400" rx="18" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+  <rect x="512" y="132" width="212" height="400" rx="18" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+  <rect x="748" y="132" width="172" height="400" rx="18" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+  <circle class="icon" cx="146" cy="224" r="30"/>
+  <circle class="accent" cx="136" cy="217" r="5"/>
+  <circle class="accent" cx="157" cy="231" r="5"/>
+  <circle class="icon" cx="126" cy="205" r="3"/>
+  <circle class="icon" cx="168" cy="210" r="3"/>
+  <text class="name" x="146" y="302" text-anchor="middle">益生菌</text>
+  <text class="label" x="146" y="362" text-anchor="middle">菌株是什麼？</text>
+  <text class="label" x="146" y="402" text-anchor="middle">研究對象是誰？</text>
+  <rect class="icon" x="350" y="201" width="64" height="40" rx="20" transform="rotate(-35 382 221)"/>
+  <line class="icon" x1="373" y1="203" x2="392" y2="239"/>
+  <circle class="accent" cx="421" cy="196" r="5"/>
+  <text class="name" x="382" y="302" text-anchor="middle">薑黃素</text>
+  <text class="label" x="382" y="362" text-anchor="middle">使用哪種配方？</text>
+  <text class="label" x="382" y="402" text-anchor="middle">吸收情況如何？</text>
+  <circle class="icon" cx="618" cy="222" r="23"/>
+  <line class="icon" x1="618" y1="181" x2="618" y2="170"/>
+  <line class="icon" x1="618" y1="274" x2="618" y2="263"/>
+  <line class="icon" x1="577" y1="222" x2="566" y2="222"/>
+  <line class="icon" x1="670" y1="222" x2="659" y2="222"/>
+  <line class="icon" x1="589" y1="193" x2="581" y2="185"/>
+  <line class="icon" x1="655" y1="259" x2="647" y2="251"/>
+  <circle class="accent" cx="618" cy="222" r="7"/>
+  <text class="name" x="618" y="302" text-anchor="middle">維生素 D</text>
+  <text class="label" x="618" y="362" text-anchor="middle">個人營養需求</text>
+  <text class="label" x="618" y="402" text-anchor="middle">是什麼？</text>
+  <path class="icon" d="M834 184 C834 184 808 216 808 233 A26 26 0 0 0 860 233 C860 216 834 184 834 184 Z"/>
+  <circle class="accent" cx="834" cy="231" r="7"/>
+  <text class="name" x="834" y="302" text-anchor="middle">魚油</text>
+  <text class="label" x="834" y="362" text-anchor="middle">EPA 含量多少？</text>
+  <text class="label" x="834" y="402" text-anchor="middle">DHA 含量多少？</text>
+<text x="940.8" y="585" text-anchor="end" font-family="sans-serif" font-size="17" fill="#64748B" fill-opacity="0.45" font-weight="600">本日有據</text></svg>
