@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-10-18T22:22:20.147Z",
+  "lastRun": "2026-10-19T22:31:31.262Z",
   "processed": {
     "https://doi.org/10.1017/S0007114526108150": {
       "processedAt": "2026-10-08T06:42:35+08:00",
@@ -73,18 +73,6 @@
     "https://onlinelibrary.wiley.com/doi/10.1155/tsm2/5557511": {
       "processedAt": "2026-07-25T06:24:00+08:00",
       "outputFile": "src/content/news/radar-2026-07-25-06-01.md"
-    },
-    "https://www.cdc.gov.tw/Bulletin/Detail/ooYAHNIiy663uxESIp_GrA?typeid=9": {
-      "processedAt": "2026-07-21T06:28:13+08:00",
-      "outputFile": "src/content/news/radar-2026-07-21-06-01.md"
-    },
-    "https://www.cna.com.tw/news/ahel/202606160173.aspx": {
-      "processedAt": "2026-07-21T06:28:13+08:00",
-      "outputFile": "src/content/news/radar-2026-07-21-06-01.md"
-    },
-    "https://newtalk.tw/news/view/2026-07-20/1048298": {
-      "processedAt": "2026-07-21T06:28:13+08:00",
-      "outputFile": "src/content/news/radar-2026-07-21-06-01.md"
     },
     "https://pubmed.ncbi.nlm.nih.gov/42271116/": {
       "processedAt": "2026-07-27T06:35:00+08:00",
@@ -825,6 +813,22 @@
     "PMID:41770781": {
       "processedAt": "2026-10-18T22:22:20.147Z",
       "outputFile": null
+    },
+    "https://www.sciencedaily.com/releases/2026/10/261011211613.htm": {
+      "processedAt": "2026-10-20T14:18:00+08:00",
+      "outputFile": "src/content/news/radar-2026-10-20-14-01.md"
+    },
+    "https://news.asu.edu/20260527-science-and-technology-you-are-what-you-eat-or-are-you": {
+      "processedAt": "2026-10-20T14:18:00+08:00",
+      "outputFile": "src/content/news/radar-2026-10-20-14-01.md"
+    },
+    "https://scitechdaily.com/your-gut-microbes-may-decide-how-many-calories-you-really-absorb/": {
+      "processedAt": "2026-10-20T14:18:00+08:00",
+      "outputFile": "src/content/news/radar-2026-10-20-14-01.md"
+    },
+    "https://www.nutritioninsight.com/news/gut-microbes-calories-absorption-model.html": {
+      "processedAt": "2026-10-20T14:18:00+08:00",
+      "outputFile": "src/content/news/radar-2026-10-20-14-01.md"
     }
   }
 }
