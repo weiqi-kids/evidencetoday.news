@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600">
+  <style>
+    text { font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif; }
+    .title { fill: #1A4F8B; font-size: 30px; font-weight: 700; }
+    .head { fill: #FFFFFF; font-size: 21px; font-weight: 700; }
+    .label { fill: #64748B; font-size: 15px; font-weight: 700; }
+    .body { fill: #1E293B; font-size: 17px; }
+  </style>
+  <rect width="960" height="600" fill="#FFFFFF"/>
+  <text x="48" y="58" class="title">研究結果，適用於你嗎？</text>
+
+  <rect x="48" y="88" width="416" height="390" rx="14" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+  <path d="M62 88h388a14 14 0 0 1 14 14v44H48v-44a14 14 0 0 1 14-14" fill="#1A4F8B"/>
+  <text x="72" y="126" class="head">臨床研究受試者</text>
+  <text x="72" y="178" class="label">年齡與健康狀況</text>
+  <text x="72" y="205" class="body">研究納入的條件</text>
+  <line x1="72" y1="224" x2="440" y2="224" stroke="#CBD9E8"/>
+  <text x="72" y="255" class="label">日常飲食</text>
+  <text x="72" y="282" class="body">研究中受試者的飲食情形</text>
+  <line x1="72" y1="301" x2="440" y2="301" stroke="#CBD9E8"/>
+  <text x="72" y="332" class="label">產品配方與攝取方式</text>
+  <text x="72" y="359" class="body">研究使用的配方與攝取指示</text>
+
+  <rect x="496" y="88" width="416" height="390" rx="14" fill="#EEF4FB" stroke="#3E7CB1" stroke-width="2"/>
+  <path d="M510 88h388a14 14 0 0 1 14 14v44H496v-44a14 14 0 0 1 14-14" fill="#3E7CB1"/>
+  <text x="520" y="126" class="head">考慮選購產品的個人</text>
+  <text x="520" y="178" class="label">年齡與健康狀況</text>
+  <text x="520" y="205" class="body">個人目前的情形</text>
+  <line x1="520" y1="224" x2="888" y2="224" stroke="#CBD9E8"/>
+  <text x="520" y="255" class="label">日常飲食</text>
+  <text x="520" y="282" class="body">個人平時的飲食情形</text>
+  <line x1="520" y1="301" x2="888" y2="301" stroke="#CBD9E8"/>
+  <text x="520" y="332" class="label">產品配方與攝取方式</text>
+  <text x="520" y="359" class="body">欲選產品的配方與攝取指示</text>
+
+  <rect x="48" y="506" width="864" height="62" rx="12" fill="#FFF4E8" stroke="#E8923A" stroke-width="2"/>
+  <circle cx="78" cy="537" r="11" fill="#E8923A"/>
+  <text x="102" y="544" fill="#1E293B" font-size="18" font-weight="700">上述條件若有差異，研究結果的適用程度可能有限。</text>
+<text x="940.8" y="585" text-anchor="end" font-family="sans-serif" font-size="17" fill="#64748B" fill-opacity="0.45" font-weight="600">本日有據</text></svg>
