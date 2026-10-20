@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600" role="img" aria-label="無品牌補充品包裝旁的檢視清單，分列完整成分、每份含量與建議量、使用方式與時機，以及注意事項和警語。">
+  <style>
+    text{font-family:Arial,"Noto Sans TC",sans-serif}
+    .title{font-size:30px;font-weight:700;fill:#1A4F8B}
+    .label{font-size:20px;font-weight:700;fill:#1E293B}
+    .hint{font-size:15px;fill:#64748B}
+    .small{font-size:16px;font-weight:700;fill:#3E7CB1}
+  </style>
+  <rect width="960" height="600" fill="#FFFFFF"/>
+  <text x="48" y="62" class="title">補充品標示｜檢視清單</text>
+  <text x="50" y="94" class="hint">閱讀產品標示時，逐項確認以下資訊</text>
+  <rect x="48" y="130" width="208" height="404" rx="18" fill="#EEF4FB"/>
+  <rect x="92" y="194" width="120" height="242" rx="18" fill="#FFFFFF" stroke="#1A4F8B" stroke-width="3"/>
+  <rect x="119" y="168" width="66" height="30" rx="6" fill="#3E7CB1"/>
+  <line x1="92" y1="224" x2="212" y2="224" stroke="#3E7CB1" stroke-width="3"/>
+  <text x="152" y="286" text-anchor="middle" class="small">補充品</text>
+  <line x1="119" y1="306" x2="185" y2="306" stroke="#CBD5E1" stroke-width="3"/>
+  <line x1="119" y1="320" x2="185" y2="320" stroke="#CBD5E1" stroke-width="3"/>
+  <rect x="116" y="352" width="72" height="42" rx="8" fill="#EEF4FB"/>
+  <text x="152" y="379" text-anchor="middle" class="hint">產品標示</text>
+  <text x="152" y="476" text-anchor="middle" class="hint">無品牌包裝示意</text>
+  <rect x="286" y="130" width="626" height="88" rx="14" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+  <circle cx="326" cy="174" r="18" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="2"/>
+  <path d="M317 174l6 6 12-14" fill="none" stroke="#1A4F8B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="362" y="168" class="label">完整成分</text>
+  <text x="362" y="194" class="hint">確認成分列表是否完整</text>
+  <rect x="286" y="234" width="626" height="88" rx="14" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+  <circle cx="326" cy="278" r="18" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="2"/>
+  <path d="M317 278l6 6 12-14" fill="none" stroke="#1A4F8B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="362" y="272" class="label">每份含量與建議每日用量</text>
+  <text x="362" y="298" class="hint">查看標示的含量與建議用量</text>
+  <rect x="286" y="338" width="626" height="88" rx="14" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+  <circle cx="326" cy="382" r="18" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="2"/>
+  <path d="M317 382l6 6 12-14" fill="none" stroke="#1A4F8B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="362" y="376" class="label">使用方式與時機</text>
+  <text x="362" y="402" class="hint">確認如何使用，以及建議使用時機</text>
+  <rect x="286" y="442" width="626" height="88" rx="14" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+  <circle cx="326" cy="486" r="18" fill="#FFFFFF" stroke="#E8923A" stroke-width="2"/>
+  <path d="M317 486l6 6 12-14" fill="none" stroke="#E8923A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="362" y="480" class="label">注意事項與警語</text>
+  <text x="362" y="506" class="hint">留意使用限制及標示警語</text>
+<text x="940.8" y="585" text-anchor="end" font-family="sans-serif" font-size="17" fill="#64748B" fill-opacity="0.45" font-weight="600">本日有據</text></svg>
