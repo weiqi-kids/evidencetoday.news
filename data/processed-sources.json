@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-10-19T22:31:31.262Z",
+  "lastRun": "2026-10-21T06:30:00+08:00",
   "processed": {
     "https://doi.org/10.1017/S0007114526108150": {
       "processedAt": "2026-10-08T06:42:35+08:00",
@@ -369,30 +369,6 @@
     "https://www.hpa.gov.tw/Pages/Detail.aspx?nodeid=544&pid=728": {
       "processedAt": "2026-10-06T06:30:00+08:00",
       "outputFile": "src/content/news/radar-2026-10-06-06-01.md"
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/41710102/": {
-      "processedAt": "2026-10-06T06:30:00+08:00",
-      "outputFile": null
-    },
-    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12909528": {
-      "processedAt": "2026-10-06T06:30:00+08:00",
-      "outputFile": null
-    },
-    "https://www.sciencedaily.com/releases/2026/06/260622091429.htm": {
-      "processedAt": "2026-10-06T06:30:00+08:00",
-      "outputFile": null
-    },
-    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12910210/": {
-      "processedAt": "2026-10-06T06:30:00+08:00",
-      "outputFile": null
-    },
-    "https://pmc.ncbi.nlm.nih.gov/articles/PMC13415018/": {
-      "processedAt": "2026-10-06T06:30:00+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/42237711/": {
-      "processedAt": "2026-10-06T06:30:00+08:00",
-      "outputFile": null
     },
     "https://pubmed.ncbi.nlm.nih.gov/42486145/": {
       "processedAt": "2026-10-07T06:18:52+08:00",
@@ -829,6 +805,34 @@
     "https://www.nutritioninsight.com/news/gut-microbes-calories-absorption-model.html": {
       "processedAt": "2026-10-20T14:18:00+08:00",
       "outputFile": "src/content/news/radar-2026-10-20-14-01.md"
+    },
+    "PMID:41822032": {
+      "processedAt": "2026-10-21T06:30:00+08:00",
+      "outputFile": "src/content/news/radar-2026-10-21-06-01.md"
+    },
+    "https://doi.org/10.1016/j.jad.2026.122245": {
+      "processedAt": "2026-10-21T06:30:00+08:00",
+      "outputFile": "src/content/news/radar-2026-10-21-06-01.md"
+    },
+    "https://doi.org/10.1016/j.clnu.2026.106627": {
+      "processedAt": "2026-10-21T06:30:00+08:00",
+      "outputFile": "src/content/news/radar-2026-10-21-06-01.md"
+    },
+    "PMID:41905309": {
+      "processedAt": "2026-10-21T06:30:00+08:00",
+      "outputFile": "src/content/news/radar-2026-10-21-06-01.md"
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12554551/": {
+      "processedAt": "2026-10-21T06:30:00+08:00",
+      "outputFile": "src/content/news/radar-2026-10-21-06-01.md"
+    },
+    "PMID:42385101": {
+      "processedAt": "2026-10-21T06:30:00+08:00",
+      "outputFile": null
+    },
+    "PMID:42431320": {
+      "processedAt": "2026-10-21T06:30:00+08:00",
+      "outputFile": "src/content/news/radar-2026-10-21-06-01.md"
     }
   }
 }
