@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600">
+  <style>
+    text { font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif; fill: #1E293B; }
+    .title { font-size: 30px; font-weight: 700; fill: #1A4F8B; }
+    .label { font-size: 18px; font-weight: 700; fill: #1A4F8B; }
+    .sub { font-size: 14px; fill: #64748B; }
+    .line { stroke: #3E7CB1; stroke-width: 1.5; }
+  </style>
+  <rect width="960" height="600" fill="#FFFFFF"/>
+  <text x="40" y="55" class="title">睡眠紀錄表</text>
+  <text x="42" y="82" class="sub">依實際情況記錄，空白處可自行填寫</text>
+
+  <rect x="40" y="108" width="210" height="132" rx="12" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+  <text x="60" y="143" class="label">上床時間</text>
+  <text x="60" y="168" class="sub">準備睡覺的時間</text>
+  <line x1="60" y1="210" x2="230" y2="210" class="line"/>
+
+  <rect x="270" y="108" width="210" height="132" rx="12" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+  <text x="290" y="143" class="label">估計入睡時間</text>
+  <text x="290" y="168" class="sub">上床後約多久睡著</text>
+  <line x1="290" y1="210" x2="460" y2="210" class="line"/>
+
+  <rect x="500" y="108" width="210" height="132" rx="12" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+  <text x="520" y="143" class="label">夜間醒來</text>
+  <text x="520" y="168" class="sub">醒來次數或大約時間</text>
+  <line x1="520" y1="210" x2="690" y2="210" class="line"/>
+
+  <rect x="730" y="108" width="190" height="132" rx="12" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+  <text x="750" y="143" class="label">起床時間</text>
+  <text x="750" y="168" class="sub">開始一天的時間</text>
+  <line x1="750" y1="210" x2="900" y2="210" class="line"/>
+
+  <rect x="40" y="260" width="880" height="112" rx="12" fill="#EEF4FB" stroke="#3E7CB1" stroke-width="2"/>
+  <text x="62" y="296" class="label">白天精神</text>
+  <text x="62" y="322" class="sub">記下白天的精神狀態或感受</text>
+  <line x1="330" y1="340" x2="890" y2="340" class="line"/>
+  <circle cx="331" cy="340" r="5" fill="#E8923A"/>
+  <circle cx="610" cy="340" r="5" fill="#E8923A"/>
+  <circle cx="889" cy="340" r="5" fill="#E8923A"/>
+
+  <rect x="40" y="392" width="880" height="168" rx="12" fill="#FFFFFF" stroke="#1A4F8B" stroke-width="2"/>
+  <text x="62" y="427" class="label">備註</text>
+  <line x1="333" y1="442" x2="333" y2="540" stroke="#3E7CB1" stroke-width="1"/>
+  <line x1="626" y1="442" x2="626" y2="540" stroke="#3E7CB1" stroke-width="1"/>
+  <text x="62" y="462" class="sub">作息變動、輪班或旅行</text>
+  <line x1="62" y1="493" x2="310" y2="493" class="line"/>
+  <line x1="62" y1="526" x2="310" y2="526" class="line"/>
+  <text x="356" y="462" class="sub">咖啡因或酒精的飲用時間</text>
+  <line x1="356" y1="493" x2="603" y2="493" class="line"/>
+  <line x1="356" y1="526" x2="603" y2="526" class="line"/>
+  <text x="649" y="462" class="sub">壓力或其他備註</text>
+  <line x1="649" y1="493" x2="898" y2="493" class="line"/>
+  <line x1="649" y1="526" x2="898" y2="526" class="line"/>
+<text x="940.8" y="585" text-anchor="end" font-family="sans-serif" font-size="17" fill="#64748B" fill-opacity="0.45" font-weight="600">本日有據</text></svg>
