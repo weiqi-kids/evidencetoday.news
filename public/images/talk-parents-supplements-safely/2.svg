@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600" role="img" aria-labelledby="title desc">
+  <title id="title">藥師或醫師檢視前準備清單</title>
+  <desc id="desc">盤點保健品資訊與所有使用中的藥品，並記得攜帶產品標籤或照片。</desc>
+  <style>
+    text { font-family: sans-serif; }
+    .title { fill: #1A4F8B; font-size: 32px; font-weight: 700; }
+    .sub { fill: #64748B; font-size: 17px; }
+    .heading { fill: #1A4F8B; font-size: 21px; font-weight: 700; }
+    .item { fill: #1E293B; font-size: 18px; }
+    .note { fill: #1E293B; font-size: 18px; font-weight: 600; }
+  </style>
+  <rect width="960" height="600" fill="#FFFFFF"/>
+  <text class="title" x="56" y="67">藥師或醫師檢視前準備清單</text>
+  <text class="sub" x="56" y="101">先整理目前使用的保健品與藥品資訊</text>
+
+  <rect x="56" y="132" width="414" height="362" rx="16" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+  <rect x="56" y="132" width="8" height="362" rx="4" fill="#1A4F8B"/>
+  <text class="heading" x="82" y="174">保健品資訊</text>
+  <circle cx="88" cy="216" r="5" fill="#E8923A"/>
+  <text class="item" x="106" y="222">產品名稱</text>
+  <circle cx="88" cy="262" r="5" fill="#E8923A"/>
+  <text class="item" x="106" y="268">完整成分</text>
+  <circle cx="88" cy="308" r="5" fill="#E8923A"/>
+  <text class="item" x="106" y="314">實際用量與使用頻率</text>
+  <circle cx="88" cy="354" r="5" fill="#E8923A"/>
+  <text class="item" x="106" y="360">開始使用日期</text>
+  <circle cx="88" cy="400" r="5" fill="#E8923A"/>
+  <text class="item" x="106" y="406">使用原因</text>
+  <circle cx="88" cy="446" r="5" fill="#E8923A"/>
+  <text class="item" x="106" y="452">推薦者</text>
+
+  <rect x="490" y="132" width="414" height="362" rx="16" fill="#EEF4FB" stroke="#3E7CB1" stroke-width="2"/>
+  <rect x="490" y="132" width="8" height="362" rx="4" fill="#3E7CB1"/>
+  <text class="heading" x="516" y="174">所有使用中的藥品</text>
+  <circle cx="522" cy="216" r="5" fill="#E8923A"/>
+  <text class="item" x="540" y="222">處方藥</text>
+  <circle cx="522" cy="262" r="5" fill="#E8923A"/>
+  <text class="item" x="540" y="268">非處方藥</text>
+  <circle cx="522" cy="308" r="5" fill="#E8923A"/>
+  <text class="item" x="540" y="314">偶爾使用的藥品</text>
+  <circle cx="522" cy="354" r="5" fill="#E8923A"/>
+  <text class="item" x="540" y="360">維生素與草本產品</text>
+  <line x1="516" y1="397" x2="868" y2="397" stroke="#C7D7E8" stroke-width="1"/>
+  <text x="516" y="430" fill="#64748B" font-size="15">包含目前正在使用的各類產品</text>
+
+  <rect x="56" y="520" width="848" height="54" rx="12" fill="#FFFFFF" stroke="#E8923A" stroke-width="2"/>
+  <circle cx="83" cy="547" r="9" fill="#E8923A"/>
+  <text x="103" y="553" class="note">記得攜帶產品標籤或照片，方便核對資訊</text>
+<text x="940.8" y="585" text-anchor="end" font-family="sans-serif" font-size="17" fill="#64748B" fill-opacity="0.45" font-weight="600">本日有據</text></svg>
