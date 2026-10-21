@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-10-21T06:30:00+08:00",
+  "lastRun": "2026-10-22T06:20:29+08:00",
   "processed": {
     "https://doi.org/10.1017/S0007114526108150": {
       "processedAt": "2026-10-08T06:42:35+08:00",
@@ -369,38 +369,6 @@
     "https://www.hpa.gov.tw/Pages/Detail.aspx?nodeid=544&pid=728": {
       "processedAt": "2026-10-06T06:30:00+08:00",
       "outputFile": "src/content/news/radar-2026-10-06-06-01.md"
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/42486145/": {
-      "processedAt": "2026-10-07T06:18:52+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/42582094/": {
-      "processedAt": "2026-10-07T06:18:52+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/42325726/": {
-      "processedAt": "2026-10-07T06:18:52+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/41333064/": {
-      "processedAt": "2026-10-07T06:18:52+08:00",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Bulletin/Detail/tfHqeDmxP80662NPXLwWYA?typeid=9": {
-      "processedAt": "2026-10-07T06:18:52+08:00",
-      "outputFile": null
-    },
-    "https://doi.org/10.1016/j.ebiom.2026.106316": {
-      "processedAt": "2026-10-07T06:18:52+08:00",
-      "outputFile": null
-    },
-    "https://sciencedaily.com/releases/2026/06/260622014300.htm": {
-      "processedAt": "2026-10-07T06:18:52+08:00",
-      "outputFile": null
-    },
-    "https://sciencedaily.com/releases/2026/07/260717033213.htm": {
-      "processedAt": "2026-10-07T06:18:52+08:00",
-      "outputFile": null
     },
     "https://pubmed.ncbi.nlm.nih.gov/41580085/": {
       "processedAt": "2026-10-09T06:48:37.260075+08:00",
@@ -833,6 +801,38 @@
     "PMID:42431320": {
       "processedAt": "2026-10-21T06:30:00+08:00",
       "outputFile": "src/content/news/radar-2026-10-21-06-01.md"
+    },
+    "PMID:42077685": {
+      "processedAt": "2026-10-22T06:20:29+08:00",
+      "outputFile": null
+    },
+    "PMID:42486145": {
+      "processedAt": "2026-10-22T06:20:29+08:00",
+      "outputFile": null
+    },
+    "PMID:41556351": {
+      "processedAt": "2026-10-22T06:20:29+08:00",
+      "outputFile": null
+    },
+    "PMID:41710102": {
+      "processedAt": "2026-10-22T06:20:29+08:00",
+      "outputFile": null
+    },
+    "PMID:42237711": {
+      "processedAt": "2026-10-22T06:20:29+08:00",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/tfHqeDmxP80662NPXLwWYA?typeid=9": {
+      "processedAt": "2026-10-22T06:20:29+08:00",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/5gJTj70wu9L3psY5kQLUuA?typeid=9": {
+      "processedAt": "2026-10-22T06:20:29+08:00",
+      "outputFile": null
+    },
+    "https://www.sciencedaily.com/releases/2026/07/260708022206.htm": {
+      "processedAt": "2026-10-22T06:20:29+08:00",
+      "outputFile": null
     }
   }
 }
