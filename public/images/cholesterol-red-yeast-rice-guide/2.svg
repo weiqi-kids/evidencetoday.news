@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600" role="img" aria-labelledby="title desc">
+  <title id="title">血脂檢查項目與個人因素</title>
+  <desc id="desc">血脂檢查項目與年齡、血壓、病史及用藥等個人因素分組並列。</desc>
+  <style>
+    text { font-family: Arial, "Noto Sans TC", sans-serif; }
+    .label { fill: #1E293B; font-size: 21px; font-weight: 600; }
+    .group { fill: #1A4F8B; font-size: 22px; font-weight: 700; }
+  </style>
+  <rect width="960" height="600" fill="#FFFFFF"/>
+  <text x="480" y="68" text-anchor="middle" fill="#1A4F8B" font-size="32" font-weight="700">血脂檢查與個人因素</text>
+  <rect x="42" y="104" width="428" height="448" rx="22" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+  <rect x="490" y="104" width="428" height="448" rx="22" fill="#EEF4FB" stroke="#3E7CB1" stroke-width="2"/>
+  <text class="group" x="256" y="148" text-anchor="middle">血脂檢查項目</text>
+  <text class="group" x="704" y="148" text-anchor="middle">個人因素</text>
+  <g>
+    <rect x="64" y="174" width="184" height="96" rx="14" fill="#FFFFFF"/>
+    <circle cx="96" cy="222" r="18" fill="#E8923A"/>
+    <path d="M96 210 C88 220 89 227 96 230 C103 227 104 220 96 210Z" fill="#FFFFFF"/>
+    <text class="label" x="122" y="229">總膽固醇</text>
+    <rect x="264" y="174" width="184" height="96" rx="14" fill="#FFFFFF"/>
+    <circle cx="296" cy="222" r="18" fill="#E8923A"/>
+    <path d="M287 222h18 M296 213v18" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+    <text class="label" x="322" y="229">LDL 膽固醇</text>
+    <rect x="64" y="286" width="184" height="96" rx="14" fill="#FFFFFF"/>
+    <circle cx="96" cy="334" r="18" fill="#E8923A"/>
+    <path d="M87 334h18 M96 325v18" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+    <text class="label" x="122" y="341">HDL 膽固醇</text>
+    <rect x="264" y="286" width="184" height="96" rx="14" fill="#FFFFFF"/>
+    <circle cx="296" cy="334" r="18" fill="#E8923A"/>
+    <path d="M287 334h18 M296 325v18" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+    <text class="label" x="322" y="341">非 HDL 膽固醇</text>
+    <rect x="164" y="398" width="184" height="96" rx="14" fill="#FFFFFF"/>
+    <circle cx="196" cy="446" r="18" fill="#E8923A"/>
+    <path d="M196 434 C188 444 189 451 196 454 C203 451 204 444 196 434Z" fill="#FFFFFF"/>
+    <text class="label" x="222" y="453">三酸甘油酯</text>
+  </g>
+  <g>
+    <rect x="512" y="174" width="184" height="96" rx="14" fill="#FFFFFF"/>
+    <circle cx="544" cy="222" r="18" fill="#3E7CB1"/>
+    <circle cx="544" cy="216" r="5" fill="#FFFFFF"/>
+    <path d="M535 232c1-8 17-8 18 0" fill="none" stroke="#FFFFFF" stroke-width="2.5"/>
+    <text class="label" x="570" y="229">年齡</text>
+    <rect x="712" y="174" width="184" height="96" rx="14" fill="#FFFFFF"/>
+    <circle cx="744" cy="222" r="18" fill="#3E7CB1"/>
+    <path d="M744 232s-11-7-11-14a6 6 0 0 1 11-3a6 6 0 0 1 11 3c0 7-11 14-11 14Z" fill="#FFFFFF"/>
+    <text class="label" x="770" y="229">血壓</text>
+    <rect x="512" y="286" width="184" height="96" rx="14" fill="#FFFFFF"/>
+    <circle cx="544" cy="334" r="18" fill="#3E7CB1"/>
+    <path d="M537 325h14v18h-14z M540 330h8 M540 334h8 M540 338h6" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+    <text class="label" x="570" y="341">病史</text>
+    <rect x="712" y="286" width="184" height="96" rx="14" fill="#FFFFFF"/>
+    <circle cx="744" cy="334" r="18" fill="#3E7CB1"/>
+    <rect x="735" y="329" width="18" height="10" rx="5" fill="none" stroke="#FFFFFF" stroke-width="2.5" transform="rotate(-35 744 334)"/>
+    <path d="m742 329 5 9" stroke="#FFFFFF" stroke-width="2"/>
+    <text class="label" x="770" y="341">目前用藥</text>
+  </g>
+<text x="940.8" y="585" text-anchor="end" font-family="sans-serif" font-size="17" fill="#64748B" fill-opacity="0.45" font-weight="600">本日有據</text></svg>
