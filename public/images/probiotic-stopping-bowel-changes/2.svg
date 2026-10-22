@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600">
+  <style>
+    text { font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif; }
+    .title { fill: #1A4F8B; font-size: 30px; font-weight: 700; }
+    .heading { fill: #1A4F8B; font-size: 22px; font-weight: 700; }
+    .body { fill: #1E293B; font-size: 19px; }
+    .note { fill: #64748B; font-size: 16px; }
+  </style>
+  <rect width="960" height="600" fill="#FFFFFF"/>
+  <text class="title" x="480" y="66" text-anchor="middle">益生菌產品與便祕：研究觀察與限制</text>
+
+  <rect x="54" y="112" width="414" height="348" rx="16" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+  <rect x="492" y="112" width="414" height="348" rx="16" fill="#EEF4FB" stroke="#3E7CB1" stroke-width="2"/>
+
+  <circle cx="92" cy="157" r="18" fill="#1A4F8B"/>
+  <path d="M84 157l6 6 11-13" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <text class="heading" x="124" y="165">研究觀察到的訊號</text>
+  <text class="body" x="84" y="220">
+    <tspan x="84" dy="0">部分便祕成人研究發現，</tspan>
+    <tspan x="84" dy="32">使用含益生菌的產品後，</tspan>
+    <tspan x="84" dy="32">排便頻率有所改善。</tspan>
+  </text>
+  <text class="note" x="84" y="406">這是部分研究的觀察結果</text>
+
+  <circle cx="530" cy="157" r="18" fill="#E8923A"/>
+  <text x="530" y="164" text-anchor="middle" fill="#FFFFFF" font-size="23" font-weight="700">!</text>
+  <text class="heading" x="562" y="165">解讀時的限制</text>
+  <text class="body" x="522" y="220">
+    <tspan x="522" dy="0">研究之間差異很大</tspan>
+    <tspan x="522" dy="44">部分結果的證據確定性</tspan>
+    <tspan x="522" dy="30">偏低或非常低</tspan>
+    <tspan x="522" dy="44">菌株與產品各不相同</tspan>
+  </text>
+
+  <rect x="54" y="484" width="852" height="76" rx="14" fill="#1A4F8B"/>
+  <circle cx="94" cy="522" r="17" fill="#E8923A"/>
+  <text x="94" y="529" text-anchor="middle" fill="#FFFFFF" font-size="20" font-weight="700">i</text>
+  <text x="126" y="530" fill="#FFFFFF" font-size="21" font-weight="700">研究結果不代表每個人或每種產品都會有相同效果。</text>
+<text x="940.8" y="585" text-anchor="end" font-family="sans-serif" font-size="17" fill="#64748B" fill-opacity="0.45" font-weight="600">本日有據</text></svg>
