@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600" role="img" aria-labelledby="title desc">
+  <title id="title">體重由哪些部分組成？</title>
+  <desc id="desc">水分、脂肪、瘦體組織與腸胃內容物並列呈現，旁邊有體重計圖示。體重計顯示總重量，無法辨識是哪一部分改變。</desc>
+  <rect width="960" height="600" fill="#FFFFFF"/>
+  <text x="480" y="78" text-anchor="middle" font-family="sans-serif" font-size="34" font-weight="700" fill="#1A4F8B">體重由哪些部分組成？</text>
+  <text x="480" y="119" text-anchor="middle" font-family="sans-serif" font-size="19" fill="#64748B">四個部分並列，共同構成體重</text>
+
+  <rect x="54" y="174" width="190" height="176" rx="16" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="3"/>
+  <rect x="254" y="174" width="190" height="176" rx="16" fill="#EEF4FB" stroke="#3E7CB1" stroke-width="3"/>
+  <rect x="454" y="174" width="190" height="176" rx="16" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="3"/>
+  <rect x="654" y="174" width="190" height="176" rx="16" fill="#EEF4FB" stroke="#3E7CB1" stroke-width="3"/>
+
+  <circle cx="149" cy="235" r="27" fill="#3E7CB1"/>
+  <path d="M149 216 C140 229 135 236 135 244 A14 14 0 0 0 163 244 C163 236 158 229 149 216Z" fill="#FFFFFF"/>
+  <text x="149" y="312" text-anchor="middle" font-family="sans-serif" font-size="24" font-weight="700" fill="#1E293B">水分</text>
+
+  <circle cx="349" cy="235" r="27" fill="#E8923A"/>
+  <circle cx="349" cy="235" r="12" fill="#FFFFFF"/>
+  <text x="349" y="312" text-anchor="middle" font-family="sans-serif" font-size="24" font-weight="700" fill="#1E293B">脂肪</text>
+
+  <circle cx="549" cy="235" r="27" fill="#1A4F8B"/>
+  <path d="M536 235h26 M549 222v26" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/>
+  <text x="549" y="306" text-anchor="middle" font-family="sans-serif" font-size="22" font-weight="700" fill="#1E293B">瘦體組織</text>
+
+  <circle cx="749" cy="235" r="27" fill="#3E7CB1"/>
+  <path d="M738 226c0 8 22 8 22 0 M738 226v18c0 8 22 8 22 0v-18" fill="none" stroke="#FFFFFF" stroke-width="3"/>
+  <text x="749" y="306" text-anchor="middle" font-family="sans-serif" font-size="21" font-weight="700" fill="#1E293B">腸胃內容物</text>
+
+  <rect x="54" y="394" width="790" height="142" rx="16" fill="#FFFFFF" stroke="#1A4F8B" stroke-width="2"/>
+  <rect x="77" y="418" width="104" height="91" rx="15" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="3"/>
+  <rect x="98" y="433" width="62" height="29" rx="8" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="2"/>
+  <line x1="129" y1="448" x2="141" y2="439" stroke="#E8923A" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="129" cy="448" r="3" fill="#E8923A"/>
+  <line x1="91" y1="481" x2="167" y2="481" stroke="#3E7CB1" stroke-width="3" stroke-linecap="round"/>
+  <text x="217" y="448" font-family="sans-serif" font-size="24" font-weight="700" fill="#1A4F8B">體重計顯示總重量</text>
+  <text x="217" y="488" font-family="sans-serif" font-size="21" fill="#1E293B">無法辨識是哪一部分改變</text>
+<text x="940.8" y="585" text-anchor="end" font-family="sans-serif" font-size="17" fill="#64748B" fill-opacity="0.45" font-weight="600">本日有據</text></svg>
