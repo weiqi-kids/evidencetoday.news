@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-10-22T22:28:34.014Z",
+  "lastRun": "2026-10-23T22:20:03.030Z",
   "processed": {
     "https://doi.org/10.1017/S0007114526108150": {
       "processedAt": "2026-10-08T06:42:35+08:00",
@@ -61,18 +61,6 @@
     "https://pubmed.ncbi.nlm.nih.gov/41764841/": {
       "processedAt": "2026-07-28T06:37:00+08:00",
       "outputFile": "src/content/news/radar-2026-07-28-06-01.md"
-    },
-    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12862422/": {
-      "processedAt": "2026-07-25T06:24:00+08:00",
-      "outputFile": "src/content/news/radar-2026-07-25-06-01.md"
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/41635649/": {
-      "processedAt": "2026-07-25T06:24:00+08:00",
-      "outputFile": "src/content/news/radar-2026-07-25-06-01.md"
-    },
-    "https://onlinelibrary.wiley.com/doi/10.1155/tsm2/5557511": {
-      "processedAt": "2026-07-25T06:24:00+08:00",
-      "outputFile": "src/content/news/radar-2026-07-25-06-01.md"
     },
     "https://pubmed.ncbi.nlm.nih.gov/42271116/": {
       "processedAt": "2026-07-27T06:35:00+08:00",
@@ -377,38 +365,6 @@
     "https://www.sciencedaily.com/releases/2026/08/260808234948.htm": {
       "processedAt": "2026-10-09T06:48:37.260075+08:00",
       "outputFile": "src/content/news/radar-2026-10-09-06-01.md"
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/42526758/": {
-      "processedAt": "2026-10-09T06:48:37.260075+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/41622137/": {
-      "processedAt": "2026-10-09T06:48:37.260075+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/41733092/": {
-      "processedAt": "2026-10-09T06:48:37.260075+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/41202665/": {
-      "processedAt": "2026-10-09T06:48:37.260075+08:00",
-      "outputFile": null
-    },
-    "https://www.who.int/news-room/events/detail/2026/06/09/default-calendar/webinar-series--who-estimates-of-the-global-burden-of-foodborne-diseases-2000-2021--key-findings-from-the-2026-edition": {
-      "processedAt": "2026-10-09T06:48:37.260075+08:00",
-      "outputFile": null
-    },
-    "https://www.mohw.gov.tw/cp-16-61405-1.html": {
-      "processedAt": "2026-10-09T06:48:37.260075+08:00",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Bulletin/Detail/AXG37sOc0tSeYH5Utn2ndw?typeid=9": {
-      "processedAt": "2026-10-09T06:48:37.260075+08:00",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Bulletin/Detail/PkxM8mKEAbKUXcS81xFuxQ?typeid=9": {
-      "processedAt": "2026-10-09T06:48:37.260075+08:00",
-      "outputFile": null
     },
     "https://pubmed.ncbi.nlm.nih.gov/39116016/": {
       "processedAt": "2026-10-10T06:30:46+08:00",
@@ -900,6 +856,18 @@
     },
     "https://pubmed.ncbi.nlm.nih.gov/42237711/": {
       "processedAt": "2026-10-22T22:28:34.014Z",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41622137/": {
+      "processedAt": "2026-10-24T00:00:00+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41707760/": {
+      "processedAt": "2026-10-24T00:00:00+08:00",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/AXG37sOc0tSeYH5Utn2ndw?typeid=9": {
+      "processedAt": "2026-10-24T00:00:00+08:00",
       "outputFile": null
     }
   }
