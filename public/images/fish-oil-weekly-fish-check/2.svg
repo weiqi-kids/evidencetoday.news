@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600">
+  <style>
+    text { font-family: sans-serif; fill: #1E293B; }
+    .title { font-size: 32px; font-weight: 700; fill: #1A4F8B; }
+    .label { font-size: 18px; font-weight: 600; }
+    .value { font-size: 24px; font-weight: 700; }
+    .note { font-size: 16px; fill: #64748B; }
+  </style>
+  <rect width="960" height="600" fill="#FFFFFF"/>
+  <text class="title" x="56" y="72">看懂魚油標示</text>
+  <text class="note" x="56" y="105">比較每份總魚油量與 EPA、DHA 含量</text>
+
+  <rect x="56" y="144" width="350" height="316" rx="18" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+  <text class="note" x="84" y="184">瓶身標示範例</text>
+  <rect x="84" y="204" width="294" height="224" rx="12" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="2"/>
+  <text class="label" x="108" y="246">每份總魚油量</text>
+  <line x1="108" y1="266" x2="354" y2="266" stroke="#3E7CB1" stroke-width="2"/>
+  <text class="value" x="108" y="310">總魚油</text>
+  <rect x="108" y="332" width="220" height="52" rx="8" fill="#EEF4FB"/>
+  <text class="note" x="126" y="365">依產品標示查看含量</text>
+
+  <rect x="430" y="144" width="474" height="316" rx="18" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+  <text class="label" x="458" y="184">每份個別成分</text>
+  <rect x="458" y="204" width="418" height="100" rx="12" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="2"/>
+  <circle cx="488" cy="254" r="14" fill="#E8923A"/>
+  <text class="value" x="520" y="250">EPA</text>
+  <text class="note" x="520" y="277">每份含量依標示</text>
+  <rect x="458" y="324" width="418" height="100" rx="12" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="2"/>
+  <circle cx="488" cy="374" r="14" fill="#E8923A"/>
+  <text class="value" x="520" y="370">DHA</text>
+  <text class="note" x="520" y="397">每份含量依標示</text>
+
+  <rect x="56" y="484" width="848" height="72" rx="14" fill="#1A4F8B"/>
+  <text x="82" y="528" font-size="20" font-weight="700" fill="#FFFFFF">食用份量</text>
+  <line x1="224" y1="502" x2="224" y2="538" stroke="#FFFFFF" stroke-opacity=".55" stroke-width="2"/>
+  <text x="252" y="528" font-size="18" fill="#FFFFFF">確認每份包含幾粒膠囊，再比較各項含量</text>
+<text x="940.8" y="585" text-anchor="end" font-family="sans-serif" font-size="17" fill="#64748B" fill-opacity="0.45" font-weight="600">本日有據</text></svg>
