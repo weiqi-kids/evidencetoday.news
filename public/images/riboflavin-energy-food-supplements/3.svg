@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" width="960" height="600" role="img" aria-label="乳品、蛋、瘦肉與內臟、菠菜與菇類，以及強化穀物分組呈現。">
+  <style>
+    text{font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif}
+    .title{font-size:30px;font-weight:700;fill:#1A4F8B}
+    .label{font-size:21px;font-weight:700;fill:#1E293B}
+    .small{font-size:16px;fill:#64748B}
+    .card{fill:#EEF4FB;stroke:#1A4F8B;stroke-width:2}
+    .icon{fill:none;stroke:#3E7CB1;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+  </style>
+  <rect width="960" height="600" fill="#FFFFFF"/>
+  <text class="title" x="480" y="76" text-anchor="middle">多元食物來源</text>
+  <line x1="430" y1="96" x2="530" y2="96" stroke="#E8923A" stroke-width="5" stroke-linecap="round"/>
+  <rect class="card" x="26" y="140" width="172" height="370" rx="18"/>
+  <rect class="card" x="210" y="140" width="172" height="370" rx="18"/>
+  <rect class="card" x="394" y="140" width="172" height="370" rx="18"/>
+  <rect class="card" x="578" y="140" width="172" height="370" rx="18"/>
+  <rect class="card" x="762" y="140" width="172" height="370" rx="18"/>
+  <g class="icon">
+    <path d="M73 222h46l-5 85H78z"/>
+    <path d="M78 250h36"/>
+    <path d="M139 278l23-23 23 23-23 23z"/>
+    <circle cx="162" cy="278" r="3" fill="#E8923A" stroke="none"/>
+  </g>
+  <text class="label" x="112" y="374" text-anchor="middle">乳品</text>
+  <text class="small" x="112" y="408" text-anchor="middle">牛奶・起司</text>
+  <g class="icon">
+    <path d="M296 220c-29 0-35 31-21 67 9 24 17 38 21 38s12-14 21-38c14-36 8-67-21-67z"/>
+    <path d="M268 329h56"/>
+    <circle cx="296" cy="274" r="5" fill="#E8923A" stroke="none"/>
+  </g>
+  <text class="label" x="296" y="374" text-anchor="middle">蛋</text>
+  <text class="small" x="296" y="408" text-anchor="middle">雞蛋</text>
+  <g class="icon">
+    <path d="M425 270c12-24 33-35 58-29l22 9-10 27c-12 25-34 36-59 28z"/>
+    <path d="M434 276l47-19"/>
+    <path d="M461 302c12 14 29 20 49 18"/>
+    <circle cx="500" cy="286" r="5" fill="#E8923A" stroke="none"/>
+  </g>
+  <text class="label" x="480" y="374" text-anchor="middle">瘦肉與內臟</text>
+  <text class="small" x="480" y="408" text-anchor="middle">雞胸肉・豬肝</text>
+  <g class="icon">
+    <path d="M608 292c2-35 25-61 63-67-2 37-24 62-63 67z"/>
+    <path d="M610 292l42-49"/>
+    <path d="M681 275c0-18 15-31 30-31s30 13 30 31z"/>
+    <path d="M686 276v30m20-30v30m20-30v30m-42 0h46"/>
+    <circle cx="627" cy="226" r="5" fill="#E8923A" stroke="none"/>
+  </g>
+  <text class="label" x="664" y="374" text-anchor="middle">菠菜與菇類</text>
+  <text class="small" x="664" y="408" text-anchor="middle">菠菜・香菇</text>
+  <g class="icon">
+    <path d="M796 282h102l-12 35h-78z"/>
+    <path d="M810 272c8-17 17-26 25-26m6 26c8-17 17-26 25-26m6 26c8-17 17-26 25-26"/>
+    <path d="M816 254l-5-11m28 11v-13m24 13 5-11m20 11 7-9"/>
+    <circle cx="823" cy="291" r="4" fill="#E8923A" stroke="none"/>
+    <circle cx="850" cy="291" r="4" fill="#E8923A" stroke="none"/>
+    <circle cx="877" cy="291" r="4" fill="#E8923A" stroke="none"/>
+  </g>
+  <text class="label" x="848" y="374" text-anchor="middle">強化穀物</text>
+  <text class="small" x="848" y="408" text-anchor="middle">強化早餐穀片</text>
+<text x="940.8" y="585" text-anchor="end" font-family="sans-serif" font-size="17" fill="#64748B" fill-opacity="0.45" font-weight="600">本日有據</text></svg>
