@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600" role="img" aria-labelledby="title desc">
+  <title id="title">哪些情況可檢視核黃素攝取？</title>
+  <desc id="desc">兩張並列卡片呈現嚴格排除多類食物者，以及飲食來源有限的孕期或哺乳期情況。</desc>
+  <rect width="960" height="600" fill="#FFFFFF"/>
+  <text x="480" y="65" text-anchor="middle" fill="#1A4F8B" font-size="30" font-weight="700" font-family="sans-serif">哪些情況可檢視核黃素攝取？</text>
+  <text x="480" y="98" text-anchor="middle" fill="#64748B" font-size="17" font-family="sans-serif">留意飲食來源，必要時進一步評估</text>
+
+  <rect x="48" y="128" width="416" height="372" rx="20" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+  <circle cx="116" cy="201" r="31" fill="#3E7CB1"/>
+  <path d="M67 294 Q70 247 116 244 Q162 247 165 294 Z" fill="#3E7CB1"/>
+  <path d="M94 199 Q116 174 138 199" fill="none" stroke="#FFFFFF" stroke-width="3"/>
+  <text x="180" y="176" fill="#1A4F8B" font-size="20" font-weight="700" font-family="sans-serif">嚴格排除多類食物</text>
+  <text x="180" y="207" fill="#1E293B" font-size="17" font-family="sans-serif">飲食不含乳品、蛋類與肉類</text>
+  <text x="180" y="235" fill="#1E293B" font-size="17" font-family="sans-serif">且缺少可靠的替代來源</text>
+  <line x1="76" y1="325" x2="436" y2="325" stroke="#B8CDE2" stroke-width="2"/>
+  <circle cx="101" cy="371" r="16" fill="#E8923A"/>
+  <circle cx="146" cy="371" r="16" fill="#3E7CB1"/>
+  <circle cx="191" cy="371" r="16" fill="#1A4F8B"/>
+  <text x="224" y="367" fill="#1E293B" font-size="17" font-family="sans-serif">素食選擇有限</text>
+  <text x="224" y="394" fill="#64748B" font-size="15" font-family="sans-serif">可檢視日常飲食是否有替代來源</text>
+  <rect x="76" y="433" width="360" height="42" rx="12" fill="#FFFFFF"/>
+  <text x="256" y="460" text-anchor="middle" fill="#1A4F8B" font-size="16" font-weight="700" font-family="sans-serif">可安排飲食評估</text>
+
+  <rect x="496" y="128" width="416" height="372" rx="20" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+  <circle cx="565" cy="201" r="31" fill="#E8923A"/>
+  <path d="M516 294 Q519 247 565 244 Q611 247 614 294 Z" fill="#E8923A"/>
+  <path d="M566 263 Q601 267 595 291" fill="none" stroke="#FFFFFF" stroke-width="3"/>
+  <text x="630" y="176" fill="#1A4F8B" font-size="20" font-weight="700" font-family="sans-serif">孕期或哺乳期</text>
+  <text x="630" y="207" fill="#1E293B" font-size="17" font-family="sans-serif">飲食中含核黃素的食物來源</text>
+  <text x="630" y="235" fill="#1E293B" font-size="17" font-family="sans-serif">較少或選擇有限</text>
+  <line x1="524" y1="325" x2="884" y2="325" stroke="#B8CDE2" stroke-width="2"/>
+  <circle cx="549" cy="371" r="16" fill="#E8923A"/>
+  <circle cx="594" cy="371" r="16" fill="#3E7CB1"/>
+  <circle cx="639" cy="371" r="16" fill="#1A4F8B"/>
+  <text x="672" y="367" fill="#1E293B" font-size="17" font-family="sans-serif">來源較有限</text>
+  <text x="672" y="394" fill="#64748B" font-size="15" font-family="sans-serif">可與醫療人員或營養師討論飲食</text>
+  <rect x="524" y="433" width="360" height="42" rx="12" fill="#FFFFFF"/>
+  <text x="704" y="460" text-anchor="middle" fill="#1A4F8B" font-size="16" font-weight="700" font-family="sans-serif">可安排飲食評估</text>
+
+  <rect x="160" y="520" width="640" height="48" rx="14" fill="#1A4F8B"/>
+  <text x="480" y="551" text-anchor="middle" fill="#FFFFFF" font-size="18" font-weight="700" font-family="sans-serif">這些情況值得檢視飲食，不代表一定缺乏或必須補充</text>
+<text x="940.8" y="585" text-anchor="end" font-family="sans-serif" font-size="17" fill="#64748B" fill-opacity="0.45" font-weight="600">本日有據</text></svg>
