@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600" role="img" aria-labelledby="title desc">
+  <title id="title">研究結果套用前，先比對八項條件</title>
+  <desc id="desc">八張並列卡片列出菌種、菌株、菌體狀態、牙膏配方、研究對象、使用時間、比較組與結果指標</desc>
+  <style>
+    text { font-family: sans-serif; }
+    .title { fill: #1A4F8B; font-size: 32px; font-weight: 700; }
+    .hint { fill: #64748B; font-size: 18px; }
+    .label { fill: #1E293B; font-size: 21px; font-weight: 600; }
+  </style>
+  <rect width="960" height="600" fill="#FFFFFF"/>
+  <text id="heading" class="title" x="56" y="76">研究結果套用前，先比對八項條件</text>
+  <rect x="56" y="96" width="64" height="4" rx="2" fill="#E8923A"/>
+  <text class="hint" x="56" y="132">逐項確認研究條件是否符合產品</text>
+  <g>
+    <rect x="56" y="168" width="202" height="150" rx="12" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+    <rect x="78" y="222" width="20" height="20" rx="3" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="2"/>
+    <text class="label" x="112" y="240">菌種</text>
+    <rect x="278" y="168" width="202" height="150" rx="12" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+    <rect x="300" y="222" width="20" height="20" rx="3" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="2"/>
+    <text class="label" x="334" y="240">菌株</text>
+    <rect x="500" y="168" width="202" height="150" rx="12" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+    <rect x="522" y="222" width="20" height="20" rx="3" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="2"/>
+    <text class="label" x="556" y="240">活菌或熱滅活</text>
+    <rect x="722" y="168" width="202" height="150" rx="12" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+    <rect x="744" y="222" width="20" height="20" rx="3" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="2"/>
+    <text class="label" x="778" y="240">牙膏配方</text>
+  </g>
+  <g>
+    <rect x="56" y="342" width="202" height="150" rx="12" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+    <rect x="78" y="396" width="20" height="20" rx="3" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="2"/>
+    <text class="label" x="112" y="414">研究對象</text>
+    <rect x="278" y="342" width="202" height="150" rx="12" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+    <rect x="300" y="396" width="20" height="20" rx="3" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="2"/>
+    <text class="label" x="334" y="414">使用時間</text>
+    <rect x="500" y="342" width="202" height="150" rx="12" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+    <rect x="522" y="396" width="20" height="20" rx="3" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="2"/>
+    <text class="label" x="556" y="414">比較組</text>
+    <rect x="722" y="342" width="202" height="150" rx="12" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+    <rect x="744" y="396" width="20" height="20" rx="3" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="2"/>
+    <text class="label" x="778" y="414">結果指標</text>
+  </g>
+<text x="940.8" y="585" text-anchor="end" font-family="sans-serif" font-size="17" fill="#64748B" fill-opacity="0.45" font-weight="600">本日有據</text></svg>
