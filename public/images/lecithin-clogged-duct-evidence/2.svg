@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600" role="img" aria-labelledby="title desc">
+  <title id="title">卵磷脂與預防塞奶：三項證據</title>
+  <desc id="desc">三張並列卡片呈現乳汁成分、試管樣本實驗，以及缺乏確認預防塞奶效果的高品質人體臨床試驗。</desc>
+  <style>
+    text { font-family: system-ui, sans-serif; }
+    .title { fill: #1A4F8B; font-size: 30px; font-weight: 700; }
+    .num { fill: #1A4F8B; font-size: 15px; font-weight: 700; }
+    .heading { fill: #1E293B; font-size: 21px; font-weight: 700; }
+    .body { fill: #64748B; font-size: 16px; }
+    .callout { fill: #1A4F8B; font-size: 16px; font-weight: 700; }
+  </style>
+  <rect width="960" height="600" fill="#FFFFFF"/>
+  <text id="title" class="title" x="480" y="72" text-anchor="middle">卵磷脂與預防塞奶：三項證據</text>
+  <rect x="48" y="112" width="276" height="420" rx="18" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+  <rect x="342" y="112" width="276" height="420" rx="18" fill="#EEF4FB" stroke="#3E7CB1" stroke-width="2"/>
+  <rect x="636" y="112" width="276" height="420" rx="18" fill="#EEF4FB" stroke="#E8923A" stroke-width="3"/>
+  <circle cx="82" cy="150" r="19" fill="#1A4F8B"/>
+  <text x="82" y="156" text-anchor="middle" fill="#FFFFFF" font-size="15" font-weight="700">01</text>
+  <path d="M186 153 C186 153 166 177 166 191 A20 20 0 0 0 206 191 C206 177 186 153 186 153Z" fill="#3E7CB1"/>
+  <circle cx="186" cy="188" r="6" fill="#FFFFFF"/>
+  <text class="heading" x="186" y="248" text-anchor="middle">乳汁中的成分</text>
+  <text class="body" x="186" y="289" text-anchor="middle">母乳中自然含有</text>
+  <text class="body" x="186" y="316" text-anchor="middle">卵磷脂相關成分</text>
+  <line x1="88" y1="348" x2="284" y2="348" stroke="#CBD8E8"/>
+  <text class="callout" x="186" y="389" text-anchor="middle">這是成分事實</text>
+  <text class="body" x="186" y="421" text-anchor="middle">不代表補充卵磷脂</text>
+  <text class="body" x="186" y="447" text-anchor="middle">能帶來預防效果</text>
+  <circle cx="376" cy="150" r="19" fill="#3E7CB1"/>
+  <text x="376" y="156" text-anchor="middle" fill="#FFFFFF" font-size="15" font-weight="700">02</text>
+  <path d="M454 160 L478 160 L474 199 Q466 211 458 199 Z" fill="#FFFFFF" stroke="#1A4F8B" stroke-width="3"/>
+  <line x1="457" y1="185" x2="475" y2="185" stroke="#3E7CB1" stroke-width="4"/>
+  <line x1="450" y1="154" x2="482" y2="154" stroke="#1A4F8B" stroke-width="4"/>
+  <text class="heading" x="480" y="248" text-anchor="middle">試管樣本實驗</text>
+  <text class="body" x="480" y="289" text-anchor="middle">研究者將卵磷脂</text>
+  <text class="body" x="480" y="316" text-anchor="middle">直接加入乳汁樣本</text>
+  <line x1="382" y1="348" x2="578" y2="348" stroke="#CBD8E8"/>
+  <text class="callout" x="480" y="389" text-anchor="middle">實驗是在樣本中進行</text>
+  <text class="body" x="480" y="421" text-anchor="middle">不能說明一個人</text>
+  <text class="body" x="480" y="447" text-anchor="middle">服用後會發生什麼</text>
+  <circle cx="670" cy="150" r="19" fill="#E8923A"/>
+  <text x="670" y="156" text-anchor="middle" fill="#FFFFFF" font-size="15" font-weight="700">03</text>
+  <rect x="755" y="158" width="42" height="48" rx="4" fill="#FFFFFF" stroke="#1A4F8B" stroke-width="3"/>
+  <line x1="764" y1="171" x2="788" y2="171" stroke="#3E7CB1" stroke-width="3"/>
+  <line x1="764" y1="181" x2="788" y2="181" stroke="#3E7CB1" stroke-width="3"/>
+  <line x1="764" y1="191" x2="782" y2="191" stroke="#3E7CB1" stroke-width="3"/>
+  <text class="heading" x="774" y="248" text-anchor="middle">人體臨床證據</text>
+  <text x="774" y="299" text-anchor="middle" fill="#E8923A" font-size="24" font-weight="700">尚缺</text>
+  <text class="body" x="774" y="331" text-anchor="middle">確認預防塞奶效果的</text>
+  <text class="body" x="774" y="357" text-anchor="middle">高品質人體臨床試驗</text>
+  <rect x="659" y="390" width="230" height="78" rx="12" fill="#FFFFFF" stroke="#E8923A" stroke-width="2"/>
+  <text x="774" y="422" text-anchor="middle" fill="#1E293B" font-size="16" font-weight="700">預防效果</text>
+  <text x="774" y="449" text-anchor="middle" fill="#E8923A" font-size="17" font-weight="700">尚未確認</text>
+<text x="940.8" y="585" text-anchor="end" font-family="sans-serif" font-size="17" fill="#64748B" fill-opacity="0.45" font-weight="600">本日有據</text></svg>
