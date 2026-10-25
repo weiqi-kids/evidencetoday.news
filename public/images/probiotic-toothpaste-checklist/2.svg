@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600">
+  <style>
+    text{font-family:Arial,"Noto Sans TC",sans-serif}
+    .title{fill:#1A4F8B;font-size:32px;font-weight:700}
+    .label{fill:#1E293B;font-size:23px;font-weight:700}
+    .hint{fill:#64748B;font-size:16px}
+    .card{fill:#EEF4FB;stroke:#1A4F8B;stroke-width:2}
+    .icon{fill:none;stroke:#3E7CB1;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+  </style>
+  <rect width="960" height="600" fill="#FFFFFF"/>
+  <text class="title" x="480" y="88" text-anchor="middle">牙膏標示欄位</text>
+
+  <rect class="card" x="40" y="155" width="210" height="350" rx="16"/>
+  <circle class="icon" cx="145" cy="245" r="34"/>
+  <circle cx="133" cy="238" r="5" fill="#E8923A"/>
+  <circle cx="153" cy="231" r="5" fill="#E8923A"/>
+  <circle cx="151" cy="252" r="5" fill="#E8923A"/>
+  <text class="label" x="145" y="330" text-anchor="middle">菌株資訊</text>
+  <line class="icon" x1="78" y1="375" x2="212" y2="375"/>
+  <line class="icon" x1="78" y1="405" x2="190" y2="405"/>
+
+  <rect class="card" x="275" y="155" width="210" height="350" rx="16"/>
+  <path class="icon" d="M326 238h118M326 255h82"/>
+  <circle cx="423" cy="255" r="6" fill="#E8923A"/>
+  <text class="label" x="380" y="330" text-anchor="middle">每克菌量</text>
+  <line class="icon" x1="313" y1="375" x2="447" y2="375"/>
+  <line class="icon" x1="313" y1="405" x2="425" y2="405"/>
+
+  <rect class="card" x="510" y="155" width="210" height="350" rx="16"/>
+  <rect class="icon" x="577" y="215" width="76" height="58" rx="8"/>
+  <line class="icon" x1="592" y1="244" x2="638" y2="244"/>
+  <circle cx="615" cy="244" r="6" fill="#E8923A"/>
+  <text class="label" x="615" y="330" text-anchor="middle">計量單位</text>
+  <line class="icon" x1="548" y1="375" x2="682" y2="375"/>
+  <line class="icon" x1="548" y1="405" x2="660" y2="405"/>
+
+  <rect class="card" x="745" y="155" width="175" height="350" rx="16"/>
+  <circle class="icon" cx="832" cy="244" r="34"/>
+  <line class="icon" x1="832" y1="222" x2="832" y2="244"/>
+  <line class="icon" x1="832" y1="244" x2="849" y2="254"/>
+  <circle cx="832" cy="244" r="5" fill="#E8923A"/>
+  <text class="label" x="832" y="330" text-anchor="middle">檢測時點</text>
+  <line class="icon" x1="769" y1="375" x2="895" y2="375"/>
+  <line class="icon" x1="769" y1="405" x2="873" y2="405"/>
+<text x="940.8" y="585" text-anchor="end" font-family="sans-serif" font-size="17" fill="#64748B" fill-opacity="0.45" font-weight="600">本日有據</text></svg>
