@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600" role="img" aria-labelledby="title desc">
+  <title id="title">康普茶標示欄位</title>
+  <desc id="desc">康普茶標示上的份量、每份糖量、茶來源、配料與活菌資訊欄位。</desc>
+  <style>
+    text { font-family: sans-serif; }
+    .title { fill: #1A4F8B; font-size: 34px; font-weight: 700; }
+    .subtitle { fill: #64748B; font-size: 17px; }
+    .heading { fill: #1E293B; font-size: 20px; font-weight: 700; }
+    .note { fill: #64748B; font-size: 15px; }
+  </style>
+  <rect width="960" height="600" fill="#FFFFFF"/>
+  <text id="title" x="48" y="75" class="title">康普茶標示，五項並列檢視</text>
+  <text x="48" y="109" class="subtitle">查看包裝上的各項標示資訊</text>
+
+  <rect x="42" y="157" width="160" height="300" rx="12" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+  <rect x="42" y="157" width="160" height="9" rx="4" fill="#1A4F8B"/>
+  <text x="122" y="215" text-anchor="middle" class="heading">份量</text>
+  <line x1="68" y1="258" x2="176" y2="258" stroke="#3E7CB1" stroke-width="3"/>
+  <line x1="68" y1="280" x2="157" y2="280" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="122" y="410" text-anchor="middle" class="note">標示欄位</text>
+
+  <rect x="231" y="157" width="160" height="300" rx="12" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+  <rect x="231" y="157" width="160" height="9" rx="4" fill="#1A4F8B"/>
+  <text x="311" y="215" text-anchor="middle" class="heading">每份糖量</text>
+  <line x1="257" y1="258" x2="365" y2="258" stroke="#E8923A" stroke-width="4"/>
+  <line x1="257" y1="280" x2="346" y2="280" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="311" y="410" text-anchor="middle" class="note">標示欄位</text>
+
+  <rect x="420" y="157" width="160" height="300" rx="12" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+  <rect x="420" y="157" width="160" height="9" rx="4" fill="#1A4F8B"/>
+  <text x="500" y="215" text-anchor="middle" class="heading">茶來源</text>
+  <line x1="446" y1="258" x2="554" y2="258" stroke="#3E7CB1" stroke-width="3"/>
+  <line x1="446" y1="280" x2="535" y2="280" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="500" y="410" text-anchor="middle" class="note">標示欄位</text>
+
+  <rect x="609" y="157" width="160" height="300" rx="12" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+  <rect x="609" y="157" width="160" height="9" rx="4" fill="#1A4F8B"/>
+  <text x="689" y="215" text-anchor="middle" class="heading">配料</text>
+  <line x1="635" y1="258" x2="743" y2="258" stroke="#3E7CB1" stroke-width="3"/>
+  <line x1="635" y1="280" x2="724" y2="280" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="689" y="410" text-anchor="middle" class="note">標示欄位</text>
+
+  <rect x="798" y="157" width="160" height="300" rx="12" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+  <rect x="798" y="157" width="160" height="9" rx="4" fill="#1A4F8B"/>
+  <text x="878" y="215" text-anchor="middle" class="heading">活菌資訊</text>
+  <line x1="824" y1="258" x2="932" y2="258" stroke="#3E7CB1" stroke-width="3"/>
+  <line x1="824" y1="280" x2="913" y2="280" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="878" y="410" text-anchor="middle" class="note">標示欄位</text>
+<text x="940.8" y="585" text-anchor="end" font-family="sans-serif" font-size="17" fill="#64748B" fill-opacity="0.45" font-weight="600">本日有據</text></svg>
