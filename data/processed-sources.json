@@ -2,6 +2,30 @@
   "version": 1,
   "lastRun": "2026-10-24T22:34:20Z",
   "processed": {
+    "https://www.who.int/news/item/07-10-2026-who-issues-first-global-guidelines-on-child-and-adolescent-obesity": {
+      "processedAt": "2026-10-26T06:30:25+08:00",
+      "outputFile": "src/content/news/radar-2026-10-26-06-01.md"
+    },
+    "https://www.who.int/publications/i/item/9789240123878": {
+      "processedAt": "2026-10-26T06:30:25+08:00",
+      "outputFile": "src/content/news/radar-2026-10-26-06-01.md"
+    },
+    "https://www.who.int/publications/i/item/9789240123397": {
+      "processedAt": "2026-10-26T06:30:25+08:00",
+      "outputFile": "src/content/news/radar-2026-10-26-06-01.md"
+    },
+    "https://www.who.int/news-room/events/detail/2026/10/07/default-calendar/launch-of-who-guidelines--integrated-management-of-obesity-in-children-and-adolescents": {
+      "processedAt": "2026-10-26T06:30:25+08:00",
+      "outputFile": "src/content/news/radar-2026-10-26-06-01.md"
+    },
+    "https://healthpolicy-watch.news/glp-1-drugs-surgery-who-issues-guidelines-for-obesity-in-children/": {
+      "processedAt": "2026-10-26T06:30:25+08:00",
+      "outputFile": "src/content/news/radar-2026-10-26-06-01.md"
+    },
+    "https://www.mirrormedia.mg/external/healthnews_69641": {
+      "processedAt": "2026-10-26T06:30:25+08:00",
+      "outputFile": "src/content/news/radar-2026-10-26-06-01.md"
+    },
     "https://doi.org/10.1017/S0007114526108150": {
       "processedAt": "2026-10-08T06:42:35+08:00",
       "outputFile": "src/content/news/radar-2026-10-08-06-01.md"
@@ -61,14 +85,6 @@
     "https://pubmed.ncbi.nlm.nih.gov/41764841/": {
       "processedAt": "2026-07-28T06:37:00+08:00",
       "outputFile": "src/content/news/radar-2026-07-28-06-01.md"
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/42271116/": {
-      "processedAt": "2026-07-27T06:35:00+08:00",
-      "outputFile": "src/content/news/radar-2026-07-27-06-01.md"
-    },
-    "https://link.springer.com/article/10.1007/s40279-026-02464-x": {
-      "processedAt": "2026-07-27T06:35:00+08:00",
-      "outputFile": "src/content/news/radar-2026-07-27-06-01.md"
     },
     "https://www.eurekalert.org/news-releases/1136476": {
       "processedAt": "2026-07-29T06:30:00+08:00",
