@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-10-24T22:34:20Z",
+  "lastRun": "2026-10-26T22:29:45.085Z",
   "processed": {
     "https://www.who.int/news/item/07-10-2026-who-issues-first-global-guidelines-on-child-and-adolescent-obesity": {
       "processedAt": "2026-10-26T06:30:25+08:00",
@@ -77,14 +77,6 @@
     "https://www.eurekalert.org/news-releases/1136409": {
       "processedAt": "2026-07-31T06:17:00+08:00",
       "outputFile": "src/content/news/radar-2026-07-31-06-01.md"
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/41999780/": {
-      "processedAt": "2026-07-28T06:37:00+08:00",
-      "outputFile": "src/content/news/radar-2026-07-28-06-01.md"
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/41764841/": {
-      "processedAt": "2026-07-28T06:37:00+08:00",
-      "outputFile": "src/content/news/radar-2026-07-28-06-01.md"
     },
     "https://www.eurekalert.org/news-releases/1136476": {
       "processedAt": "2026-07-29T06:30:00+08:00",
@@ -889,6 +881,34 @@
     "https://pubmed.ncbi.nlm.nih.gov/30902083/": {
       "processedAt": "2026-10-25T06:34:20+08:00",
       "outputFile": "src/content/news/radar-2026-10-25-06-01.md"
+    },
+    "https://doi.org/10.1016/j.ebiom.2026.106316": {
+      "processedAt": "2026-10-26T22:29:45.085Z",
+      "outputFile": "src/content/news/radar-2026-10-27-06-01.md"
+    },
+    "https://www.news-medical.net/news/20260625/High-dose-DHA-reaches-the-brain-but-fails-to-protect-memory.aspx": {
+      "processedAt": "2026-10-26T22:29:45.085Z",
+      "outputFile": "src/content/news/radar-2026-10-27-06-01.md"
+    },
+    "https://www.sciencedaily.com/releases/2026/06/260622014300.htm": {
+      "processedAt": "2026-10-26T22:29:45.085Z",
+      "outputFile": "src/content/news/radar-2026-10-27-06-01.md"
+    },
+    "https://doi.org/10.1038/s41467-026-75626-0": {
+      "processedAt": "2026-10-26T22:29:57.618Z",
+      "outputFile": null
+    },
+    "https://sciencedaily.com/releases/2026/08/260807235103.htm": {
+      "processedAt": "2026-10-26T22:29:57.618Z",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/FtPgGTu4k3dFSlt0P-AvXA?typeid=9": {
+      "processedAt": "2026-10-26T22:29:57.618Z",
+      "outputFile": null
+    },
+    "https://www.sciencedaily.com/releases/2026/10/261023003337.htm": {
+      "processedAt": "2026-10-26T22:29:57.618Z",
+      "outputFile": null
     }
   }
 }
