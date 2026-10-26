@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600" role="img" aria-labelledby="title desc">
+  <title id="title">均衡餐點，蛋白質多樣選</title>
+  <desc id="desc">一盤均衡餐點旁並列呈現魚、蛋、豆腐、豆類、乳品與肉類。</desc>
+  <style>
+    text { font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif; }
+    .ink { fill: #1E293B; }
+    .muted { fill: #64748B; }
+    .label { fill: #1A4F8B; font-size: 20px; font-weight: 700; }
+  </style>
+
+  <rect width="960" height="600" fill="#FFFFFF"/>
+  <text x="56" y="70" font-size="34" font-weight="700" fill="#1A4F8B">均衡餐點，蛋白質多樣選</text>
+  <text x="58" y="104" font-size="17" class="muted">不同來源，彈性輪替</text>
+
+  <circle cx="270" cy="340" r="178" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="5"/>
+  <circle cx="270" cy="340" r="157" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="2"/>
+  <path d="M270 183 A157 157 0 0 1 406 262 L270 340Z" fill="#E8923A"/>
+  <path d="M406 262 A157 157 0 0 1 349 472 L270 340Z" fill="#3E7CB1"/>
+  <path d="M349 472 A157 157 0 0 1 135 340 L270 340Z" fill="#8BBF8A"/>
+  <path d="M135 340 A157 157 0 0 1 270 183 L270 340Z" fill="#F4D58D"/>
+  <circle cx="270" cy="340" r="57" fill="#FFFFFF" stroke="#1A4F8B" stroke-width="3"/>
+  <circle cx="251" cy="330" r="9" fill="#8BBF8A"/>
+  <circle cx="281" cy="321" r="8" fill="#E8923A"/>
+  <circle cx="283" cy="353" r="10" fill="#3E7CB1"/>
+  <circle cx="251" cy="359" r="7" fill="#F4D58D"/>
+
+  <text x="510" y="143" font-size="19" font-weight="700" class="ink">蛋白質來源</text>
+
+  <rect x="500" y="164" width="190" height="104" rx="16" fill="#EEF4FB"/>
+  <path d="M526 216 Q546 196 568 216 Q546 237 526 216Z" fill="#3E7CB1"/>
+  <path d="M526 216 L516 205 L517 227Z" fill="#E8923A"/>
+  <circle cx="556" cy="212" r="2.5" fill="#FFFFFF"/>
+  <text x="580" y="224" class="label">魚</text>
+
+  <rect x="710" y="164" width="190" height="104" rx="16" fill="#EEF4FB"/>
+  <ellipse cx="754" cy="216" rx="19" ry="25" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="3"/>
+  <circle cx="754" cy="218" r="9" fill="#E8923A"/>
+  <text x="790" y="224" class="label">蛋</text>
+
+  <rect x="500" y="286" width="190" height="104" rx="16" fill="#EEF4FB"/>
+  <rect x="526" y="309" width="42" height="43" rx="5" fill="#F4D58D" stroke="#3E7CB1" stroke-width="2"/>
+  <line x1="526" y1="330" x2="568" y2="330" stroke="#3E7CB1" stroke-width="2"/>
+  <text x="580" y="347" class="label">豆腐</text>
+
+  <rect x="710" y="286" width="190" height="104" rx="16" fill="#EEF4FB"/>
+  <circle cx="744" cy="323" r="11" fill="#E8923A"/>
+  <circle cx="765" cy="326" r="11" fill="#3E7CB1"/>
+  <circle cx="750" cy="346" r="11" fill="#8BBF8A"/>
+  <text x="790" y="347" class="label">豆類</text>
+
+  <rect x="500" y="408" width="190" height="104" rx="16" fill="#EEF4FB"/>
+  <path d="M531 430 H563 L559 473 H535Z" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="3"/>
+  <path d="M531 430 L537 420 H557 L563 430Z" fill="#E8923A"/>
+  <text x="580" y="469" class="label">乳品</text>
+
+  <rect x="710" y="408" width="190" height="104" rx="16" fill="#EEF4FB"/>
+  <path d="M735 434 Q750 419 770 435 L763 465 Q748 477 735 458Z" fill="#E8923A" stroke="#3E7CB1" stroke-width="2"/>
+  <path d="M741 439 Q752 447 765 438" fill="none" stroke="#FFFFFF" stroke-width="3"/>
+  <text x="790" y="469" class="label">肉類</text>
+
+  <text x="195" y="555" font-size="17" class="muted">搭配蔬菜、主食與多元蛋白質</text>
+<text x="940.8" y="585" text-anchor="end" font-family="sans-serif" font-size="17" fill="#64748B" fill-opacity="0.45" font-weight="600">本日有據</text></svg>
