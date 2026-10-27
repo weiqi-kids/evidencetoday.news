@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600" role="img" aria-labelledby="title desc">
+  <title id="title">兒童營養補充品標示檢核</title>
+  <desc id="desc">標示檢核圖列出每份含量、每份顆數、適用年齡與重複成分。</desc>
+  <style>
+    text { font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif; }
+    .heading { fill: #1A4F8B; font-size: 30px; font-weight: 700; }
+    .label { fill: #1E293B; font-size: 20px; font-weight: 700; }
+    .body { fill: #64748B; font-size: 16px; }
+    .stroke { fill: none; stroke: #1A4F8B; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+  </style>
+  <rect width="960" height="600" fill="#FFFFFF"/>
+  <text class="heading" x="40" y="76">兒童營養補充品｜標示檢核</text>
+
+  <rect x="32" y="124" width="213" height="424" rx="16" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+  <rect x="263" y="124" width="213" height="424" rx="16" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+  <rect x="494" y="124" width="213" height="424" rx="16" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+  <rect x="725" y="124" width="213" height="424" rx="16" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="2"/>
+
+  <rect x="92" y="160" width="92" height="112" rx="8" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="3"/>
+  <line x1="108" y1="185" x2="168" y2="185" class="stroke"/>
+  <line x1="108" y1="204" x2="153" y2="204" stroke="#3E7CB1" stroke-width="3" stroke-linecap="round"/>
+  <line x1="108" y1="223" x2="168" y2="223" stroke="#3E7CB1" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="116" cy="247" r="5" fill="#E8923A"/>
+  <circle cx="133" cy="247" r="5" fill="#E8923A"/>
+  <circle cx="150" cy="247" r="5" fill="#E8923A"/>
+  <text class="label" x="138.5" y="319" text-anchor="middle">每份含量</text>
+  <text class="label" x="138.5" y="348" text-anchor="middle">與每份顆數</text>
+  <text class="body" x="138.5" y="401" text-anchor="middle">確認份量單位</text>
+  <text class="body" x="138.5" y="428" text-anchor="middle">及每份包含幾顆</text>
+
+  <rect x="323" y="160" width="92" height="112" rx="8" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="3"/>
+  <line x1="339" y1="185" x2="399" y2="185" class="stroke"/>
+  <line x1="339" y1="208" x2="375" y2="208" stroke="#3E7CB1" stroke-width="3" stroke-linecap="round"/>
+  <line x1="339" y1="231" x2="375" y2="231" stroke="#3E7CB1" stroke-width="3" stroke-linecap="round"/>
+  <line x1="339" y1="254" x2="375" y2="254" stroke="#3E7CB1" stroke-width="3" stroke-linecap="round"/>
+  <line x1="386" y1="208" x2="399" y2="208" stroke="#E8923A" stroke-width="6" stroke-linecap="round"/>
+  <line x1="386" y1="231" x2="399" y2="231" stroke="#E8923A" stroke-width="6" stroke-linecap="round"/>
+  <line x1="386" y1="254" x2="399" y2="254" stroke="#E8923A" stroke-width="6" stroke-linecap="round"/>
+  <text class="label" x="369.5" y="319" text-anchor="middle">每份營養素</text>
+  <text class="label" x="369.5" y="348" text-anchor="middle">含量</text>
+  <text class="body" x="369.5" y="401" text-anchor="middle">查看各項營養素</text>
+  <text class="body" x="369.5" y="428" text-anchor="middle">標示的每份含量</text>
+
+  <circle cx="600" cy="190" r="21" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="3"/>
+  <path d="M558 266c3-29 18-43 42-43s39 14 42 43" class="stroke"/>
+  <circle cx="669" cy="178" r="18" fill="#FFFFFF" stroke="#E8923A" stroke-width="3"/>
+  <path d="M660 178l6 6 12-14" fill="none" stroke="#E8923A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <text class="label" x="600.5" y="319" text-anchor="middle">適用年齡</text>
+  <text class="label" x="600.5" y="348" text-anchor="middle">與食用方式</text>
+  <text class="body" x="600.5" y="401" text-anchor="middle">核對孩子年齡</text>
+  <text class="body" x="600.5" y="428" text-anchor="middle">並依標示方式食用</text>
+
+  <rect x="766" y="174" width="66" height="88" rx="7" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="3"/>
+  <rect x="830" y="158" width="66" height="88" rx="7" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="3"/>
+  <line x1="778" y1="195" x2="818" y2="195" stroke="#3E7CB1" stroke-width="3" stroke-linecap="round"/>
+  <line x1="842" y1="179" x2="882" y2="179" stroke="#3E7CB1" stroke-width="3" stroke-linecap="round"/>
+  <line x1="778" y1="220" x2="818" y2="220" stroke="#E8923A" stroke-width="6" stroke-linecap="round"/>
+  <line x1="842" y1="204" x2="882" y2="204" stroke="#E8923A" stroke-width="6" stroke-linecap="round"/>
+  <text class="label" x="831.5" y="319" text-anchor="middle">不同產品的</text>
+  <text class="label" x="831.5" y="348" text-anchor="middle">重複成分</text>
+  <text class="body" x="831.5" y="401" text-anchor="middle">比對各產品成分</text>
+  <text class="body" x="831.5" y="428" text-anchor="middle">留意重複項目</text>
+<text x="940.8" y="585" text-anchor="end" font-family="sans-serif" font-size="17" fill="#64748B" fill-opacity="0.45" font-weight="600">本日有據</text></svg>
