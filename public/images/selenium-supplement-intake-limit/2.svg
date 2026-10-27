@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600" role="img" aria-labelledby="title desc">
+  <title id="title">硒的食物來源</title>
+  <desc id="desc">魚類、貝類、肉類、蛋、穀物與乳品的並列插圖。</desc>
+  <style>
+    text { font-family: sans-serif; text-anchor: middle; }
+    .title { fill: #1A4F8B; font-size: 30px; font-weight: 700; }
+    .label { fill: #1E293B; font-size: 21px; font-weight: 600; }
+    .card { fill: #EEF4FB; stroke: #1A4F8B; stroke-width: 2; }
+  </style>
+  <rect width="960" height="600" fill="#FFFFFF"/>
+  <text id="title" class="title" x="480" y="64">硒的食物來源</text>
+  <text class="label" x="480" y="100" style="fill:#64748B;font-size:16px;font-weight:400">多種食物都能提供硒</text>
+
+  <rect class="card" x="55" y="130" width="270" height="195" rx="18"/>
+  <path d="M112 218 Q155 177 204 218 Q155 259 112 218 M204 218 L235 194 L235 242 Z" fill="#3E7CB1"/>
+  <circle cx="137" cy="212" r="4" fill="#FFFFFF"/>
+  <text class="label" x="190" y="294">魚類</text>
+
+  <rect class="card" x="345" y="130" width="270" height="195" rx="18"/>
+  <path d="M430 239 Q480 180 530 239 Q480 257 430 239 Z" fill="#3E7CB1"/>
+  <path d="M438 234 Q480 211 522 234 M453 226 Q480 195 507 226 M470 221 L480 193 L490 221" fill="none" stroke="#1A4F8B" stroke-width="4" stroke-linecap="round"/>
+  <text class="label" x="480" y="294">貝類</text>
+
+  <rect class="card" x="635" y="130" width="270" height="195" rx="18"/>
+  <path d="M711 205 Q718 181 746 186 L788 200 Q809 217 793 244 Q778 265 740 250 L713 235 Q702 222 711 205 Z" fill="#E8923A"/>
+  <path d="M720 208 Q744 217 752 243 M753 198 Q776 211 785 237" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+  <text class="label" x="770" y="294">肉類</text>
+
+  <rect class="card" x="55" y="350" width="270" height="195" rx="18"/>
+  <ellipse cx="190" cy="435" rx="42" ry="54" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="5"/>
+  <circle cx="190" cy="443" r="17" fill="#E8923A"/>
+  <text class="label" x="190" y="514">蛋類</text>
+
+  <rect class="card" x="345" y="350" width="270" height="195" rx="18"/>
+  <path d="M480 390 L480 466 M480 408 Q459 393 452 400 Q455 415 480 418 M480 428 Q501 410 509 418 Q505 434 480 438 M480 447 Q460 433 454 441 Q459 455 480 457" fill="none" stroke="#3E7CB1" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M480 391 L480 379 M452 400 L445 393 M509 418 L517 411 M454 441 L447 438" stroke="#E8923A" stroke-width="4" stroke-linecap="round"/>
+  <text class="label" x="480" y="514">穀物</text>
+
+  <rect class="card" x="635" y="350" width="270" height="195" rx="18"/>
+  <path d="M746 389 L794 389 L789 466 Q770 480 751 466 Z" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M746 407 L794 407" stroke="#1A4F8B" stroke-width="5"/>
+  <path d="M760 380 L782 380 L782 389 L760 389 Z" fill="#E8923A"/>
+  <text class="label" x="770" y="514">乳品</text>
+<text x="940.8" y="585" text-anchor="end" font-family="sans-serif" font-size="17" fill="#64748B" fill-opacity="0.45" font-weight="600">本日有據</text></svg>
