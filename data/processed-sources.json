@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-10-26T22:29:45.085Z",
+  "lastRun": "2026-10-27T22:21:18.819Z",
   "processed": {
     "https://www.who.int/news/item/07-10-2026-who-issues-first-global-guidelines-on-child-and-adolescent-obesity": {
       "processedAt": "2026-10-26T06:30:25+08:00",
@@ -77,18 +77,6 @@
     "https://www.eurekalert.org/news-releases/1136409": {
       "processedAt": "2026-07-31T06:17:00+08:00",
       "outputFile": "src/content/news/radar-2026-07-31-06-01.md"
-    },
-    "https://www.eurekalert.org/news-releases/1136476": {
-      "processedAt": "2026-07-29T06:30:00+08:00",
-      "outputFile": "src/content/news/radar-2026-07-29-06-01.md"
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/29466592/": {
-      "processedAt": "2026-07-29T06:30:00+08:00",
-      "outputFile": "src/content/news/radar-2026-07-29-06-01.md"
-    },
-    "https://www.news-medical.net/news/20260727/Genetic-factors-influence-cholesterol-response-to-low-carb-diets.aspx": {
-      "processedAt": "2026-07-29T06:30:00+08:00",
-      "outputFile": "src/content/news/radar-2026-07-29-06-01.md"
     },
     "https://www.healio.com/news/primary-care/20260728/healthy-diets-lower-risks-regardless-of-processing-levels": {
       "processedAt": "2026-07-30T06:30:00+08:00",
@@ -414,66 +402,6 @@
       "processedAt": "2026-10-12T06:47:03+08:00",
       "outputFile": "src/content/news/radar-2026-10-12-06-01.md"
     },
-    "https://pubmed.ncbi.nlm.nih.gov/41594884/": {
-      "processedAt": "2026-10-13T06:22:35+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/41826924/": {
-      "processedAt": "2026-10-13T06:22:35+08:00",
-      "outputFile": null
-    },
-    "https://www.who.int/teams/nutrition-and-food-safety/standards-and-scientific-advice-on-food-and-nutrition": {
-      "processedAt": "2026-10-13T06:22:35+08:00",
-      "outputFile": null
-    },
-    "https://www.who.int/news-room/events/detail/2026/01/27/default-calendar/launch-of-the-who-guideline-on-policies-and-interventions-to-create-healthy-school-food-environments": {
-      "processedAt": "2026-10-13T06:22:35+08:00",
-      "outputFile": null
-    },
-    "https://www.who.int/teams/nutrition-and-food-safety/food-and-nutrition-actions-in-health-systems": {
-      "processedAt": "2026-10-13T06:22:35+08:00",
-      "outputFile": null
-    },
-    "https://www.who.int/brunei/news/detail-global/12-05-2026-who-launches-revamped-shake-package-to-help-reduce-salt-intake": {
-      "processedAt": "2026-10-13T06:22:35+08:00",
-      "outputFile": null
-    },
-    "https://www.who.int/news-room/events/detail/2026/07/06/default-calendar/forty-ninth-session-of-the-fao-who-codex-alimentarius-commission-adopts-new-standards": {
-      "processedAt": "2026-10-13T06:22:35+08:00",
-      "outputFile": null
-    },
-    "https://sciencedaily.com/releases/2026/07/260716023605.htm": {
-      "processedAt": "2026-10-13T06:22:35+08:00",
-      "outputFile": null
-    },
-    "https://sciencedaily.com/releases/2026/09/260915100000.htm": {
-      "processedAt": "2026-10-13T06:22:35+08:00",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Bulletin/Detail/CdbgopQoFEjbaRObY4JebA?typeId=9": {
-      "processedAt": "2026-10-13T06:22:35+08:00",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Bulletin/Detail/3CucThQ1cwcHAYxKfc3T5A?typeid=MmgtpeidAR5Ooai4-fgHzQ": {
-      "processedAt": "2026-10-13T06:22:35+08:00",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Bulletin/Detail/oK_5RuMcEfhPiXKxOXcUGg?typeId=9": {
-      "processedAt": "2026-10-13T06:22:35+08:00",
-      "outputFile": null
-    },
-    "PMID:41707760": {
-      "processedAt": "2026-10-13T06:22:35+08:00",
-      "outputFile": null
-    },
-    "PMID:42437546": {
-      "processedAt": "2026-10-13T06:22:35+08:00",
-      "outputFile": null
-    },
-    "PMID:42023455": {
-      "processedAt": "2026-10-13T06:22:35+08:00",
-      "outputFile": null
-    },
     "https://doi.org/10.1016/j.tjnut.2026.101373": {
       "processedAt": "2026-10-14T06:35:50+08:00",
       "outputFile": "src/content/news/radar-2026-10-14-06-01.md"
@@ -523,7 +451,7 @@
       "outputFile": null
     },
     "https://clinicaltrials.gov/study/NCT04820556": {
-      "processedAt": "2026-10-14T06:35:50+08:00",
+      "processedAt": "2026-10-27T22:21:18.819Z",
       "outputFile": null
     },
     "https://www.cdc.gov.tw/Bulletin/Detail/Bc30nI9mH429MbAIJBP-2A?typeId=9": {
@@ -908,6 +836,94 @@
     },
     "https://www.sciencedaily.com/releases/2026/10/261023003337.htm": {
       "processedAt": "2026-10-26T22:29:57.618Z",
+      "outputFile": null
+    },
+    "PMID:41761730": {
+      "processedAt": "2026-10-27T22:21:18.819Z",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41761730/": {
+      "processedAt": "2026-10-27T22:21:18.819Z",
+      "outputFile": null
+    },
+    "PMID:42526758": {
+      "processedAt": "2026-10-27T22:21:18.819Z",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42526758/": {
+      "processedAt": "2026-10-27T22:21:18.819Z",
+      "outputFile": null
+    },
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12910210/": {
+      "processedAt": "2026-10-27T22:21:18.819Z",
+      "outputFile": null
+    },
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12816316/": {
+      "processedAt": "2026-10-27T22:21:18.819Z",
+      "outputFile": null
+    },
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12902778/": {
+      "processedAt": "2026-10-27T22:21:18.819Z",
+      "outputFile": null
+    },
+    "PMID:41333064": {
+      "processedAt": "2026-10-27T22:21:18.819Z",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41333064/": {
+      "processedAt": "2026-10-27T22:21:18.819Z",
+      "outputFile": null
+    },
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12665681/": {
+      "processedAt": "2026-10-27T22:21:18.819Z",
+      "outputFile": null
+    },
+    "https://clinicaltrials.gov/study/NCT07766408": {
+      "processedAt": "2026-10-27T22:21:18.819Z",
+      "outputFile": null
+    },
+    "https://clinicaltrials.gov/study/NCT07766642": {
+      "processedAt": "2026-10-27T22:21:18.819Z",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41594884/": {
+      "processedAt": "2026-10-27T22:21:18.819Z",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41826924/": {
+      "processedAt": "2026-10-27T22:21:18.819Z",
+      "outputFile": null
+    },
+    "https://www.who.int/news-room/events/detail/2026/01/27/default-calendar/launch-of-the-who-guideline-on-policies-and-interventions-to-create-healthy-school-food-environments": {
+      "processedAt": "2026-10-27T22:21:18.819Z",
+      "outputFile": null
+    },
+    "https://www.who.int/teams/nutrition-and-food-safety/food-and-nutrition-actions-in-health-systems": {
+      "processedAt": "2026-10-27T22:21:18.819Z",
+      "outputFile": null
+    },
+    "https://www.who.int/brunei/news/detail-global/12-05-2026-who-launches-revamped-shake-package-to-help-reduce-salt-intake": {
+      "processedAt": "2026-10-27T22:21:18.819Z",
+      "outputFile": null
+    },
+    "https://www.who.int/news-room/events/detail/2026/07/06/default-calendar/forty-ninth-session-of-the-fao-who-codex-alimentarius-commission-adopts-new-standards": {
+      "processedAt": "2026-10-27T22:21:18.819Z",
+      "outputFile": null
+    },
+    "https://www.who.int/teams/nutrition-and-food-safety/standards-and-scientific-advice-on-food-and-nutrition": {
+      "processedAt": "2026-10-27T22:21:18.819Z",
+      "outputFile": null
+    },
+    "PMID:41707760": {
+      "processedAt": "2026-10-27T22:21:18.819Z",
+      "outputFile": null
+    },
+    "PMID:42437546": {
+      "processedAt": "2026-10-27T22:21:18.819Z",
+      "outputFile": null
+    },
+    "PMID:42023455": {
+      "processedAt": "2026-10-27T22:21:18.819Z",
       "outputFile": null
     }
   }
