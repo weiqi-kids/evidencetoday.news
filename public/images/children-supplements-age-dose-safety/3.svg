@@ -1,0 +1,49 @@
+<svg viewBox="0 0 960 600" width="960" height="600" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    text { font-family: sans-serif; fill: #1E293B; }
+    .title { font-size: 30px; font-weight: 700; fill: #1A4F8B; }
+    .label { font-size: 22px; font-weight: 700; fill: #1A4F8B; }
+    .detail { font-size: 16px; fill: #64748B; }
+    .card { fill: #EEF4FB; stroke: #1A4F8B; stroke-width: 2; }
+  </style>
+  <rect width="960" height="600" fill="#FFFFFF"/>
+  <text class="title" x="480" y="66" text-anchor="middle">鈣的食物來源</text>
+  <ellipse cx="480" cy="322" rx="390" ry="205" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="3"/>
+  <ellipse cx="480" cy="322" rx="365" ry="180" fill="none" stroke="#EEF4FB" stroke-width="8"/>
+  <g>
+    <rect class="card" x="112" y="145" width="330" height="145" rx="20"/>
+    <text class="label" x="137" y="182">乳品</text>
+    <text class="detail" x="137" y="215">牛奶・優格・起司</text>
+    <path d="M330 198h46l8 58h-62z" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="3"/>
+    <path d="M330 198l8-18h34l4 18" fill="#EEF4FB" stroke="#3E7CB1" stroke-width="3"/>
+    <path d="M337 229h41" stroke="#E8923A" stroke-width="5"/>
+  </g>
+  <g>
+    <rect class="card" x="518" y="145" width="330" height="145" rx="20"/>
+    <text class="label" x="543" y="182">含鈣豆製品</text>
+    <text class="detail" x="543" y="215">含鈣豆腐・豆干・毛豆</text>
+    <rect x="738" y="202" width="66" height="50" rx="8" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="3"/>
+    <path d="M771 202v50M738 227h66" stroke="#3E7CB1" stroke-width="2"/>
+    <circle cx="728" cy="263" r="7" fill="#E8923A"/>
+    <circle cx="749" cy="269" r="7" fill="#E8923A"/>
+  </g>
+  <g>
+    <rect class="card" x="112" y="355" width="330" height="145" rx="20"/>
+    <text class="label" x="137" y="392">強化豆飲</text>
+    <text class="detail" x="137" y="425">選擇添加鈣的豆飲</text>
+    <path d="M338 405h62v62h-62z" fill="#FFFFFF" stroke="#3E7CB1" stroke-width="3"/>
+    <path d="M338 405l15-16h47l-8 16" fill="#EEF4FB" stroke="#3E7CB1" stroke-width="3"/>
+    <path d="M369 389v-12" stroke="#3E7CB1" stroke-width="4"/>
+    <path d="M351 441h36" stroke="#E8923A" stroke-width="5"/>
+  </g>
+  <g>
+    <rect class="card" x="518" y="355" width="330" height="145" rx="20"/>
+    <text class="label" x="543" y="392">部分深綠色蔬菜</text>
+    <text class="detail" x="543" y="425">芥藍・青江菜</text>
+    <path d="M746 466c-7-34 9-62 42-69 2 34-11 61-42 69z" fill="#3E7CB1"/>
+    <path d="M746 466c-19-28-16-54 7-72 18 27 18 53-7 72z" fill="#1A4F8B"/>
+    <path d="M746 466l28-52M746 466l2-59" stroke="#FFFFFF" stroke-width="3"/>
+  </g>
+  <circle cx="480" cy="322" r="32" fill="#E8923A"/>
+  <circle cx="480" cy="322" r="23" fill="#FFFFFF"/>
+<text x="940.8" y="585" text-anchor="end" font-family="sans-serif" font-size="17" fill="#64748B" fill-opacity="0.45" font-weight="600">本日有據</text></svg>
