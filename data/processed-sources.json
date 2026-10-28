@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-10-27T22:21:18.819Z",
+  "lastRun": "2026-10-28T22:20:39.607Z",
   "processed": {
     "https://www.who.int/news/item/07-10-2026-who-issues-first-global-guidelines-on-child-and-adolescent-obesity": {
       "processedAt": "2026-10-26T06:30:25+08:00",
@@ -77,18 +77,6 @@
     "https://www.eurekalert.org/news-releases/1136409": {
       "processedAt": "2026-07-31T06:17:00+08:00",
       "outputFile": "src/content/news/radar-2026-07-31-06-01.md"
-    },
-    "https://www.healio.com/news/primary-care/20260728/healthy-diets-lower-risks-regardless-of-processing-levels": {
-      "processedAt": "2026-07-30T06:30:00+08:00",
-      "outputFile": "src/content/news/radar-2026-07-30-06-01.md"
-    },
-    "https://www.eurekalert.org/news-releases/1136477": {
-      "processedAt": "2026-07-30T06:30:00+08:00",
-      "outputFile": "src/content/news/radar-2026-07-30-06-01.md"
-    },
-    "https://www.news-medical.net/news/20260728/Nutritional-quality-matters-more-than-processing-level-for-long-term-health.aspx": {
-      "processedAt": "2026-07-30T06:30:00+08:00",
-      "outputFile": "src/content/news/radar-2026-07-30-06-01.md"
     },
     "PMID:41189312": {
       "processedAt": "2026-08-08T06:36:43+08:00",
@@ -417,38 +405,6 @@
     "https://sciencedaily.com/releases/2026/10/261006234505.htm": {
       "processedAt": "2026-10-14T06:35:50+08:00",
       "outputFile": "src/content/news/radar-2026-10-14-06-01.md"
-    },
-    "PMID:41769658": {
-      "processedAt": "2026-10-14T06:35:50+08:00",
-      "outputFile": null
-    },
-    "PMID:41804836": {
-      "processedAt": "2026-10-14T06:35:50+08:00",
-      "outputFile": null
-    },
-    "https://www.who.int/news-room/events/detail/2026/06/04/default-calendar/who-estimates-of-the-global-burden-of-foodborne-diseases-2000-2021--key-findings-from-the-2026-edition": {
-      "processedAt": "2026-10-14T06:35:50+08:00",
-      "outputFile": null
-    },
-    "https://www.who.int/health-topics/micronutrients": {
-      "processedAt": "2026-10-14T06:35:50+08:00",
-      "outputFile": null
-    },
-    "https://www.who.int/teams/nutrition-and-food-safety/monitoring-nutritional-status-and-food-safety-and-events/foodborne-disease-estimates/2026-edition": {
-      "processedAt": "2026-10-14T06:35:50+08:00",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Bulletin/Detail/6ouyl_LV7L3lYiZHkgBscA?typeId=9": {
-      "processedAt": "2026-10-14T06:35:50+08:00",
-      "outputFile": null
-    },
-    "https://sciencedaily.com/releases/2026/10/261008102700.htm": {
-      "processedAt": "2026-10-14T06:35:50+08:00",
-      "outputFile": null
-    },
-    "http://www.sciencedaily.com/releases/2026/10/261011211613.htm": {
-      "processedAt": "2026-10-14T06:35:50+08:00",
-      "outputFile": null
     },
     "https://clinicaltrials.gov/study/NCT04820556": {
       "processedAt": "2026-10-27T22:21:18.819Z",
@@ -924,6 +880,22 @@
     },
     "PMID:42023455": {
       "processedAt": "2026-10-27T22:21:18.819Z",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41769658/": {
+      "processedAt": "2026-10-29T06:17:00+08:00",
+      "outputFile": null
+    },
+    "PMID:41769658": {
+      "processedAt": "2026-10-29T06:17:00+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42325726/": {
+      "processedAt": "2026-10-29T06:17:00+08:00",
+      "outputFile": null
+    },
+    "PMID:42325726": {
+      "processedAt": "2026-10-29T06:17:00+08:00",
       "outputFile": null
     }
   }
