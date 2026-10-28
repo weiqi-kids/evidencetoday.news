@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600" role="img" aria-labelledby="title desc">
+  <title id="title">飲用紀錄表</title>
+  <desc id="desc">一張留白紀錄表，列出產品與成分、飲用份量與速度、搭配食物、症狀開始時間及症狀備註欄位。</desc>
+  <style>
+    text { font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif; }
+    .card { fill: #EEF4FB; stroke: #1A4F8B; stroke-width: 2; }
+    .label { fill: #1E293B; font-size: 21px; font-weight: 700; }
+    .small { fill: #64748B; font-size: 16px; }
+    .blank { stroke: #3E7CB1; stroke-width: 1.5; }
+  </style>
+  <rect width="960" height="600" fill="#FFFFFF"/>
+  <text x="48" y="62" fill="#1A4F8B" font-size="32" font-weight="700">飲用紀錄表</text>
+  <rect x="48" y="94" width="424" height="142" rx="12" class="card"/>
+  <rect x="48" y="94" width="8" height="142" rx="4" fill="#E8923A"/>
+  <text x="72" y="126" class="label">產品與成分</text>
+  <text x="72" y="158" class="small">產品名稱</text>
+  <line x1="156" y1="162" x2="448" y2="162" class="blank"/>
+  <text x="72" y="203" class="small">成分</text>
+  <line x1="120" y1="207" x2="448" y2="207" class="blank"/>
+  <rect x="488" y="94" width="424" height="142" rx="12" class="card"/>
+  <rect x="488" y="94" width="8" height="142" rx="4" fill="#E8923A"/>
+  <text x="512" y="126" class="label">飲用份量</text>
+  <line x1="512" y1="190" x2="888" y2="190" class="blank"/>
+  <rect x="48" y="254" width="424" height="142" rx="12" class="card"/>
+  <rect x="48" y="254" width="8" height="142" rx="4" fill="#E8923A"/>
+  <text x="72" y="286" class="label">飲用速度</text>
+  <line x1="72" y1="350" x2="448" y2="350" class="blank"/>
+  <rect x="488" y="254" width="424" height="142" rx="12" class="card"/>
+  <rect x="488" y="254" width="8" height="142" rx="4" fill="#E8923A"/>
+  <text x="512" y="286" class="label">搭配食物或飲品</text>
+  <line x1="512" y1="350" x2="888" y2="350" class="blank"/>
+  <rect x="48" y="414" width="424" height="142" rx="12" class="card"/>
+  <rect x="48" y="414" width="8" height="142" rx="4" fill="#E8923A"/>
+  <text x="72" y="446" class="label">症狀開始時間</text>
+  <line x1="72" y1="510" x2="448" y2="510" class="blank"/>
+  <rect x="488" y="414" width="424" height="142" rx="12" class="card"/>
+  <rect x="488" y="414" width="8" height="142" rx="4" fill="#E8923A"/>
+  <text x="512" y="446" class="label">症狀備註</text>
+  <line x1="512" y1="510" x2="888" y2="510" class="blank"/>
+<text x="940.8" y="585" text-anchor="end" font-family="sans-serif" font-size="17" fill="#64748B" fill-opacity="0.45" font-weight="600">本日有據</text></svg>
