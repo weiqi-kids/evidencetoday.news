@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600" role="img" aria-labelledby="title desc">
+  <title id="title">保健品標示與廣告宣稱，消費者檢視清單</title>
+  <desc id="desc">並列檢視保健品成分與每份含量標示，以及手機上的溶解油脂和快速減重廣告宣稱。</desc>
+  <style>
+    text { font-family: Arial, "Noto Sans TC", sans-serif; }
+  </style>
+  <rect width="960" height="600" fill="#FFFFFF"/>
+  <text x="480" y="66" text-anchor="middle" font-size="32" font-weight="700" fill="#1A4F8B">看懂保健品：標示資訊 vs. 廣告宣稱</text>
+  <rect x="48" y="112" width="420" height="376" rx="20" fill="#EEF4FB" stroke="#1A4F8B" stroke-width="3"/>
+  <rect x="492" y="112" width="420" height="376" rx="20" fill="#EEF4FB" stroke="#3E7CB1" stroke-width="3"/>
+  <rect x="48" y="112" width="420" height="70" rx="18" fill="#1A4F8B"/>
+  <rect x="492" y="112" width="420" height="70" rx="18" fill="#3E7CB1"/>
+  <text x="258" y="157" text-anchor="middle" font-size="23" font-weight="700" fill="#FFFFFF">標示上可核對的資訊</text>
+  <text x="702" y="157" text-anchor="middle" font-size="23" font-weight="700" fill="#FFFFFF">廣告中的效果宣稱</text>
+  <circle cx="92" cy="236" r="17" fill="#E8923A"/>
+  <text x="92" y="243" text-anchor="middle" font-size="19" font-weight="700" fill="#FFFFFF">1</text>
+  <text x="126" y="244" font-size="22" font-weight="700" fill="#1E293B">成分名稱</text>
+  <text x="126" y="272" font-size="16" fill="#64748B">確認產品列出哪些成分</text>
+  <line x1="78" y1="296" x2="438" y2="296" stroke="#C8D8EA"/>
+  <circle cx="92" cy="336" r="17" fill="#E8923A"/>
+  <text x="92" y="343" text-anchor="middle" font-size="19" font-weight="700" fill="#FFFFFF">2</text>
+  <text x="126" y="344" font-size="22" font-weight="700" fill="#1E293B">每份含量</text>
+  <text x="126" y="372" font-size="16" fill="#64748B">查看每份所含的成分份量</text>
+  <line x1="78" y1="396" x2="438" y2="396" stroke="#C8D8EA"/>
+  <circle cx="92" cy="436" r="17" fill="#E8923A"/>
+  <text x="92" y="443" text-anchor="middle" font-size="19" font-weight="700" fill="#FFFFFF">3</text>
+  <text x="126" y="444" font-size="22" font-weight="700" fill="#1E293B">完整配方</text>
+  <text x="126" y="472" font-size="16" fill="#64748B">核對配方與標示是否完整</text>
+  <rect x="522" y="202" width="94" height="186" rx="14" fill="#FFFFFF" stroke="#1A4F8B" stroke-width="3"/>
+  <rect x="532" y="220" width="74" height="132" rx="5" fill="#EEF4FB"/>
+  <circle cx="569" cy="369" r="7" fill="#3E7CB1"/>
+  <text x="637" y="242" font-size="17" font-weight="700" fill="#64748B">廣告宣稱</text>
+  <text x="637" y="280" font-size="22" font-weight="700" fill="#1E293B">「溶解油脂」</text>
+  <text x="637" y="321" font-size="22" font-weight="700" fill="#1E293B">「快速減重」</text>
+  <rect x="637" y="344" width="226" height="42" rx="10" fill="#FFF1E2"/>
+  <text x="750" y="371" text-anchor="middle" font-size="17" font-weight="700" fill="#9A5418">宣稱需審慎查證</text>
+  <text x="702" y="428" text-anchor="middle" font-size="16" fill="#64748B">廣告說法不等於已證實的結果</text>
+  <rect x="128" y="516" width="704" height="52" rx="14" fill="#EEF4FB"/>
+  <text x="480" y="549" text-anchor="middle" font-size="18" font-weight="700" fill="#1A4F8B">標示完整有助檢視資訊，不代表產品有效</text>
+<text x="940.8" y="585" text-anchor="end" font-family="sans-serif" font-size="17" fill="#64748B" fill-opacity="0.45" font-weight="600">本日有據</text></svg>
