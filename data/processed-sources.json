@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-10-28T22:20:39.607Z",
+  "lastRun": "2026-10-29T22:27:47.720Z",
   "processed": {
     "https://www.who.int/news/item/07-10-2026-who-issues-first-global-guidelines-on-child-and-adolescent-obesity": {
       "processedAt": "2026-10-26T06:30:25+08:00",
@@ -73,10 +73,6 @@
     "https://pubmed.ncbi.nlm.nih.gov/37244291/": {
       "processedAt": "2026-08-01T06:34:12+08:00",
       "outputFile": "src/content/news/radar-2026-08-01-06-01.md"
-    },
-    "https://www.eurekalert.org/news-releases/1136409": {
-      "processedAt": "2026-07-31T06:17:00+08:00",
-      "outputFile": "src/content/news/radar-2026-07-31-06-01.md"
     },
     "PMID:41189312": {
       "processedAt": "2026-08-08T06:36:43+08:00",
@@ -425,46 +421,6 @@
     "https://pubmed.ncbi.nlm.nih.gov/23399482/": {
       "processedAt": "2026-10-15T06:22:00+08:00",
       "outputFile": "src/content/news/radar-2026-10-15-06-01.md"
-    },
-    "https://www.who.int/teams/nutrition-and-food-safety/safe-healthy-and-sustainable-diets": {
-      "processedAt": "2026-10-15T06:22:00+08:00",
-      "outputFile": null
-    },
-    "https://www.who.int/teams/nutrition-and-food-safety/monitoring-nutritional-status-and-food-safety-and-events": {
-      "processedAt": "2026-10-15T06:22:00+08:00",
-      "outputFile": null
-    },
-    "https://www.who.int/health-topics/obesity": {
-      "processedAt": "2026-10-15T06:22:00+08:00",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Bulletin/Detail/ZSgA4XCBC3WbeC0Wb8Em-g?typeId=9": {
-      "processedAt": "2026-10-15T06:22:00+08:00",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Bulletin/Detail/JvaaM_Xplh7dCJenqv0xiw?typeId=9": {
-      "processedAt": "2026-10-15T06:22:00+08:00",
-      "outputFile": null
-    },
-    "https://www.eurekalert.org/news-releases/1133167": {
-      "processedAt": "2026-10-15T06:22:00+08:00",
-      "outputFile": null
-    },
-    "https://www.sciencedaily.com/releases/2026/03/260318033107.htm": {
-      "processedAt": "2026-10-15T06:22:00+08:00",
-      "outputFile": null
-    },
-    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12073342/": {
-      "processedAt": "2026-10-15T06:22:00+08:00",
-      "outputFile": null
-    },
-    "https://www.medrxiv.org/content/10.1101/2025.08.07.25333265.full.pdf": {
-      "processedAt": "2026-10-15T06:22:00+08:00",
-      "outputFile": null
-    },
-    "https://clinicaltrials.gov/study/NCT06714162": {
-      "processedAt": "2026-10-15T06:22:00+08:00",
-      "outputFile": null
     },
     "https://pubmed.ncbi.nlm.nih.gov/42108202/": {
       "processedAt": "2026-10-16T06:20:51+08:00",
@@ -896,6 +852,42 @@
     },
     "PMID:42325726": {
       "processedAt": "2026-10-29T06:17:00+08:00",
+      "outputFile": null
+    },
+    "https://doi.org/10.1038/s41467-026-77064-4": {
+      "processedAt": "2026-10-30T06:27:47+08:00",
+      "outputFile": "src/content/news/radar-2026-10-30-06-01.md"
+    },
+    "https://www.sciencedaily.com/releases/2026/10/261019093439.htm": {
+      "processedAt": "2026-10-30T06:27:47+08:00",
+      "outputFile": "src/content/news/radar-2026-10-30-06-01.md"
+    },
+    "https://www.news-medical.net/news/20260916/Study-Multiple-dietary-patterns-linked-to-slower-biological-aging.aspx": {
+      "processedAt": "2026-10-30T06:27:47+08:00",
+      "outputFile": "src/content/news/radar-2026-10-30-06-01.md"
+    },
+    "https://www.nutritioninsight.com/news/healthy-diet-slows-biological-aging.html": {
+      "processedAt": "2026-10-30T06:27:47+08:00",
+      "outputFile": "src/content/news/radar-2026-10-30-06-01.md"
+    },
+    "https://scitechdaily.com/healthy-eating-may-slow-biological-aging-but-there-isnt-a-single-best-diet/": {
+      "processedAt": "2026-10-30T06:27:47+08:00",
+      "outputFile": "src/content/news/radar-2026-10-30-06-01.md"
+    },
+    "https://sciencedaily.com/releases/2026/07/260724061448.htm": {
+      "processedAt": "2026-10-30T06:27:47+08:00",
+      "outputFile": null
+    },
+    "https://doi.org/10.3390/nu18050714": {
+      "processedAt": "2026-10-30T06:27:47+08:00",
+      "outputFile": null
+    },
+    "https://www.eurekalert.org/news-releases/1136477": {
+      "processedAt": "2026-10-30T06:27:47+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41635649/": {
+      "processedAt": "2026-10-30T06:27:47+08:00",
       "outputFile": null
     }
   }
