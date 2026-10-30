@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-10-29T22:27:47.720Z",
+  "lastRun": "2026-10-31T06:40:23.020737+08:00",
   "processed": {
     "https://www.who.int/news/item/07-10-2026-who-issues-first-global-guidelines-on-child-and-adolescent-obesity": {
       "processedAt": "2026-10-26T06:30:25+08:00",
@@ -53,26 +53,6 @@
     "https://www.cdc.gov.tw/Bulletin/Detail/HqTIUKC58EK9fO9AVWU3Cg?typeid=9": {
       "processedAt": "2026-08-03T06:19:00+08:00",
       "outputFile": "src/content/news/radar-2026-08-03-06-01.md"
-    },
-    "https://www.sciencedaily.com/releases/2026/07/260729010716.htm": {
-      "processedAt": "2026-08-01T06:34:12+08:00",
-      "outputFile": "src/content/news/radar-2026-08-01-06-01.md"
-    },
-    "https://www.eurekalert.org/news-releases/1136435": {
-      "processedAt": "2026-08-01T06:34:12+08:00",
-      "outputFile": "src/content/news/radar-2026-08-01-06-01.md"
-    },
-    "https://www.medicaldaily.com/multivitamin-older-adults-functional-health-cosmos-three-year-2026-476688": {
-      "processedAt": "2026-08-01T06:34:12+08:00",
-      "outputFile": "src/content/news/radar-2026-08-01-06-01.md"
-    },
-    "https://clinicaltrials.gov/study/NCT02422745": {
-      "processedAt": "2026-08-01T06:34:12+08:00",
-      "outputFile": "src/content/news/radar-2026-08-01-06-01.md"
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/37244291/": {
-      "processedAt": "2026-08-01T06:34:12+08:00",
-      "outputFile": "src/content/news/radar-2026-08-01-06-01.md"
     },
     "PMID:41189312": {
       "processedAt": "2026-08-08T06:36:43+08:00",
@@ -421,54 +401,6 @@
     "https://pubmed.ncbi.nlm.nih.gov/23399482/": {
       "processedAt": "2026-10-15T06:22:00+08:00",
       "outputFile": "src/content/news/radar-2026-10-15-06-01.md"
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/42108202/": {
-      "processedAt": "2026-10-16T06:20:51+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/42353595/": {
-      "processedAt": "2026-10-16T06:20:51+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/42288917/": {
-      "processedAt": "2026-10-16T06:20:51+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/41880968/": {
-      "processedAt": "2026-10-16T06:20:51+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/41695959/": {
-      "processedAt": "2026-10-16T06:20:51+08:00",
-      "outputFile": null
-    },
-    "https://www.who.int/health-topics/food-safety": {
-      "processedAt": "2026-10-16T06:20:51+08:00",
-      "outputFile": null
-    },
-    "https://www.mohw.gov.tw/cp-3539-36715-1.html": {
-      "processedAt": "2026-10-16T06:20:51+08:00",
-      "outputFile": null
-    },
-    "https://www.mohw.gov.tw/cp-6559-76194-1.html": {
-      "processedAt": "2026-10-16T06:20:51+08:00",
-      "outputFile": null
-    },
-    "https://www.mohw.gov.tw/cp-2627-19174-1.html": {
-      "processedAt": "2026-10-16T06:20:51+08:00",
-      "outputFile": null
-    },
-    "https://www.mohw.gov.tw/cp-4259-46884-1.html": {
-      "processedAt": "2026-10-16T06:20:51+08:00",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Bulletin/Detail/uyGn5mXv3-AgOOe_wmLO_g?typeid=9": {
-      "processedAt": "2026-10-16T06:20:51+08:00",
-      "outputFile": null
-    },
-    "https://www.sciencedaily.com/releases/2026/05/260519003103.htm": {
-      "processedAt": "2026-10-16T06:20:51+08:00",
-      "outputFile": null
     },
     "PMID:41580085": {
       "processedAt": "2026-10-16T22:40:53.185Z",
@@ -888,6 +820,70 @@
     },
     "https://pubmed.ncbi.nlm.nih.gov/41635649/": {
       "processedAt": "2026-10-30T06:27:47+08:00",
+      "outputFile": null
+    },
+    "https://www.who.int/news/item/12-05-2026-who-launches-revamped-shake-package-to-help-reduce-salt-intake": {
+      "processedAt": "2026-10-31T06:40:23.020737+08:00",
+      "outputFile": "src/content/news/radar-2026-10-31-06-01.md"
+    },
+    "https://www.georgeinstitute.org/news-and-media/news/george-institute-welcomes-new-who-guidance-on-potassium-enriched-salt": {
+      "processedAt": "2026-10-31T06:40:23.020737+08:00",
+      "outputFile": "src/content/news/radar-2026-10-31-06-01.md"
+    },
+    "https://www.mohw.gov.tw/cp-16-22903-1.html": {
+      "processedAt": "2026-10-31T06:40:23.020737+08:00",
+      "outputFile": "src/content/news/radar-2026-10-31-06-01.md"
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42353595/": {
+      "processedAt": "2026-10-31T06:40:23.020737+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/39194033/": {
+      "processedAt": "2026-10-31T06:40:23.020737+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42288917/": {
+      "processedAt": "2026-10-31T06:40:23.020737+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41880968/": {
+      "processedAt": "2026-10-31T06:40:23.020737+08:00",
+      "outputFile": null
+    },
+    "https://www.who.int/health-topics/food-safety": {
+      "processedAt": "2026-10-31T06:40:23.020737+08:00",
+      "outputFile": null
+    },
+    "https://www.mohw.gov.tw/cp-3539-36715-1.html": {
+      "processedAt": "2026-10-31T06:40:23.020737+08:00",
+      "outputFile": null
+    },
+    "https://www.mohw.gov.tw/cp-2627-19174-1.html": {
+      "processedAt": "2026-10-31T06:40:23.020737+08:00",
+      "outputFile": null
+    },
+    "https://www.mohw.gov.tw/cp-6559-76194-1.html": {
+      "processedAt": "2026-10-31T06:40:23.020737+08:00",
+      "outputFile": null
+    },
+    "https://www.mohw.gov.tw/cp-3205-21628-1.html": {
+      "processedAt": "2026-10-31T06:40:23.020737+08:00",
+      "outputFile": null
+    },
+    "https://www.mohw.gov.tw/cp-2638-22395-1.html": {
+      "processedAt": "2026-10-31T06:40:23.020737+08:00",
+      "outputFile": null
+    },
+    "https://www.mohw.gov.tw/cp-2638-22511-1.html": {
+      "processedAt": "2026-10-31T06:40:23.020737+08:00",
+      "outputFile": null
+    },
+    "https://www.mohw.gov.tw/cp-4259-46884-1.html": {
+      "processedAt": "2026-10-31T06:40:23.020737+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41695959/": {
+      "processedAt": "2026-10-31T06:40:23.020737+08:00",
       "outputFile": null
     }
   }
