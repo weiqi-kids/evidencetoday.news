@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-10-31T06:40:23.020737+08:00",
+  "lastRun": "2026-11-01T06:40:00+08:00",
   "processed": {
     "https://www.who.int/news/item/07-10-2026-who-issues-first-global-guidelines-on-child-and-adolescent-obesity": {
       "processedAt": "2026-10-26T06:30:25+08:00",
@@ -106,10 +106,6 @@
       "processedAt": "2026-09-07T06:18:00+08:00",
       "outputFile": "src/content/news/radar-2026-09-07-06-01.md"
     },
-    "PMID:42522010": {
-      "processedAt": "2026-10-16T22:40:53.185Z",
-      "outputFile": null
-    },
     "https://www.cdc.gov.tw/Bulletin/Detail/oyHltiYvWT0gsGvRdEgTQg?typeid=9": {
       "processedAt": "2026-09-10T06:30:00+08:00",
       "outputFile": "src/content/news/radar-2026-09-10-06-01.md"
@@ -137,10 +133,6 @@
     "https://pubmed.ncbi.nlm.nih.gov/42553631/": {
       "processedAt": "2026-09-12T06:32:51+08:00",
       "outputFile": "src/content/news/radar-2026-09-12-06-01.md"
-    },
-    "PMID:42553631": {
-      "processedAt": "2026-10-16T22:40:53.185Z",
-      "outputFile": null
     },
     "https://pubmed.ncbi.nlm.nih.gov/41619391/": {
       "processedAt": "2026-09-13T06:20:00+08:00",
@@ -417,30 +409,6 @@
     "https://www.utoronto.ca/news/full-fat-dairy-shows-benefits-without-raising-body-fat-or-cholesterol-study-finds": {
       "processedAt": "2026-10-16T22:40:53.185Z",
       "outputFile": "src/content/news/radar-2026-10-17-06-01.md"
-    },
-    "PMID:42440428": {
-      "processedAt": "2026-10-16T22:40:53.185Z",
-      "outputFile": null
-    },
-    "PMID:42180603": {
-      "processedAt": "2026-10-16T22:40:53.185Z",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Bulletin/Detail/geKc8NtAOy4tYs3Y4JhRfg?typeid=9": {
-      "processedAt": "2026-10-16T22:40:53.185Z",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Bulletin/Detail/64WhLC3Lcr6B4QUo04UA6A?typeid=9": {
-      "processedAt": "2026-10-16T22:40:53.185Z",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Bulletin/Detail/oBrpeEYHlg6CZ32oiSW_1Q?typeid=9": {
-      "processedAt": "2026-10-16T22:40:53.185Z",
-      "outputFile": null
-    },
-    "https://www.sciencedaily.com/releases/2026/06/260614011843.htm": {
-      "processedAt": "2026-10-16T22:40:53.185Z",
-      "outputFile": null
     },
     "PMID:41844283": {
       "processedAt": "2026-10-17T22:23:43.238Z",
@@ -884,6 +852,34 @@
     },
     "https://pubmed.ncbi.nlm.nih.gov/41695959/": {
       "processedAt": "2026-10-31T06:40:23.020737+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42161415/": {
+      "processedAt": "2026-11-01T06:40:00+08:00",
+      "outputFile": "src/content/news/radar-2026-11-01-06-01.md"
+    },
+    "PMID:42161415": {
+      "processedAt": "2026-11-01T06:40:00+08:00",
+      "outputFile": "src/content/news/radar-2026-11-01-06-01.md"
+    },
+    "https://bmjgroup.com/calcium-and-vitamin-d-supplements-offer-little-to-no-meaningful-benefit-on-fracture-and-fall-prevention/": {
+      "processedAt": "2026-11-01T06:40:00+08:00",
+      "outputFile": "src/content/news/radar-2026-11-01-06-01.md"
+    },
+    "https://www.healthday.com/healthpro-news/bone-and-joint/calcium-vitamin-d-combo-supplements-do-little-to-prevent-fracture-falls": {
+      "processedAt": "2026-11-01T06:40:00+08:00",
+      "outputFile": "src/content/news/radar-2026-11-01-06-01.md"
+    },
+    "https://www.mohw.gov.tw/cp-2649-20044-1.html": {
+      "processedAt": "2026-11-01T06:40:00+08:00",
+      "outputFile": "src/content/news/radar-2026-11-01-06-01.md"
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42829807/": {
+      "processedAt": "2026-11-01T06:40:00+08:00",
+      "outputFile": null
+    },
+    "PMID:42829807": {
+      "processedAt": "2026-11-01T06:40:00+08:00",
       "outputFile": null
     }
   }
