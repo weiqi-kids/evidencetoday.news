@@ -1,7 +1,23 @@
 {
   "version": 1,
-  "lastRun": "2026-11-01T22:19:20.170Z",
+  "lastRun": "2026-11-03T06:22:00+08:00",
   "processed": {
+    "https://www.cdc.gov.tw/Bulletin/Detail/WRYbuXJOF_tHjXPtZ49t7w?typeid=9": {
+      "processedAt": "2026-11-03T06:22:00+08:00",
+      "outputFile": "src/content/news/radar-2026-11-03-06-01.md"
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41770781/": {
+      "processedAt": "2026-11-03T06:22:00+08:00",
+      "outputFile": null
+    },
+    "PMID:41770781": {
+      "processedAt": "2026-11-03T06:22:00+08:00",
+      "outputFile": null
+    },
+    "https://www.who.int/news/item/04-06-2026-unsafe-food-causes-866-million-illnesses-and-1.5-million-deaths-annually--young-children-at-highest-risk": {
+      "processedAt": "2026-11-03T06:22:00+08:00",
+      "outputFile": null
+    },
     "https://www.who.int/news/item/07-10-2026-who-issues-first-global-guidelines-on-child-and-adolescent-obesity": {
       "processedAt": "2026-10-26T06:30:25+08:00",
       "outputFile": "src/content/news/radar-2026-10-26-06-01.md"
@@ -413,26 +429,6 @@
     "https://sciencedaily.com/releases/2026/09/260930225503.htm": {
       "processedAt": "2026-10-18T22:22:20.147Z",
       "outputFile": "src/content/news/radar-2026-10-18-06-01.md"
-    },
-    "https://www.mohw.gov.tw/cp-16-88158-1.html": {
-      "processedAt": "2026-10-18T22:22:20.147Z",
-      "outputFile": null
-    },
-    "https://www.who.int/news/item/04-06-2026-unsafe-food-causes-866-million-illnesses-and-1.5-million-deaths-annually--young-children-at-highest-risk": {
-      "processedAt": "2026-10-18T22:22:20.147Z",
-      "outputFile": null
-    },
-    "https://www.who.int/publications/m/item/the-state-of-food-security-and-nutrition-in-the-world-2026": {
-      "processedAt": "2026-10-18T22:22:20.147Z",
-      "outputFile": null
-    },
-    "PMID:41736089": {
-      "processedAt": "2026-10-18T22:22:20.147Z",
-      "outputFile": null
-    },
-    "PMID:41770781": {
-      "processedAt": "2026-10-18T22:22:20.147Z",
-      "outputFile": null
     },
     "https://www.sciencedaily.com/releases/2026/10/261011211613.htm": {
       "processedAt": "2026-10-20T14:18:00+08:00",
