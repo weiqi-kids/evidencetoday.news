@@ -1,13 +1,13 @@
 {
   "version": 1,
-  "lastRun": "2026-11-03T06:22:00+08:00",
+  "lastRun": "2026-11-04T06:21:50+08:00",
   "processed": {
     "https://www.cdc.gov.tw/Bulletin/Detail/WRYbuXJOF_tHjXPtZ49t7w?typeid=9": {
       "processedAt": "2026-11-03T06:22:00+08:00",
       "outputFile": "src/content/news/radar-2026-11-03-06-01.md"
     },
     "https://pubmed.ncbi.nlm.nih.gov/41770781/": {
-      "processedAt": "2026-11-03T06:22:00+08:00",
+      "processedAt": "2026-10-22T22:28:34.014Z",
       "outputFile": null
     },
     "PMID:41770781": {
@@ -542,10 +542,6 @@
       "processedAt": "2026-10-22T22:28:34.014Z",
       "outputFile": null
     },
-    "https://pubmed.ncbi.nlm.nih.gov/41770781/": {
-      "processedAt": "2026-10-22T22:28:34.014Z",
-      "outputFile": null
-    },
     "https://pubmed.ncbi.nlm.nih.gov/41804836/": {
       "processedAt": "2026-10-22T22:28:34.014Z",
       "outputFile": null
@@ -872,6 +868,50 @@
     },
     "https://www.who.int/news-room/events/detail/2026/06/04/default-calendar/who-estimates-of-the-global-burden-of-foodborne-diseases-2000-2021--key-findings-from-the-2026-edition": {
       "processedAt": "2026-11-01T22:19:20.170Z",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41703955/": {
+      "processedAt": "2026-11-04T06:21:50+08:00",
+      "outputFile": null
+    },
+    "PMID:41703955": {
+      "processedAt": "2026-11-04T06:21:50+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41752284/": {
+      "processedAt": "2026-11-04T06:21:50+08:00",
+      "outputFile": null
+    },
+    "PMID:41752284": {
+      "processedAt": "2026-11-04T06:21:50+08:00",
+      "outputFile": null
+    },
+    "https://www.who.int/publications/m/item/the-state-of-food-security-and-nutrition-in-the-world-2026": {
+      "processedAt": "2026-11-04T06:21:50+08:00",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/tz2P9orbtrR-NVR2Y39hnw?typeid=9": {
+      "processedAt": "2026-11-04T06:21:50+08:00",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/Kl-dYW_M2aSFaW8xaIuJ5A?typeid=9": {
+      "processedAt": "2026-11-04T06:21:50+08:00",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/ku4WPcnJo-Aa9BGG8xbTdw?typeid=9": {
+      "processedAt": "2026-11-04T06:21:50+08:00",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/LUvxIinGi9Qg2w2CeEBVVA?typeid=9": {
+      "processedAt": "2026-11-04T06:21:50+08:00",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/ZE59NhApqeBL6fVS-Qau9g?typeid=9": {
+      "processedAt": "2026-11-04T06:21:50+08:00",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/Tll3Ml65fE-L7yckw9ttxA?typeid=9": {
+      "processedAt": "2026-11-04T06:21:50+08:00",
       "outputFile": null
     }
   }
