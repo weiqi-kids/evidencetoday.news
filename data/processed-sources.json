@@ -1,14 +1,10 @@
 {
   "version": 1,
-  "lastRun": "2026-11-04T06:21:50+08:00",
+  "lastRun": "2026-11-06T22:40:00.000Z",
   "processed": {
     "https://www.cdc.gov.tw/Bulletin/Detail/WRYbuXJOF_tHjXPtZ49t7w?typeid=9": {
       "processedAt": "2026-11-03T06:22:00+08:00",
       "outputFile": "src/content/news/radar-2026-11-03-06-01.md"
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/41770781/": {
-      "processedAt": "2026-10-22T22:28:34.014Z",
-      "outputFile": null
     },
     "PMID:41770781": {
       "processedAt": "2026-11-03T06:22:00+08:00",
@@ -49,50 +45,6 @@
     "https://pubmed.ncbi.nlm.nih.gov/41369640/": {
       "processedAt": "2026-10-08T06:42:35+08:00",
       "outputFile": "src/content/news/radar-2026-10-08-06-01.md"
-    },
-    "https://www.cdc.gov.tw/Bulletin/Detail/vwMq9VkXIaV7FHyJgpk-5w?typeid=9": {
-      "processedAt": "2026-08-06T11:08:34+08:00",
-      "outputFile": "src/content/news/radar-2026-08-23-12-01.md"
-    },
-    "https://www.cdc.gov.tw/Bulletin/Detail/Ay1_7PLUOICQg6JClwYiTA?typeid=MmgtpeidAR5Ooai4-fgHzQ": {
-      "processedAt": "2026-08-06T11:08:34+08:00",
-      "outputFile": "src/content/news/radar-2026-08-23-12-01.md"
-    },
-    "PMID:41189312": {
-      "processedAt": "2026-08-08T06:36:43+08:00",
-      "outputFile": "src/content/news/radar-2026-08-23-12-01.md"
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/41189312/": {
-      "processedAt": "2026-08-08T06:36:43+08:00",
-      "outputFile": "src/content/news/radar-2026-08-23-12-01.md"
-    },
-    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12823350/": {
-      "processedAt": "2026-08-08T06:36:43+08:00",
-      "outputFile": "src/content/news/radar-2026-08-23-12-01.md"
-    },
-    "https://pmc.ncbi.nlm.nih.gov/articles/PMC13091023/": {
-      "processedAt": "2026-08-08T06:36:43+08:00",
-      "outputFile": "src/content/news/radar-2026-08-23-12-01.md"
-    },
-    "https://www.uclahealth.org/news/release/creatine-may-supercharge-immune-cells-are-key-fighting": {
-      "processedAt": "2026-08-08T06:36:43+08:00",
-      "outputFile": "src/content/news/radar-2026-08-23-12-01.md"
-    },
-    "https://www.sciencedaily.com/releases/2026/07/260701015237.htm": {
-      "processedAt": "2026-08-08T06:36:43+08:00",
-      "outputFile": "src/content/news/radar-2026-08-23-12-01.md"
-    },
-    "https://www.sciencedaily.com/releases/2026/05/260504023828.htm": {
-      "processedAt": "2026-08-08T06:36:43+08:00",
-      "outputFile": "src/content/news/radar-2026-08-23-12-01.md"
-    },
-    "https://doi.org/10.1016/j.cpblue.2026.100079": {
-      "processedAt": "2026-08-09T06:37:32+08:00",
-      "outputFile": "src/content/news/radar-2026-08-09-06-01.md"
-    },
-    "https://www.sciencedaily.com/releases/2026/08/260801042811.htm": {
-      "processedAt": "2026-08-09T06:37:32+08:00",
-      "outputFile": "src/content/news/radar-2026-08-09-06-01.md"
     },
     "PMID:41635649": {
       "processedAt": "2026-08-18T06:30:00+08:00",
@@ -466,45 +418,9 @@
       "processedAt": "2026-10-21T06:30:00+08:00",
       "outputFile": "src/content/news/radar-2026-10-21-06-01.md"
     },
-    "PMID:42385101": {
-      "processedAt": "2026-10-21T06:30:00+08:00",
-      "outputFile": null
-    },
     "PMID:42431320": {
       "processedAt": "2026-10-21T06:30:00+08:00",
       "outputFile": "src/content/news/radar-2026-10-21-06-01.md"
-    },
-    "PMID:42077685": {
-      "processedAt": "2026-10-22T06:20:29+08:00",
-      "outputFile": null
-    },
-    "PMID:42486145": {
-      "processedAt": "2026-10-22T06:20:29+08:00",
-      "outputFile": null
-    },
-    "PMID:41556351": {
-      "processedAt": "2026-10-22T06:20:29+08:00",
-      "outputFile": null
-    },
-    "PMID:41710102": {
-      "processedAt": "2026-10-22T06:20:29+08:00",
-      "outputFile": null
-    },
-    "PMID:42237711": {
-      "processedAt": "2026-10-22T06:20:29+08:00",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Bulletin/Detail/tfHqeDmxP80662NPXLwWYA?typeid=9": {
-      "processedAt": "2026-10-22T06:20:29+08:00",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Bulletin/Detail/5gJTj70wu9L3psY5kQLUuA?typeid=9": {
-      "processedAt": "2026-10-22T06:20:29+08:00",
-      "outputFile": null
-    },
-    "https://www.sciencedaily.com/releases/2026/07/260708022206.htm": {
-      "processedAt": "2026-10-22T06:20:29+08:00",
-      "outputFile": null
     },
     "https://www.cdc.gov.tw/Bulletin/Detail/xftynOgE-N_oMXU2RQo76g?typeid=9": {
       "processedAt": "2026-10-22T22:28:34.014Z",
@@ -521,66 +437,6 @@
     "https://www.cdc.gov.tw/Category/MPage/7cc1CTepnQ7B7yBAdq6z7A": {
       "processedAt": "2026-10-22T22:28:34.014Z",
       "outputFile": "src/content/news/radar-2026-10-23-06-01.md"
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/42077685/": {
-      "processedAt": "2026-10-22T22:28:34.014Z",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/42486145/": {
-      "processedAt": "2026-10-22T22:28:34.014Z",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/41556351/": {
-      "processedAt": "2026-10-22T22:28:34.014Z",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/41710102/": {
-      "processedAt": "2026-10-22T22:28:34.014Z",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/42325320/": {
-      "processedAt": "2026-10-22T22:28:34.014Z",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/41804836/": {
-      "processedAt": "2026-10-22T22:28:34.014Z",
-      "outputFile": null
-    },
-    "https://www.mohw.gov.tw/cp-2704-86886-1.html": {
-      "processedAt": "2026-10-22T22:28:34.014Z",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Bulletin/Detail/lFK7neXKyk54GdPYg_hNDg?typeid=9": {
-      "processedAt": "2026-10-22T22:28:34.014Z",
-      "outputFile": null
-    },
-    "https://www.sciencedaily.com/releases/2026/05/260511213144.htm": {
-      "processedAt": "2026-10-22T22:28:34.014Z",
-      "outputFile": null
-    },
-    "https://www.sciencedaily.com/releases/2026/07/260716023605.htm": {
-      "processedAt": "2026-10-22T22:28:34.014Z",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/42437546/": {
-      "processedAt": "2026-10-22T22:28:34.014Z",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/42237711/": {
-      "processedAt": "2026-10-22T22:28:34.014Z",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/41622137/": {
-      "processedAt": "2026-10-24T00:00:00+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/41707760/": {
-      "processedAt": "2026-10-24T00:00:00+08:00",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Bulletin/Detail/AXG37sOc0tSeYH5Utn2ndw?typeid=9": {
-      "processedAt": "2026-10-24T00:00:00+08:00",
-      "outputFile": null
     },
     "https://pubmed.ncbi.nlm.nih.gov/42521227/": {
       "processedAt": "2026-10-25T06:34:20+08:00",
@@ -912,6 +768,106 @@
     },
     "https://www.cdc.gov.tw/Bulletin/Detail/Tll3Ml65fE-L7yckw9ttxA?typeid=9": {
       "processedAt": "2026-11-04T06:21:50+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41871887/": {
+      "processedAt": "2026-11-06T22:40:00.000Z",
+      "outputFile": "src/content/news/radar-2026-11-07-06-01.md"
+    },
+    "PMID:41871887": {
+      "processedAt": "2026-11-06T22:40:00.000Z",
+      "outputFile": "src/content/news/radar-2026-11-07-06-01.md"
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/33870484/": {
+      "processedAt": "2026-11-06T22:40:00.000Z",
+      "outputFile": "src/content/news/radar-2026-11-07-06-01.md"
+    },
+    "PMID:33870484": {
+      "processedAt": "2026-11-06T22:40:00.000Z",
+      "outputFile": "src/content/news/radar-2026-11-07-06-01.md"
+    },
+    "https://abstracts.cochrane.org/2020-abstracts/probiotics-overweight-or-obese-pregnant-women-systematic-review-and-meta-analysis": {
+      "processedAt": "2026-11-06T22:40:00.000Z",
+      "outputFile": "src/content/news/radar-2026-11-07-06-01.md"
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC10574514/": {
+      "processedAt": "2026-11-06T22:40:00.000Z",
+      "outputFile": "src/content/news/radar-2026-11-07-06-01.md"
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41857820/": {
+      "processedAt": "2026-11-06T22:40:00.000Z",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42486145/": {
+      "processedAt": "2026-11-06T22:40:00.000Z",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41556351/": {
+      "processedAt": "2026-11-06T22:40:00.000Z",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41211687/": {
+      "processedAt": "2026-11-06T22:40:00.000Z",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41710102/": {
+      "processedAt": "2026-11-06T22:40:00.000Z",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42325320/": {
+      "processedAt": "2026-11-06T22:40:00.000Z",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41770781/": {
+      "processedAt": "2026-11-06T22:40:00.000Z",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41622137/": {
+      "processedAt": "2026-11-06T22:40:00.000Z",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41804836/": {
+      "processedAt": "2026-11-06T22:40:00.000Z",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41769734/": {
+      "processedAt": "2026-11-06T22:40:00.000Z",
+      "outputFile": null
+    },
+    "https://www.who.int/news-room/events/detail/2026/06/03/default-calendar/launch-of-the-who-food-safety-roadmap-development-tool": {
+      "processedAt": "2026-11-06T22:40:00.000Z",
+      "outputFile": null
+    },
+    "https://www.mohw.gov.tw/cp-2704-86886-1.html": {
+      "processedAt": "2026-11-06T22:40:00.000Z",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/AXG37sOc0tSeYH5Utn2ndw?typeid=9": {
+      "processedAt": "2026-11-06T22:40:00.000Z",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/tfHqeDmxP80662NPXLwWYA?typeid=9": {
+      "processedAt": "2026-11-06T22:40:00.000Z",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/KeqvskR4zZf9xWQ5AmaJNg?typeid=9": {
+      "processedAt": "2026-11-06T22:40:00.000Z",
+      "outputFile": null
+    },
+    "https://www.sciencedaily.com/releases/2026/07/260716023605.htm": {
+      "processedAt": "2026-11-06T22:40:00.000Z",
+      "outputFile": null
+    },
+    "https://www.sciencedaily.com/releases/2026/09/260915100000.htm": {
+      "processedAt": "2026-11-06T22:40:00.000Z",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42023455/": {
+      "processedAt": "2026-11-06T22:40:00.000Z",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42437546/": {
+      "processedAt": "2026-11-06T22:40:00.000Z",
       "outputFile": null
     }
   }
