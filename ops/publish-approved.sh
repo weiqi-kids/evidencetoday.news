@@ -135,6 +135,17 @@ fi
 PUSHED_ANY=0
 declare -a NEW_AWAIT=()   # "id|channel|slack_ts|url|title"
 
+# gate log 寫到 cron log 同目錄（原本在 /tmp，重開機即消失、也不在 cron log 旁邊好找）
+GATE_LOG_DIR="${GATE_LOG_DIR:-/var/log/evidencetoday}"
+mkdir -p "$GATE_LOG_DIR" 2>/dev/null || true
+# 全站 build 走全機 build 輪流（site-build-run；協定見 /usr/local/lib/site-build-turn.sh 檔頭）。
+# 等鎖上限 900 秒：本 cron 每 10 分鐘一輪，等待期間本腳本仍持有 publish／src/content／seo-ops 三把鎖，
+# 會擋住 draft-cron 與 seo-ops 反思／大腦，不宜等太久；但也要長過一次別站全站 build，否則永遠搶不到。
+# 逾時（site-build-run 回 75）＝「本輪跳過、下輪再試」：還原 src、不退稿、不標 gatefail、不發通知，
+# 並略過本輪其餘待發稿（同一把鎖，再等也是白等）。
+export SITE_BUILD_WAIT="${SITE_BUILD_WAIT:-900}"
+BUILD_DEFERRED=0
+
 discard() {  # <dir> <msg> <channel> <slack_ts> <label> <slug>
   reply_thread "$3" "$4" "$2"
   [ "$DRY_RUN" != "1" ] && rm -rf "$1"
@@ -166,15 +177,26 @@ for META in "${PENDING_METAS[@]}"; do
     approved)
       DEST="$(gate_dir "$TYPE")/$SLUG.$EXT"
       if [ "$DRY_RUN" = "1" ]; then echo "[publish][DRY] 核准 → 會發布到 $DEST"; continue; fi
+      if [ "$BUILD_DEFERRED" = "1" ]; then echo "[publish] $LABEL/$SLUG 本輪 build 鎖逾時，留待下輪"; continue; fi
       cp "$CONTENT" "$DEST"
-      GATE_FAIL=""
-      pnpm content:audit >/tmp/pub-audit.log 2>&1 || GATE_FAIL="content:audit"
+      GATE_FAIL=""; GATE_LOG=""
+      pnpm content:audit >"$GATE_LOG_DIR/pub-audit.log" 2>&1 || { GATE_FAIL="content:audit"; GATE_LOG="$GATE_LOG_DIR/pub-audit.log"; }
       TYPECHK="$(gate_typecheck "$TYPE")"
-      [ -z "$GATE_FAIL" ] && [ -n "$TYPECHK" ] && { pnpm "$TYPECHK" >/tmp/pub-typecheck.log 2>&1 || GATE_FAIL="$TYPECHK"; }
-      [ -z "$GATE_FAIL" ] && { pnpm build >/tmp/pub-build.log 2>&1 || GATE_FAIL="build"; }
+      [ -z "$GATE_FAIL" ] && [ -n "$TYPECHK" ] && { pnpm "$TYPECHK" >"$GATE_LOG_DIR/pub-typecheck.log" 2>&1 || { GATE_FAIL="$TYPECHK"; GATE_LOG="$GATE_LOG_DIR/pub-typecheck.log"; }; }
+      if [ -z "$GATE_FAIL" ]; then
+        site-build-run evidencetoday.news -- pnpm build >"$GATE_LOG_DIR/pub-build.log" 2>&1; BUILD_RC=$?
+        if [ "$BUILD_RC" = "75" ]; then
+          # 等全機 build 鎖逾時：不是稿件的錯 → 還原、草稿原封保留，下輪重試（見上方 SITE_BUILD_WAIT 註解）
+          git checkout -- "$DEST" 2>/dev/null || rm -f "$DEST"
+          BUILD_DEFERRED=1
+          echo "[publish] $LABEL/$SLUG 等全機 build 鎖逾時（${SITE_BUILD_WAIT}s），本輪跳過、下輪再試"
+          continue
+        fi
+        [ "$BUILD_RC" = "0" ] || { GATE_FAIL="build"; GATE_LOG="$GATE_LOG_DIR/pub-build.log"; }
+      fi
       if [ -n "$GATE_FAIL" ]; then
         git checkout -- "$DEST" 2>/dev/null || rm -f "$DEST"
-        reply_thread "$CH" "$STS" ":warning: *發布前 gate 失敗：\`$GATE_FAIL\`* — 暫不發布，草稿保留待修。log：/tmp/pub-${GATE_FAIL%%:*}.log"
+        reply_thread "$CH" "$STS" ":warning: *發布前 gate 失敗：\`$GATE_FAIL\`* — 暫不發布，草稿保留待修。log：$GATE_LOG"
         mv "$META" "$META.gatefail" 2>/dev/null || true
         echo "[publish] $LABEL/$SLUG gate 失敗（$GATE_FAIL），已還原+標記"
         continue

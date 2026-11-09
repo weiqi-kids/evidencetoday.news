@@ -143,7 +143,7 @@ RULES
 
 # 頁面型收尾：原地過 gate + 只存不發布
 STAGE_ENDING_PAGE="$(cat <<ENDING
-【過 gate｜硬性，未過該篇不得留下】依序在 src/content/$TYPE/ 原地跑：pnpm content:audit（命中必改到 pass）$( [ -n "$(gate_typecheck "$TYPE")" ] && echo " → pnpm $(gate_typecheck "$TYPE")" ) → pnpm build 零錯誤。某篇任一 gate 過不了就把該篇從 src 移除、不要留。
+【過 gate｜硬性，未過該篇不得留下】依序在 src/content/$TYPE/ 原地跑：pnpm content:audit（命中必改到 pass）$( [ -n "$(gate_typecheck "$TYPE")" ] && echo " → pnpm $(gate_typecheck "$TYPE")" ) → site-build-run evidencetoday.news -- pnpm build 零錯誤（全站 build 一律包 site-build-run 走全機輪流；它回 75＝等鎖逾時、不是稿件錯誤，重跑同一指令即可，不要因此移除稿件）。某篇任一 gate 過不了就把該篇從 src 移除、不要留。
 【**重要：只存檔、絕不發布**】通過 gate 的文章就**留在 src/content/$TYPE/<slug>.$EXT**（檔名 slug 用該類型慣例），**不要 git add／commit／push**。發 Slack、搬暫存區、清工作樹都由外層 wrapper 處理，你只要把「過 gate 的成品」留在 src 對應目錄即可。$( [ "$TYPE" = "news" ] && echo "processed-sources.json 照常更新（避免重複選題）；wrapper 會單獨提交它。" )
 【收尾】stdout 印出本次留在 src/content/$TYPE/ 的新檔清單（每行一個檔名）與一句摘要。沒有可發的就什麼都別留、印「無新草稿」。
 ENDING

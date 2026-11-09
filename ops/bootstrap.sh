@@ -19,7 +19,16 @@ export CONF_DIR="${CONF_DIR:-/root/.config/evidencetoday-news}"
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"; export REPO
 cd "$REPO"
 
-git pull --ff-only origin main 2>&1 || echo "[bootstrap] git pull 失敗（沿用現有工作樹續行）"
+# 同 repo 多支 cron 同一分鐘啟動時，各自 git pull 會互撞（FETCH_HEAD 被別人改寫 →
+# 「fatal: Cannot fast-forward to multiple branches」）。用專用鎖把 pull 串起來；
+# 等 120 秒仍拿不到鎖就不 pull，沿用現有工作樹續行（與 pull 失敗時同一行為）。
+# 鎖用子 shell 的 fd，pull 完即釋放，不會被 exec 出去的腳本繼承。
+PULL_LOCK="${BOOTSTRAP_PULL_LOCK:-/tmp/evidencetoday-bootstrap-pull.lock}"
+PULL_WAIT="${BOOTSTRAP_PULL_WAIT:-120}"
+(
+  flock -w "$PULL_WAIT" 7 || { echo "[bootstrap] 等 pull 鎖逾時（${PULL_WAIT}s），不 pull（沿用現有工作樹續行）"; exit 0; }
+  git pull --ff-only origin main 2>&1 || echo "[bootstrap] git pull 失敗（沿用現有工作樹續行）"
+) 7>"$PULL_LOCK" || echo "[bootstrap] 無法開 pull 鎖檔 $PULL_LOCK（沿用現有工作樹續行）"
 
 [ $# -ge 1 ] || { echo "[bootstrap] 用法：bootstrap.sh <script.sh> [args...]"; exit 2; }
 script="$1"; shift
