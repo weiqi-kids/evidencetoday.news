@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-11-09T22:34:49.049Z",
+  "lastRun": "2026-11-11T06:31:50+08:00",
   "processed": {
     "https://pubmed.ncbi.nlm.nih.gov/42356328/": {
       "processedAt": "2026-11-08T06:33:55+08:00",
@@ -131,8 +131,8 @@
       "outputFile": "src/content/news/radar-2026-09-03-12-01.md"
     },
     "https://pubmed.ncbi.nlm.nih.gov/42522010/": {
-      "processedAt": "2026-09-07T06:18:00+08:00",
-      "outputFile": "src/content/news/radar-2026-09-07-06-01.md"
+      "processedAt": "2026-11-11T06:31:50+08:00",
+      "outputFile": null
     },
     "https://www.cdc.gov.tw/Bulletin/Detail/oyHltiYvWT0gsGvRdEgTQg?typeid=9": {
       "processedAt": "2026-09-10T06:30:00+08:00",
@@ -402,10 +402,6 @@
       "processedAt": "2026-10-14T06:35:50+08:00",
       "outputFile": "src/content/news/radar-2026-10-14-06-01.md"
     },
-    "https://clinicaltrials.gov/study/NCT04820556": {
-      "processedAt": "2026-10-27T22:21:18.819Z",
-      "outputFile": null
-    },
     "https://www.cdc.gov.tw/Bulletin/Detail/Bc30nI9mH429MbAIJBP-2A?typeId=9": {
       "processedAt": "2026-10-15T06:22:00+08:00",
       "outputFile": "src/content/news/radar-2026-10-15-06-01.md"
@@ -542,110 +538,6 @@
       "processedAt": "2026-10-26T22:29:45.085Z",
       "outputFile": "src/content/news/radar-2026-10-27-06-01.md"
     },
-    "https://doi.org/10.1038/s41467-026-75626-0": {
-      "processedAt": "2026-10-26T22:29:57.618Z",
-      "outputFile": null
-    },
-    "https://sciencedaily.com/releases/2026/08/260807235103.htm": {
-      "processedAt": "2026-10-26T22:29:57.618Z",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Bulletin/Detail/FtPgGTu4k3dFSlt0P-AvXA?typeid=9": {
-      "processedAt": "2026-10-26T22:29:57.618Z",
-      "outputFile": null
-    },
-    "https://www.sciencedaily.com/releases/2026/10/261023003337.htm": {
-      "processedAt": "2026-10-26T22:29:57.618Z",
-      "outputFile": null
-    },
-    "PMID:41761730": {
-      "processedAt": "2026-10-27T22:21:18.819Z",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/41761730/": {
-      "processedAt": "2026-10-27T22:21:18.819Z",
-      "outputFile": null
-    },
-    "PMID:42526758": {
-      "processedAt": "2026-10-27T22:21:18.819Z",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/42526758/": {
-      "processedAt": "2026-10-27T22:21:18.819Z",
-      "outputFile": null
-    },
-    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12910210/": {
-      "processedAt": "2026-10-27T22:21:18.819Z",
-      "outputFile": null
-    },
-    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12816316/": {
-      "processedAt": "2026-10-27T22:21:18.819Z",
-      "outputFile": null
-    },
-    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12902778/": {
-      "processedAt": "2026-10-27T22:21:18.819Z",
-      "outputFile": null
-    },
-    "PMID:41333064": {
-      "processedAt": "2026-10-27T22:21:18.819Z",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/41333064/": {
-      "processedAt": "2026-10-27T22:21:18.819Z",
-      "outputFile": null
-    },
-    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12665681/": {
-      "processedAt": "2026-10-27T22:21:18.819Z",
-      "outputFile": null
-    },
-    "https://clinicaltrials.gov/study/NCT07766408": {
-      "processedAt": "2026-10-27T22:21:18.819Z",
-      "outputFile": null
-    },
-    "https://clinicaltrials.gov/study/NCT07766642": {
-      "processedAt": "2026-10-27T22:21:18.819Z",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/41594884/": {
-      "processedAt": "2026-10-27T22:21:18.819Z",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/41826924/": {
-      "processedAt": "2026-10-27T22:21:18.819Z",
-      "outputFile": null
-    },
-    "https://www.who.int/news-room/events/detail/2026/01/27/default-calendar/launch-of-the-who-guideline-on-policies-and-interventions-to-create-healthy-school-food-environments": {
-      "processedAt": "2026-10-27T22:21:18.819Z",
-      "outputFile": null
-    },
-    "https://www.who.int/teams/nutrition-and-food-safety/food-and-nutrition-actions-in-health-systems": {
-      "processedAt": "2026-10-27T22:21:18.819Z",
-      "outputFile": null
-    },
-    "https://www.who.int/brunei/news/detail-global/12-05-2026-who-launches-revamped-shake-package-to-help-reduce-salt-intake": {
-      "processedAt": "2026-10-27T22:21:18.819Z",
-      "outputFile": null
-    },
-    "https://www.who.int/news-room/events/detail/2026/07/06/default-calendar/forty-ninth-session-of-the-fao-who-codex-alimentarius-commission-adopts-new-standards": {
-      "processedAt": "2026-10-27T22:21:18.819Z",
-      "outputFile": null
-    },
-    "https://www.who.int/teams/nutrition-and-food-safety/standards-and-scientific-advice-on-food-and-nutrition": {
-      "processedAt": "2026-10-27T22:21:18.819Z",
-      "outputFile": null
-    },
-    "PMID:41707760": {
-      "processedAt": "2026-10-27T22:21:18.819Z",
-      "outputFile": null
-    },
-    "PMID:42437546": {
-      "processedAt": "2026-10-27T22:21:18.819Z",
-      "outputFile": null
-    },
-    "PMID:42023455": {
-      "processedAt": "2026-10-27T22:21:18.819Z",
-      "outputFile": null
-    },
     "https://pubmed.ncbi.nlm.nih.gov/41769658/": {
       "processedAt": "2026-10-29T06:17:00+08:00",
       "outputFile": null
@@ -719,11 +611,11 @@
       "outputFile": null
     },
     "https://pubmed.ncbi.nlm.nih.gov/42288917/": {
-      "processedAt": "2026-10-31T06:40:23.020737+08:00",
+      "processedAt": "2026-11-11T06:31:50+08:00",
       "outputFile": null
     },
     "https://pubmed.ncbi.nlm.nih.gov/41880968/": {
-      "processedAt": "2026-10-31T06:40:23.020737+08:00",
+      "processedAt": "2026-11-11T06:31:50+08:00",
       "outputFile": null
     },
     "https://www.who.int/health-topics/food-safety": {
@@ -867,15 +759,15 @@
       "outputFile": "src/content/news/radar-2026-11-07-06-01.md"
     },
     "https://pubmed.ncbi.nlm.nih.gov/41857820/": {
-      "processedAt": "2026-11-06T22:40:00.000Z",
+      "processedAt": "2026-11-11T06:31:50+08:00",
       "outputFile": null
     },
     "https://pubmed.ncbi.nlm.nih.gov/42486145/": {
-      "processedAt": "2026-11-06T22:40:00.000Z",
+      "processedAt": "2026-11-11T06:31:50+08:00",
       "outputFile": null
     },
     "https://pubmed.ncbi.nlm.nih.gov/41556351/": {
-      "processedAt": "2026-11-06T22:40:00.000Z",
+      "processedAt": "2026-11-11T06:31:50+08:00",
       "outputFile": null
     },
     "https://pubmed.ncbi.nlm.nih.gov/41211687/": {
@@ -883,11 +775,11 @@
       "outputFile": null
     },
     "https://pubmed.ncbi.nlm.nih.gov/41710102/": {
-      "processedAt": "2026-11-06T22:40:00.000Z",
+      "processedAt": "2026-11-11T06:31:50+08:00",
       "outputFile": null
     },
     "https://pubmed.ncbi.nlm.nih.gov/42325320/": {
-      "processedAt": "2026-11-06T22:40:00.000Z",
+      "processedAt": "2026-11-11T06:31:50+08:00",
       "outputFile": null
     },
     "https://pubmed.ncbi.nlm.nih.gov/41770781/": {
@@ -895,11 +787,11 @@
       "outputFile": null
     },
     "https://pubmed.ncbi.nlm.nih.gov/41622137/": {
-      "processedAt": "2026-11-06T22:40:00.000Z",
+      "processedAt": "2026-11-11T06:31:50+08:00",
       "outputFile": null
     },
     "https://pubmed.ncbi.nlm.nih.gov/41804836/": {
-      "processedAt": "2026-11-06T22:40:00.000Z",
+      "processedAt": "2026-11-11T06:31:50+08:00",
       "outputFile": null
     },
     "https://pubmed.ncbi.nlm.nih.gov/41769734/": {
@@ -1024,6 +916,90 @@
     },
     "https://www.sciencedaily.com/releases/2026/11/261105081000.htm": {
       "processedAt": "2026-11-09T22:34:49.049Z",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/HHbAdjZ5sQg8nHVyP5QXSQ?typeid=9": {
+      "processedAt": "2026-11-11T06:31:50+08:00",
+      "outputFile": "src/content/news/radar-2026-11-11-06-01.md"
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/57M9H7NQtbjNyO5ygCgNiA?typeid=9": {
+      "processedAt": "2026-11-11T06:31:50+08:00",
+      "outputFile": "src/content/news/radar-2026-11-11-06-01.md"
+    },
+    "https://media.jamanetwork.com/media-releases/10.1001/jama.2026.18126": {
+      "processedAt": "2026-11-11T06:31:50+08:00",
+      "outputFile": "src/content/news/radar-2026-11-11-06-01.md"
+    },
+    "https://doi.org/10.1001/jama.2026.18126": {
+      "processedAt": "2026-11-11T06:31:50+08:00",
+      "outputFile": "src/content/news/radar-2026-11-11-06-01.md"
+    },
+    "PMID:41857820": {
+      "processedAt": "2026-11-11T06:31:50+08:00",
+      "outputFile": null
+    },
+    "PMID:42486145": {
+      "processedAt": "2026-11-11T06:31:50+08:00",
+      "outputFile": null
+    },
+    "PMID:42254024": {
+      "processedAt": "2026-11-11T06:31:50+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42254024/": {
+      "processedAt": "2026-11-11T06:31:50+08:00",
+      "outputFile": null
+    },
+    "PMID:41556351": {
+      "processedAt": "2026-11-11T06:31:50+08:00",
+      "outputFile": null
+    },
+    "PMID:42526758": {
+      "processedAt": "2026-11-11T06:31:50+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42526758/": {
+      "processedAt": "2026-11-11T06:31:50+08:00",
+      "outputFile": null
+    },
+    "PMID:41594884": {
+      "processedAt": "2026-11-11T06:31:50+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41594884/": {
+      "processedAt": "2026-11-11T06:31:50+08:00",
+      "outputFile": null
+    },
+    "PMID:41710102": {
+      "processedAt": "2026-11-11T06:31:50+08:00",
+      "outputFile": null
+    },
+    "PMID:42325320": {
+      "processedAt": "2026-11-11T06:31:50+08:00",
+      "outputFile": null
+    },
+    "PMID:41622137": {
+      "processedAt": "2026-11-11T06:31:50+08:00",
+      "outputFile": null
+    },
+    "PMID:41804836": {
+      "processedAt": "2026-11-11T06:31:50+08:00",
+      "outputFile": null
+    },
+    "PMID:42288917": {
+      "processedAt": "2026-11-11T06:31:50+08:00",
+      "outputFile": null
+    },
+    "PMID:42522010": {
+      "processedAt": "2026-11-11T06:31:50+08:00",
+      "outputFile": null
+    },
+    "PMID:41880968": {
+      "processedAt": "2026-11-11T06:31:50+08:00",
+      "outputFile": null
+    },
+    "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON596": {
+      "processedAt": "2026-11-11T06:31:50+08:00",
       "outputFile": null
     }
   }
