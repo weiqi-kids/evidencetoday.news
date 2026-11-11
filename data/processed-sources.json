@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-11-11T06:31:50+08:00",
+  "lastRun": "2026-11-12T06:50:00+08:00",
   "processed": {
     "https://pubmed.ncbi.nlm.nih.gov/42356328/": {
       "processedAt": "2026-11-08T06:33:55+08:00",
@@ -915,7 +915,7 @@
       "outputFile": "src/content/news/radar-2026-11-10-06-01.md"
     },
     "https://www.sciencedaily.com/releases/2026/11/261105081000.htm": {
-      "processedAt": "2026-11-09T22:34:49.049Z",
+      "processedAt": "2026-11-12T06:50:00+08:00",
       "outputFile": null
     },
     "https://www.cdc.gov.tw/Bulletin/Detail/HHbAdjZ5sQg8nHVyP5QXSQ?typeid=9": {
@@ -1000,6 +1000,58 @@
     },
     "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON596": {
       "processedAt": "2026-11-11T06:31:50+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42588058/": {
+      "processedAt": "2026-11-12T06:50:00+08:00",
+      "outputFile": "src/content/news/radar-2026-11-12-06-01.md"
+    },
+    "PMID:42588058": {
+      "processedAt": "2026-11-12T06:50:00+08:00",
+      "outputFile": "src/content/news/radar-2026-11-12-06-01.md"
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41000008/": {
+      "processedAt": "2026-11-12T06:50:00+08:00",
+      "outputFile": "src/content/news/radar-2026-11-12-06-01.md"
+    },
+    "PMID:41000008": {
+      "processedAt": "2026-11-12T06:50:00+08:00",
+      "outputFile": "src/content/news/radar-2026-11-12-06-01.md"
+    },
+    "https://ods.od.nih.gov/factsheets/Magnesium-HealthProfessional/": {
+      "processedAt": "2026-11-12T06:50:00+08:00",
+      "outputFile": "src/content/news/radar-2026-11-12-06-01.md"
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42582094/": {
+      "processedAt": "2026-11-12T06:50:00+08:00",
+      "outputFile": null
+    },
+    "PMID:42582094": {
+      "processedAt": "2026-11-12T06:50:00+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42547104/": {
+      "processedAt": "2026-11-12T06:50:00+08:00",
+      "outputFile": null
+    },
+    "PMID:42547104": {
+      "processedAt": "2026-11-12T06:50:00+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42356372/": {
+      "processedAt": "2026-11-12T06:50:00+08:00",
+      "outputFile": null
+    },
+    "PMID:42356372": {
+      "processedAt": "2026-11-12T06:50:00+08:00",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/HqTIUKC58EK9fO9AVWU3Cg?typeid=9": {
+      "processedAt": "2026-11-12T06:50:00+08:00",
+      "outputFile": null
+    },
+    "https://www.who.int/news-room/events/detail/2026/01/27/default-calendar/launch-of-the-who-guideline-on-policies-and-interventions-to-create-healthy-school-food-environments": {
+      "processedAt": "2026-11-12T06:50:00+08:00",
       "outputFile": null
     }
   }
