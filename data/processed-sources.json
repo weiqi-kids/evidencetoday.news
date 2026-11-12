@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-11-12T06:50:00+08:00",
+  "lastRun": "2026-11-13T06:35:00+08:00",
   "processed": {
     "https://pubmed.ncbi.nlm.nih.gov/42356328/": {
       "processedAt": "2026-11-08T06:33:55+08:00",
@@ -538,22 +538,6 @@
       "processedAt": "2026-10-26T22:29:45.085Z",
       "outputFile": "src/content/news/radar-2026-10-27-06-01.md"
     },
-    "https://pubmed.ncbi.nlm.nih.gov/41769658/": {
-      "processedAt": "2026-10-29T06:17:00+08:00",
-      "outputFile": null
-    },
-    "PMID:41769658": {
-      "processedAt": "2026-10-29T06:17:00+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/42325726/": {
-      "processedAt": "2026-10-29T06:17:00+08:00",
-      "outputFile": null
-    },
-    "PMID:42325726": {
-      "processedAt": "2026-10-29T06:17:00+08:00",
-      "outputFile": null
-    },
     "https://doi.org/10.1038/s41467-026-77064-4": {
       "processedAt": "2026-10-30T06:27:47+08:00",
       "outputFile": "src/content/news/radar-2026-10-30-06-01.md"
@@ -651,7 +635,7 @@
       "outputFile": null
     },
     "https://pubmed.ncbi.nlm.nih.gov/41695959/": {
-      "processedAt": "2026-10-31T06:40:23.020737+08:00",
+      "processedAt": "2026-11-13T06:35:00+08:00",
       "outputFile": null
     },
     "https://pubmed.ncbi.nlm.nih.gov/42161415/": {
@@ -1052,6 +1036,58 @@
     },
     "https://www.who.int/news-room/events/detail/2026/01/27/default-calendar/launch-of-the-who-guideline-on-policies-and-interventions-to-create-healthy-school-food-environments": {
       "processedAt": "2026-11-12T06:50:00+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41826924/": {
+      "processedAt": "2026-11-13T06:35:00+08:00",
+      "outputFile": null
+    },
+    "PMID:41826924": {
+      "processedAt": "2026-11-13T06:35:00+08:00",
+      "outputFile": null
+    },
+    "https://www.sciencedaily.com/releases/2026/10/261023003337.htm": {
+      "processedAt": "2026-11-13T06:35:00+08:00",
+      "outputFile": null
+    },
+    "https://www.sciencedaily.com/releases/2026/05/260511213144.htm": {
+      "processedAt": "2026-11-13T06:35:00+08:00",
+      "outputFile": null
+    },
+    "https://www.who.int/news/item/28-01-2026-new-who-collaborating-centre-established-to-support-work-on-food-safety-and-healthy-diet": {
+      "processedAt": "2026-11-13T06:35:00+08:00",
+      "outputFile": null
+    },
+    "https://www.nature.com/articles/s41598-026-38360-7": {
+      "processedAt": "2026-11-13T06:35:00+08:00",
+      "outputFile": null
+    },
+    "PMID:41695959": {
+      "processedAt": "2026-11-13T06:35:00+08:00",
+      "outputFile": null
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12816316/": {
+      "processedAt": "2026-11-13T06:35:00+08:00",
+      "outputFile": null
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12910210/": {
+      "processedAt": "2026-11-13T06:35:00+08:00",
+      "outputFile": null
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12665681/": {
+      "processedAt": "2026-11-13T06:35:00+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41333064/": {
+      "processedAt": "2026-11-13T06:35:00+08:00",
+      "outputFile": null
+    },
+    "PMID:41333064": {
+      "processedAt": "2026-11-13T06:35:00+08:00",
+      "outputFile": null
+    },
+    "https://www.medrxiv.org/content/10.1101/2025.08.07.25333265.full.pdf": {
+      "processedAt": "2026-11-13T06:35:00+08:00",
       "outputFile": null
     }
   }
