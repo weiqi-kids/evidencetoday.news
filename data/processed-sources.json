@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-11-13T06:35:00+08:00",
+  "lastRun": "2026-11-14T06:20:00+08:00",
   "processed": {
     "https://pubmed.ncbi.nlm.nih.gov/42356328/": {
       "processedAt": "2026-11-08T06:33:55+08:00",
@@ -558,22 +558,6 @@
       "processedAt": "2026-10-30T06:27:47+08:00",
       "outputFile": "src/content/news/radar-2026-10-30-06-01.md"
     },
-    "https://sciencedaily.com/releases/2026/07/260724061448.htm": {
-      "processedAt": "2026-10-30T06:27:47+08:00",
-      "outputFile": null
-    },
-    "https://doi.org/10.3390/nu18050714": {
-      "processedAt": "2026-10-30T06:27:47+08:00",
-      "outputFile": null
-    },
-    "https://www.eurekalert.org/news-releases/1136477": {
-      "processedAt": "2026-10-30T06:27:47+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/41635649/": {
-      "processedAt": "2026-10-30T06:27:47+08:00",
-      "outputFile": null
-    },
     "https://www.who.int/news/item/12-05-2026-who-launches-revamped-shake-package-to-help-reduce-salt-intake": {
       "processedAt": "2026-10-31T06:40:23.020737+08:00",
       "outputFile": "src/content/news/radar-2026-10-31-06-01.md"
@@ -1088,6 +1072,18 @@
     },
     "https://www.medrxiv.org/content/10.1101/2025.08.07.25333265.full.pdf": {
       "processedAt": "2026-11-13T06:35:00+08:00",
+      "outputFile": null
+    },
+    "https://who.int/news/item/13-11-2026-conflict-and-disease-outbreaks-deepen-dr-congo-s-hunger-crisis-as-record-numbers-are-projected-to-face-acute-food-insecurity": {
+      "processedAt": "2026-11-14T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/GWRkQ03fZuKKWwdv191UyQ?typeid=9": {
+      "processedAt": "2026-11-14T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://www.nature.com/articles/s41591-026-04744-5": {
+      "processedAt": "2026-11-14T06:20:00+08:00",
       "outputFile": null
     }
   }
