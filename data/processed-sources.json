@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-11-14T06:20:00+08:00",
+  "lastRun": "2026-11-15T06:20:00+08:00",
   "processed": {
     "https://pubmed.ncbi.nlm.nih.gov/42356328/": {
       "processedAt": "2026-11-08T06:33:55+08:00",
@@ -570,52 +570,12 @@
       "processedAt": "2026-10-31T06:40:23.020737+08:00",
       "outputFile": "src/content/news/radar-2026-10-31-06-01.md"
     },
-    "https://pubmed.ncbi.nlm.nih.gov/42353595/": {
-      "processedAt": "2026-10-31T06:40:23.020737+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/39194033/": {
-      "processedAt": "2026-10-31T06:40:23.020737+08:00",
-      "outputFile": null
-    },
     "https://pubmed.ncbi.nlm.nih.gov/42288917/": {
       "processedAt": "2026-11-11T06:31:50+08:00",
       "outputFile": null
     },
     "https://pubmed.ncbi.nlm.nih.gov/41880968/": {
       "processedAt": "2026-11-11T06:31:50+08:00",
-      "outputFile": null
-    },
-    "https://www.who.int/health-topics/food-safety": {
-      "processedAt": "2026-10-31T06:40:23.020737+08:00",
-      "outputFile": null
-    },
-    "https://www.mohw.gov.tw/cp-3539-36715-1.html": {
-      "processedAt": "2026-10-31T06:40:23.020737+08:00",
-      "outputFile": null
-    },
-    "https://www.mohw.gov.tw/cp-2627-19174-1.html": {
-      "processedAt": "2026-10-31T06:40:23.020737+08:00",
-      "outputFile": null
-    },
-    "https://www.mohw.gov.tw/cp-6559-76194-1.html": {
-      "processedAt": "2026-10-31T06:40:23.020737+08:00",
-      "outputFile": null
-    },
-    "https://www.mohw.gov.tw/cp-3205-21628-1.html": {
-      "processedAt": "2026-10-31T06:40:23.020737+08:00",
-      "outputFile": null
-    },
-    "https://www.mohw.gov.tw/cp-2638-22395-1.html": {
-      "processedAt": "2026-10-31T06:40:23.020737+08:00",
-      "outputFile": null
-    },
-    "https://www.mohw.gov.tw/cp-2638-22511-1.html": {
-      "processedAt": "2026-10-31T06:40:23.020737+08:00",
-      "outputFile": null
-    },
-    "https://www.mohw.gov.tw/cp-4259-46884-1.html": {
-      "processedAt": "2026-10-31T06:40:23.020737+08:00",
       "outputFile": null
     },
     "https://pubmed.ncbi.nlm.nih.gov/41695959/": {
@@ -1084,6 +1044,46 @@
     },
     "https://www.nature.com/articles/s41591-026-04744-5": {
       "processedAt": "2026-11-14T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://www.newswise.com/articles/new-clinical-study-shows-pasteurized-akkermansia-muciniphila-muct-supports-weight-loss-maintenance": {
+      "processedAt": "2026-11-14T22:23:21.507Z",
+      "outputFile": null
+    },
+    "https://www.nutraingredients.com/Article/2026/07/09/pasteurized-akkermansia-muciniphila-may-help-maintain-weight-loss-after-dieting/": {
+      "processedAt": "2026-11-14T22:23:21.507Z",
+      "outputFile": null
+    },
+    "https://doi.org/10.1038/s41591-026-04394-7": {
+      "processedAt": "2026-11-14T22:23:21.507Z",
+      "outputFile": null
+    },
+    "https://thesouthfirst.com/health/can-probiotics-speed-up-anaemia-recovery-in-children-a-hyderabad-trial-has-the-answer/": {
+      "processedAt": "2026-11-14T22:23:21.507Z",
+      "outputFile": null
+    },
+    "https://telanganatoday.com/early-iron-therapy-cuts-childhood-anaemia-by-nearly-80-per-cent-finds-nin-study": {
+      "processedAt": "2026-11-14T22:23:21.507Z",
+      "outputFile": null
+    },
+    "https://sciencedaily.com/releases/2026/06/260608040017.htm": {
+      "processedAt": "2026-11-14T22:23:21.507Z",
+      "outputFile": null
+    },
+    "https://www.news-medical.net/news/20260425/Ultra-processed-foods-linked-to-measurable-drops-in-human-attention-span.aspx": {
+      "processedAt": "2026-11-14T22:23:21.507Z",
+      "outputFile": null
+    },
+    "https://gero.usc.edu/2026/03/23/mediterranean-diet-mitochondria-health/": {
+      "processedAt": "2026-11-14T22:23:21.507Z",
+      "outputFile": null
+    },
+    "https://www.eurekalert.org/news-releases/1136409": {
+      "processedAt": "2026-11-14T22:23:21.507Z",
+      "outputFile": null
+    },
+    "https://www.healio.com/news/womens-health-ob-gyn/20260727/planetary-health-diet-lowers-cvd-risk-in-older-women": {
+      "processedAt": "2026-11-14T22:23:21.507Z",
       "outputFile": null
     }
   }
