@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-11-15T06:20:00+08:00",
+  "lastRun": "2026-11-16T06:20:00+08:00",
   "processed": {
     "https://pubmed.ncbi.nlm.nih.gov/42356328/": {
       "processedAt": "2026-11-08T06:33:55+08:00",
@@ -602,14 +602,6 @@
       "processedAt": "2026-11-01T06:40:00+08:00",
       "outputFile": "src/content/news/radar-2026-11-01-06-01.md"
     },
-    "https://pubmed.ncbi.nlm.nih.gov/42829807/": {
-      "processedAt": "2026-11-01T06:40:00+08:00",
-      "outputFile": null
-    },
-    "PMID:42829807": {
-      "processedAt": "2026-11-01T06:40:00+08:00",
-      "outputFile": null
-    },
     "https://www.who.int/teams/nutrition-and-food-safety/monitoring-nutritional-status-and-food-safety-and-events/foodborne-disease-estimates/2026-edition": {
       "processedAt": "2026-11-01T22:19:20.170Z",
       "outputFile": null
@@ -1084,6 +1076,30 @@
     },
     "https://www.healio.com/news/womens-health-ob-gyn/20260727/planetary-health-diet-lowers-cvd-risk-in-older-women": {
       "processedAt": "2026-11-14T22:23:21.507Z",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42829807/": {
+      "processedAt": "2026-11-16T06:20:00+08:00",
+      "outputFile": null
+    },
+    "PMID:42829807": {
+      "processedAt": "2026-11-16T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42325726/": {
+      "processedAt": "2026-11-16T06:20:00+08:00",
+      "outputFile": null
+    },
+    "PMID:42325726": {
+      "processedAt": "2026-11-16T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/5gJTj70wu9L3psY5kQLUuA?typeid=9": {
+      "processedAt": "2026-11-16T06:20:00+08:00",
+      "outputFile": null
+    },
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12497593/": {
+      "processedAt": "2026-11-16T06:20:00+08:00",
       "outputFile": null
     }
   }
