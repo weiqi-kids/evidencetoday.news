@@ -118,18 +118,6 @@
       "processedAt": "2026-10-08T06:42:35+08:00",
       "outputFile": "src/content/news/radar-2026-10-08-06-01.md"
     },
-    "PMID:41635649": {
-      "processedAt": "2026-08-18T06:30:00+08:00",
-      "outputFile": "src/content/news/radar-2026-09-03-12-01.md"
-    },
-    "https://onlinelibrary.wiley.com/doi/10.1155/tsm2/6678879": {
-      "processedAt": "2026-08-18T06:30:00+08:00",
-      "outputFile": "src/content/news/radar-2026-09-03-12-01.md"
-    },
-    "PMID:28642676": {
-      "processedAt": "2026-08-18T06:30:00+08:00",
-      "outputFile": "src/content/news/radar-2026-09-03-12-01.md"
-    },
     "https://pubmed.ncbi.nlm.nih.gov/42522010/": {
       "processedAt": "2026-11-11T06:31:50+08:00",
       "outputFile": null
@@ -601,14 +589,6 @@
     "https://www.mohw.gov.tw/cp-2649-20044-1.html": {
       "processedAt": "2026-11-01T06:40:00+08:00",
       "outputFile": "src/content/news/radar-2026-11-01-06-01.md"
-    },
-    "https://www.who.int/teams/nutrition-and-food-safety/monitoring-nutritional-status-and-food-safety-and-events/foodborne-disease-estimates/2026-edition": {
-      "processedAt": "2026-11-01T22:19:20.170Z",
-      "outputFile": null
-    },
-    "https://www.who.int/news-room/events/detail/2026/06/04/default-calendar/who-estimates-of-the-global-burden-of-foodborne-diseases-2000-2021--key-findings-from-the-2026-edition": {
-      "processedAt": "2026-11-01T22:19:20.170Z",
-      "outputFile": null
     },
     "https://pubmed.ncbi.nlm.nih.gov/41703955/": {
       "processedAt": "2026-11-04T06:21:50+08:00",
