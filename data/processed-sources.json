@@ -1,7 +1,55 @@
 {
   "version": 1,
-  "lastRun": "2026-11-16T06:20:00+08:00",
+  "lastRun": "2026-11-18T06:24:00+08:00",
   "processed": {
+    "https://pubmed.ncbi.nlm.nih.gov/41635649/": {
+      "processedAt": "2026-11-18T06:24:00+08:00",
+      "outputFile": "src/content/news/radar-2026-11-18-06-01.md"
+    },
+    "PMID:41635649": {
+      "processedAt": "2026-11-18T06:24:00+08:00",
+      "outputFile": "src/content/news/radar-2026-11-18-06-01.md"
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12862422/": {
+      "processedAt": "2026-11-18T06:24:00+08:00",
+      "outputFile": "src/content/news/radar-2026-11-18-06-01.md"
+    },
+    "https://doi.org/10.1155/tsm2/5557511": {
+      "processedAt": "2026-11-18T06:24:00+08:00",
+      "outputFile": "src/content/news/radar-2026-11-18-06-01.md"
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/43025379": {
+      "processedAt": "2026-11-18T06:24:00+08:00",
+      "outputFile": null
+    },
+    "PMID:43025379": {
+      "processedAt": "2026-11-18T06:24:00+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42954150": {
+      "processedAt": "2026-11-18T06:24:00+08:00",
+      "outputFile": null
+    },
+    "PMID:42954150": {
+      "processedAt": "2026-11-18T06:24:00+08:00",
+      "outputFile": null
+    },
+    "https://www.eurekalert.org/news-releases/1112685": {
+      "processedAt": "2026-11-18T06:24:00+08:00",
+      "outputFile": null
+    },
+    "https://www.who.int/news/item/04-06-2026-unsafe-food-causes-866-million-illnesses-and-1.5-million-deaths-annually--young-children-at-highest-risk": {
+      "processedAt": "2026-11-18T06:24:00+08:00",
+      "outputFile": null
+    },
+    "https://www.who.int/news-room/events/detail/2026/06/09/default-calendar/webinar-series--who-estimates-of-the-global-burden-of-foodborne-diseases-2000-2021--key-findings-from-the-2026-edition": {
+      "processedAt": "2026-11-18T06:24:00+08:00",
+      "outputFile": null
+    },
+    "https://www.who.int/news-room/events/detail/2026/06/04/default-calendar/who-estimates-of-the-global-burden-of-foodborne-diseases-2000-2021--key-findings-from-the-2026-edition": {
+      "processedAt": "2026-11-18T06:24:00+08:00",
+      "outputFile": null
+    },
     "https://pubmed.ncbi.nlm.nih.gov/42356328/": {
       "processedAt": "2026-11-08T06:33:55+08:00",
       "outputFile": "src/content/news/radar-2026-11-08-06-01.md"
@@ -77,14 +125,6 @@
     "https://www.cdc.gov.tw/Bulletin/Detail/WRYbuXJOF_tHjXPtZ49t7w?typeid=9": {
       "processedAt": "2026-11-03T06:22:00+08:00",
       "outputFile": "src/content/news/radar-2026-11-03-06-01.md"
-    },
-    "PMID:41770781": {
-      "processedAt": "2026-11-03T06:22:00+08:00",
-      "outputFile": null
-    },
-    "https://www.who.int/news/item/04-06-2026-unsafe-food-causes-866-million-illnesses-and-1.5-million-deaths-annually--young-children-at-highest-risk": {
-      "processedAt": "2026-11-03T06:22:00+08:00",
-      "outputFile": null
     },
     "https://www.who.int/news/item/07-10-2026-who-issues-first-global-guidelines-on-child-and-adolescent-obesity": {
       "processedAt": "2026-10-26T06:30:25+08:00",
@@ -589,50 +629,6 @@
     "https://www.mohw.gov.tw/cp-2649-20044-1.html": {
       "processedAt": "2026-11-01T06:40:00+08:00",
       "outputFile": "src/content/news/radar-2026-11-01-06-01.md"
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/41703955/": {
-      "processedAt": "2026-11-04T06:21:50+08:00",
-      "outputFile": null
-    },
-    "PMID:41703955": {
-      "processedAt": "2026-11-04T06:21:50+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/41752284/": {
-      "processedAt": "2026-11-04T06:21:50+08:00",
-      "outputFile": null
-    },
-    "PMID:41752284": {
-      "processedAt": "2026-11-04T06:21:50+08:00",
-      "outputFile": null
-    },
-    "https://www.who.int/publications/m/item/the-state-of-food-security-and-nutrition-in-the-world-2026": {
-      "processedAt": "2026-11-04T06:21:50+08:00",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Bulletin/Detail/tz2P9orbtrR-NVR2Y39hnw?typeid=9": {
-      "processedAt": "2026-11-04T06:21:50+08:00",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Bulletin/Detail/Kl-dYW_M2aSFaW8xaIuJ5A?typeid=9": {
-      "processedAt": "2026-11-04T06:21:50+08:00",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Bulletin/Detail/ku4WPcnJo-Aa9BGG8xbTdw?typeid=9": {
-      "processedAt": "2026-11-04T06:21:50+08:00",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Bulletin/Detail/LUvxIinGi9Qg2w2CeEBVVA?typeid=9": {
-      "processedAt": "2026-11-04T06:21:50+08:00",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Bulletin/Detail/ZE59NhApqeBL6fVS-Qau9g?typeid=9": {
-      "processedAt": "2026-11-04T06:21:50+08:00",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Bulletin/Detail/Tll3Ml65fE-L7yckw9ttxA?typeid=9": {
-      "processedAt": "2026-11-04T06:21:50+08:00",
-      "outputFile": null
     },
     "https://pubmed.ncbi.nlm.nih.gov/41871887/": {
       "processedAt": "2026-11-06T22:40:00.000Z",
