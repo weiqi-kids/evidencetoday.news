@@ -16,6 +16,7 @@
 ### 結構區塊（從上到下）
 
 1. **Hero**：HeroParticles canvas + catch phrase + CTA buttons
+1.2. **本日有據至今 數字條**（`#site-stats`，`SiteStats.astro`）：已公開篇數與可點來源數，進入畫面時數字滾動到定位（見下方「本日有據至今 數字條」）
 1.5. **編輯精選**（`#editors-pick`）：圖像導向，主焦點大圖 + 側欄縮圖清單（取代舊的 Hero 右側焦點卡）
 2. **熱門分類**：6 個分類卡（最新文章、迷思破解、認識主編 等）
 3. **熱門趨勢**：TrendBubbles d3-force 視覺化 + 最新文章列表
@@ -63,6 +64,17 @@
 ### Hero 細節
 
 > Hero 已收斂為**單欄品牌報頭**（`hero__inner` 單欄、mobile-first）：只有左側 catch phrase + CTA + trust cards，**不再內嵌右側焦點卡**。焦點內容改放下方獨立的「編輯精選」區。
+
+### 本日有據至今 數字條（`SiteStats.astro`）
+
+Hero 正下方、編輯精選之前的一排四張白卡：文章、闢謠、成分解析篇數，加上全站可點來源數。
+
+- **數字一律 build 時算，禁止寫死**：`index.astro` 的 `siteStats` 從已公開的 collection（`getPublishedArticles()`、`isPublicEntry` 過濾的 myths／ingredients／news）計算；來源數只算 `references[].url` 為 http(s) 的筆數，與 `check-spec` 的「可點來源」同一判準。排程稿不算進去
+- **SSR 輸出真正的數字文字**：搜尋引擎、AI 摘要、關掉 JS 的讀者讀到的都是正確數字。滾動用的 0–9 數字條由元件內 client script 產生、標 `aria-hidden`，原數字移進 `.sr-only` 給螢幕閱讀器。不要改成 SSR 直接輸出 0–9 數字條，那會讓頁面文字變成一串亂碼
+- **動畫只在進入畫面時播一次**（IntersectionObserver，threshold 0.4）。系統設定「減少動態效果」或瀏覽器不支援 IntersectionObserver 時不做任何替換，直接顯示數字；global.css 的 reduced-motion reset 也會把 transition 壓到 0
+- 數字條元素是 script 產生的，沒有 Astro scope 屬性，樣式要寫 `.site-stats :global(.roll…)`
+- RWD mobile-first：手機 2 欄、`≥1024` 4 欄；數字字級走 `var(--text-h1)`，數字色走分類色 token（`--color-cat-article`／`-myth`／`-ingredient`，來源數用 `--color-navy`）
+- 前三張卡連到各列表頁；來源數那張沒有連結
 
 ### 編輯精選區（首頁編輯層級，圖像導向）
 
@@ -117,6 +129,7 @@
 - [ ] Lighthouse CI: Perf≥90 / SEO≥95 / A11y≥95 / BP≥90
 - [ ] OG image 顯示正確（fb sharing debugger 或 twitter card validator）
 - [ ] HeroParticles 在 desktop 流暢、mobile 隱藏（不浪費 CPU）
+- [ ] 數字條：@375 兩欄、@1280 四欄；捲到時數字滾動一次；關掉 JS 或開「減少動態效果」時直接顯示正確數字
 - [ ] pnpm build 零錯誤
 ```
 

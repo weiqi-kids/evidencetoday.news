@@ -12,6 +12,7 @@ import VideoCard from '@/components/blocks/VideoCard.astro';
 // NewsCard = 直式卡片，用在多欄格線的「最新內容」區。兩者不可互換。
 import NewsItem from '@/components/blocks/NewsItem.astro';
 import NewsCard from '@/components/blocks/NewsCard.astro';
+import SiteStats from '@/components/blocks/SiteStats.astro';
 import HeroParticles from '@/components/charts/HeroParticles.svelte';
 import TrendBubbles from '@/components/charts/TrendBubbles.svelte';
 import { getTopTags } from '@/utils/tag-stats';
@@ -58,6 +59,25 @@ const allVideos = videoItemsSchema.safeParse(shortsData).success ? videoItemsSch
 
 const allNews = (await getCollection('news', (e) => isPublicEntry(e.data)))
   .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
+
+// 「本日有據至今」數字條：build 時從已公開內容計算，不寫死。來源數只算 references 裡
+// url 為 http(s) 的「可點來源」（與 check-spec 的可點來源同一判準）。
+const countClickableRefs = (entries: { data: { references?: { url?: string }[] } }[]) =>
+  entries.reduce(
+    (sum, e) => sum + (e.data.references ?? []).filter((r) => typeof r.url === 'string' && /^https?:\/\//.test(r.url)).length,
+    0,
+  );
+const siteStats = [
+  { value: allArticles.length, label: '篇文章', note: '買、吃、帶回台灣之前的判斷', href: '/articles/', tone: 'article' as const },
+  { value: allMyths.length, label: '則闢謠', note: '流傳說法逐條對照研究', href: '/myths/', tone: 'myth' as const },
+  { value: allIngredients.length, label: '個成分解析', note: '劑量、證據強度與台灣法規', href: '/ingredients/', tone: 'ingredient' as const },
+  {
+    value: countClickableRefs(allArticles) + countClickableRefs(allMyths) + countClickableRefs(allIngredients) + countClickableRefs(allNews),
+    label: '筆可點開的來源',
+    note: '研究、法規與官方公告原文',
+    tone: 'source' as const,
+  },
+];
 
 // 健康專題卡片縮圖：從各主題自動歸入的文章／成分解析取代表封面（缺圖退回品牌佔位）。
 const topicCards = TOPICS.map((topic) => ({
@@ -268,6 +288,11 @@ const categories = [
       </div>
     </div>
   </section>
+
+  <!-- ============================================================== -->
+  <!--  1.2 本日有據至今（數字條，build 時計算）                          -->
+  <!-- ============================================================== -->
+  <SiteStats stats={siteStats} />
 
   <!-- ============================================================== -->
   <!--  1.5 編輯精選（圖像導向：主圖 + 側欄清單）                        -->
