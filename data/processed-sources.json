@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-11-19T06:17:28+08:00",
+  "lastRun": "2026-11-19T22:37:02.530Z",
   "processed": {
     "https://pubmed.ncbi.nlm.nih.gov/41635649/": {
       "processedAt": "2026-11-18T06:24:00+08:00",
@@ -1077,6 +1077,18 @@
     "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12497593/": {
       "processedAt": "2026-11-16T06:20:00+08:00",
       "outputFile": null
+    },
+    "https://mohw.gov.tw/cp-16-88422-1.html": {
+      "processedAt": "2026-11-19T22:37:02.530Z",
+      "outputFile": "src/content/news/radar-2026-11-20-06-01.md"
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/vwMq9VkXIaV7FHyJgpk-5w?typeid=9": {
+      "processedAt": "2026-11-19T22:37:02.530Z",
+      "outputFile": "src/content/news/radar-2026-11-20-06-01.md"
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC11842130": {
+      "processedAt": "2026-11-19T22:37:02.530Z",
+      "outputFile": "src/content/news/radar-2026-11-20-06-01.md"
     }
   }
 }
