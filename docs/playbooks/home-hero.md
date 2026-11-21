@@ -70,8 +70,8 @@
 Hero 正下方、編輯精選之前的一排四張白卡：文章、闢謠、成分解析篇數，加上全站可點來源數。
 
 - **數字一律 build 時算，禁止寫死**：`index.astro` 的 `siteStats` 從已公開的 collection（`getPublishedArticles()`、`isPublicEntry` 過濾的 myths／ingredients／news）計算；來源數只算 `references[].url` 為 http(s) 的筆數，與 `check-spec` 的「可點來源」同一判準。排程稿不算進去
-- **SSR 輸出真正的數字文字**：搜尋引擎、AI 摘要、關掉 JS 的讀者讀到的都是正確數字。滾動用的 0–9 數字條由元件內 client script 產生、標 `aria-hidden`，原數字移進 `.sr-only` 給螢幕閱讀器。不要改成 SSR 直接輸出 0–9 數字條，那會讓頁面文字變成一串亂碼
-- **動畫只在進入畫面時播一次**（IntersectionObserver，threshold 0.4）。系統設定「減少動態效果」或瀏覽器不支援 IntersectionObserver 時不做任何替換，直接顯示數字；global.css 的 reduced-motion reset 也會把 transition 壓到 0
+- **SSR 輸出真正的數字文字**：搜尋引擎、AI 摘要、關掉 JS 的讀者讀到的都是正確數字。滾動用的數字條由元件內 client script 產生、標 `aria-hidden`，原數字移進 `.sr-only` 給螢幕閱讀器。數字條裡的 0–9 用 `::before { content: attr(data-n) }` 畫，**不寫進 DOM 文字**：會執行 JS 的爬蟲（Googlebot 算繪）讀到的頁面文字才不會多出一串 0123456789。不要改成 SSR 或 textContent 輸出 0–9
+- **動畫只在進入畫面時播一次**（IntersectionObserver，threshold 0.4）。數字條是在 IntersectionObserver 觸發時才產生的，在那之前畫面上一直是真實數字；不要改成載入時就先換成數字條，否則觀察器沒觸發時會停在一排 0。系統設定「減少動態效果」或瀏覽器不支援 IntersectionObserver 時不做任何替換，直接顯示數字；global.css 的 reduced-motion reset 也會把 transition 壓到 0
 - 數字條元素是 script 產生的，沒有 Astro scope 屬性，樣式要寫 `.site-stats :global(.roll…)`
 - RWD mobile-first：手機 2 欄、`≥1024` 4 欄；數字字級走 `var(--text-h1)`，數字色走分類色 token（`--color-cat-article`／`-myth`／`-ingredient`，來源數用 `--color-navy`）
 - 前三張卡連到各列表頁；來源數那張沒有連結

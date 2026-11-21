@@ -3,8 +3,9 @@
  * 首頁「本日有據至今」數字條：已公開篇數與可點來源數，進入畫面時數字像里程表一樣滾到定位。
  *
  * - 數字在 build 時由呼叫端（index.astro）從 collection 算好傳入，不寫死、不手改
- * - SSR 輸出的是真正的數字文字（搜尋引擎、AI 摘要、無 JS 讀者都讀得到）；滾動用的數字條由
- *   client script 動態產生並標 aria-hidden，真正的數字保留在 .sr-only 給螢幕閱讀器
+ * - SSR 輸出的是真正的數字文字（搜尋引擎、AI 摘要、無 JS 讀者都讀得到）；滾動用的數字條在
+ *   捲到這一區時才由 client script 產生並標 aria-hidden，0–9 用 ::before 畫、不進 DOM 文字，
+ *   真正的數字保留在 .sr-only 給螢幕閱讀器
  * - 系統設定「減少動態效果」或瀏覽器不支援 IntersectionObserver 時，不做任何替換，直接顯示數字
  * - 版面規則見 docs/playbooks/home-hero.md「本日有據至今 數字條」
  */
@@ -48,7 +49,11 @@ const fmt = (n: number) => n.toLocaleString('en-US');
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const nums = Array.from(document.querySelectorAll<HTMLElement>('.site-stats__num[data-roll]'));
 
-  if (!reduce && 'IntersectionObserver' in window && nums.length > 0) {
+  // 數字條只在「真的捲到這一區」時才產生：在那之前畫面上一直是 SSR 的真實數字，
+  // 就算 IntersectionObserver 因故沒觸發，也不會停在一排 0。
+  // 0–9 用 ::before { content: attr(data-n) } 畫，不寫進 DOM 文字，
+  // 讓會執行 JS 的爬蟲（含 Googlebot 算繪）讀到的頁面文字仍只有真實數字。
+  const buildRolls = () => {
     nums.forEach((el, statIndex) => {
       const text = el.textContent ?? '';
       const label = document.createElement('span');
@@ -70,7 +75,7 @@ const fmt = (n: number) => n.toLocaleString('en-US');
           for (let n = 0; n <= 9; n += 1) {
             const cell = document.createElement('span');
             cell.className = 'roll__cell';
-            cell.textContent = String(n);
+            cell.dataset.n = String(n);
             strip.appendChild(cell);
           }
           win.appendChild(strip);
@@ -79,26 +84,27 @@ const fmt = (n: number) => n.toLocaleString('en-US');
         } else {
           const sep = document.createElement('span');
           sep.className = 'roll__sep';
-          sep.textContent = ch;
+          sep.dataset.n = ch;
           roll.appendChild(sep);
         }
       }
       el.replaceChildren(label, roll);
     });
+  };
 
-    const grid = document.querySelector('.site-stats__grid');
-    if (grid) {
-      const io = new IntersectionObserver(
-        (entries) => {
-          if (entries.some((e) => e.isIntersecting)) {
-            grid.classList.add('is-rolled');
-            io.disconnect();
-          }
-        },
-        { threshold: 0.4 },
-      );
-      io.observe(grid);
-    }
+  const grid = document.querySelector('.site-stats__grid');
+  if (!reduce && 'IntersectionObserver' in window && grid && nums.length > 0) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        io.disconnect();
+        buildRolls();
+        // 先讓數字條以 0 的位置畫出一幀，下一幀再加 class 觸發 transition
+        requestAnimationFrame(() => requestAnimationFrame(() => grid.classList.add('is-rolled')));
+      },
+      { threshold: 0.4 },
+    );
+    io.observe(grid);
   }
 </script>
 
@@ -217,5 +223,10 @@ const fmt = (n: number) => n.toLocaleString('en-US');
     display: block;
     height: 1.15em;
     line-height: 1.15em;
+  }
+
+  .site-stats :global(.roll__cell)::before,
+  .site-stats :global(.roll__sep)::before {
+    content: attr(data-n);
   }
 </style>
