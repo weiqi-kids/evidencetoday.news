@@ -1680,7 +1680,7 @@
    "source": "site-gap",
    "rationale": "站上沒有骨密度報告的判讀文。",
    "suggestedAngle": "FRAX 風險評估與健保給付條件；超音波骨密度與 DXA 的差別。可連到叢集二的骨鬆藥與類固醇兩篇。",
-   "slug": null,
+   "slug": "articles/bone-ultrasound-osteoporosis-need-dxa",
    "collisionCheck": {
     "checkedAt": "2026-11-22T12:00:00+08:00",
     "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：骨超音波; 跟骨; 超音波骨; 定量超音波",
@@ -1689,10 +1689,10 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "publishedAt": null,
+   "publishedAt": "2026-12-07",
    "rejectedReason": null,
    "notes": "改寫角度：健檢骨質超音波說骨質疏鬆，還要再做 DXA 骨密度檢查嗎？（articles/bone-ultrasound-osteoporosis-need-dxa，排程 2026-12-07）"
   },
@@ -3241,11 +3241,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "articles/pqq-taiwan-legal-japan-functional-food",
+   "publishedAt": "2026-12-06",
    "rejectedReason": null,
    "notes": "排程 2026-12-06｜系列：新成分在台灣合不合法系列"
   },
@@ -3266,11 +3266,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "ingredients/danshen",
+   "publishedAt": "2026-12-07",
    "rejectedReason": null,
    "notes": "排程 2026-12-07"
   },
@@ -3291,11 +3291,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "articles/motion-sickness-medicine-children-flight-age",
+   "publishedAt": "2026-12-08",
    "rejectedReason": null,
    "notes": "排程 2026-12-08｜系列：出國前後：藥與保健品怎麼帶怎麼寄系列"
   },
@@ -3316,11 +3316,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "myths/protein-shortage-breaks-down-muscle-myth",
+   "publishedAt": "2026-12-08",
    "rejectedReason": null,
    "notes": "排程 2026-12-08"
   },
@@ -3342,11 +3342,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "articles/paxlovid-regular-medication-interactions",
+   "publishedAt": "2026-12-09",
    "rejectedReason": null,
    "notes": "排程 2026-12-09｜系列：冬季感冒用藥系列"
   },
@@ -3367,11 +3367,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "ingredients/vitamin-b6",
+   "publishedAt": "2026-12-09",
    "rejectedReason": null,
    "notes": "排程 2026-12-09"
   },
@@ -3394,11 +3394,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "articles/winter-leftover-soup-overnight-room-temp-balcony",
+   "publishedAt": "2026-12-10",
    "rejectedReason": null,
    "notes": "排程 2026-12-10｜系列：冬天剩菜與年節食物保存系列"
   },
@@ -3418,11 +3418,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "articles/emergency-contraception-abroad-pharmacy-taiwan",
+   "publishedAt": "2026-12-11",
    "rejectedReason": null,
    "notes": "排程 2026-12-11｜系列：出國前後：藥與保健品怎麼帶怎麼寄系列"
   },
@@ -3443,11 +3443,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "ingredients/chamomile",
+   "publishedAt": "2026-12-11",
    "rejectedReason": null,
    "notes": "排程 2026-12-11"
   },
@@ -3468,11 +3468,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "myths/bottled-water-cap-color-myth",
+   "publishedAt": "2026-12-11",
    "rejectedReason": null,
    "notes": "排程 2026-12-11"
   },
@@ -3493,11 +3493,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "articles/children-cough-syrup-codeine-dextromethorphan-age",
+   "publishedAt": "2026-12-12",
    "rejectedReason": null,
    "notes": "排程 2026-12-12｜系列：冬季感冒用藥系列"
   },
@@ -3518,11 +3518,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "articles/cancer-generic-drugs-india-bangladesh-mail-taiwan",
+   "publishedAt": "2026-12-13",
    "rejectedReason": null,
    "notes": "排程 2026-12-13"
   },
@@ -3543,11 +3543,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "articles/cream-cake-room-temperature-how-long",
+   "publishedAt": "2026-12-14",
    "rejectedReason": null,
    "notes": "排程 2026-12-14｜系列：冬天剩菜與年節食物保存系列"
   },
@@ -3568,11 +3568,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "ingredients/dhea",
+   "publishedAt": "2026-12-14",
    "rejectedReason": null,
    "notes": "排程 2026-12-14"
   },
@@ -3593,11 +3593,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "myths/mushroom-eggplant-food-combination-poison-myth",
+   "publishedAt": "2026-12-14",
    "rejectedReason": null,
    "notes": "排程 2026-12-14"
   },
@@ -3618,11 +3618,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "articles/mammogram-birads-0-3-next-step",
+   "publishedAt": "2026-12-15",
    "rejectedReason": null,
    "notes": "排程 2026-12-15｜系列：健檢報告看不懂系列：影像與癌篩報告"
   },
@@ -3643,11 +3643,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "articles/cold-allergy-medicine-driving-drugged-driving-law",
+   "publishedAt": "2026-12-16",
    "rejectedReason": null,
    "notes": "排程 2026-12-16｜系列：冬季感冒用藥系列"
   },
@@ -3668,11 +3668,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "ingredients/niacin",
+   "publishedAt": "2026-12-16",
    "rejectedReason": null,
    "notes": "排程 2026-12-16"
   },
@@ -3693,11 +3693,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "articles/antidepressant-cough-medicine-dextromethorphan",
+   "publishedAt": "2026-12-17",
    "rejectedReason": null,
    "notes": "排程 2026-12-17｜系列：冬季感冒用藥系列"
   },
@@ -3718,11 +3718,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "myths/salt-brushing-gum-disease-myth",
+   "publishedAt": "2026-12-17",
    "rejectedReason": null,
    "notes": "排程 2026-12-17"
   },
@@ -3744,11 +3744,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "articles/japan-korea-hangover-pills-drinks-bring-back-taiwan",
+   "publishedAt": "2026-12-18",
    "rejectedReason": null,
    "notes": "排程 2026-12-18｜系列：出國前後：藥與保健品怎麼帶怎麼寄系列"
   },
@@ -3768,11 +3768,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "ingredients/artichoke",
+   "publishedAt": "2026-12-18",
    "rejectedReason": null,
    "notes": "排程 2026-12-18"
   },
