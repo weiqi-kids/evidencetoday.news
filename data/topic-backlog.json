@@ -1,6 +1,6 @@
 {
  "schemaVersion": 2,
- "updatedAt": "2026-11-21T22:00:00+08:00",
+ "updatedAt": "2026-11-22T12:00:00+08:00",
  "layer": "public",
  "localLayer": "data/topic-backlog.local.json",
  "note": "本檔是公開層：只放防撞題與工作流欄位。查詢字串、曝光／排名、需求分在本地層（gitignore），以 id 對應。本地層不存在時所有欄位仍可用，只是看不到需求數據。",
@@ -1682,17 +1682,19 @@
    "suggestedAngle": "FRAX 風險評估與健保給付條件；超音波骨密度與 DXA 的差別。可連到叢集二的骨鬆藥與類固醇兩篇。",
    "slug": null,
    "collisionCheck": {
-    "checkedAt": "2026-09-21",
-    "method": "以主題詞對 src/content/articles 與 myths 的 title 做正則比對，並人工讀過同叢集既有篇目",
-    "matchedSlugs": [],
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：骨超音波; 跟骨; 超音波骨; 定量超音波",
+    "matchedSlugs": [
+     "articles/osteoporosis-dxa-frax-prevention-guide"
+    ],
     "verdict": "clear"
    },
-   "status": "rejected",
-   "claimedBy": null,
-   "claimedAt": null,
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
    "publishedAt": null,
-   "rejectedReason": "撞題：骨鬆完整指南已有 DXA 與 T 值、FRAX、健保給付三節；可改寫成「跟骨超音波說骨鬆要不要再做 DXA」另提",
-   "notes": "叢集三｜健檢報告紅字。規劃見 docs/audits/2026-09-21-three-topic-clusters-plan.md"
+   "rejectedReason": null,
+   "notes": "改寫角度：健檢骨質超音波說骨質疏鬆，還要再做 DXA 骨密度檢查嗎？（articles/bone-ultrasound-osteoporosis-need-dxa，排程 2026-12-07）"
   },
   {
    "id": "tumor-markers-cea-ca125-afp-high-not-cancer",
@@ -2812,6 +2814,1525 @@
    "publishedAt": "2026-12-30",
    "rejectedReason": null,
    "notes": "排程 2026-12-30｜流傳依據見主 session plan.json"
+  },
+  {
+   "id": "cold-medicine-high-blood-pressure-pseudoephedrine",
+   "topic": "有高血壓，感冒藥要怎麼挑？綜合感冒藥裡的鼻塞成分會讓血壓升高嗎",
+   "queryPattern": "decision-guide",
+   "contentType": "articles",
+   "source": "editor",
+   "rationale": "系列：冬季感冒用藥系列。叢集二：正在吃藥的人",
+   "suggestedAngle": "台灣常見綜合感冒藥成分類別 × 對血壓的影響 × 替代選項 對照表；在藥局問藥師的三個問題",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：偽麻黃鹼; pseudoephedrine; phenylephrine; 苯腎上腺素; 鼻塞藥; 去鼻充血; 感冒藥 高血壓",
+    "matchedSlugs": [
+     "articles/us-costco-otc-supplements-bring-back-taiwan",
+     "articles/take-prescription-medicine-abroad-from-taiwan",
+     "articles/hypertension-130-80-home-bp-guide",
+     "articles/blood-pressure-meds-potassium-low-sodium-salt"
+    ],
+    "verdict": "clear"
+   },
+   "status": "written",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": "articles/cold-medicine-high-blood-pressure-pseudoephedrine",
+   "publishedAt": "2026-11-26",
+   "rejectedReason": null,
+   "notes": "排程 2026-11-26｜系列：冬季感冒用藥系列"
+  },
+  {
+   "id": "korea-diet-clinic-pills-bring-back-taiwan",
+   "topic": "在韓國減肥診所拿的減肥藥，帶回台灣會被當成毒品嗎？",
+   "queryPattern": "taiwan-regulation-market",
+   "contentType": "articles",
+   "source": "editor",
+   "rationale": "系列：出國前後：藥與保健品怎麼帶怎麼寄系列。叢集一：跨境與法規",
+   "suggestedAngle": "韓國減肥處方常見成分 × 台灣管制分級 × 能否攜帶 × 被查到後的處理 對照表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：phentermine; 芬特明; 韓國減肥藥; 蝴蝶藥; 減肥處方; 食慾抑制; sibutramine; 西布曲明",
+    "matchedSlugs": [
+     "articles/korea-drugstore-medicine-bring-back-taiwan",
+     "articles/glp1-weight-loss-drugs-bring-back-taiwan-legal-risk",
+     "articles/customs-seized-medicine-what-happens-next"
+    ],
+    "verdict": "clear"
+   },
+   "status": "written",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": "articles/korea-diet-clinic-pills-bring-back-taiwan",
+   "publishedAt": "2026-11-27",
+   "rejectedReason": null,
+   "notes": "排程 2026-11-27｜系列：出國前後：藥與保健品怎麼帶怎麼寄系列"
+  },
+  {
+   "id": "mail-medicine-to-family-studying-abroad",
+   "topic": "寄藥和保健品給在日本、美國讀書工作的家人，哪些會被對方海關擋下？",
+   "queryPattern": "taiwan-regulation-market",
+   "contentType": "articles",
+   "source": "editor",
+   "rationale": "系列：出國前後：藥與保健品怎麼帶怎麼寄系列。叢集一：跨境與法規",
+   "suggestedAngle": "目的地（日、美、澳、加、英）× 可寄品項 × 數量上限 × 需附文件 對照表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：寄藥; 寄到國外; 寄出國; 留學",
+    "matchedSlugs": [
+     "articles/take-prescription-medicine-abroad-from-taiwan",
+     "articles/overseas-online-supplements-mail-to-taiwan-rules"
+    ],
+    "verdict": "clear"
+   },
+   "status": "written",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": "articles/mail-medicine-to-family-studying-abroad",
+   "publishedAt": "2026-11-28",
+   "rejectedReason": null,
+   "notes": "排程 2026-11-28｜系列：出國前後：藥與保健品怎麼帶怎麼寄系列"
+  },
+  {
+   "id": "new-zealand-australia-placenta-deer-antler-bring-back-taiwan",
+   "topic": "紐西蘭、澳洲買的羊胎素、鹿茸膠囊，帶回台灣算食品還是藥？",
+   "queryPattern": "taiwan-regulation-market",
+   "contentType": "articles",
+   "source": "editor",
+   "rationale": "系列：出國前後：藥與保健品怎麼帶怎麼寄系列。叢集一：跨境與法規",
+   "suggestedAngle": "產品型態（乾燥粉、萃取物、注射用）× 台灣分類 × 能否攜帶與數量 對照表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：羊胎素; 胎盤素; placenta; 鹿胎盤; 鹿茸; 紐西蘭; 麥蘆卡; manuka",
+    "matchedSlugs": [
+     "articles/australia-supplements-bring-back-taiwan",
+     "ingredients/gui-lu-er-xian-jiao",
+     "myths/height-growth-tonic-myth"
+    ],
+    "verdict": "clear"
+   },
+   "status": "written",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": "articles/new-zealand-australia-placenta-deer-antler-bring-back-taiwan",
+   "publishedAt": "2026-11-29",
+   "rejectedReason": null,
+   "notes": "排程 2026-11-29｜系列：出國前後：藥與保健品怎麼帶怎麼寄系列"
+  },
+  {
+   "id": "boiled-vegetables-chicken-breast-pancreatitis-myth",
+   "topic": "只吃水煮菜配雞胸肉，會吃出胰臟炎？",
+   "queryPattern": null,
+   "contentType": "myths",
+   "source": "editor",
+   "rationale": "myths",
+   "suggestedAngle": "說法拆解：極低油 → 膽汁滯留 → 膽結石 → 膽源性胰臟炎，每一環的證據強度表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：胰臟炎; 雞胸肉; 水煮餐",
+    "matchedSlugs": [
+     "myths/keto-diet-for-everyone-myth",
+     "articles/glp1-wegovy-complete-guide-nutrition"
+    ],
+    "verdict": "clear"
+   },
+   "status": "written",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": "myths/boiled-vegetables-chicken-breast-pancreatitis-myth",
+   "publishedAt": "2026-11-29",
+   "rejectedReason": null,
+   "notes": "排程 2026-11-29"
+  },
+  {
+   "id": "thermal-food-jar-porridge-soup-lunch-safe",
+   "topic": "早上用燜燒罐裝粥、湯帶去公司，放到中午還安全嗎？",
+   "queryPattern": "decision-guide",
+   "contentType": "articles",
+   "source": "editor",
+   "rationale": "系列：冬天剩菜與年節食物保存系列。食安保存",
+   "suggestedAngle": "預熱與否 × 裝填溫度 × 經過時數 × 內容物溫度 對照表（依文獻與官方溫度原則）",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：燜燒; 保溫瓶; 保溫罐; 保溫便當",
+    "matchedSlugs": [
+     "articles/lunchbox-refrigerate-then-microwave",
+     "articles/lunchbox-noon-to-evening-safe",
+     "articles/buffet-warming-tray-how-long"
+    ],
+    "verdict": "clear"
+   },
+   "status": "written",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": "articles/thermal-food-jar-porridge-soup-lunch-safe",
+   "publishedAt": "2026-11-30",
+   "rejectedReason": null,
+   "notes": "排程 2026-11-30｜系列：冬天剩菜與年節食物保存系列"
+  },
+  {
+   "id": "tudca",
+   "topic": "TUDCA（牛磺熊去氧膽酸）",
+   "queryPattern": null,
+   "contentType": "ingredients",
+   "source": "search-gap",
+   "rationale": "ingredients（insights 查詢需求＋站內連結缺口）",
+   "suggestedAngle": "TUDCA、UDCA、水飛薊 的法規位置 × 證據 × 禁忌 對照表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：tudca; 牛磺熊去氧膽酸; 熊去氧膽酸; ursodeoxycholic",
+    "matchedSlugs": [
+     "articles/liver-supplement-comparison-silymarin-artichoke-tudca",
+     "ingredients/milk-thistle"
+    ],
+    "verdict": "clear"
+   },
+   "status": "written",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": "ingredients/tudca",
+   "publishedAt": "2026-11-30",
+   "rejectedReason": null,
+   "notes": "排程 2026-11-30"
+  },
+  {
+   "id": "measles-vaccine-before-travel-japan-korea",
+   "topic": "寒假要去日本、韓國或東南亞，出發前需要補打麻疹疫苗嗎？",
+   "queryPattern": "decision-guide",
+   "contentType": "articles",
+   "source": "editor",
+   "rationale": "系列：出國前後：藥與保健品怎麼帶怎麼寄系列。叢集一：跨境與法規（出國健康決定）",
+   "suggestedAngle": "出生年次 × 接種紀錄 × 建議 判斷表；出發前時間軸",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：麻疹; mmr",
+    "matchedSlugs": [
+     "articles/thailand-vaccine-travel-clinic-timing",
+     "news/radar-2026-06-11-01"
+    ],
+    "verdict": "clear"
+   },
+   "status": "written",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": "articles/measles-vaccine-before-travel-japan-korea",
+   "publishedAt": "2026-12-01",
+   "rejectedReason": null,
+   "notes": "排程 2026-12-01｜系列：出國前後：藥與保健品怎麼帶怎麼寄系列"
+  },
+  {
+   "id": "cold-medicine-enlarged-prostate-glaucoma-elderly",
+   "topic": "攝護腺肥大或青光眼的長輩，吃綜合感冒藥、鼻炎藥會尿不出來或眼壓升高嗎？",
+   "queryPattern": "decision-guide",
+   "contentType": "articles",
+   "source": "editor",
+   "rationale": "系列：冬季感冒用藥系列。叢集二：正在吃藥的人",
+   "suggestedAngle": "感冒藥成分 × 攝護腺肥大風險 × 青光眼風險 × 較安全替代 表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：尿滯留; 排尿困難; 閉角型; 隅角; 抗組織胺 攝護腺",
+    "matchedSlugs": [
+     "articles/bph-enlarged-prostate-guide",
+     "articles/glaucoma-early-detection-guide",
+     "articles/japan-otc-ingredient-red-lines"
+    ],
+    "verdict": "clear"
+   },
+   "status": "written",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": "articles/cold-medicine-enlarged-prostate-glaucoma-elderly",
+   "publishedAt": "2026-12-02",
+   "rejectedReason": null,
+   "notes": "排程 2026-12-02｜系列：冬季感冒用藥系列"
+  },
+  {
+   "id": "vitamin-b1",
+   "topic": "維生素 B1",
+   "queryPattern": null,
+   "contentType": "ingredients",
+   "source": "site-gap",
+   "rationale": "ingredients（站內連結缺口）",
+   "suggestedAngle": "高風險族群（飲酒、利尿劑、減重手術、GLP-1）× 機轉 × 該做的檢查 表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：維生素B1; 維生素 B1; thiamine; 硫胺; 合利他命",
+    "matchedSlugs": [
+     "ingredients/vitamin-b-complex",
+     "ingredients/vitamin-b12"
+    ],
+    "verdict": "clear"
+   },
+   "status": "written",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": "ingredients/vitamin-b1",
+   "publishedAt": "2026-12-02",
+   "rejectedReason": null,
+   "notes": "排程 2026-12-02"
+  },
+  {
+   "id": "elderly-blood-pressure-150-90-standard-myth",
+   "topic": "65 歲以上血壓 150/90 才算高、70 歲以上不能低於 130，是真的嗎？",
+   "queryPattern": null,
+   "contentType": "myths",
+   "source": "editor",
+   "rationale": "myths",
+   "suggestedAngle": "圖卡逐句 × 美國實際指引（年份、對象）× 台灣指引 對照表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：150/90; 65歲以上; 老人血壓",
+    "matchedSlugs": [
+     "articles/hypertension-130-80-home-bp-guide",
+     "myths/pulse-pressure-over-60-artery-myth"
+    ],
+    "verdict": "clear"
+   },
+   "status": "written",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": "myths/elderly-blood-pressure-150-90-standard-myth",
+   "publishedAt": "2026-12-02",
+   "rejectedReason": null,
+   "notes": "排程 2026-12-02"
+  },
+  {
+   "id": "hotpot-raw-meat-chopsticks-cross-contamination",
+   "topic": "吃火鍋用同一雙筷子夾生肉又吃熟食，會不會吃壞肚子？",
+   "queryPattern": "decision-guide",
+   "contentType": "articles",
+   "source": "editor",
+   "rationale": "系列：冬天剩菜與年節食物保存系列。食安保存",
+   "suggestedAngle": "食材（豬牛羊肉片、雞肉、海鮮、蛋）× 主要病原 × 涮煮建議 × 生熟分開做法 表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：同一雙筷子; 生熟; 交叉污染; 火鍋",
+    "matchedSlugs": [
+     "articles/mid-autumn-bbq-food-safety",
+     "articles/hotpot-broth-purine-gout",
+     "articles/hotpot-dipping-sauce-calories"
+    ],
+    "verdict": "clear"
+   },
+   "status": "written",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": "articles/hotpot-raw-meat-chopsticks-cross-contamination",
+   "publishedAt": "2026-12-03",
+   "rejectedReason": null,
+   "notes": "排程 2026-12-03｜系列：冬天剩菜與年節食物保存系列"
+  },
+  {
+   "id": "l-citrulline-taiwan-food-regulation",
+   "topic": "健身補充品的瓜胺酸（L-Citrulline），在台灣為什麼不能當食品賣？",
+   "queryPattern": "taiwan-regulation-market",
+   "contentType": "articles",
+   "source": "editor",
+   "rationale": "系列：新成分在台灣合不合法系列。叢集一：跨境與法規",
+   "suggestedAngle": "美、歐、日、台 四地瓜胺酸法規位置對照表；自用與轉賣的界線",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：瓜胺酸; citrulline; l-citrulline",
+    "matchedSlugs": [
+     "articles/arginine-nitric-oxide-who-should-not-take",
+     "ingredients/l-arginine"
+    ],
+    "verdict": "clear"
+   },
+   "status": "written",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": "articles/l-citrulline-taiwan-food-regulation",
+   "publishedAt": "2026-12-04",
+   "rejectedReason": null,
+   "notes": "排程 2026-12-04｜系列：新成分在台灣合不合法系列"
+  },
+  {
+   "id": "sour-jujube-seed",
+   "topic": "酸棗仁",
+   "queryPattern": null,
+   "contentType": "ingredients",
+   "source": "site-gap",
+   "rationale": "ingredients（站內連結缺口）",
+   "suggestedAngle": "睡眠軟糖常見植物成分 × 台灣原料分類 × 證據強度 表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：酸棗仁; ziziphus",
+    "matchedSlugs": [
+     "articles/korea-sleep-gummies-bring-back-taiwan"
+    ],
+    "verdict": "clear"
+   },
+   "status": "written",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": "ingredients/sour-jujube-seed",
+   "publishedAt": "2026-12-04",
+   "rejectedReason": null,
+   "notes": "排程 2026-12-04"
+  },
+  {
+   "id": "diabetes-sick-day-cold-flu-medication",
+   "topic": "有糖尿病，感冒發燒吃不下飯時，降血糖藥還要照吃嗎？",
+   "queryPattern": "decision-guide",
+   "contentType": "articles",
+   "source": "editor",
+   "rationale": "系列：冬季感冒用藥系列。叢集二：正在吃藥的人",
+   "suggestedAngle": "降血糖藥類別 × 生病日風險 × 要事先問醫師的問題 表；直接掛急診的指標清單",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：sglt2; 酮酸中毒; 吃不下; 生病時; sick day",
+    "matchedSlugs": [
+     "articles/diabetes-medication-alcohol-year-end-party",
+     "myths/keto-diet-for-everyone-myth",
+     "articles/norovirus-home-vomiting-diarrhea-what-to-do"
+    ],
+    "verdict": "clear"
+   },
+   "status": "written",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": "articles/diabetes-sick-day-cold-flu-medication",
+   "publishedAt": "2026-12-05",
+   "rejectedReason": null,
+   "notes": "排程 2026-12-05｜系列：冬季感冒用藥系列"
+  },
+  {
+   "id": "miracle-pillow-sleep-apnea-myth",
+   "topic": "換一顆神奇枕頭，就能改善睡眠呼吸中止症？",
+   "queryPattern": null,
+   "contentType": "myths",
+   "source": "editor",
+   "rationale": "myths",
+   "suggestedAngle": "廣告宣稱 × 實際研究（體位治療的適用對象）× 判斷一頁式廣告的檢查表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：枕頭; 止鼾; 睡眠呼吸中止 枕",
+    "matchedSlugs": [
+     "myths/snoring-always-needs-treatment-myth",
+     "myths/mouth-taping-sleep-myth",
+     "articles/sleep-apnea-osa-diagnosis-treatment-guide"
+    ],
+    "verdict": "clear"
+   },
+   "status": "written",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": "myths/miracle-pillow-sleep-apnea-myth",
+   "publishedAt": "2026-12-05",
+   "rejectedReason": null,
+   "notes": "排程 2026-12-05"
+  },
+  {
+   "id": "pqq-taiwan-legal-japan-functional-food",
+   "topic": "日本機能性表示食品的 PQQ，在台灣為什麼不能當保健食品賣？",
+   "queryPattern": "taiwan-regulation-market",
+   "contentType": "articles",
+   "source": "editor",
+   "rationale": "系列：新成分在台灣合不合法系列。叢集一：跨境與法規",
+   "suggestedAngle": "日本機能性表示食品備案 × 美國 × 歐盟 novel food × 台灣平臺 四欄對照表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：pqq; 吡咯喹啉",
+    "matchedSlugs": [
+     "articles/japan-supplements-bring-back-taiwan",
+     "articles/nmn-regulation-taiwan-japan-us-eu",
+     "articles/urolithin-a-taiwan-legal-food-regulation"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-06｜系列：新成分在台灣合不合法系列"
+  },
+  {
+   "id": "danshen",
+   "topic": "丹參",
+   "queryPattern": null,
+   "contentType": "ingredients",
+   "source": "site-gap",
+   "rationale": "ingredients（站內連結缺口）",
+   "suggestedAngle": "丹參與常見西藥交互作用表（抗凝血、抗血小板、毛地黃）",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：丹參; danshen; salvia miltiorrhiza",
+    "matchedSlugs": [
+     "articles/herbal-tonic-drug-interactions",
+     "articles/elderly-tcm-western-drug-combos-that-matter"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-07"
+  },
+  {
+   "id": "motion-sickness-medicine-children-flight-age",
+   "topic": "帶小孩搭飛機、坐車，暈車藥幾歲可以吃？什麼時候吃才有用",
+   "queryPattern": "decision-guide",
+   "contentType": "articles",
+   "source": "editor",
+   "rationale": "系列：出國前後：藥與保健品怎麼帶怎麼寄系列。叢集一：跨境與法規（出國健康決定）",
+   "suggestedAngle": "成分 × 最低年齡 × 提前服用時間 × 嗜睡程度 表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：暈機; 暈車藥; dimenhydrinate; meclizine; 暈船",
+    "matchedSlugs": [
+     "ingredients/ginger-extract",
+     "articles/children-supplements-age-dose-safety"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-08｜系列：出國前後：藥與保健品怎麼帶怎麼寄系列"
+  },
+  {
+   "id": "protein-shortage-breaks-down-muscle-myth",
+   "topic": "蛋白質一餐沒吃夠，身體馬上就會拆肌肉？",
+   "queryPattern": null,
+   "contentType": "myths",
+   "source": "editor",
+   "rationale": "myths",
+   "suggestedAngle": "蛋白質周轉的時間尺度圖解：一餐、一天、一週各發生什麼",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：拆肌肉; 分解肌肉; 肌肉流失",
+    "matchedSlugs": [
+     "myths/whey-protein-kidney-damage-myth",
+     "articles/sarcopenia-muscle-loss-guide"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-08"
+  },
+  {
+   "id": "paxlovid-regular-medication-interactions",
+   "topic": "確診新冠拿到口服抗病毒藥，平常吃的降血脂藥、安眠藥要先停嗎？",
+   "queryPattern": "decision-guide",
+   "contentType": "articles",
+   "source": "editor",
+   "rationale": "系列：冬季感冒用藥系列。叢集二：正在吃藥的人",
+   "suggestedAngle": "台灣常見慢性病藥類別 × 與 Paxlovid 交互作用等級 × 醫師常見處置 表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：paxlovid; 倍拉維; molnupiravir; 莫納皮拉韋; 新冠口服藥; 抗病毒藥",
+    "matchedSlugs": [
+     "articles/flu-rapid-test-negative-what-next",
+     "articles/tamiflu-cold-medicine-supplements-together",
+     "articles/calcium-channel-blocker-statin-grapefruit-pomelo"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-09｜系列：冬季感冒用藥系列"
+  },
+  {
+   "id": "vitamin-b6",
+   "topic": "維生素 B6",
+   "queryPattern": null,
+   "contentType": "ingredients",
+   "source": "site-gap",
+   "rationale": "ingredients（站內連結缺口）",
+   "suggestedAngle": "常見產品 B6 含量加總試算表；神經病變早期症狀清單",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：維生素B6; 維生素 B6; pyridoxine",
+    "matchedSlugs": [
+     "articles/pms-vitamin-b6-evening-primrose-guide",
+     "ingredients/vitamin-b-complex"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-09"
+  },
+  {
+   "id": "winter-leftover-soup-overnight-room-temp-balcony",
+   "topic": "冬天天氣冷，一鍋湯放在爐上不冰、剩菜放陽台過夜，隔天煮滾還能吃嗎？",
+   "queryPattern": "decision-guide",
+   "contentType": "articles",
+   "source": "editor",
+   "rationale": "系列：冬天剩菜與年節食物保存系列。食安保存",
+   "suggestedAngle": "放置地點（爐上、室內、陽台、機車置物箱）× 實際溫度範圍 × 風險 表；大鍋湯快速降溫做法",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：隔夜湯; 放在爐上; 產氣莢膜; 一鍋湯; 陽台",
+    "matchedSlugs": [
+     "articles/oden-broth-simmering-all-day",
+     "articles/leftovers-reheat-how-many-times",
+     "myths/hot-food-cool-before-fridge-myth",
+     "articles/new-year-dishes-made-ahead"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-10｜系列：冬天剩菜與年節食物保存系列"
+  },
+  {
+   "id": "emergency-contraception-abroad-pharmacy-taiwan",
+   "topic": "出國旅行時需要事後避孕藥，在日本、泰國、歐洲藥局買得到嗎？",
+   "queryPattern": "taiwan-regulation-market",
+   "contentType": "articles",
+   "source": "editor",
+   "rationale": "系列：出國前後：藥與保健品怎麼帶怎麼寄系列。叢集一：跨境與法規",
+   "suggestedAngle": "目的地 × 取得方式（藥局直購、需藥師諮詢、需處方）× 常見成分 × 時間窗 表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：事後避孕; 緊急避孕; levonorgestrel; ulipristal",
+    "matchedSlugs": [
+     "articles/oral-contraceptive-st-johns-wort-antibiotics"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-11｜系列：出國前後：藥與保健品怎麼帶怎麼寄系列"
+  },
+  {
+   "id": "chamomile",
+   "topic": "洋甘菊",
+   "queryPattern": null,
+   "contentType": "ingredients",
+   "source": "site-gap",
+   "rationale": "ingredients（站內連結缺口）",
+   "suggestedAngle": "洋甘菊助眠試驗一覽（樣本、劑型、結果）與交互作用表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：洋甘菊; chamomile",
+    "matchedSlugs": [
+     "articles/korea-sleep-gummies-bring-back-taiwan",
+     "ingredients/valerian"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-11"
+  },
+  {
+   "id": "bottled-water-cap-color-myth",
+   "topic": "包裝水的瓶蓋顏色能分辨水源和種類？只有特定品牌能直接喝？",
+   "queryPattern": null,
+   "contentType": "myths",
+   "source": "editor",
+   "rationale": "myths",
+   "suggestedAngle": "台灣包裝水標示該看的三個欄位對照表（品名類別、水源、處理方式）",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：瓶蓋; 包裝水; 瓶裝水; 礦泉水",
+    "matchedSlugs": [
+     "myths/reused-plastic-bottle-toxin-myth",
+     "myths/overnight-water-cancer-myth"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-11"
+  },
+  {
+   "id": "children-cough-syrup-codeine-dextromethorphan-age",
+   "topic": "小孩咳到睡不著，止咳藥水幾歲可以吃？含可待因的為什麼不行",
+   "queryPattern": "decision-guide",
+   "contentType": "articles",
+   "source": "editor",
+   "rationale": "系列：冬季感冒用藥系列。叢集二：正在吃藥的人",
+   "suggestedAngle": "止咳成分 × 最低年齡 × 台灣分級 表；夜咳要直接就醫的徵象",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：可待因; codeine; 止咳藥水; 止咳糖漿; 右美沙芬",
+    "matchedSlugs": [
+     "articles/autumn-dry-cough-two-weeks",
+     "articles/hong-kong-macau-medicine-bring-back-taiwan"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-12｜系列：冬季感冒用藥系列"
+  },
+  {
+   "id": "cancer-generic-drugs-india-bangladesh-mail-taiwan",
+   "topic": "幫家人網購印度、孟加拉的抗癌學名藥寄回台灣，合法嗎？會不會買到假藥",
+   "queryPattern": "taiwan-regulation-market",
+   "contentType": "articles",
+   "source": "editor",
+   "rationale": "叢集一：跨境與法規",
+   "suggestedAngle": "合法管道（健保、自費、恩慈、專案進口、自用進口）× 條件 × 時程 對照表；偽藥包裝查核步驟",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：學名藥; 印度; 孟加拉; 標靶; 專案進口",
+    "matchedSlugs": [
+     "articles/customs-seized-medicine-what-happens-next",
+     "articles/chemotherapy-antrodia-reishi-supplements"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-13"
+  },
+  {
+   "id": "cream-cake-room-temperature-how-long",
+   "topic": "聖誕、跨年買的鮮奶油蛋糕，放在室溫多久就不能吃？",
+   "queryPattern": "decision-guide",
+   "contentType": "articles",
+   "source": "editor",
+   "rationale": "系列：冬天剩菜與年節食物保存系列。食安保存",
+   "suggestedAngle": "蛋糕類型（鮮奶油、乳酪、慕斯、磅蛋糕）× 室溫上限 × 冷藏天數 表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：鮮奶油; 蛋糕",
+    "matchedSlugs": [
+     "articles/filled-bread-room-temp-how-long",
+     "articles/fridge-storage-time-table"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-14｜系列：冬天剩菜與年節食物保存系列"
+  },
+  {
+   "id": "dhea",
+   "topic": "DHEA（脫氫表雄固酮）",
+   "queryPattern": null,
+   "contentType": "ingredients",
+   "source": "site-gap",
+   "rationale": "ingredients（站內連結缺口）",
+   "suggestedAngle": "使用情境（試管、更年期、腎上腺不足）× 證據強度 × 風險 表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：dhea; 脫氫表雄; 去氫表雄",
+    "matchedSlugs": [
+     "articles/us-costco-otc-supplements-bring-back-taiwan",
+     "articles/menopause-supplements-what-works"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-14"
+  },
+  {
+   "id": "mushroom-eggplant-food-combination-poison-myth",
+   "topic": "蘑菇和茄子一起吃會中毒？「食物相剋」的說法查證",
+   "queryPattern": null,
+   "contentType": "myths",
+   "source": "editor",
+   "rationale": "myths",
+   "suggestedAngle": "網傳相剋組合 × 宣稱機轉 × 實際證據 × 真正要注意的情況 表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：相剋; 一起吃會中毒; 蘑菇; 茄子",
+    "matchedSlugs": [
+     "articles/food-poisoning-onset-time",
+     "myths/soaked-wood-ear-toxin-myth"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-14"
+  },
+  {
+   "id": "mammogram-birads-0-3-next-step",
+   "topic": "乳房攝影報告寫 BI-RADS 0 或 3，是有問題嗎？下一步要做什麼",
+   "queryPattern": "decision-guide",
+   "contentType": "articles",
+   "source": "editor",
+   "rationale": "系列：健檢報告看不懂系列：影像與癌篩報告。叢集三：健檢報告紅字",
+   "suggestedAngle": "BI-RADS 分級 × 意義 × 下一步 × 建議時程 表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：bi-rads; 乳房攝影; 乳攝",
+    "matchedSlugs": [
+     "articles/cancer-screening-2026-eligibility-guide",
+     "articles/tumor-markers-cea-ca125-afp-high-not-cancer"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-15｜系列：健檢報告看不懂系列：影像與癌篩報告"
+  },
+  {
+   "id": "cold-allergy-medicine-driving-drugged-driving-law",
+   "topic": "吃了感冒藥、過敏藥或安眠藥開車，會被當成毒駕嗎？",
+   "queryPattern": "decision-guide",
+   "contentType": "articles",
+   "source": "editor",
+   "rationale": "系列：冬季感冒用藥系列。叢集二：正在吃藥的人",
+   "suggestedAngle": "藥物類別（第一代抗組織胺、肌肉鬆弛劑、安眠藥、部分止咳藥）× 嗜睡程度 × 建議不開車時間 表；新制條文白話對照",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：185-3; 藥駕; 毒駕; 不能安全駕駛; 服藥 開車",
+    "matchedSlugs": [
+     "articles/drinking-next-morning-breathalyzer",
+     "articles/sleeping-pills-alcohol-herbal-sleep-aids"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-16｜系列：冬季感冒用藥系列"
+  },
+  {
+   "id": "niacin",
+   "topic": "菸鹼酸（維生素 B3）",
+   "queryPattern": null,
+   "contentType": "ingredients",
+   "source": "site-gap",
+   "rationale": "ingredients（站內連結缺口）",
+   "suggestedAngle": "菸鹼酸、菸鹼醯胺、NMN 劑型 × 用途 × 副作用 對照表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：菸鹼酸; niacin; 菸鹼醯胺",
+    "matchedSlugs": [
+     "ingredients/nmn",
+     "ingredients/vitamin-b-complex"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-16"
+  },
+  {
+   "id": "antidepressant-cough-medicine-dextromethorphan",
+   "topic": "在吃抗憂鬱藥，咳嗽藥裡的右美沙芬可以吃嗎？",
+   "queryPattern": "decision-guide",
+   "contentType": "articles",
+   "source": "editor",
+   "rationale": "系列：冬季感冒用藥系列。叢集二：正在吃藥的人",
+   "suggestedAngle": "抗憂鬱藥類別 × 止咳成分 × 風險等級 表；血清素症候群早期症狀清單",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：右美沙芬; dextromethorphan; 美沙芬; 血清素症候群",
+    "matchedSlugs": [
+     "articles/antidepressant-5htp-st-johns-wort-serotonin",
+     "articles/take-prescription-medicine-abroad-from-taiwan"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-17｜系列：冬季感冒用藥系列"
+  },
+  {
+   "id": "salt-brushing-gum-disease-myth",
+   "topic": "用鹽巴刷牙能治牙齦出血、牙周病？",
+   "queryPattern": null,
+   "contentType": "myths",
+   "source": "editor",
+   "rationale": "myths",
+   "suggestedAngle": "牙齦出血原因 × 鹽巴能做到什麼、做不到什麼 × 何時看牙醫 表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：鹽巴; 鹽刷牙; 牙齦出血",
+    "matchedSlugs": [
+     "myths/teeth-cleaning-gap-myth",
+     "articles/probiotic-toothpaste-checklist"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-17"
+  },
+  {
+   "id": "japan-korea-hangover-pills-drinks-bring-back-taiwan",
+   "topic": "日本的解酒錠、韓國的解酒飲料，帶回台灣合法嗎？尾牙前吃真的有用嗎",
+   "queryPattern": "taiwan-regulation-market",
+   "contentType": "articles",
+   "source": "editor",
+   "rationale": "系列：出國前後：藥與保健品怎麼帶怎麼寄系列。叢集一：跨境與法規",
+   "suggestedAngle": "產品類型（肝臟水解物錠、薑黃飲、韓國解酒飲）× 日韓分類 × 台灣分類 × 攜帶規則 × 證據強度 表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：解酒; ヘパリーゼ; hepalyse; ウコンの力; 컨디션; 肝臟水解物",
+    "matchedSlugs": [
+     "ingredients/kudzu-flower",
+     "articles/drinking-next-morning-breathalyzer",
+     "articles/japan-supplements-bring-back-taiwan"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-18｜系列：出國前後：藥與保健品怎麼帶怎麼寄系列"
+  },
+  {
+   "id": "artichoke",
+   "topic": "朝鮮薊",
+   "queryPattern": null,
+   "contentType": "ingredients",
+   "source": "site-gap",
+   "rationale": "ingredients（站內連結缺口）",
+   "suggestedAngle": "朝鮮薊試驗一覽（對象、劑量、指標）表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：朝鮮薊; artichoke",
+    "matchedSlugs": [
+     "articles/liver-supplement-comparison-silymarin-artichoke-tudca"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-18"
+  },
+  {
+   "id": "banquet-leftovers-takeaway-how-long",
+   "topic": "尾牙、喜宴打包回家的菜尾，可以放幾天？要怎麼加熱才安全",
+   "queryPattern": "decision-guide",
+   "contentType": "articles",
+   "source": "editor",
+   "rationale": "系列：冬天剩菜與年節食物保存系列。食安保存",
+   "suggestedAngle": "菜色類型（海鮮、羹湯、油飯米糕、冷盤）× 打包前已放時間 × 冷藏天數 × 加熱方式 表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：菜尾; 辦桌; 喜宴; 打包",
+    "matchedSlugs": [
+     "articles/leftovers-reheat-how-many-times",
+     "articles/buffet-warming-tray-how-long",
+     "articles/norovirus-not-undercooked-meat-holiday-gathering"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-19｜系列：冬天剩菜與年節食物保存系列"
+  },
+  {
+   "id": "sleeping-pills-years-taper-talk-to-doctor",
+   "topic": "安眠藥吃了好幾年，想減量要怎麼跟醫師談？自己停會怎樣",
+   "queryPattern": "decision-guide",
+   "contentType": "articles",
+   "source": "editor",
+   "rationale": "系列：長期吃安眠藥的人系列。睡眠",
+   "suggestedAngle": "回診時可以問醫師的問題清單；減量期間常見反應與何時回診 表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：減量; 戒斷; 反彈性失眠; zolpidem; 史蒂諾斯",
+    "matchedSlugs": [
+     "articles/sleeping-pills-alcohol-herbal-sleep-aids",
+     "articles/insomnia-cbti-guide"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-20｜系列：長期吃安眠藥的人系列"
+  },
+  {
+   "id": "collagen-breast-cancer-growth-myth",
+   "topic": "吃膠原蛋白會讓乳癌腫瘤變大？",
+   "queryPattern": null,
+   "contentType": "myths",
+   "source": "editor",
+   "rationale": "myths",
+   "suggestedAngle": "膠原蛋白複方常見添加物 × 與荷爾蒙敏感癌症的關係 表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：膠原 乳癌; 乳癌; 膠原蛋白",
+    "matchedSlugs": [
+     "myths/oral-collagen-skin-myth",
+     "myths/soy-milk-estrogen-breast-cancer-myth",
+     "ingredients/collagen"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-20"
+  },
+  {
+   "id": "offering-food-ancestor-worship-how-long",
+   "topic": "拜拜的菜在供桌上放了兩三個小時，拜完還能吃嗎？",
+   "queryPattern": "decision-guide",
+   "contentType": "articles",
+   "source": "editor",
+   "rationale": "系列：冬天剩菜與年節食物保存系列。食安保存",
+   "suggestedAngle": "供品類型（三牲、熟菜、水果、糕粿、湯圓）× 可擺放時間 × 拜完處理方式 表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：拜拜; 供品; 供桌; 祭拜",
+    "matchedSlugs": [
+     "articles/new-year-dishes-made-ahead",
+     "articles/fridge-storage-time-table"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-21｜系列：冬天剩菜與年節食物保存系列"
+  },
+  {
+   "id": "cinnamon",
+   "topic": "肉桂",
+   "queryPattern": null,
+   "contentType": "ingredients",
+   "source": "site-gap",
+   "rationale": "ingredients（站內連結缺口）",
+   "suggestedAngle": "錫蘭肉桂與中國肉桂香豆素含量對照與每日上限試算",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：肉桂; cinnamon",
+    "matchedSlugs": [
+     "articles/mulberry-berberine-white-bean-blood-sugar"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-21"
+  },
+  {
+   "id": "pap-smear-ascus-hpv-positive-next-step",
+   "topic": "子宮頸抹片報告寫 ASC-US、或 HPV 陽性，下一步是什麼？",
+   "queryPattern": "decision-guide",
+   "contentType": "articles",
+   "source": "editor",
+   "rationale": "系列：健檢報告看不懂系列：影像與癌篩報告。叢集三：健檢報告紅字",
+   "suggestedAngle": "報告結果 × HPV 狀態 × 下一步 × 建議時程 流程表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：ascus; asc-us; 抹片; hpv",
+    "matchedSlugs": [
+     "articles/cancer-screening-2026-eligibility-guide"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-22｜系列：健檢報告看不懂系列：影像與癌篩報告"
+  },
+  {
+   "id": "same-s-adenosylmethionine-taiwan-legal",
+   "topic": "美國當保健品賣的 SAMe，在台灣為什麼不能當食品？在吃抗憂鬱藥的人更要注意",
+   "queryPattern": "taiwan-regulation-market",
+   "contentType": "articles",
+   "source": "editor",
+   "rationale": "系列：新成分在台灣合不合法系列。叢集一：跨境與法規",
+   "suggestedAngle": "美、歐、台 法規位置對照；不該自行補充的族群清單",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：腺苷甲硫胺酸; SAMe; S-adenosyl",
+    "matchedSlugs": [
+     "articles/antidepressant-5htp-st-johns-wort-serotonin",
+     "articles/5-htp-regulation-taiwan-us-eu",
+     "ingredients/folate"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-23｜系列：新成分在台灣合不合法系列"
+  },
+  {
+   "id": "chuanxiong",
+   "topic": "川芎",
+   "queryPattern": null,
+   "contentType": "ingredients",
+   "source": "site-gap",
+   "rationale": "ingredients（站內連結缺口）",
+   "suggestedAngle": "川芎與日本川芎分類差異；常見含川芎方劑 × 注意族群 表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：川芎; chuanxiong",
+    "matchedSlugs": [
+     "ingredients/si-wu-decoction",
+     "ingredients/dong-quai"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-23"
+  },
+  {
+   "id": "covid-vaccine-autopsy-74-percent-myth",
+   "topic": "美國屍檢研究證實 74% 死者死於新冠疫苗？",
+   "queryPattern": null,
+   "contentType": "myths",
+   "source": "editor",
+   "rationale": "myths",
+   "suggestedAngle": "這篇研究的撤稿時間軸與方法學問題對照表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：新冠疫苗; 屍檢; 驗屍; 渦輪癌",
+    "matchedSlugs": [
+     "myths/flu-vaccine-elderly-death-myth",
+     "myths/natural-infection-vs-vaccine-immunity-myth"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-23"
+  },
+  {
+   "id": "anticoagulant-cold-medicine-painkillers-bleeding",
+   "topic": "吃抗凝血藥的人感冒、頭痛，可以吃哪種止痛退燒藥？",
+   "queryPattern": "decision-guide",
+   "contentType": "articles",
+   "source": "editor",
+   "rationale": "系列：冬季感冒用藥系列。叢集二：正在吃藥的人",
+   "suggestedAngle": "止痛退燒成分 × 與 warfarin／新型抗凝血劑的出血風險 × 每日上限 表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：nsaid; 布洛芬; 乙醯胺酚; 抗凝血 止痛",
+    "matchedSlugs": [
+     "articles/fish-oil-blood-thinner-interaction",
+     "articles/nattokinase-anticoagulant-two-opposite-risks",
+     "articles/aspirin-fish-oil-together-bleeding-risk"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-24｜系列：冬季感冒用藥系列"
+  },
+  {
+   "id": "endoscopy-intestinal-metaplasia-atrophic-gastritis",
+   "topic": "胃鏡報告寫「腸上皮化生」「萎縮性胃炎」，會變胃癌嗎？多久要再照",
+   "queryPattern": "decision-guide",
+   "contentType": "articles",
+   "source": "editor",
+   "rationale": "系列：健檢報告看不懂系列：影像與癌篩報告。叢集三：健檢報告紅字",
+   "suggestedAngle": "病理名詞 × 範圍與嚴重度 × 建議追蹤間隔 表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：腸上皮化生; 腸化生; 萎縮性胃炎; 胃鏡",
+    "matchedSlugs": [
+     "articles/h-pylori-stomach-cancer-prevention-guide",
+     "articles/vitamin-b12-deficiency-guide"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-25｜系列：健檢報告看不懂系列：影像與癌篩報告"
+  },
+  {
+   "id": "flaxseed",
+   "topic": "亞麻仁籽",
+   "queryPattern": null,
+   "contentType": "ingredients",
+   "source": "site-gap",
+   "rationale": "ingredients（站內連結缺口）",
+   "suggestedAngle": "ALA 轉換成 EPA／DHA 的比例研究整理與吃法對照",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：亞麻仁; flaxseed; 奇亞籽",
+    "matchedSlugs": [
+     "ingredients/omega-3"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-25"
+  },
+  {
+   "id": "diabetes-medication-bitter-melon-berberine-hypoglycemia",
+   "topic": "吃降血糖藥的人，再吃苦瓜胜肽、小檗鹼或二氫小檗鹼，會不會低血糖？",
+   "queryPattern": "decision-guide",
+   "contentType": "articles",
+   "source": "search-gap",
+   "rationale": "叢集二：正在吃藥的人",
+   "suggestedAngle": "降血糖藥類別 × 疊加控糖保健品的低血糖風險 表；低血糖當下處理步驟",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：二氫小檗鹼; dihydroberberine; 低血糖; 苦瓜胜肽; 降血糖藥",
+    "matchedSlugs": [
+     "ingredients/berberine",
+     "ingredients/bitter-melon-peptide",
+     "articles/mulberry-berberine-white-bean-blood-sugar",
+     "articles/diabetes-medication-alcohol-year-end-party"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-26"
+  },
+  {
+   "id": "cold-water-boiled-eggs-myth",
+   "topic": "冷水下鍋煮蛋是錯的，會把蛋煮成垃圾？",
+   "queryPattern": null,
+   "contentType": "myths",
+   "source": "editor",
+   "rationale": "myths",
+   "suggestedAngle": "蛋黃外圈變綠的化學原理與煮蛋時間對照",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：冷水煮; 硫化亞鐵; 綠色的圈",
+    "matchedSlugs": [
+     "myths/brown-vs-white-eggs-nutrition-myth",
+     "myths/egg-freshness-float-test-myth",
+     "articles/soft-boiled-egg-salmonella"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-26"
+  },
+  {
+   "id": "snoring-sleep-apnea-sleeping-pills-alcohol-risk",
+   "topic": "會打呼的人吃安眠藥、喝酒助眠，夜裡呼吸會更危險嗎？",
+   "queryPattern": "decision-guide",
+   "contentType": "articles",
+   "source": "editor",
+   "rationale": "系列：長期吃安眠藥的人系列。睡眠",
+   "suggestedAngle": "鎮靜物質（安眠藥、抗組織胺、酒精、褪黑激素）× 對上呼吸道的影響 × 打呼者建議 表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：睡眠呼吸中止 安眠; 鎮靜; 打呼",
+    "matchedSlugs": [
+     "articles/sleep-apnea-osa-diagnosis-treatment-guide",
+     "myths/snoring-always-needs-treatment-myth",
+     "articles/sleeping-pills-alcohol-herbal-sleep-aids"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-27｜系列：長期吃安眠藥的人系列"
+  },
+  {
+   "id": "carotid-ultrasound-plaque-statin-decision",
+   "topic": "頸動脈超音波發現斑塊，需要開始吃降血脂藥嗎？",
+   "queryPattern": "decision-guide",
+   "contentType": "articles",
+   "source": "editor",
+   "rationale": "系列：健檢報告看不懂系列：影像與癌篩報告。叢集三：健檢報告紅字",
+   "suggestedAngle": "報告用語（內膜中層厚度、斑塊、狹窄百分比）× 意義 × 下一步 表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：頸動脈超音波; 頸動脈; 斑塊",
+    "matchedSlugs": [
+     "articles/statin-eligibility-us-guideline-taiwan-what-to-do",
+     "articles/cholesterol-report-ldl-hdl-triglycerides",
+     "articles/chest-xray-report-aortic-calcification-checkup"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-28｜系列：健檢報告看不懂系列：影像與癌篩報告"
+  },
+  {
+   "id": "lycopene",
+   "topic": "茄紅素",
+   "queryPattern": null,
+   "contentType": "ingredients",
+   "source": "site-gap",
+   "rationale": "ingredients（站內連結缺口）",
+   "suggestedAngle": "番茄製品 × 茄紅素含量 × 吸收率 表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：茄紅素; lycopene",
+    "matchedSlugs": [
+     "ingredients/saw-palmetto",
+     "ingredients/pumpkin-seed"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-28"
+  },
+  {
+   "id": "chinese-sausage-cured-meat-mullet-roe-storage",
+   "topic": "年貨的香腸、臘肉、烏魚子買回家，要冷藏還是冷凍？可以放多久",
+   "queryPattern": "decision-guide",
+   "contentType": "articles",
+   "source": "editor",
+   "rationale": "系列：冬天剩菜與年節食物保存系列。食安保存",
+   "suggestedAngle": "品項 × 包裝型態 × 冷藏天數 × 冷凍月數 × 丟棄徵象 表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：臘肉; 臘腸; 烏魚子; 香腸",
+    "matchedSlugs": [
+     "articles/new-year-dishes-made-ahead",
+     "articles/meat-color-slime-when-to-discard",
+     "articles/homemade-pickles-botulism"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-29｜系列：冬天剩菜與年節食物保存系列"
+  },
+  {
+   "id": "japan-food-us-fda-ban-myth",
+   "topic": "美國 FDA 禁止日本食品進口，所以別買超市的日本蘋果、地瓜？",
+   "queryPattern": null,
+   "contentType": "myths",
+   "source": "editor",
+   "rationale": "myths",
+   "suggestedAngle": "美國 FDA 進口警示實際內容 × 台灣邊境檢驗結果 對照表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：核食; 福島; 日本食品; fda 禁",
+    "matchedSlugs": [
+     "articles/japan-supplements-bring-back-taiwan",
+     "myths/pesticide-residue-fruit-myth"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-29"
+  },
+  {
+   "id": "blood-pressure-medication-nsaid-painkillers-kidney",
+   "topic": "吃降血壓藥的人，腰痠背痛可以自己買消炎止痛藥嗎？",
+   "queryPattern": "decision-guide",
+   "contentType": "articles",
+   "source": "editor",
+   "rationale": "叢集二：正在吃藥的人",
+   "suggestedAngle": "降壓藥類別 × NSAID 風險 × 較安全的替代 表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：nsaid; 消炎止痛; 腎損傷; 那普洛先",
+    "matchedSlugs": [
+     "articles/chronic-kidney-disease-egfr-guide",
+     "articles/blood-pressure-meds-potassium-low-sodium-salt",
+     "articles/us-costco-otc-supplements-bring-back-taiwan"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-30"
+  },
+  {
+   "id": "lecithin",
+   "topic": "卵磷脂",
+   "queryPattern": null,
+   "contentType": "ingredients",
+   "source": "site-gap",
+   "rationale": "ingredients（站內連結缺口）",
+   "suggestedAngle": "卵磷脂、膽鹼、磷脂絲胺酸 三者關係與各自證據 表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：卵磷脂; lecithin",
+    "matchedSlugs": [
+     "articles/lecithin-clogged-duct-evidence",
+     "ingredients/choline"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-30"
+  },
+  {
+   "id": "clopidogrel-ppi-stomach-medicine-choice",
+   "topic": "吃保栓通（clopidogrel）的人胃不舒服，哪些胃藥會讓它效果變差？",
+   "queryPattern": "decision-guide",
+   "contentType": "articles",
+   "source": "editor",
+   "rationale": "叢集二：正在吃藥的人",
+   "suggestedAngle": "胃藥成分 × 與 clopidogrel 交互作用 × 台灣常見類別 表",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "node scratchpad/writer/grep.mjs <repo> <terms>：對 src/content/{articles,myths,ingredients,news,topic-overviews} 全文與 title/seoTitle 做不分大小寫比對（等同 grep -ril；src/content 已含 11/26–12/31 已排的 53 篇），詞：clopidogrel; 保栓通; omeprazole; 氫離子幫浦",
+    "matchedSlugs": [
+     "articles/ppi-long-term-calcium-magnesium-iron-b12",
+     "articles/aspirin-fish-oil-together-bleeding-risk"
+    ],
+    "verdict": "clear"
+   },
+   "status": "claimed",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": null,
+   "publishedAt": null,
+   "rejectedReason": null,
+   "notes": "排程 2026-12-31"
   }
  ]
 }

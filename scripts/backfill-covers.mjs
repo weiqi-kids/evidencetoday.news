@@ -69,6 +69,20 @@ if (!token) { console.error('缺 GITHUB_TOKEN（worker 用它驗 repo push 權�
  * 選詞原則：具體場景 > 抽象概念，且避開藥品實物特寫（本站不做產品頁）。
  */
 const KEYWORD_HINTS = {
+  // 2026-11-22 補稿第一批（11/26–12/5 第二時段、加開闢謠與成分頁）
+  'cold-medicine-high-blood-pressure-pseudoephedrine': 'blood pressure monitor cuff arm',
+  'korea-diet-clinic-pills-bring-back-taiwan': 'seoul street clinic signs',
+  'mail-medicine-to-family-studying-abroad': 'post office counter parcel',
+  'new-zealand-australia-placenta-deer-antler-bring-back-taiwan': 'new zealand sheep farm',
+  'thermal-food-jar-porridge-soup-lunch-safe': 'food thermos jar soup lunch',
+  'measles-vaccine-before-travel-japan-korea': 'vaccine injection arm clinic',
+  'cold-medicine-enlarged-prostate-glaucoma-elderly': 'elderly man reading medicine box label',
+  'hotpot-raw-meat-chopsticks-cross-contamination': 'hot pot raw meat slices chopsticks',
+  'l-citrulline-taiwan-food-regulation': 'gym supplement powder scoop',
+  'diabetes-sick-day-cold-flu-medication': 'sick person in bed with tea and medicine',
+  'tudca': 'supplement capsules on table',
+  'vitamin-b1': 'brown rice whole grains',
+  'sour-jujube-seed': 'cup of herbal tea bedside night',
   // 2026-11-21 第三批（12/22–12/31 排程稿）
   'oral-isotretinoin-vitamin-a-antibiotics-supplements': 'young person looking at acne in mirror',
   'vitamin-d-blood-test-level-interpretation': 'sunlight window morning coffee',
