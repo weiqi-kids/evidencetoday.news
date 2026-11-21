@@ -13,7 +13,7 @@ const MYTH_DIR = 'src/content/myths';
 // （fecal-transplant-cancer-cure-myth、nail-vertical-ridges-disease-myth，皆 08-07 產出後
 // 未經放行、needsEditorialReview: false）正式放行為 published，值才隨之調到 118。
 // 順序永遠是「先改稿的 status，再調這個數字」，反過來就會重演上面兩次。
-const EXPECTED_PUBLISHED_COUNT = 118;   // 2026-09-19：+2（放行 08-07 兩篇待審稿）
+const EXPECTED_PUBLISHED_COUNT = 130;   // 2026-11-21：+12（11/27–12/30 每 3 天一篇的排程稿），與 status: published 同一個 commit
 const FORBIDDEN = [
   'TODO',
   'source needed',
