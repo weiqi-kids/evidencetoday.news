@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-11-22T06:20:03+08:00",
+  "lastRun": "2026-11-23T06:17:00+08:00",
   "processed": {
     "https://pubmed.ncbi.nlm.nih.gov/41761730/": {
       "processedAt": "2026-11-21T06:19:39+08:00",
@@ -666,46 +666,6 @@
       "processedAt": "2026-11-08T22:35:55+08:00",
       "outputFile": "src/content/news/radar-2026-11-09-06-01.md"
     },
-    "PMID:41871665": {
-      "processedAt": "2026-11-08T22:35:55+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/41871665/": {
-      "processedAt": "2026-11-08T22:35:55+08:00",
-      "outputFile": null
-    },
-    "PMID:42004716": {
-      "processedAt": "2026-11-08T22:35:55+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/42004716/": {
-      "processedAt": "2026-11-08T22:35:55+08:00",
-      "outputFile": null
-    },
-    "PMID:40298934": {
-      "processedAt": "2026-11-08T22:35:55+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/40298934/": {
-      "processedAt": "2026-11-08T22:35:55+08:00",
-      "outputFile": null
-    },
-    "PMID:41478593": {
-      "processedAt": "2026-11-08T22:35:55+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/41478593/": {
-      "processedAt": "2026-11-08T22:35:55+08:00",
-      "outputFile": null
-    },
-    "PMID:42237711": {
-      "processedAt": "2026-11-08T22:35:55+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/42237711/": {
-      "processedAt": "2026-11-08T22:35:55+08:00",
-      "outputFile": null
-    },
     "PMID:41422832": {
       "processedAt": "2026-11-09T22:34:49.049Z",
       "outputFile": "src/content/news/radar-2026-11-10-06-01.md"
@@ -1028,6 +988,30 @@
     },
     "https://www.sciencedaily.com/releases/2026/07/260716023605.htm": {
       "processedAt": "2026-11-22T06:20:03+08:00",
+      "outputFile": null
+    },
+    "http://dx.doi.org/10.1016/j.cpblue.2026.100079": {
+      "processedAt": "2026-11-23T06:17:00+08:00",
+      "outputFile": "src/content/news/radar-2026-11-23-06-01.md"
+    },
+    "https://www.sciencedaily.com/releases/2026/08/260801042811.htm": {
+      "processedAt": "2026-11-23T06:17:00+08:00",
+      "outputFile": "src/content/news/radar-2026-11-23-06-01.md"
+    },
+    "https://www.sciencedaily.com/releases/2026/11/261108203714.htm": {
+      "processedAt": "2026-11-23T06:17:00+08:00",
+      "outputFile": "src/content/news/radar-2026-11-23-06-01.md"
+    },
+    "https://nutritionsource.hsph.harvard.edu/2026/01/09/dietary-guidelines-for-americans-2025-2030-progress-on-added-sugar-protein-hype-saturated-fat-contradictions/": {
+      "processedAt": "2026-11-23T06:17:00+08:00",
+      "outputFile": "src/content/news/radar-2026-11-23-06-01.md"
+    },
+    "https://www.hk01.com/article/817438": {
+      "processedAt": "2026-11-23T06:17:00+08:00",
+      "outputFile": "src/content/news/radar-2026-11-23-06-01.md"
+    },
+    "https://www.cdc.gov.tw/Bulletin/Detail/geKc8NtAOy4tYs3Y4JhRfg?typeid=9": {
+      "processedAt": "2026-11-23T06:17:00+08:00",
       "outputFile": null
     }
   }
