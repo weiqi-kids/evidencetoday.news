@@ -32,8 +32,8 @@ const CONTENT_DIR = 'src/content';
  */
 const PIPELINES = {
   articles: { label: '文章', cron: '每週日', runwayDays: 10, everyNDays: 1, dailyTarget: 2, dailyTargetFrom: '2026-09-23' },
-  ingredients: { label: '成分解析', cron: '每週二', runwayDays: 10, everyNDays: 7 },
-  myths: { label: '闢謠', cron: '每週四', runwayDays: 10, everyNDays: 3 },
+  ingredients: { label: '成分解析', cron: '每週二', runwayDays: 10, everyNDays: 2 },
+  myths: { label: '闢謠', cron: '每週四', runwayDays: 10, everyNDays: 2 },
   news: { label: '趨勢新聞', cron: '每日', runwayDays: null, everyNDays: 1 }, // 只看破洞，不看跑道
 };
 
@@ -45,9 +45,8 @@ const PIPELINES = {
  * 闢謠 32.6、新聞 12.1，闢謠與成分的邊際效益已不值得每日產能），若不改這裡，
  * 降頻後每一天都會被誤報成破洞，這支 gate 就會被當成雜訊忽略——那比沒有 gate 更糟。
  *
- * 2026-11-21 再調：闢謠 2 → 3 天一篇、成分解析 2 → 7 天一篇（業主授權依需要調整）。
- * 闢謠是 Google 事實查核工具的導流入口，要持續有新稿但不必密；成分頁近 28 天每頁點擊
- * 只有文章的三分之一，產能改投入文章線與既有成分頁的更新。理由見 docs/content-guide.md。
+ * 2026-11-21 曾暫調為闢謠 3 天、成分解析 7 天一篇，2026-11-22 業主表明不降頻，
+ * 補稿到 12/31 後兩條線都回到 2 天一篇。理由見 docs/content-guide.md。
  *
  * 判準改成：相鄰兩篇的間隔大於 everyNDays 才算破洞。間隔小於節奏（同一天兩篇）不罰，
  * 那是補稿或特例，不是失誤。

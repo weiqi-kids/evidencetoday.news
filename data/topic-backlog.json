@@ -3794,11 +3794,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "articles/banquet-leftovers-takeaway-how-long",
+   "publishedAt": "2026-12-19",
    "rejectedReason": null,
    "notes": "排程 2026-12-19｜系列：冬天剩菜與年節食物保存系列"
   },
@@ -3819,11 +3819,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "articles/sleeping-pills-years-taper-talk-to-doctor",
+   "publishedAt": "2026-12-20",
    "rejectedReason": null,
    "notes": "排程 2026-12-20｜系列：長期吃安眠藥的人系列"
   },
@@ -3845,11 +3845,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "myths/collagen-breast-cancer-growth-myth",
+   "publishedAt": "2026-12-20",
    "rejectedReason": null,
    "notes": "排程 2026-12-20"
   },
@@ -3870,12 +3870,12 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "rejected",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
    "slug": null,
    "publishedAt": null,
-   "rejectedReason": null,
+   "rejectedReason": "違反 docs/content-guide.md「站台不做的題目類型」：拜拜、祭祀、供品整類排除（2026-11-22 Writer 交件時擋下，12/21 改排高山症藥題）",
    "notes": "排程 2026-12-21｜系列：冬天剩菜與年節食物保存系列"
   },
   {
@@ -3894,11 +3894,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "ingredients/cinnamon",
+   "publishedAt": "2026-12-21",
    "rejectedReason": null,
    "notes": "排程 2026-12-21"
   },
@@ -3918,11 +3918,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "articles/pap-smear-ascus-hpv-positive-next-step",
+   "publishedAt": "2026-12-22",
    "rejectedReason": null,
    "notes": "排程 2026-12-22｜系列：健檢報告看不懂系列：影像與癌篩報告"
   },
@@ -3944,11 +3944,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "articles/same-s-adenosylmethionine-taiwan-legal",
+   "publishedAt": "2026-12-23",
    "rejectedReason": null,
    "notes": "排程 2026-12-23｜系列：新成分在台灣合不合法系列"
   },
@@ -3969,11 +3969,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "ingredients/chuanxiong",
+   "publishedAt": "2026-12-23",
    "rejectedReason": null,
    "notes": "排程 2026-12-23"
   },
@@ -3994,11 +3994,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "myths/covid-vaccine-autopsy-74-percent-myth",
+   "publishedAt": "2026-12-23",
    "rejectedReason": null,
    "notes": "排程 2026-12-23"
   },
@@ -4020,11 +4020,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "articles/anticoagulant-cold-medicine-painkillers-bleeding",
+   "publishedAt": "2026-12-24",
    "rejectedReason": null,
    "notes": "排程 2026-12-24｜系列：冬季感冒用藥系列"
   },
@@ -4045,11 +4045,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "articles/endoscopy-intestinal-metaplasia-atrophic-gastritis",
+   "publishedAt": "2026-12-25",
    "rejectedReason": null,
    "notes": "排程 2026-12-25｜系列：健檢報告看不懂系列：影像與癌篩報告"
   },
@@ -4069,11 +4069,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "ingredients/flaxseed",
+   "publishedAt": "2026-12-25",
    "rejectedReason": null,
    "notes": "排程 2026-12-25"
   },
@@ -4096,11 +4096,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "articles/diabetes-medication-bitter-melon-berberine-hypoglycemia",
+   "publishedAt": "2026-12-26",
    "rejectedReason": null,
    "notes": "排程 2026-12-26"
   },
@@ -4122,11 +4122,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "myths/cold-water-boiled-eggs-myth",
+   "publishedAt": "2026-12-26",
    "rejectedReason": null,
    "notes": "排程 2026-12-26"
   },
@@ -4148,11 +4148,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "articles/snoring-sleep-apnea-sleeping-pills-alcohol-risk",
+   "publishedAt": "2026-12-27",
    "rejectedReason": null,
    "notes": "排程 2026-12-27｜系列：長期吃安眠藥的人系列"
   },
@@ -4174,11 +4174,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "articles/carotid-ultrasound-plaque-statin-decision",
+   "publishedAt": "2026-12-28",
    "rejectedReason": null,
    "notes": "排程 2026-12-28｜系列：健檢報告看不懂系列：影像與癌篩報告"
   },
@@ -4199,11 +4199,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "ingredients/lycopene",
+   "publishedAt": "2026-12-28",
    "rejectedReason": null,
    "notes": "排程 2026-12-28"
   },
@@ -4225,11 +4225,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "articles/chinese-sausage-cured-meat-mullet-roe-storage",
+   "publishedAt": "2026-12-29",
    "rejectedReason": null,
    "notes": "排程 2026-12-29｜系列：冬天剩菜與年節食物保存系列"
   },
@@ -4250,11 +4250,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "myths/japan-food-us-fda-ban-myth",
+   "publishedAt": "2026-12-29",
    "rejectedReason": null,
    "notes": "排程 2026-12-29"
   },
@@ -4276,11 +4276,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "articles/blood-pressure-medication-nsaid-painkillers-kidney",
+   "publishedAt": "2026-12-30",
    "rejectedReason": null,
    "notes": "排程 2026-12-30"
   },
@@ -4301,11 +4301,11 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "ingredients/lecithin",
+   "publishedAt": "2026-12-30",
    "rejectedReason": null,
    "notes": "排程 2026-12-30"
   },
@@ -4326,13 +4326,37 @@
     ],
     "verdict": "clear"
    },
-   "status": "claimed",
+   "status": "written",
    "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
    "claimedAt": "2026-11-22T12:00:00+08:00",
-   "slug": null,
-   "publishedAt": null,
+   "slug": "articles/clopidogrel-ppi-stomach-medicine-choice",
+   "publishedAt": "2026-12-31",
    "rejectedReason": null,
    "notes": "排程 2026-12-31"
+  },
+  {
+   "id": "altitude-sickness-medicine-hehuanshan-yushan",
+   "topic": "冬天上合歡山看雪、爬玉山前，要先吃高山症的藥嗎？",
+   "queryPattern": "decision-guide",
+   "contentType": "articles",
+   "source": "editor",
+   "rationale": "季節與出行",
+   "suggestedAngle": "行程型態（合歡山當日來回、玉山排雲住一晚、出國高海拔）× 風險 × 要不要先看醫師 表；丹木斯在台灣許可證與禁忌整理",
+   "collisionCheck": {
+    "checkedAt": "2026-11-22T12:00:00+08:00",
+    "method": "grep -rli 高山症|acetazolamide|丹木斯|合歡山 src/content/{articles,myths}",
+    "matchedSlugs": [
+     "articles/rhodiola-altitude-sickness-and-fatigue-evidence"
+    ],
+    "verdict": "clear"
+   },
+   "status": "written",
+   "claimedBy": "主 session Writer 補稿（2026-11-22，恢復一天 2 篇／闢謠與成分 2 天 1 篇）",
+   "claimedAt": "2026-11-22T12:00:00+08:00",
+   "slug": "articles/altitude-sickness-medicine-hehuanshan-yushan",
+   "publishedAt": "2026-12-21",
+   "rejectedReason": null,
+   "notes": "排程 2026-12-21"
   }
  ]
 }
