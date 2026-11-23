@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-11-23T06:17:00+08:00",
+  "lastRun": "2026-11-24T06:34:59+08:00",
   "processed": {
     "https://pubmed.ncbi.nlm.nih.gov/41761730/": {
       "processedAt": "2026-11-21T06:19:39+08:00",
@@ -1012,6 +1012,46 @@
     },
     "https://www.cdc.gov.tw/Bulletin/Detail/geKc8NtAOy4tYs3Y4JhRfg?typeid=9": {
       "processedAt": "2026-11-23T06:17:00+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42375769/": {
+      "processedAt": "2026-11-24T06:34:59+08:00",
+      "outputFile": null
+    },
+    "PMID:42375769": {
+      "processedAt": "2026-11-24T06:34:59+08:00",
+      "outputFile": null
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC13312902/": {
+      "processedAt": "2026-11-24T06:34:59+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/43011259": {
+      "processedAt": "2026-11-24T06:34:59+08:00",
+      "outputFile": null
+    },
+    "PMID:43011259": {
+      "processedAt": "2026-11-24T06:34:59+08:00",
+      "outputFile": null
+    },
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC13748253": {
+      "processedAt": "2026-11-24T06:34:59+08:00",
+      "outputFile": null
+    },
+    "https://www.eurekalert.org/news-releases/1136477": {
+      "processedAt": "2026-11-24T06:34:59+08:00",
+      "outputFile": null
+    },
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12611091/": {
+      "processedAt": "2026-11-24T06:34:59+08:00",
+      "outputFile": null
+    },
+    "https://www.who.int/publications/m/item/the-state-of-food-security-and-nutrition-in-the-world-2026": {
+      "processedAt": "2026-11-24T06:34:59+08:00",
+      "outputFile": null
+    },
+    "https://www.afro.who.int/countries/south-africa/news/joint-statement-who-and-fao-south-africa-world-food-safety-day-2026-burden-solutions-safe-food": {
+      "processedAt": "2026-11-24T06:34:59+08:00",
       "outputFile": null
     }
   }
