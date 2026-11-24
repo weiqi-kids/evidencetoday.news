@@ -1,7 +1,19 @@
 {
   "version": 1,
-  "lastRun": "2026-11-24T06:34:59+08:00",
+  "lastRun": "2026-11-25T06:20:56+08:00",
   "processed": {
+    "https://www.who.int/europe/news/item/23-11-2026-fewer-foods-exceed-trans-fat-limits-in-ukraine--new-who-survey-suggests": {
+      "processedAt": "2026-11-25T06:20:56+08:00",
+      "outputFile": null
+    },
+    "https://dep.mohw.gov.tw/pro/cp-2731-86886-120.html": {
+      "processedAt": "2026-11-25T06:20:56+08:00",
+      "outputFile": null
+    },
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12073342/": {
+      "processedAt": "2026-11-25T06:20:56+08:00",
+      "outputFile": null
+    },
     "https://pubmed.ncbi.nlm.nih.gov/41761730/": {
       "processedAt": "2026-11-21T06:19:39+08:00",
       "outputFile": null
