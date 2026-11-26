@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-11-25T06:20:56+08:00",
+  "lastRun": "2026-11-27T06:29:55+08:00",
   "processed": {
     "https://www.who.int/europe/news/item/23-11-2026-fewer-foods-exceed-trans-fat-limits-in-ukraine--new-who-survey-suggests": {
       "processedAt": "2026-11-25T06:20:56+08:00",
@@ -658,10 +658,6 @@
       "processedAt": "2026-11-09T22:34:49.049Z",
       "outputFile": "src/content/news/radar-2026-11-10-06-01.md"
     },
-    "https://www.sciencedaily.com/releases/2026/11/261105081000.htm": {
-      "processedAt": "2026-11-12T06:50:00+08:00",
-      "outputFile": null
-    },
     "https://www.cdc.gov.tw/Bulletin/Detail/HHbAdjZ5sQg8nHVyP5QXSQ?typeid=9": {
       "processedAt": "2026-11-11T06:31:50+08:00",
       "outputFile": "src/content/news/radar-2026-11-11-06-01.md"
@@ -697,38 +693,6 @@
     "https://ods.od.nih.gov/factsheets/Magnesium-HealthProfessional/": {
       "processedAt": "2026-11-12T06:50:00+08:00",
       "outputFile": "src/content/news/radar-2026-11-12-06-01.md"
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/42582094/": {
-      "processedAt": "2026-11-12T06:50:00+08:00",
-      "outputFile": null
-    },
-    "PMID:42582094": {
-      "processedAt": "2026-11-12T06:50:00+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/42547104/": {
-      "processedAt": "2026-11-12T06:50:00+08:00",
-      "outputFile": null
-    },
-    "PMID:42547104": {
-      "processedAt": "2026-11-12T06:50:00+08:00",
-      "outputFile": null
-    },
-    "https://pubmed.ncbi.nlm.nih.gov/42356372/": {
-      "processedAt": "2026-11-12T06:50:00+08:00",
-      "outputFile": null
-    },
-    "PMID:42356372": {
-      "processedAt": "2026-11-12T06:50:00+08:00",
-      "outputFile": null
-    },
-    "https://www.cdc.gov.tw/Bulletin/Detail/HqTIUKC58EK9fO9AVWU3Cg?typeid=9": {
-      "processedAt": "2026-11-12T06:50:00+08:00",
-      "outputFile": null
-    },
-    "https://www.who.int/news-room/events/detail/2026/01/27/default-calendar/launch-of-the-who-guideline-on-policies-and-interventions-to-create-healthy-school-food-environments": {
-      "processedAt": "2026-11-12T06:50:00+08:00",
-      "outputFile": null
     },
     "https://pubmed.ncbi.nlm.nih.gov/41826924/": {
       "processedAt": "2026-11-13T06:35:00+08:00",
@@ -956,6 +920,114 @@
     },
     "https://www.afro.who.int/countries/south-africa/news/joint-statement-who-and-fao-south-africa-world-food-safety-day-2026-burden-solutions-safe-food": {
       "processedAt": "2026-11-24T06:34:59+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41857820/": {
+      "processedAt": "2026-11-27T06:29:55+08:00",
+      "outputFile": null
+    },
+    "PMID:41857820": {
+      "processedAt": "2026-11-27T06:29:55+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42486145/": {
+      "processedAt": "2026-11-27T06:29:55+08:00",
+      "outputFile": null
+    },
+    "PMID:42486145": {
+      "processedAt": "2026-11-27T06:29:55+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41594884/": {
+      "processedAt": "2026-11-27T06:29:55+08:00",
+      "outputFile": null
+    },
+    "PMID:41594884": {
+      "processedAt": "2026-11-27T06:29:55+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42526758/": {
+      "processedAt": "2026-11-27T06:29:55+08:00",
+      "outputFile": null
+    },
+    "PMID:42526758": {
+      "processedAt": "2026-11-27T06:29:55+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41556351/": {
+      "processedAt": "2026-11-27T06:29:55+08:00",
+      "outputFile": null
+    },
+    "PMID:41556351": {
+      "processedAt": "2026-11-27T06:29:55+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41710102/": {
+      "processedAt": "2026-11-27T06:29:55+08:00",
+      "outputFile": null
+    },
+    "PMID:41710102": {
+      "processedAt": "2026-11-27T06:29:55+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41622137/": {
+      "processedAt": "2026-11-27T06:29:55+08:00",
+      "outputFile": null
+    },
+    "PMID:41622137": {
+      "processedAt": "2026-11-27T06:29:55+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42325320/": {
+      "processedAt": "2026-11-27T06:29:55+08:00",
+      "outputFile": null
+    },
+    "PMID:42325320": {
+      "processedAt": "2026-11-27T06:29:55+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41804836/": {
+      "processedAt": "2026-11-27T06:29:55+08:00",
+      "outputFile": null
+    },
+    "PMID:41804836": {
+      "processedAt": "2026-11-27T06:29:55+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42522010/": {
+      "processedAt": "2026-11-27T06:29:55+08:00",
+      "outputFile": null
+    },
+    "PMID:42522010": {
+      "processedAt": "2026-11-27T06:29:55+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41880968/": {
+      "processedAt": "2026-11-27T06:29:55+08:00",
+      "outputFile": null
+    },
+    "PMID:41880968": {
+      "processedAt": "2026-11-27T06:29:55+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42437546/": {
+      "processedAt": "2026-11-27T06:29:55+08:00",
+      "outputFile": null
+    },
+    "PMID:42437546": {
+      "processedAt": "2026-11-27T06:29:55+08:00",
+      "outputFile": null
+    },
+    "https://www.sciencedaily.com/releases/2026/11/261105083622.htm": {
+      "processedAt": "2026-11-27T06:29:55+08:00",
+      "outputFile": null
+    },
+    "https://www.sciencedaily.com/releases/2026/07/260708022206.htm": {
+      "processedAt": "2026-11-27T06:29:55+08:00",
+      "outputFile": null
+    },
+    "https://www.mohw.gov.tw/cp-2638-22511-1.html": {
+      "processedAt": "2026-11-27T06:29:55+08:00",
       "outputFile": null
     }
   }
