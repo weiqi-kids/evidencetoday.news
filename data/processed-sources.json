@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastRun": "2026-11-27T06:29:55+08:00",
+  "lastRun": "2026-11-28T06:41:53+08:00",
   "processed": {
     "https://www.who.int/europe/news/item/23-11-2026-fewer-foods-exceed-trans-fat-limits-in-ukraine--new-who-survey-suggests": {
       "processedAt": "2026-11-25T06:20:56+08:00",
@@ -1028,6 +1028,110 @@
     },
     "https://www.mohw.gov.tw/cp-2638-22511-1.html": {
       "processedAt": "2026-11-27T06:29:55+08:00",
+      "outputFile": null
+    },
+    "PMID:42746678": {
+      "processedAt": "2026-11-28T06:41:53+08:00",
+      "outputFile": "src/content/news/radar-2026-11-28-06-01.md"
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42746678/": {
+      "processedAt": "2026-11-28T06:41:53+08:00",
+      "outputFile": "src/content/news/radar-2026-11-28-06-01.md"
+    },
+    "https://doi.org/10.1080/10408398.2026.2731838": {
+      "processedAt": "2026-11-28T06:41:53+08:00",
+      "outputFile": "src/content/news/radar-2026-11-28-06-01.md"
+    },
+    "https://doi.org/10.1126/science.aef3495": {
+      "processedAt": "2026-11-28T06:41:53+08:00",
+      "outputFile": "src/content/news/radar-2026-11-28-06-01.md"
+    },
+    "https://www.medrxiv.org/content/10.64898/2026.06.03.26354787v1": {
+      "processedAt": "2026-11-28T06:41:53+08:00",
+      "outputFile": "src/content/news/radar-2026-11-28-06-01.md"
+    },
+    "PMID:42137868": {
+      "processedAt": "2026-11-28T06:41:53+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42137868/": {
+      "processedAt": "2026-11-28T06:41:53+08:00",
+      "outputFile": null
+    },
+    "PMID:42584921": {
+      "processedAt": "2026-11-28T06:41:53+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42584921/": {
+      "processedAt": "2026-11-28T06:41:53+08:00",
+      "outputFile": null
+    },
+    "PMID:41871665": {
+      "processedAt": "2026-11-28T06:41:53+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41871665/": {
+      "processedAt": "2026-11-28T06:41:53+08:00",
+      "outputFile": null
+    },
+    "PMID:42954267": {
+      "processedAt": "2026-11-28T06:41:53+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42954267/": {
+      "processedAt": "2026-11-28T06:41:53+08:00",
+      "outputFile": null
+    },
+    "PMID:42721218": {
+      "processedAt": "2026-11-28T06:41:53+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42721218/": {
+      "processedAt": "2026-11-28T06:41:53+08:00",
+      "outputFile": null
+    },
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12498230/": {
+      "processedAt": "2026-11-28T06:41:53+08:00",
+      "outputFile": null
+    },
+    "PMID:42868613": {
+      "processedAt": "2026-11-28T06:41:53+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42868613/": {
+      "processedAt": "2026-11-28T06:41:53+08:00",
+      "outputFile": null
+    },
+    "PMID:43001061": {
+      "processedAt": "2026-11-28T06:41:53+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/43001061/": {
+      "processedAt": "2026-11-28T06:41:53+08:00",
+      "outputFile": null
+    },
+    "PMID:42656675": {
+      "processedAt": "2026-11-28T06:41:53+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/42656675/": {
+      "processedAt": "2026-11-28T06:41:53+08:00",
+      "outputFile": null
+    },
+    "PMID:41803341": {
+      "processedAt": "2026-11-28T06:41:53+08:00",
+      "outputFile": null
+    },
+    "https://pubmed.ncbi.nlm.nih.gov/41803341/": {
+      "processedAt": "2026-11-28T06:41:53+08:00",
+      "outputFile": null
+    },
+    "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON596": {
+      "processedAt": "2026-11-28T06:41:53+08:00",
+      "outputFile": null
+    },
+    "https://www.who.int/news-room/events/detail/2026/01/27/default-calendar/launch-of-the-who-guideline-on-policies-and-interventions-to-create-healthy-school-food-environments": {
+      "processedAt": "2026-11-28T06:41:53+08:00",
       "outputFile": null
     }
   }
