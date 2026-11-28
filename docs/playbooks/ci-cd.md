@@ -30,7 +30,7 @@ build (ubuntu-latest)
 │   ├─ astro build
 │   └─ postbuild: subset-fonts.mjs → pagefind --site dist
 ├─ lychee internal links check (offline, fail: true)
-├─ lychee external links check (fail: false, continue-on-error)
+├─ lychee external links check (fail: false, continue-on-error, timeout-minutes: 10)
 ├─ Lighthouse CI (continue-on-error)
 └─ upload-pages-artifact@v5
 
@@ -183,6 +183,7 @@ repo 外的工具透過 GitHub API 直接提交文章（commit 訊息 `content: 
 - **`actions/upload-pages-artifact@v4+` 不收 dotfiles**：若 dist 有 `.nojekyll` 需要部署會被剔除（本站不需要 .nojekyll，但要記得）
 - **升 Action 沒看 breaking change**：build 突然爆 → 一定先看 release notes
 - **`fail: true` 用在外部連結檢查**：外部站台暫時 down 就擋部署 → 外部用 `fail: false + continue-on-error`
+- **外部連結檢查沒有時間上限**：外部站台慢或限流（429）時 lychee 會一直等，2026-11-28 曾讓整個部署卡 40 分鐘以上 → 該步設 `timeout-minutes: 10`，超時即跳過（本步本來就不擋部署）
 - **Lighthouse 閾值寫死太高**：每個 PR 因 Network 抖動而 fail → 用 warn 模式（不擋）
 - **改 `staticDistDir` 為 `serverBaseUrl`**：CI 沒準備 server → 維持 staticDistDir
 - **沒 cache pnpm**：每次 install 5+ 分鐘 → 必須 `cache: pnpm` 在 setup-node

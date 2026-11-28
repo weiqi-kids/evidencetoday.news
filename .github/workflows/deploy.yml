@@ -78,6 +78,9 @@ jobs:
           fail: true
 
       - name: Check external links
+        # 2026-11-28：加時間上限。外部站台慢或限流時，這一步曾卡住整個部署 40 分鐘以上；
+        # 本步本來就不擋部署（fail: false），超時直接跳過即可。
+        timeout-minutes: 10
         uses: lycheeverse/lychee-action@v2
         with:
           # upload.wikimedia.org 排除：成分縮圖 27 條熱連結已由 fix-ingredient-photo-urls.mjs
