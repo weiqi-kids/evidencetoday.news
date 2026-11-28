@@ -33,9 +33,10 @@ import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
 const WORKER = 'https://evidencetoday-ai-suggest.lightman-chang.workers.dev/stock';
 
 /**
- * articles / ingredients / news 三個頁型配封面；**只有 myths 刻意不配**——
- * 那不是漏掉：2026-08-07 曾替 74 篇闢謠自動配圖，結果全數與內文不相干（見
- * docs/pitfalls.md），事後移除，此後闢謠維持無封面。不要「順手補上」。
+ * articles / ingredients / news 三個頁型配封面；**myths 不走這支**——
+ * 2026-08-07 曾替 74 篇闢謠用關鍵字圖庫自動配圖，結果全數與內文不相干（見
+ * docs/pitfalls.md），事後移除。2026-11-28 起闢謠封面只用逐篇生成的 AI 插畫
+ * （docs/playbooks/editor-images.md「七」），不要用這支腳本替闢謠「順手補上」。
  *
  * ⚠️ **news 的封面欄位叫 `heroImage`，不是 `coverImage`**（見 editor-images.md
  * 的 getCoverConfig）。2026-08-24 曾因為拿 `coverImage` 去 grep news 得到 0 篇，

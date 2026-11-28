@@ -354,6 +354,8 @@ const categories = [
                 episodeNumber={d.episodeNumber as number}
                 duration={d.duration as string}
                 publishDate={item.date}
+                coverImage={d.coverImage as string | undefined}
+                coverAlt={d.coverAlt as string | undefined}
               /></div>
             );
           }
@@ -552,6 +554,8 @@ const categories = [
               episodeNumber={p.data.episodeNumber}
               duration={p.data.duration}
               publishDate={p.data.publishDate}
+              coverImage={p.data.coverImage}
+              coverAlt={p.data.coverAlt}
             />
           ))}
         </div>

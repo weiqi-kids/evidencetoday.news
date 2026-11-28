@@ -112,3 +112,13 @@ myths 是週更且供給面比題庫式窄，門檻獨立設得比每日型的 n
 分享圖由 `contentSocial()` 的 `mythOgImage(slug)` 逐篇產生，不吃 frontmatter；
 列表頁用 `MythSquareCardVisual` 逐篇渲染該篇自己的標題／判讀／證據強度；
 卡片縮圖缺值時 `MythCard` 退回品牌縮圖。三條路都不需要 frontmatter 填圖。
+
+### 2026-11-28 起：闢謠改用 AI 生成插圖當封面（主編核准）
+
+8 月撤掉封面，原因是「用關鍵字去圖庫抓照片，抓到不相干的圖」，問題在抓圖方法，不在闢謠頁不該有圖。
+現在改成**依每一篇的說法生成編輯插畫**（Codex），畫的是說法涉及的日常物品或情境，不畫結論：
+
+- 填 `coverImage: "/images/ai/<slug>.webp"`、`coverAlt`（逐張看過才寫，以「插畫：」開頭）、`coverImageCredit: "本日有據 AI 生成插圖"`
+- 單篇頁 `myths/[slug].astro` 會把這三欄傳給 `Article.astro` 顯示封面；列表與首頁的 `MythCard` 也會用
+- **仍然不准**：用 `covers:backfill` 或任何關鍵字圖庫流程替闢謠自動配圖；沒有插圖的篇照舊退回品牌縮圖
+- 生成流程、畫風規範與禁止事項見 [`docs/playbooks/editor-images.md`](../playbooks/editor-images.md)「七、AI 生成編輯插畫」

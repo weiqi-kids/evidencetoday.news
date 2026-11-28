@@ -41,9 +41,9 @@ const crumbSchema = buildBreadcrumbList([{ label: '首頁', href: '/' }, { label
     <article><h3>養生方向</h3><p>該治療時積極治療，該保養時認真保養。</p></article>
   </section>
 
-  {latest && <section class="latest-episode"><h2>最新單集</h2><div class="latest-episode__card"><PodcastCard title={latest.data.title} description={latest.data.summary || latest.data.description} href={`/podcasts/${stripPodcastSlug(latest.id)}/`} episodeNumber={latest.data.episodeNumber} duration={latest.data.duration} publishDate={latest.data.updatedDate || latest.data.publishDate} /></div></section>}
+  {latest && <section class="latest-episode"><h2>最新單集</h2><div class="latest-episode__card"><PodcastCard title={latest.data.title} description={latest.data.summary || latest.data.description} href={`/podcasts/${stripPodcastSlug(latest.id)}/`} episodeNumber={latest.data.episodeNumber} duration={latest.data.duration} publishDate={latest.data.updatedDate || latest.data.publishDate} coverImage={latest.data.coverImage} coverAlt={latest.data.coverAlt} /></div></section>}
 
-  <section id="all-episodes" class="all-episodes"><h2>所有集數</h2><div class="episode-grid">{podcasts.map((p) => <PodcastCard title={p.data.title} description={p.data.summary || p.data.description} href={`/podcasts/${stripPodcastSlug(p.id)}/`} episodeNumber={p.data.episodeNumber} duration={p.data.duration} publishDate={p.data.updatedDate || p.data.publishDate} />)}</div></section>
+  <section id="all-episodes" class="all-episodes"><h2>所有集數</h2><div class="episode-grid">{podcasts.map((p) => <PodcastCard title={p.data.title} description={p.data.summary || p.data.description} href={`/podcasts/${stripPodcastSlug(p.id)}/`} episodeNumber={p.data.episodeNumber} duration={p.data.duration} publishDate={p.data.updatedDate || p.data.publishDate} coverImage={p.data.coverImage} coverAlt={p.data.coverAlt} />)}</div></section>
 </List>
 
 <style>

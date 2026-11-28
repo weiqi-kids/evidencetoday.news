@@ -250,6 +250,29 @@ GITHUB_TOKEN=$(gh auth token) node scripts/make-cover.mjs --batch <json>   # [{s
 另一張則是**嚴重失焦**的藥板特寫。關鍵字愈抽象愈容易歪，
 改成具體物件（`vitamin capsules spilling from bottle`、`weekly pill organizer box`）後一次就對。
 
+## 七、AI 生成編輯插畫（2026-11-28 起，主編核准）
+
+用在：闢謠封面、抽象成分（DHEA、TUDCA、SAMe 這類圖庫只能配「一罐膠囊」的）、Podcast 單集封面。具體場景（機場、藥局、市場、食物）的文章封面仍用圖庫照片。
+
+**工具**：本機 Codex CLI（`C:Tools
+odejscodex`，帳號有每日用量上限，碰到「usage limit」就停，隔天再補）。一次生成一張：
+
+```bash
+codex exec --skip-git-repo-check -s workspace-write -o last.txt "Use your image generation tool to create ONE image and save it in the current directory as <slug>.png, landscape 16:9. <STYLE> Subject: <這篇說法涉及的物品或情境>. After saving, reply with only the file name and pixel size." < /dev/null
+```
+
+在迴圈裡跑時一定要加 `< /dev/null`，否則 codex 會把迴圈的輸入讀掉，只跑一張就停。Podcast 用 `square 1:1`。
+
+**固定畫風（STYLE）**：calm flat editorial illustration with soft paper grain, limited palette of deep teal (#0f5a5f), warm paper cream (#f3efe6), navy (#1e2a3a) and a small accent of coral (#d0573c). No text, no letters, no numbers, no logos, no brand packaging, no people, no faces, nothing gory or frightening.
+
+**畫情境，不畫結論**：木耳那篇畫「泡在水裡的木耳＋計時器」，不畫中毒的人。不畫可辨識的品牌包裝、看起來像真藥的特定藥丸、醫療恐懼畫面。
+
+**落地**：
+1. 每張逐張看過（文字、人臉、怪手、品牌、與主題不符就丟掉重生，不湊數）
+2. 用 sharp 壓成 WebP（長邊 1280、品質 82，約 30–75 KB），存 `public/images/ai/<slug>.webp`
+3. frontmatter 填 `coverImage`、`coverAlt`（看過圖才寫，以「插畫：」開頭描述畫面，不寫結論）、`coverImageCredit: "本日有據 AI 生成插圖"`
+4. 成分頁原本有圖庫封面的，換成插畫時一併換掉 `coverImageCredit`
+
 ## 驗證清單
 
 - `pnpm test`（含 `content.schemas.test.ts`、`git-commit`/`image-compress`/`tags-suggest`、worker `index.test.ts`）全綠。

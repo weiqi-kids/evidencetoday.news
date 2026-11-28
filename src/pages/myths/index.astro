@@ -30,7 +30,7 @@ const crumbSchema = buildBreadcrumbList([{ label: '首頁', href: '/' }, { label
       一次先顯示 24 篇，底部「載入更多」。其餘卡片仍在 HTML 裡（只是先隱藏），搜尋引擎抓得到全部連結。 */}
   <div id="list" class="myths-grid">{myths.map((m) => (
     <div class="myth-item" data-title={m.data.title} data-claim={m.data.mythClaim} data-summary={m.data.cardConclusion || m.data.verdictSummary} data-tldr={(m.data.thirtySecondConclusion || m.data.tldr).join(' ')} data-tags={m.data.topicTags.join(' ')} data-verdict={m.data.verdict} data-evidence={m.data.evidenceLevel} data-topic={m.data.topicTags.join('|')} data-updated={m.data.updatedDate.toISOString()}>
-      <MythCard title={m.data.title} verdictSummary={m.data.cardConclusion || m.data.verdictSummary} href={`/myths/${m.id.replace(/.[^.]+$/, '')}/`} verdict={m.data.verdict} date={fmtDate(m.data.updatedDate)} coverImage={m.data.coverImage} coverAlt={m.data.coverAlt} />
+      <MythCard title={m.data.title} verdictSummary={m.data.cardConclusion || m.data.verdictSummary} href={`/myths/${m.id.replace(/\.[^.]+$/, '')}/`} verdict={m.data.verdict} date={fmtDate(m.data.updatedDate)} coverImage={m.data.coverImage} coverAlt={m.data.coverAlt} />
     </div>
   ))}</div>
   <div class="load-more-wrap"><button type="button" id="load-more" class="load-more">載入更多</button></div>

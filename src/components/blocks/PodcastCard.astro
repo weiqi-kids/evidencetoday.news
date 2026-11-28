@@ -6,13 +6,17 @@ interface Props {
   episodeNumber: number;
   duration: string;
   publishDate?: Date;
+  /** 單集封面（方形插圖）。2026-11-28 起顯示在卡片左側；沒有就維持純文字卡 */
+  coverImage?: string;
+  coverAlt?: string;
 }
 
-const { title, description, href, episodeNumber, duration, publishDate } = Astro.props;
+const { title, description, href, episodeNumber, duration, publishDate, coverImage, coverAlt } = Astro.props;
 const dateLabel = publishDate ? publishDate.toLocaleDateString('zh-TW') : '';
 ---
 
-<a href={href} class="podcast-card" aria-label={`收聽 EP${episodeNumber}：${title}`}>
+<a href={href} class:list={['podcast-card', { 'podcast-card--cover': coverImage }]} aria-label={`收聽 EP${episodeNumber}：${title}`}>
+  {coverImage && <img class="podcast-card__cover" src={coverImage} alt={coverAlt || ''} loading="lazy" decoding="async" />}
   <div class="podcast-card__body">
     <div class="podcast-card__top">
       <span class="podcast-card__tag">Podcast</span>
@@ -51,6 +55,28 @@ const dateLabel = publishDate ? publishDate.toLocaleDateString('zh-TW') : '';
   .podcast-card:focus-visible {
     outline: 3px solid var(--color-coral);
     outline-offset: 4px;
+  }
+
+  .podcast-card--cover {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .podcast-card__cover {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+  }
+
+  @media (min-width: 640px) {
+    .podcast-card--cover {
+      grid-template-columns: minmax(8rem, 38%) 1fr;
+    }
+
+    .podcast-card__cover {
+      block-size: 100%;
+    }
   }
 
   .podcast-card__body {
