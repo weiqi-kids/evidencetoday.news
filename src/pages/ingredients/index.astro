@@ -40,9 +40,8 @@ const crumbSchema = buildBreadcrumbList([{ label: '首頁', href: '/' }, { label
     <JsonLd data={crumbSchema} />
   </Fragment>
 
-  <p class="ingredients-intro">
-    成分解析逐一檢視保健食品裡常見營養素與成分的實證支持程度：目前研究做到哪個程度、建議劑量大概是多少、有哪些交互作用或副作用需要留意，幫助你在選購前先看懂科學根據。
-  </p>
+  {/* 2026-11-28：分類頁說明只留一句（原本三行） */}
+  <p class="ingredients-intro">每個成分的證據強度、劑量與台灣法規。</p>
 
   <div class="ingredients-grid">
     {ingredients.map((i) => (

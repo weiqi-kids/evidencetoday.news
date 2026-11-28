@@ -142,7 +142,8 @@ const social = listSocial('videos');
         ))}
       </nav>
 
-      <p id="video-category-description" class="video-category-description">顯示全部短影音。</p>
+      {/* 選「全部」時不顯示說明，選了某個分類才顯示該分類的一句說明（與 /articles 同一種寫法） */}
+      <p id="video-category-description" class="video-category-description" hidden></p>
 
       <div class="videos-grid" id="videos-grid">
         {categorizedVideos.map((v) => (
@@ -200,12 +201,9 @@ const social = listSocial('videos');
     }
 
     if (description) {
-      if (category === 'all') {
-        description.textContent = '顯示全部短影音。';
-      } else {
-        const item = categoryMap.get(category);
-        description.textContent = item ? item.description : '顯示全部短影音。';
-      }
+      const item = category === 'all' ? undefined : categoryMap.get(category);
+      description.textContent = item ? item.description : '';
+      description.hidden = !item;
     }
 
     if (emptyState) {

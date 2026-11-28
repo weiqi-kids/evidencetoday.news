@@ -75,7 +75,7 @@ myths 是週更且供給面比題庫式窄，門檻獨立設得比每日型的 n
 
 - 沿用 CI tokens（`--color-paper/ink/fog/teal/navy/coral/cat-myth`）與 `color-mix`，**禁止新增 pastel hex**。
 - `VerdictBadge` 只能用 CI token + `color-mix`。
-- **單篇「30 秒快速結論」的判定（2026-11-28）**：判定是整篇的答案，不再用一顆 `VerdictBadge` 小膠囊，改成 `.quick-verdict`：左側 6px 判定色直條＋宋體 `--text-h2` 的判定文字（含 `VERDICT_META` 圖示）＋一句判定說明；「證據強度」降為下方一行說明文字 `.quick-evidence`。判定色對照 `VERDICT_META[verdict].tone` → `--color-verdict-*`（caution 用 `--color-cat-myth`、warning 用 `--color-coral`）。列表卡（`MythCard`）仍用 `VerdictBadge`，前面加「闢謠」分類字。
+- **單篇「30 秒快速結論」的判定（2026-11-28）**：判定是整篇的答案，不再用一顆 `VerdictBadge` 小膠囊，改成 `.quick-verdict`：左側 6px 判定色直條＋宋體 `--text-h2` 的判定文字（含 `VERDICT_META` 圖示），不再加判定說明句（會重複判定本身）；「證據強度」降為下方一行說明文字 `.quick-evidence`。判定色對照 `VERDICT_META[verdict].tone` → `--color-verdict-*`（caution 用 `--color-cat-myth`、warning 用 `--color-coral`）。列表卡（`MythCard`）仍用 `VerdictBadge`，前面加「闢謠」分類字。
 - `MythCard` 的 `verdict` 型別必須引用 `@/utils/myths/schema` 的 `MythVerdict`，不可自行定義字面量聯集。
 
 ## 列表頁：篩選與排序（前端互動）

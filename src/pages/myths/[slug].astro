@@ -223,7 +223,6 @@ const mythFaqSchema = mythFaq && mythFaq.length > 0
       {/* 2026-11-28：判定是整篇的答案，從一顆小膠囊放大成這一區的主角；證據強度降為一行說明文字 */}
       <div class={`quick-verdict quick-verdict--${VERDICT_META[d.verdict].tone}`}>
         <p class="quick-verdict__value"><span aria-hidden="true">{VERDICT_META[d.verdict].icon}</span> {displayVerdict(d.verdict)}</p>
-        <p class="quick-verdict__desc">{VERDICT_META[d.verdict].description}</p>
       </div>
       <p class="quick-evidence">證據強度：<strong>{d.evidenceLevel}</strong></p>
     </div>
@@ -469,12 +468,6 @@ document.getElementById('copy-btn')?.addEventListener('click', async () => { awa
     font-weight: 700;
     line-height: 1.25;
     color: color-mix(in oklch, var(--verdict-color) 80%, var(--color-ink));
-  }
-
-  .quick-verdict__desc {
-    margin: 0.25rem 0 0;
-    font-size: var(--text-body);
-    color: var(--color-ink);
   }
 
   .quick-evidence {
