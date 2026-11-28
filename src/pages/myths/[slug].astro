@@ -93,6 +93,9 @@ const sourceTypeLabels: Record<string, string> = {
   animal: '動物研究',
   'in-vitro': '細胞或體外研究',
   'case-report': '個案報告',
+  // 2026-11-28 補：schema 允許但原本沒對照，前台會露出英文原始值
+  'case-control': '病例對照研究',
+  'cross-sectional': '橫斷面研究',
 };
 // 優先用該篇 frontmatter 的 medicalDisclaimer——那是逐篇寫的，含該主題的具體警訊症狀
 // 與建議科別（例如血便、排便習慣改變 → 消化內科），比通用句對讀者有用得多。
