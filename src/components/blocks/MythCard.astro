@@ -2,6 +2,7 @@
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import VerdictBadge from '../ui/VerdictBadge.astro';
+import CategoryTag from '../ui/CategoryTag.astro';
 import type { MythVerdict } from '@/utils/myths/schema';
 
 interface Props {
@@ -33,6 +34,7 @@ const safeCoverImage =
   <div class="myth-card__bar"></div>
   <div class="myth-card__body">
     <div class="myth-card__top">
+      <CategoryTag category="myth" />
       <VerdictBadge verdict={verdict} size="sm" />
     </div>
     <h3 class="myth-card__title">{title}</h3>
@@ -81,7 +83,9 @@ const safeCoverImage =
 
   .myth-card__top {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
+    gap: 0.5rem 0.75rem;
   }
 
   .myth-card__title {

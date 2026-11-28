@@ -2,7 +2,6 @@
 import Base from '@/layouts/Base.astro';
 import Breadcrumb from '@/components/ui/Breadcrumb.astro';
 import CategoryTag from '@/components/ui/CategoryTag.astro';
-import Badge from '@/components/ui/Badge.astro';
 import AuthorMeta from '@/components/blocks/AuthorMeta.astro';
 import EditorInfo from '@/components/blocks/EditorInfo.astro';
 import TldrBox from '@/components/blocks/TldrBox.astro';
@@ -101,12 +100,12 @@ const safeCover =
     <Breadcrumb items={breadcrumbItems} />
 
     <header class="article-header">
+      {/* 2026-11-28：類別與題型改成同一行純文字；「主編把關」只留在下方署名列（原本頂部也有一顆，重複）；
+          日期列移到標題下方，讓標題在手機第一屏上移。 */}
       <div class="article-header__meta">
         <CategoryTag category={category} />
         {queryPatternLabel && <span class="article-header__aeo">{queryPatternLabel}</span>}
-        {editorReviewed && <Badge variant="editor">主編把關</Badge>}
       </div>
-      <AuthorMeta publishDate={publishDate} updatedDate={updatedDate} readingTime={readingTime} />
       <h1>{title}</h1>
       {(author || reviewer || disclosure) && (
         <EditorInfo
@@ -116,6 +115,7 @@ const safeCover =
           disclosure={disclosure}
         />
       )}
+      <AuthorMeta publishDate={publishDate} updatedDate={updatedDate} readingTime={readingTime} />
     </header>
 
     {safeCover && (
@@ -185,12 +185,15 @@ const safeCover =
   .article-header__aeo {
     display: inline-flex;
     align-items: center;
-    border-radius: 999px;
-    padding: 0.15rem 0.55rem;
+    font-family: var(--font-ui);
     font-size: var(--text-meta);
-    color: color-mix(in oklch, var(--color-teal) 65%, var(--color-ink));
-    background: color-mix(in oklch, var(--color-teal) 14%, white);
-    border: 1px solid color-mix(in oklch, var(--color-teal) 22%, white);
+    color: var(--color-ink-muted);
+  }
+
+  .article-header__aeo::before {
+    content: '·';
+    margin-inline-end: 0.5rem;
+    color: var(--color-ink-subtle);
   }
 
   .article-header h1 {
@@ -225,10 +228,10 @@ const safeCover =
     padding-block: 2rem;
   }
 
+  /* 2026-11-28：拿掉正文外層白卡（裡面還有摘要框，形成卡中卡，也讓手機正文欄被兩層內距吃掉），
+     正文直接放在紙色底上。 */
   .article-grid--prose {
-    background-color: white;
-    border-radius: var(--radius-card);
-    padding: clamp(1rem, 0.5rem + 3vw, 2rem);
+    padding-block: 1rem 2rem;
   }
 
   .article-grid--cards {
@@ -294,9 +297,11 @@ const safeCover =
     min-width: 0;
   }
 
+  /* 桌機：正文欄固定在易讀寬度，目錄緊跟在旁（原本 0.7fr／0.3fr 讓兩欄之間空出一大塊） */
   @media (min-width: 1024px) {
     .article-grid--prose {
-      grid-template-columns: minmax(0, 0.7fr) minmax(14rem, 0.3fr);
+      grid-template-columns: minmax(0, 68ch) minmax(14rem, 17rem);
+      column-gap: clamp(2.5rem, 1rem + 3vw, 4.5rem);
     }
 
     .article-sidebar {

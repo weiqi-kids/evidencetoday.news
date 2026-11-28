@@ -21,9 +21,11 @@ const [articles, ingredients] = await Promise.all([
 ]);
 articles.sort(byDate);
 ingredients.sort(byDate);
+// 同一篇內容常比對到多個專題，傳共用集合讓每張卡盡量用不同封面。
+const usedCovers = new Set<string>();
 const topicCards = TOPICS.map((topic) => ({
   topic,
-  cover: resolveTopicCover(topic, [articles, ingredients]),
+  cover: resolveTopicCover(topic, [articles, ingredients], usedCovers),
 }));
 
 const collectionSchema = {

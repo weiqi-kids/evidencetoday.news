@@ -80,9 +80,11 @@ const siteStats = [
 ];
 
 // 健康專題卡片縮圖：從各主題自動歸入的文章／成分解析取代表封面（缺圖退回品牌佔位）。
-const topicCards = TOPICS.map((topic) => ({
+// 首頁只放前 6 個專題（其餘到 /topics/），封面去重：同一篇內容常比對到多個專題。
+const usedTopicCovers = new Set<string>();
+const topicCards = TOPICS.slice(0, 6).map((topic) => ({
   topic,
-  cover: resolveTopicCover(topic, [allArticles, allIngredients]),
+  cover: resolveTopicCover(topic, [allArticles, allIngredients], usedTopicCovers),
 }));
 
 /* ------------------------------------------------------------------ */
@@ -139,12 +141,14 @@ const featuredItems: FeaturedItem[] = [
     cover: p.data.coverImage,
     extra: { episodeNumber: p.data.episodeNumber, duration: p.data.duration },
   })),
-].sort((a, b) => b.date.getTime() - a.date.getTime()).slice(0, 3);
+].sort((a, b) => b.date.getTime() - a.date.getTime());
 
 const typeLabel = (t: FeaturedItem['type']) =>
   t === 'article' ? '文章' : t === 'myth' ? '闢謠' : t === 'ingredient' ? '成分解析' : t === 'podcast' ? 'Podcast' : '短影音';
-const primaryFeatured = featuredItems[0];
-const secondaryFeatured = featuredItems.slice(1, 3);
+// 編輯精選只收 90 天內標了 featured 的內容；不足 3 筆時，用「最新內容」沒擺到的近期文章補滿。
+// 原因：featured 是人工標記，久沒人更新時首頁會一直掛著半年前的稿（2026-11 時是 3 月的維生素 E）。
+const FEATURED_FRESH_MS = 90 * 24 * 60 * 60 * 1000;
+const freshFeatured = featuredItems.filter((f) => Date.now() - f.date.getTime() <= FEATURED_FRESH_MS);
 
 /* ------------------------------------------------------------------ */
 /*  Latest 4 items across ALL collections for "Latest Content"         */
@@ -162,7 +166,26 @@ const latestAll: LatestItem[] = [
   ...allIngredients.map((i) => ({ collection: 'ingredients' as const, id: i.id, date: i.data.publishDate, data: i.data as unknown as Record<string, unknown> })),
   ...allPodcasts.map((p) => ({ collection: 'podcasts' as const, id: p.id, date: p.data.publishDate, data: p.data as unknown as Record<string, unknown> })),
   ...allNews.map((n) => ({ collection: 'news' as const, id: n.id, date: n.data.publishDate, data: n.data as unknown as Record<string, unknown> })),
-].sort((a, b) => b.date.getTime() - a.date.getTime()).slice(0, 4);
+].sort((a, b) => b.date.getTime() - a.date.getTime()).slice(0, 8);
+
+const latestIds = new Set(latestAll.map((x) => x.id));
+const pickedFeatured: FeaturedItem[] = [
+  ...freshFeatured,
+  ...allArticles
+    .filter((a) => !latestIds.has(a.id) && !freshFeatured.some((f) => f.slug === a.id) && safeCover(a.data.coverImage))
+    .map((a) => ({
+      type: 'article' as const,
+      slug: a.id,
+      title: a.data.title,
+      description: a.data.description,
+      date: a.data.publishDate,
+      href: `/articles/${stripExt(a.id)}/`,
+      cover: a.data.coverImage,
+      extra: { author: a.data.author, editorReviewed: a.data.editorReviewed },
+    })),
+].slice(0, 3);
+const primaryFeatured = pickedFeatured[0];
+const secondaryFeatured = pickedFeatured.slice(1, 3);
 
 /* ------------------------------------------------------------------ */
 /*  Section-specific slices                                            */
@@ -258,33 +281,106 @@ const categories = [
     <HeroParticles client:media="(min-width: 768px)" />
     <div class="hero__inner container">
       <div class="hero__left">
-        <span class="hero__badge">健康研究 ・ 白話解釋</span>
         <h1 class="hero__title">
           <span class="hero__title-line">把健康議題講得有根據</span>
           <span class="hero__title-line">也講得讓人看得懂</span>
         </h1>
         <p class="hero__subtitle">
-          本日有據整理健康研究、新聞與常見迷思，保留來源與脈絡，說清楚證據能支持什麼，也說清楚哪些說法需要保留判斷。
+          從研究結果到生活判斷，本日有據把健康資訊整理成清楚、可查、能理解的內容。
         </p>
         <div class="hero__buttons">
           <Button variant="primary" href="/articles/">最新文章 →</Button>
-          <Button variant="secondary" href="/myths/" class="hero-btn-secondary">迷思破解</Button>
-          <Button variant="secondary" href="/authors/luo-yang/">認識主編</Button>
         </div>
-        <div class="hero__trust">
-          <div class="hero__trust-card">
-            <span class="hero__trust-number">來源透明</span>
-            <span class="hero__trust-label">盡量附上研究、新聞來源與資料脈絡</span>
-          </div>
-          <div class="hero__trust-card">
-            <span class="hero__trust-number">白話解讀</span>
-            <span class="hero__trust-label">把艱深健康資訊整理成一般人能理解的判斷</span>
-          </div>
-          <div class="hero__trust-card">
-            <span class="hero__trust-number">編輯獨立</span>
-            <span class="hero__trust-label">內容與商業合作分開，不讓立場混淆判讀</span>
-          </div>
-        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!--  3. Latest Content                                              -->
+  <!-- ============================================================== -->
+  <section id="latest" class="section-latest">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">最新內容</h2>
+        <Button variant="secondary" href="/all/">看全部內容</Button>
+      </div>
+      <div class="latest-grid">
+        {latestAll.map((item) => {
+          const d = item.data;
+          if (item.collection === 'articles') {
+            return (
+              <div class="latest-item"><ArticleCard
+                title={d.title as string}
+                description={d.description as string}
+                href={`/articles/${stripExt(item.id)}/`}
+                category="article"
+                coverImage={d.coverImage as string | undefined}
+                coverAlt={d.coverAlt as string | undefined}
+                author={d.author as string}
+                date={fmtDate(item.date)}
+                editorReviewed={d.editorReviewed as boolean}
+              /></div>
+            );
+          }
+          if (item.collection === 'myths') {
+            return (
+              <div class="latest-item"><MythCard
+                title={d.title as string}
+                verdictSummary={d.verdictSummary as string}
+                href={`/myths/${stripExt(item.id)}/`}
+                verdict={d.verdict as MythVerdict}
+                date={fmtDate(item.date)}
+              /></div>
+            );
+          }
+          if (item.collection === 'ingredients') {
+            return (
+              <div class="latest-item"><IngredientCard
+                title={d.title as string}
+                description={d.description as string}
+                href={`/ingredients/${stripExt(item.id)}/`}
+                uses={d.uses as Array<{ evidenceLevel: string }>}
+                coverImage={d.coverImage as string | undefined}
+                coverAlt={d.coverAlt as string | undefined}
+              /></div>
+            );
+          }
+          if (item.collection === 'podcasts') {
+            return (
+              <div class="latest-item"><PodcastCard
+                title={d.title as string}
+                description={d.description as string}
+                href={`/podcasts/${stripPodcastSlug(item.id)}/`}
+                episodeNumber={d.episodeNumber as number}
+                duration={d.duration as string}
+                publishDate={item.date}
+              /></div>
+            );
+          }
+          if (item.collection === 'videos') {
+            return (
+              <div class="latest-item"><VideoCard
+                title={d.title as string}
+                tldr={d.tldr as string}
+                href={`/videos/${stripExt(item.id)}/`}
+                youtubeId={d.youtubeId as string}
+              /></div>
+            );
+          }
+          if (item.collection === 'news') {
+            return (
+              <div class="latest-item"><NewsCard
+                title={getDisplayTitle(d.titleDisplay as string | undefined, d.title as string)}
+                summary={d.summary as string}
+                href={`/news/${stripExt(item.id)}/`}
+                image={getNewsThumbnail(d.thumbnail as string | undefined, d.heroImage as string | undefined, (d.tags as string[]) ?? [], d.category as string | undefined, { title: d.title as string, titleDisplay: d.titleDisplay as string | undefined, subtitle: d.subtitle as string | undefined, summary: d.summary as string | undefined })}
+                category={getNewsCategory((d.tags as string[]) ?? [], d.category as string | undefined)}
+                date={fmtDate(item.date)}
+              /></div>
+            );
+          }
+          return null;
+        })}
       </div>
     </div>
   </section>
@@ -297,7 +393,7 @@ const categories = [
   <!-- ============================================================== -->
   <!--  1.5 編輯精選（圖像導向：主圖 + 側欄清單）                        -->
   <!-- ============================================================== -->
-  {featuredItems.length > 0 && (
+  {pickedFeatured.length > 0 && (
     <section id="editors-pick" class="section-editors-pick">
       <div class="container">
         <div class="section-header">
@@ -353,185 +449,6 @@ const categories = [
   )}
 
   <!-- ============================================================== -->
-  <!--  2. Category Grid                                               -->
-  <!-- ============================================================== -->
-  <section id="categories" class="section-categories">
-    <div class="container">
-      <h2 class="section-title">探索所有內容</h2>
-      <div class="category-grid">
-        {categories.map((cat) => (
-          <a href={cat.href} class="category-card" style={`--cat-color: ${cat.color}`}>
-            <img class="category-card__image" src={cat.image} alt="" aria-hidden="true" loading="lazy" />
-            <div class="category-card__body">
-              <div class="category-card__head">
-                <div class="category-card__icon" set:html={cat.icon} />
-                <span class="category-card__en">{cat.en}</span>
-              </div>
-              <h3 class="category-card__title">{cat.zh}</h3>
-              <p class="category-card__desc">{cat.desc}</p>
-              <div class="category-card__footer">
-                <span class="category-card__count">{cat.count} 篇</span>
-              </div>
-            </div>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================================== -->
-  <!--  2.5 Health Topics                                             -->
-  <!-- ============================================================== -->
-  <section id="topics" class="section-topics">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">健康專題</h2>
-        <Button variant="secondary" href="/topics/">看全部專題</Button>
-      </div>
-      <p class="section-subtitle">把同一主題的文章、闢謠、成分解析、Podcast 與短影音整理在一起，幫助讀者快速建立完整理解。</p>
-      <div class="topics-home-grid">
-        {topicCards.map(({ topic, cover }) => (
-          <a href={`/topics/${topic.slug}/`} class="topic-home-card">
-            <img class="topic-home-card__image" src={cover.src} alt={cover.alt} aria-hidden={cover.alt === '' ? 'true' : undefined} loading="lazy" />
-            <div class="topic-home-card__body">
-              <h3>{topic.name}</h3>
-              <p>{topic.intro}</p>
-              <span class="topic-home-card__cta">查看專題 →</span>
-            </div>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================================== -->
-  <!--  3. Latest Content                                              -->
-  <!-- ============================================================== -->
-  <section id="latest" class="section-latest">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">最新內容</h2>
-        <Button variant="secondary" href="/all/">看全部內容</Button>
-      </div>
-      <div class="latest-grid">
-        {latestAll.map((item) => {
-          const d = item.data;
-          if (item.collection === 'articles') {
-            return (
-              <ArticleCard
-                title={d.title as string}
-                description={d.description as string}
-                href={`/articles/${stripExt(item.id)}/`}
-                category="article"
-                coverImage={d.coverImage as string | undefined}
-                coverAlt={d.coverAlt as string | undefined}
-                author={d.author as string}
-                date={fmtDate(item.date)}
-                editorReviewed={d.editorReviewed as boolean}
-              />
-            );
-          }
-          if (item.collection === 'myths') {
-            return (
-              <MythCard
-                title={d.title as string}
-                verdictSummary={d.verdictSummary as string}
-                href={`/myths/${stripExt(item.id)}/`}
-                verdict={d.verdict as MythVerdict}
-                date={fmtDate(item.date)}
-              />
-            );
-          }
-          if (item.collection === 'ingredients') {
-            return (
-              <IngredientCard
-                title={d.title as string}
-                description={d.description as string}
-                href={`/ingredients/${stripExt(item.id)}/`}
-                uses={d.uses as Array<{ evidenceLevel: string }>}
-                coverImage={d.coverImage as string | undefined}
-                coverAlt={d.coverAlt as string | undefined}
-              />
-            );
-          }
-          if (item.collection === 'podcasts') {
-            return (
-              <PodcastCard
-                title={d.title as string}
-                description={d.description as string}
-                href={`/podcasts/${stripPodcastSlug(item.id)}/`}
-                episodeNumber={d.episodeNumber as number}
-                duration={d.duration as string}
-                publishDate={item.date}
-              />
-            );
-          }
-          if (item.collection === 'videos') {
-            return (
-              <VideoCard
-                title={d.title as string}
-                tldr={d.tldr as string}
-                href={`/videos/${stripExt(item.id)}/`}
-                youtubeId={d.youtubeId as string}
-              />
-            );
-          }
-          if (item.collection === 'news') {
-            return (
-              <NewsCard
-                title={getDisplayTitle(d.titleDisplay as string | undefined, d.title as string)}
-                summary={d.summary as string}
-                href={`/news/${stripExt(item.id)}/`}
-                image={getNewsThumbnail(d.thumbnail as string | undefined, d.heroImage as string | undefined, (d.tags as string[]) ?? [], d.category as string | undefined, { title: d.title as string, titleDisplay: d.titleDisplay as string | undefined, subtitle: d.subtitle as string | undefined, summary: d.summary as string | undefined })}
-                category={getNewsCategory((d.tags as string[]) ?? [], d.category as string | undefined)}
-                date={fmtDate(item.date)}
-              />
-            );
-          }
-          return null;
-        })}
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================================== -->
-  <!--  4. Podcast Block                                               -->
-  <!-- ============================================================== -->
-  <section id="podcasts" class="section-podcast">
-    <div class="container">
-      <div class="podcast-layout">
-        <div class="podcast-layout__left">
-          <h2 class="podcast-layout__title">把健康知識，整理成日常能用的養生觀。</h2>
-          <p class="podcast-layout__desc">
-            《喜聞樂健》以每集約 15 分鐘的篇幅，從一個健康問題切入，整理健康知識、保養觀念與判斷方式。希望讓健康資訊不只是知道，還能在日常生活中更容易理解與使用。
-          </p>
-          <Button class="podcast-layout__cta" variant="cta" href={latestPodcasts.length > 0 ? `/podcasts/${stripPodcastSlug(latestPodcasts[0].id)}/` : '/podcasts/'}>
-            播放最新單集
-          </Button>
-          <div class="podcast-layout__tags">
-            <span class="podcast-tag">#實證醫學</span>
-            <span class="podcast-tag">#營養科學</span>
-            <span class="podcast-tag">#保健食品</span>
-            <span class="podcast-tag">#迷思破解</span>
-          </div>
-        </div>
-        <div class="podcast-layout__right">
-          {latestPodcasts.map((p) => (
-            <PodcastCard
-              title={p.data.title}
-              description={p.data.description}
-              href={`/podcasts/${stripPodcastSlug(p.id)}/`}
-              episodeNumber={p.data.episodeNumber}
-              duration={p.data.duration}
-              publishDate={p.data.publishDate}
-            />
-          ))}
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================================== -->
   <!--  5. Myth Block                                                  -->
   <!-- ============================================================== -->
   <section id="myths" class="section-myths">
@@ -580,6 +497,69 @@ const categories = [
   </section>
 
   <!-- ============================================================== -->
+  <!--  2.5 Health Topics                                             -->
+  <!-- ============================================================== -->
+  <section id="topics" class="section-topics">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">健康專題</h2>
+        <Button variant="secondary" href="/topics/">看全部專題</Button>
+      </div>
+      <p class="section-subtitle">把同一主題的文章、闢謠、成分解析、Podcast 與短影音整理在一起，幫助讀者快速建立完整理解。</p>
+      <ul class="topics-home-list">
+        {topicCards.map(({ topic, cover }) => (
+          <li>
+            <a href={`/topics/${topic.slug}/`} class="topic-home-row">
+              <img class="topic-home-row__image" src={cover.src} alt="" aria-hidden="true" loading="lazy" />
+              <span class="topic-home-row__body">
+                <span class="topic-home-row__name">{topic.name}</span>
+                <span class="topic-home-row__intro">{topic.intro}</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!--  4. Podcast Block                                               -->
+  <!-- ============================================================== -->
+  <section id="podcasts" class="section-podcast">
+    <div class="container">
+      <div class="podcast-layout">
+        <div class="podcast-layout__left">
+          <h2 class="podcast-layout__title">把健康知識，整理成日常能用的養生觀。</h2>
+          <p class="podcast-layout__desc">
+            《喜聞樂健》以每集約 15 分鐘的篇幅，從一個健康問題切入，整理健康知識、保養觀念與判斷方式。希望讓健康資訊不只是知道，還能在日常生活中更容易理解與使用。
+          </p>
+          <Button class="podcast-layout__cta" variant="cta" href={latestPodcasts.length > 0 ? `/podcasts/${stripPodcastSlug(latestPodcasts[0].id)}/` : '/podcasts/'}>
+            播放最新單集
+          </Button>
+          <div class="podcast-layout__tags">
+            <span class="podcast-tag">#實證醫學</span>
+            <span class="podcast-tag">#營養科學</span>
+            <span class="podcast-tag">#保健食品</span>
+            <span class="podcast-tag">#迷思破解</span>
+          </div>
+        </div>
+        <div class="podcast-layout__right">
+          {latestPodcasts.map((p) => (
+            <PodcastCard
+              title={p.data.title}
+              description={p.data.description}
+              href={`/podcasts/${stripPodcastSlug(p.id)}/`}
+              episodeNumber={p.data.episodeNumber}
+              duration={p.data.duration}
+              publishDate={p.data.publishDate}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
   <!--  7. Trends Block                                                -->
   <!-- ============================================================== -->
   <section id="trends" class="section-trends">
@@ -611,6 +591,50 @@ const categories = [
     </div>
   </section>
 
+  <!-- ============================================================== -->
+  <!--  2. Category Grid                                               -->
+  <!-- ============================================================== -->
+  <section id="categories" class="section-categories">
+    <div class="container">
+      <h2 class="section-title">探索所有內容</h2>
+      <ul class="category-links">
+        {categories.map((cat) => (
+          <li>
+            <a href={cat.href} class="category-link" style={`--cat-color: ${cat.color}`}>
+              <span class="category-link__icon" set:html={cat.icon} aria-hidden="true" />
+              <span class="category-link__name">{cat.zh}</span>
+              <span class="category-link__count">{cat.count} 篇</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!--  編輯原則（原 Hero trust cards，2026-11-28 移到頁尾前）            -->
+  <!-- ============================================================== -->
+  <section id="principles" class="section-principles" aria-labelledby="principles-title">
+    <div class="container">
+      <h2 id="principles-title" class="section-title">我們怎麼做</h2>
+      <div class="principles">
+        <div class="principle">
+          <h3 class="principle__title">來源透明</h3>
+          <p class="principle__text">盡量附上研究、新聞來源與資料脈絡</p>
+        </div>
+        <div class="principle">
+          <h3 class="principle__title">白話解讀</h3>
+          <p class="principle__text">把艱深健康資訊整理成一般人能理解的判斷</p>
+        </div>
+        <div class="principle">
+          <h3 class="principle__title">編輯獨立</h3>
+          <p class="principle__text">目前不接受付費置入；如有商業合作，將明確揭露</p>
+        </div>
+      </div>
+      <p class="principles__more"><a href="/authors/luo-yang/">認識主編羅揚 →</a></p>
+    </div>
+  </section>
+
 </Base>
 
 <style>
@@ -621,7 +645,8 @@ const categories = [
   .hero {
     position: relative;
     background: linear-gradient(135deg, var(--color-teal), var(--color-navy));
-    padding: clamp(3rem, 2rem + 4vw, 6rem) 0;
+    /* 2026-11-28 收斂：首頁第一屏要看得到「最新內容」，標語區只留標題、一句說明、一顆按鈕 */
+    padding: clamp(2rem, 1.25rem + 3vw, 3.75rem) 0;
     overflow: hidden;
   }
 
@@ -643,21 +668,8 @@ const categories = [
   .hero__left {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1.25rem;
     max-width: 52rem;
-  }
-
-  .hero__badge {
-    display: inline-flex;
-    align-self: flex-start;
-    padding: 0.35rem 0.85rem;
-    border-radius: var(--radius-pill);
-    background-color: oklch(1 0 0 / 0.15);
-    color: oklch(1 0 0 / 0.9);
-    font-family: var(--font-ui);
-    font-size: var(--text-badge);
-    font-weight: 600;
-    letter-spacing: 0.04em;
   }
 
   .hero__title {
@@ -665,7 +677,8 @@ const categories = [
     font-size: var(--text-h1);
     font-weight: 700;
     color: white;
-    line-height: 1.3;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
   }
 
   .hero__title-line {
@@ -674,63 +687,15 @@ const categories = [
 
   .hero__subtitle {
     font-size: var(--text-body);
-    color: oklch(1 0 0 / 0.8);
+    color: oklch(1 0 0 / 0.85);
     line-height: 1.78;
-    max-width: 50ch;
+    max-width: 38rem;
   }
 
   .hero__buttons {
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
-  }
-
-  /* Override secondary button text color on dark bg */
-  .hero__buttons :global(.btn--secondary) {
-    color: white;
-    border-color: oklch(1 0 0 / 0.5);
-  }
-
-  .hero__buttons :global(.btn--secondary:hover) {
-    background-color: oklch(1 0 0 / 0.12);
-    border-color: oklch(1 0 0 / 0.7);
-  }
-
-  .hero__trust {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-  }
-
-  @media (min-width: 640px) {
-    .hero__trust {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-  }
-
-  .hero__trust-card {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    padding: 0.75rem 1rem;
-    border-radius: var(--radius-sm);
-    background-color: oklch(1 0 0 / 0.1);
-    backdrop-filter: blur(4px);
-    min-width: 0;
-    width: 100%;
-  }
-
-  .hero__trust-number {
-    font-family: var(--font-ui);
-    font-size: var(--text-h3);
-    font-weight: 700;
-    color: white;
-  }
-
-  .hero__trust-label {
-    font-family: var(--font-ui);
-    font-size: var(--text-badge);
-    color: oklch(1 0 0 / 0.7);
   }
 
   /* ==========================================================================
@@ -972,211 +937,160 @@ const categories = [
     margin-top: 2rem;
   }
 
-  .category-grid {
+  /* 探索所有內容：2026-11-28 從 6 張大圖卡收成一排分類連結（圖示＋名稱＋篇數） */
+  .category-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-card-gap);
   }
 
-  .category-card {
-    display: flex;
-    flex-direction: column;
-    border-radius: var(--radius-card);
-    border: 1px solid var(--color-fog);
-    background-color: white;
-    overflow: hidden;
-    text-decoration: none;
-    color: inherit;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-  }
-
-  .category-card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-card-hover);
-    border-color: var(--cat-color);
-    color: inherit;
-  }
-
-  .category-card__image {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-    display: block;
-    border-bottom: 1px solid var(--color-fog);
-  }
-
-  .category-card__body {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    gap: 0.75rem;
-    padding: clamp(1.4rem, 1.1rem + 0.8vw, 1.8rem);
-  }
-
-  .category-card__head {
+  .category-link {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    min-width: 0;
-    margin-bottom: 0.35rem;
-  }
-
-  .category-card__icon {
-    inline-size: 2.625rem;
-    block-size: 2.625rem;
-    flex: 0 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    min-height: 3.5rem;
+    padding: 0.75rem 1rem;
     border-radius: var(--radius-sm);
-    background-color: color-mix(in oklch, var(--cat-color) 12%, var(--color-paper));
-    color: var(--cat-color);
-  }
-
-  .category-card__icon :global(svg) {
-    display: block;
-    width: 1.45rem;
-    height: 1.45rem;
-  }
-
-  .category-card__en {
-    min-width: 0;
-    font-family: var(--font-ui);
-    font-size: var(--text-badge);
-    font-weight: 700;
-    color: var(--cat-color);
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-    overflow-wrap: anywhere;
-  }
-
-  .category-card__title {
-    font-family: var(--font-sans);
-    font-size: var(--text-h2);
-    font-weight: 700;
+    border: 1px solid var(--color-fog);
+    background-color: var(--color-white);
     color: var(--color-ink);
-    margin-top: 0.15rem;
+    text-decoration: none;
+    transition: border-color 180ms cubic-bezier(0.22, 1, 0.36, 1), background-color 180ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .category-card__desc {
-    max-width: 28ch;
-    font-size: var(--text-meta);
-    color: color-mix(in oklch, var(--color-ink) 70%, transparent);
-    line-height: 1.65;
+  .category-link:hover {
+    border-color: var(--cat-color);
+    background-color: color-mix(in oklch, var(--cat-color) 6%, var(--color-white));
+    color: var(--color-ink);
   }
 
-  .category-card__footer {
+  .category-link__icon {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: auto;
-    padding-top: 1rem;
+    flex: 0 0 auto;
+    color: var(--cat-color);
+  }
+
+  .category-link__icon :global(svg) {
+    display: block;
+    width: 1.375rem;
+    height: 1.375rem;
+  }
+
+  .category-link__name {
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    font-weight: 700;
+    min-width: 0;
+  }
+
+  .category-link__count {
+    margin-left: auto;
     font-family: var(--font-ui);
     font-size: var(--text-meta);
-  }
-
-  .category-card__count {
-    font-size: var(--text-meta);
-    font-weight: 700;
+    font-variant-numeric: tabular-nums;
     color: var(--color-ink-muted);
+    white-space: nowrap;
   }
 
-  .category-card__link {
-    color: var(--cat-color);
-    font-weight: 600;
-  }
-
-  @media (min-width: 640px) {
-    .category-grid {
-      grid-template-columns: repeat(2, 1fr);
+  @media (min-width: 768px) {
+    .category-links {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
 
-  @media (min-width: 1024px) {
-    .category-grid {
-      grid-template-columns: repeat(3, 1fr);
+  @media (min-width: 1280px) {
+    .category-links {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+
+    .category-link {
+      flex-wrap: wrap;
+      row-gap: 0.25rem;
+    }
+
+    .category-link__count {
+      margin-left: 0;
+      flex-basis: 100%;
     }
   }
 
   /* ==========================================================================
-     2.5 Health Topics
+     2.5 Health Topics（2026-11-28 改成精簡列：小縮圖＋名稱＋一句簡介，首頁只放 6 個）
      ========================================================================== */
 
   .section-topics {
     padding: var(--space-section-gap) 0;
   }
 
-  .topics-home-grid {
+  .topics-home-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--space-card-gap);
+    gap: 0 var(--space-card-gap);
   }
 
-  .topic-home-card {
-    display: flex;
-    flex-direction: column;
-    border: 1px solid var(--color-fog);
-    border-radius: var(--radius-card);
-    background-color: white;
-    overflow: hidden;
-    text-decoration: none;
-    color: inherit;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-  }
-
-  .topic-home-card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-card-hover);
-    border-color: var(--color-teal);
-    color: inherit;
-  }
-
-  .topic-home-card__image {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-    display: block;
-    background-color: color-mix(in oklch, var(--color-fog) 60%, white);
+  .topic-home-row {
+    display: grid;
+    grid-template-columns: 5.5rem 1fr;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 0;
     border-bottom: 1px solid var(--color-fog);
+    color: inherit;
+    text-decoration: none;
   }
 
-  .topic-home-card__body {
+  .topic-home-row__image {
+    width: 5.5rem;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    background-color: color-mix(in oklch, var(--color-fog) 60%, var(--color-white));
+  }
+
+  .topic-home-row__body {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    padding: clamp(1.2rem, 1rem + 0.7vw, 1.6rem);
-    flex: 1;
+    gap: 0.25rem;
+    min-width: 0;
   }
 
-  .topic-home-card h3 {
+  .topic-home-row__name {
     font-family: var(--font-sans);
-    font-size: var(--text-h3);
+    font-size: var(--text-body);
     font-weight: 700;
     color: var(--color-ink);
+    transition: color 180ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .topic-home-card p {
-    font-size: var(--text-meta);
-    line-height: 1.65;
-    color: color-mix(in oklch, var(--color-ink) 70%, transparent);
-  }
-
-  .topic-home-card__cta {
-    margin-top: auto;
-    font-family: var(--font-ui);
-    font-weight: 700;
+  .topic-home-row:hover .topic-home-row__name {
     color: var(--color-teal);
   }
 
-  @media (min-width: 640px) {
-    .topics-home-grid {
-      grid-template-columns: repeat(2, 1fr);
+  .topic-home-row__intro {
+    font-size: var(--text-meta);
+    line-height: 1.6;
+    color: var(--color-ink-muted);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  @media (min-width: 768px) {
+    .topics-home-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
-  @media (min-width: 1024px) {
-    .topics-home-grid {
-      grid-template-columns: repeat(3, 1fr);
+  @media (min-width: 1280px) {
+    .topics-home-list {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
 
@@ -1195,9 +1109,23 @@ const categories = [
     gap: var(--space-card-gap);
   }
 
+  /* 手機單欄時只顯示前 4 筆（8 筆直排會把後面的區塊推得太遠）；≥640 兩欄起顯示全部 8 筆 */
+  .latest-item {
+    display: grid;
+    min-width: 0;
+  }
+
+  .latest-item:nth-child(n + 5) {
+    display: none;
+  }
+
   @media (min-width: 640px) {
     .latest-grid {
       grid-template-columns: repeat(2, 1fr);
+    }
+
+    .latest-item:nth-child(n + 5) {
+      display: grid;
     }
   }
 
@@ -1387,6 +1315,48 @@ const categories = [
     .trends-layout__right {
       position: sticky;
       top: 2rem;
+    }
+  }
+
+  /* ==========================================================================
+     編輯原則（原 Hero trust cards，2026-11-28 移到頁尾前；純文字三欄，不做卡片）
+     ========================================================================== */
+
+  .section-principles {
+    padding: var(--space-section-gap) 0;
+    border-top: 1px solid var(--color-fog);
+  }
+
+  .principles {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .principle__title {
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    font-weight: 700;
+    color: var(--color-teal);
+    margin-bottom: 0.25rem;
+  }
+
+  .principle__text {
+    font-size: var(--text-body);
+    line-height: 1.7;
+    color: var(--color-ink-muted);
+  }
+
+  .principles__more {
+    margin-top: 1.5rem;
+    font-family: var(--font-ui);
+    font-weight: 700;
+  }
+
+  @media (min-width: 768px) {
+    .principles {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 2rem;
     }
   }
 </style>

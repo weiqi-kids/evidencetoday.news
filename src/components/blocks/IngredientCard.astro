@@ -1,6 +1,7 @@
 ---
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
+import CategoryTag from '../ui/CategoryTag.astro';
 
 interface Props {
   title: string;
@@ -50,6 +51,7 @@ const topTags = tags.slice(0, 3);
     <img class="ingredient-card__thumb" src="/og-thumb/ingredients.webp" alt="" aria-hidden="true" loading="lazy" />
   )}
   <div class="ingredient-card__body">
+    <CategoryTag category="ingredient" />
     <h3 class="ingredient-card__title">{title}</h3>
     {titleEn && <p class="ingredient-card__title-en">{titleEn}</p>}
     <p class="ingredient-card__desc">{description}</p>

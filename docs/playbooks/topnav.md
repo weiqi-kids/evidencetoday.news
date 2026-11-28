@@ -58,6 +58,12 @@
 - **跨斷點關閉選單**：`<script>` 加 `matchMedia('(min-width:1024px)')` 監聽，跨到桌機時重置 `aria-expanded=false` 並 `hidden=true`，修「開著選單放大視窗後 aria 狀態殘留」。
 - **SearchBar 修為可送出表單**（`src/components/ui/SearchBar.astro`）：原為裸 `<input>`（404 頁按 Enter 無反應），改為 `<form role="search" method="get" action="/search/">`＋`<input name="q">`；`/search/` 已支援讀 `?q=`。
 
+## 站名字標放大（2026-11-28）
+
+- `.topnav__brand-zh` 改用新 token `--text-wordmark: clamp(1.375rem, 1rem + 1.2vw, 1.875rem)`，logo 圖示 30px → 36px，讓品牌在導覽列上比選單大一階。**選單 `.topnav__link` 的字體三件套與 20px 字底位置都沒動**，仍是 `--text-brand`。
+- `global.css` 兩處 `.topnav__brand .topnav__brand-zh` 守衛同步改成 `var(--text-wordmark)`，三處必須同值（守衛帶 `!important`，不同值會蓋掉元件）。
+- 因此「brand-zh 與 nav link 同 family + size + weight」只剩 family 與 weight 一致；字級刻意不同。
+
 ## 可維護性格式規範（TopNav.astro）
 
 - `TopNav.astro` 的 HTML / `<script>` / `<style>` 必須保持可讀的多行縮排格式。
@@ -95,7 +101,7 @@
 - [ ] @375px：.topnav__nav display: none、.topnav__hamburger display: flex
 - [ ] @768px：同 @375px（hamburger 顯示）
 - [ ] hover 任一 nav link：背景變 teal-subtle、文字變 teal
-- [ ] 視覺確認 brand-zh 與 nav link 字體一致（同 family + size + weight）
+- [ ] 視覺確認 brand-zh 與 nav link 同 family + weight；brand-zh 字級用 `--text-wordmark`（比選單大一階）
 - [ ] pnpm build 零錯誤
 - [ ] git diff 只動到 TopNav.astro（沒誤動別處）
 ```

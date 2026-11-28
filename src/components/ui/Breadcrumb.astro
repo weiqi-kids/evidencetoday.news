@@ -51,6 +51,18 @@ const { items } = Astro.props;
     gap: 0.25rem;
   }
 
+  /* 2026-11-28：手機只顯示到上一層（目前頁的標題就是下方的 h1，重複顯示會讓麵包屑折成兩行、把標題往下推）。
+     結構化資料的麵包屑另外輸出，不受影響。 */
+  li:last-child:not(:first-child) {
+    display: none;
+  }
+
+  @media (min-width: 640px) {
+    li:last-child:not(:first-child) {
+      display: inline-flex;
+    }
+  }
+
   .breadcrumb__sep {
     color: var(--color-fog);
     user-select: none;

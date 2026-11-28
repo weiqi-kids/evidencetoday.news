@@ -31,10 +31,14 @@
 
 | 變數 | 字體 stack | 用途 |
 |---|---|---|
-| `--font-serif` | `'Noto Serif TC', 'Source Serif 4', serif` | 標題、brand-zh、nav link |
-| `--font-sans` | `'Noto Sans TC', 'Inter', sans-serif` | body 文字、h2+ |
-| `--font-ui` | `'Inter', 'Noto Sans TC', sans-serif` | meta、UI 按鈕 |
-| `--font-display` | `'Source Serif 4', 'Noto Serif TC', serif` | EVIDENCE TODAY 西文 logo |
+| `--font-serif` | `'Noto Serif TC', serif` | 標題、brand-zh、nav link |
+| `--font-sans` | `'Noto Sans TC', sans-serif` | body 文字、h2+ |
+| `--font-ui` | `'Noto Sans TC', sans-serif` | meta、UI 按鈕 |
+| `--font-display` | `'Noto Serif TC', serif` | EVIDENCE TODAY 西文 logo |
+
+**2026-11-28 收斂成兩套字體**（業主核准）：原本實際載入 Inter、Noto Sans TC、Noto Serif TC、Source Serif 4 四套。現在 Latin／數字改用 Noto Sans TC 與 Noto Serif TC 自己的 latin 子集（`@fontsource/noto-sans-tc/latin-{400,500,700}.css`、`@fontsource/noto-serif-tc/latin-700.css`），不再 import Inter 與 Source Serif 4。四個 token 名稱保留，元件不用改。`@fontsource/inter`、`@fontsource/source-serif-4` 兩個套件仍在 package.json，目前沒有被 import。
+
+**站名字標**：`--text-wordmark: clamp(1.375rem, 1rem + 1.2vw, 1.875rem)`（2026-11-28 加），只給 TopNav 的 `.topnav__brand-zh` 與 global.css 的兩處 topnav 守衛用，比選單的 `--text-brand` 大一階。見 [topnav.md](./topnav.md)。
 
 **自託管要求**：
 

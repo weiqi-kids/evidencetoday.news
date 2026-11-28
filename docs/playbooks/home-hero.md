@@ -13,24 +13,26 @@
 
 ## 鎖定參數（動之前必看）
 
-### 結構區塊（從上到下）
+### 結構區塊（從上到下，2026-11-28 改版）
 
-1. **Hero**：HeroParticles canvas + catch phrase + CTA buttons
-1.2. **本日有據至今 數字條**（`#site-stats`，`SiteStats.astro`）：已公開篇數與可點來源數，進入畫面時數字滾動到定位（見下方「本日有據至今 數字條」）
-1.5. **編輯精選**（`#editors-pick`）：圖像導向，主焦點大圖 + 側欄縮圖清單（取代舊的 Hero 右側焦點卡）
-2. **熱門分類**：6 個分類卡（最新文章、迷思破解、認識主編 等）
-3. **熱門趨勢**：TrendBubbles d3-force 視覺化 + 最新文章列表
+首頁是健康媒體的首頁，第一屏要看得到內容，不是品牌宣傳頁。2026-11 量測：舊版桌機要捲 6,500px、手機要捲 12,900px（約第 15 個畫面）才看到「最新內容」，改版後桌機第一屏底部、手機第一屏內就看得到。
 
-> **RWD 一律 mobile-first**：首頁所有區塊（hero/編輯精選/各 grid）只用 `min-width` 斷點（640/768/1024），預設單欄、往上加欄。不要再用 `max-width` media query（已於 2026-06 全面改為 min-width，符合 CSS 鐵律）。
-4. **最新文章**：3-6 篇 ArticleCard
-5. **熱門闢謠**：MythCard
-6. **熱門原料**：IngredientCard
-7. **Podcast 精選**：PodcastCard
-8. **短影音**：iframe 嵌入或自製 player
-9. **CtaStrip**：訂閱 / 追蹤呼籲
+1. **Hero**（`#hero`）：只有主標＋一句說明＋一顆主要按鈕「最新文章」。不放 badge、不放第二三顆按鈕、不放 trust cards（見下方「Hero 細節」）
+2. **最新內容**（`#latest`）：跨 collection 新到舊取 8 筆；手機單欄只顯示前 4 筆，≥640 兩欄起顯示全部
+3. **本日有據至今 數字條**（`#site-stats`，`SiteStats.astro`）
+4. **編輯精選**（`#editors-pick`）：只收 90 天內的 featured，不足用近期文章補（見下方）
+5. **迷思破解**（`#myths`）、**成分解析**（`#ingredients`）
+6. **健康專題**（`#topics`）：只放 `TOPICS` 前 6 個，精簡列（小縮圖＋名稱＋兩行簡介），其餘到 /topics/
+7. **Podcast**（`#podcasts`）、**健康議題雷達**（`#trends`）
+8. **探索所有內容**（`#categories`）：一排分類連結（圖示＋名稱＋篇數），不是大圖卡
+9. **我們怎麼做**（`#principles`）：原 Hero trust cards 的三條編輯原則，純文字三欄＋「認識主編」連結
 
-### 分類卡排版
+> **RWD 一律 mobile-first**：首頁所有區塊只用 `min-width` 斷點（640/768/1024/1280），預設單欄、往上加欄。
 
+### 分類連結（「探索所有內容」）
+
+- **2026-11-28 起改成一排分類連結** `.category-links`／`.category-link`：分類色圖示＋中文名稱＋篇數，手機 2 欄、≥768 3 欄、≥1280 6 欄。原本 6 張 16:9 大圖卡（圖片是寫著「健康文章 Health Articles」的品牌縮圖）在首頁占掉約 1,200px，資訊只有名稱與篇數，收成連結列。
+- 以下是舊版大圖卡的歷史紀錄，留作脈絡，**現行版面以上一條為準**：
 - 首頁「探索所有內容」分類卡維持 3 欄／2 欄／1 欄 RWD、圓角、邊框與乾淨白底，不改成 dashboard 或功能選單風格。
 - **2026-08 改為圖上文下**：卡片頂部 `.category-card__image`（16:9，`object-fit: cover`）＋下方 `.category-card__body` 包住原本三段節奏（`.category-card__head` 小圖示＋英文分類、中文標題、描述與篇數）。圖片來源＝各集合既有的 `/og-thumb/{key}.webp` 品牌縮圖（`articles`/`myths`/`ingredients`/`podcasts`/`videos`/`news`），與 `ArticleCard`/`IngredientCard` 缺封面時的 fallback 圖同一批素材，零額外產圖成本。此前「icon 導向、不配照片」是舊決策，因全站色塊/文字比例過重、視覺不夠像新聞網站而汰換。
 - 圖示仍保留、不放大：icon box 約 `2.625rem`、SVG 約 `1.45rem`，與英文分類同列，手機版也應保持同列且可讀。
@@ -38,7 +40,9 @@
 
 ### 健康專題卡配圖
 
-- 首頁「健康專題」與 `/topics` 列表卡為**圖上文下**：`.topic(-home)-card__image`（16:9）+ `.topic(-home)-card__body`。
+- **2026-11-28 起首頁改成精簡列** `.topics-home-list`／`.topic-home-row`：5.5rem 方形縮圖＋名稱＋兩行簡介，只放前 6 個專題（原本 18 張圖上文下大卡占約 3,100px）。`/topics` 列表頁維持圖上文下 `.topic-card`。
+- **封面去重**：同一篇內容常同時比對到兩個專題，兩張卡會同一張圖。首頁與 `/topics` 都傳共用的 `Set` 給 `resolveTopicCover(topic, pools, used)`，選過的封面下一張卡會跳過；所有候選都用過才退回重複圖。測試見 `src/utils/topic-cover.test.ts`。
+- `/topics` 列表卡為**圖上文下**：`.topic-card__image`（16:9）+ 內文。
 - 封面來源＝`resolveTopicCover(topic, [articles, ingredients])`（`src/utils/topic-cover.ts`）：從該主題自動歸入的文章／成分解析裡挑一張既有封面（新到舊優先），缺圖退品牌佔位。零手工維護、新內容配好封面即自動更新。**不在 `topics.ts` 手寫每主題圖**。
 
 ### 趨勢（news）的兩種呈現：NewsCard vs NewsItem — 不可互換
@@ -58,12 +62,14 @@
 
 ### 「最新內容」區塊
 
-- 資料來自 5 個 collection 合併後依 `publishDate` 新到舊取 4 筆（`index.astro` 的 `latestAll`），逐筆依 `item.collection` 分派到對應卡片元件。
+- 資料來自 5 個 collection 合併後依 `publishDate` 新到舊取 **8 筆**（`index.astro` 的 `latestAll`），逐筆依 `item.collection` 分派到對應卡片元件，外層包 `.latest-item`（`display: grid` 讓卡片撐滿格高）。手機單欄 `.latest-item:nth-child(n + 5)` 隱藏，≥640 顯示。
 - **鐵則：這一格裡的每一種內容都必須是直式卡片**。新增 collection 時若沒有對應的卡片元件，先做一個，不要拿列表列充數。
 
 ### Hero 細節
 
-> Hero 已收斂為**單欄品牌報頭**（`hero__inner` 單欄、mobile-first）：只有左側 catch phrase + CTA + trust cards，**不再內嵌右側焦點卡**。焦點內容改放下方獨立的「編輯精選」區。
+> Hero 已收斂為**單欄品牌報頭**（`hero__inner` 單欄、mobile-first）：**2026-11-28 起只有主標＋一句說明＋一顆「最新文章」按鈕**，padding `clamp(2rem, 1.25rem + 3vw, 3.75rem)`。badge「健康研究・白話解釋」、「迷思破解」「認識主編」兩顆次要按鈕、三張 trust cards 都已移除；trust cards 的文案搬到頁尾前的 `#principles`，「認識主編」變成該區的連結。
+>
+> ⚠️ **說明文案寫在 `index.astro` 的 `.hero__subtitle` 裡，不要在 global.css 用透明字＋`::before content` 換字**。2026-11 以前 global.css 有一段這樣的覆寫（另含 52%／48% 兩欄強制），造成讀者看到的與搜尋引擎、螢幕閱讀器讀到的是兩段不同文字，已整段移除。
 
 ### 本日有據至今 數字條（`SiteStats.astro`）
 
@@ -83,13 +89,14 @@ Hero 正下方、編輯精選之前的一排四張白卡：文章、闢謠、成
 - `featuredItems[0]`：主焦點 `.ep-main`，含 16:9 封面大圖 +「本週焦點」角標。
 - `featuredItems.slice(1, 3)`：側欄 `.ep-side__item`（最多 2 筆）。**2026-08 改版**：側欄項目從「92px 小縮圖＋橫向列表列」改成獨立卡片——16:9 大圖在上、標題在下，卡片本身有邊框/圓角/hover 陰影（與 `.ep-main` 同一套卡片語彙）。桌機（≥1024）「主圖 1.3fr : 側欄 1fr」雙欄、側欄 2 張卡直向堆疊；平板（≥640, <1024）主圖全寬在上、側欄 2 張並排；手機單欄全部堆疊。**改動原因**：舊版 92px 橫向縮圖在主焦點大圖（原 1.6fr）襯托下顯得過小，改成直向卡片後圖片實際渲染寬度大幅提升，且 1.6fr→1.3fr 同時收斂主焦點的視覺壟斷感。
 - 安全降級：0 筆不渲染整區；1 筆只渲染主焦點；2–3 筆 1 主 +（最多）2 側。
+- **新鮮度（2026-11-28 加）**：`featured: true` 是人工標記，久沒人更新時首頁會一直掛著舊稿（當時是 3 月的維生素 E）。現在只收 **90 天內**的 featured（`FEATURED_FRESH_MS`），不足 3 筆時用「最新內容」沒擺到、且有封面的近期文章補滿（`pickedFeatured`）。
 - 主焦點可顯示補充 meta（myth verdict、article 主編把關）但不改資料來源邏輯。
 - **封面來源（2026-07-23 修）**：`featuredItems` 各型別（article／myth／ingredient／podcast）都帶 `cover: data.coverImage`，不再只有 article 有圖。渲染前一律過 `safeCover()` 守衛（外連 http(s) 直採；本地 `/…` 須 `existsSync` 於 `public/`，缺圖回 `undefined` → 主焦點顯示「本日有據」品牌字、側欄顯示漸層佔位，不出破圖）。此前 ingredient/podcast 未傳 cover，導致「編輯精選」中 featured 成分（如維生素 C／E）縮圖開天窗；補傳 cover 後恢復。**新增 featured 型別或封面欄位時，記得同步在 mapping 帶 `cover` 並用 `safeCover()` 包起來。**
 
 - **catch phrase**：Hero 主標題固定以兩個 `.hero__title-line` 分行呈現：「把健康議題講得有根據」／「也講得讓人看得懂」，行尾不加標點。
 - **HeroParticles**：canvas 全幅，desktop only（mobile 不渲染以省電）
-- **CTA buttons**：「最新文章」「迷思破解」「認識主編」
-- **Hero trust cards**：固定三張等寬卡片「來源透明」「白話解讀」「編輯獨立」；mobile-first——手機 1 欄、`≥640` 3 欄，禁止使用透明文字或 `::before` 覆蓋文案的 hack。
+- **CTA**：只有一顆主要按鈕「最新文章 →」（`/articles/`）
+- **編輯原則**（原 trust cards）：在 `#principles`，三條「來源透明」「白話解讀」「編輯獨立」純文字三欄（手機 1 欄、≥768 3 欄），不做卡片；禁止使用透明文字或 `::before` 覆蓋文案的 hack。
 - **JSON-LD**：`@type: "WebSite"` + `Organization` 結構化資料，用於 Google Knowledge Graph
 
 ### SEO / AEO
@@ -123,6 +130,7 @@ Hero 正下方、編輯精選之前的一排四張白卡：文章、闢謠、成
 
 ```
 - [ ] @375 / @768 / @1280 hero 都正常（particles 只 desktop 出現）
+- [ ] 桌機 1440×900 第一屏底部看得到「最新內容」標題；手機 390×844 第一屏內看得到
 - [ ] 只有一個 <h1>
 - [ ] meta description 與首頁品牌文案一致
 - [ ] JSON-LD 通過 Google Rich Results Test

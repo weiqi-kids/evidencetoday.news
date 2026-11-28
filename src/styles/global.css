@@ -15,10 +15,12 @@
 
 :root {
   /* ---- Font family stacks ---- */
-  --font-serif: 'Noto Serif TC', 'Source Serif 4', serif;
-  --font-sans: 'Noto Sans TC', 'Inter', sans-serif;
-  --font-ui: 'Inter', 'Noto Sans TC', sans-serif;
-  --font-display: 'Source Serif 4', 'Noto Serif TC', serif;
+  /* 2026-11-28 收斂成兩套：宋體（serif／display）給標題與品牌字，黑體（sans／ui）給正文與介面。
+     四個 token 名稱保留，元件不必改；ui 與 sans 同族，介面字靠字重與顏色區分。 */
+  --font-serif: 'Noto Serif TC', serif;
+  --font-sans: 'Noto Sans TC', sans-serif;
+  --font-ui: 'Noto Sans TC', sans-serif;
+  --font-display: 'Noto Serif TC', serif;
 
   /* ---- Fluid type scale ----
      字級階梯已移至 src/styles/variables.css（token 唯一真實來源，供 check-design
@@ -320,7 +322,7 @@ img {
    ========================================================================== */
 
 .topnav__brand .topnav__brand-zh {
-  font-size: var(--text-brand) !important;
+  font-size: var(--text-wordmark) !important;
 }
 
 /* ============================================================================
@@ -443,7 +445,7 @@ a {
 }
 
 .topnav__brand .topnav__brand-zh {
-  font-size: var(--text-brand) !important;
+  font-size: var(--text-wordmark) !important;
 }
 
 @media (max-width: 1120px) {
@@ -480,14 +482,6 @@ a {
 .videos-grid > *,
 .articles-grid > * {
   min-width: 0 !important;
-}
-
-.hero__badge {
-  max-width: 100%;
-  white-space: normal;
-  overflow-wrap: break-word;
-  font-size: var(--text-lead) !important;
-  line-height: 1.45;
 }
 
 .hero__title {
@@ -537,99 +531,9 @@ a {
   overflow-x: auto;
 }
 
-/* Homepage hero balance and copy polish */
-#hero .hero__inner {
-  align-items: start !important;
-  grid-template-columns: minmax(0, 52%) minmax(0, 48%) !important;
-}
-
-#hero .hero__left {
-  gap: clamp(1.55rem, 1.05rem + 1vw, 2.15rem) !important;
-}
-
-#hero .hero__buttons,
-#hero .hero__trust {
-  margin-top: 0.15rem;
-}
-
-#hero .hero__subtitle {
-  max-width: 42ch !important;
-}
-
-#hero .hero__subtitle,
-#hero .hero__trust-card:nth-child(3) .hero__trust-label {
-  color: transparent !important;
-  position: relative;
-}
-
-#hero .hero__subtitle::before,
-#hero .hero__trust-card:nth-child(3) .hero__trust-label::before {
-  position: absolute;
-  inset: 0;
-  white-space: normal;
-}
-
-#hero .hero__subtitle::before {
-  content: "從研究結果到生活判斷，本日有據把健康資訊整理成清楚、可查、能理解的內容。";
-  color: oklch(1 0 0 / 0.8);
-}
-
-#hero .hero__trust-card:nth-child(3) .hero__trust-label::before {
-  content: "目前不接受付費置入；如有商業合作，將明確揭露";
-  color: oklch(1 0 0 / 0.7);
-}
-
-@media (max-width: 1024px) {
-  #hero .hero__inner {
-    grid-template-columns: 1fr !important;
-  }
-}
-
-@media (max-width: 768px) {
-  .hero__inner,
-  .hero__left {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .hero__badge {
-    padding: 0.45rem 0.9rem;
-    font-size: var(--text-lead) !important;
-    letter-spacing: 0.03em;
-  }
-
-  .hero__title {
-    font-size: var(--text-h1) !important;
-    line-height: 1.25 !important;
-  }
-
-  .hero__subtitle {
-    max-width: 100%;
-  }
-
-  .hero__buttons {
-    width: 100%;
-  }
-
-  .hero__buttons > * {
-    min-width: min(100%, 8.5rem);
-  }
-
-  .hero__trust {
-    display: grid !important;
-    grid-template-columns: 1fr !important;
-    gap: 0.75rem;
-    max-width: 100%;
-    overflow: visible !important;
-    padding-bottom: 0 !important;
-  }
-
-  .hero__trust-card {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0 !important;
-  }
-}
+/* 2026-11-28：原本這裡有一段首頁 Hero 覆寫（52%／48% 兩欄、用透明字加 ::before 蓋掉原始文案、手機版 badge 與 trust card 調整）。
+   透明字蓋文案違反 docs/playbooks/home-hero.md（讀者看到的和搜尋引擎、螢幕閱讀器讀到的是兩段不同文字），
+   Hero 也已收斂成單欄標題＋一句說明＋一顆按鈕，整段移除；要顯示的文案直接寫在 src/pages/index.astro。 */
 
 @media (max-width: 640px) {
   .category-grid,

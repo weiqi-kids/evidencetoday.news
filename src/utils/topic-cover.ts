@@ -30,20 +30,32 @@ interface CoverEntry {
  * 為單一主題挑代表縮圖。`pools` 依優先序傳入（例如 [articles, ingredients]），
  * 各池請先照發佈日新到舊排序，取第一個「有比對到本主題且封面合法」的項目。
  * 全數落空時回傳品牌佔位圖（alt 空字串，視為裝飾）。
+ *
+ * `used`（選填）：同一頁多張專題卡共用的「已用過封面」集合。同一篇文章常同時比對到
+ * 兩個專題（例如鈣與維生素 D、Omega-3 都比對到同一篇保健品文章），不去重就會兩張卡
+ * 同一張圖。傳入時會跳過已用過的封面，並把這次選中的加進集合；所有候選都被用過時
+ * 才退回重複圖（仍比品牌佔位好）。
  */
 export function resolveTopicCover(
   topic: Topic,
   pools: CoverEntry[][],
+  used?: Set<string>,
 ): { src: string; alt: string } {
-  for (const pool of pools) {
-    const match = pool.find(
-      (entry) => matchesTopic(topic, entry.data) && isUsableCover(entry.data.coverImage),
-    );
-    if (match) {
-      return {
-        src: match.data.coverImage as string,
-        alt: match.data.coverAlt || `${topic.name}主題示意圖`,
-      };
+  for (const pass of used ? [true, false] : [false]) {
+    for (const pool of pools) {
+      const match = pool.find(
+        (entry) =>
+          matchesTopic(topic, entry.data) &&
+          isUsableCover(entry.data.coverImage) &&
+          !(pass && used?.has(entry.data.coverImage as string)),
+      );
+      if (match) {
+        used?.add(match.data.coverImage as string);
+        return {
+          src: match.data.coverImage as string,
+          alt: match.data.coverAlt || `${topic.name}主題示意圖`,
+        };
+      }
     }
   }
   return { src: FALLBACK_COVER, alt: '' };

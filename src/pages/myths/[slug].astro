@@ -4,9 +4,8 @@ import Article from '@/layouts/Article.astro';
 import JsonLd from '@/components/seo/JsonLd.astro';
 import { buildClaimReview, buildPerson, buildCitations, PUBLISHER_REF, WEBSITE_REF } from '@/utils/schema-org';
 import { isPublicEntry } from '@/utils/visibility';
-import VerdictBadge from '@/components/ui/VerdictBadge.astro';
 import { validateMythArticle } from '@/utils/myths/validate';
-import { displayVerdict } from '@/utils/myths/schema';
+import { displayVerdict, VERDICT_META } from '@/utils/myths/schema';
 import { contentSocial } from '@/utils/social-meta.mjs';
 import EditButton from '@/components/editor/EditButton.svelte';
 import ReadingEngagement from '@/components/blocks/ReadingEngagement.svelte';
@@ -221,10 +220,12 @@ const mythFaqSchema = mythFaq && mythFaq.length > 0
   <section class="block quick">
     <div class="quick-panel">
       <h2>30 秒快速結論</h2>
-      <div class="quick-badges">
-        <VerdictBadge verdict={d.verdict} size="lg" />
-        <span class="pill evidence">證據強度：{d.evidenceLevel}</span>
+      {/* 2026-11-28：判定是整篇的答案，從一顆小膠囊放大成這一區的主角；證據強度降為一行說明文字 */}
+      <div class={`quick-verdict quick-verdict--${VERDICT_META[d.verdict].tone}`}>
+        <p class="quick-verdict__value"><span aria-hidden="true">{VERDICT_META[d.verdict].icon}</span> {displayVerdict(d.verdict)}</p>
+        <p class="quick-verdict__desc">{VERDICT_META[d.verdict].description}</p>
       </div>
+      <p class="quick-evidence">證據強度：<strong>{d.evidenceLevel}</strong></p>
     </div>
     <div>
       <ul>{quickItems.map((item) => <li>{item}</li>)}</ul>
@@ -449,25 +450,42 @@ document.getElementById('copy-btn')?.addEventListener('click', async () => { awa
     gap: 0.75rem;
   }
 
-  .quick-badges {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.6rem;
+  .quick-verdict {
+    border-inline-start: 6px solid var(--verdict-color);
+    padding: 0.25rem 0 0.25rem 1rem;
   }
 
-  .pill {
-    display: inline-flex;
-    padding: 8px 14px;
-    border-radius: 999px;
-    font-size: var(--text-meta);
+  .quick-verdict--positive { --verdict-color: var(--color-verdict-true); }
+  .quick-verdict--negative { --verdict-color: var(--color-verdict-false); }
+  .quick-verdict--neutral { --verdict-color: var(--color-verdict-insufficient); }
+  .quick-verdict--context { --verdict-color: var(--color-verdict-contextual); }
+  .quick-verdict--caution { --verdict-color: var(--color-cat-myth); }
+  .quick-verdict--warning { --verdict-color: var(--color-coral); }
+
+  .quick-verdict__value {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: var(--text-h2);
     font-weight: 700;
+    line-height: 1.25;
+    color: color-mix(in oklch, var(--verdict-color) 80%, var(--color-ink));
   }
 
-  .evidence {
-    background: color-mix(in oklch, var(--color-teal) 10%, white);
+  .quick-verdict__desc {
+    margin: 0.25rem 0 0;
+    font-size: var(--text-body);
+    color: var(--color-ink);
+  }
+
+  .quick-evidence {
+    margin: 0;
+    font-family: var(--font-ui);
+    font-size: var(--text-meta);
+    color: var(--color-ink-muted);
+  }
+
+  .quick-evidence strong {
     color: var(--color-teal);
-    border: 1px solid color-mix(in oklch, var(--color-teal) 28%, var(--color-fog));
   }
 
   .flow {

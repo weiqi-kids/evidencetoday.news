@@ -30,10 +30,14 @@
 
 **禁止**：在 `Article.astro` 的 `.article-grid` 上加視覺樣式（背景、圓角、陰影），這些由 variant 控制。
 
+**prose variant 不再有白卡（2026-11-28）**：`.article-grid--prose` 原本是白底圓角卡，裡面又有「重點摘要」框，形成卡中卡，手機上正文欄也被兩層內距吃到 319px。現在正文直接放在紙色底上（手機正文欄約 358px）。
+
+**文章頁頂（2026-11-28）**：順序是「類別 · 題型」一行純文字 → h1 → 署名列（`EditorInfo`，含唯一一處「主編把關」）→ 日期列（`AuthorMeta`：發佈 · 更新 · 閱讀 N 分鐘，同一行、無圖示）。原本頂部另有一顆「主編把關」與署名列重複，日期列在標題上方、手機拆成兩行，標題被推到第一屏一半以下。麵包屑在 <640 只顯示到上一層（`Breadcrumb.astro` 隱藏最後一項）。
+
 ### 雙欄 sidebar
 
 - 斷點：`@media (min-width: 1024px)`
-- 比例：`grid-template-columns: 0.7fr 0.3fr`
+- 比例：`grid-template-columns: minmax(0, 68ch) minmax(14rem, 17rem)`＋`column-gap: clamp(2.5rem, 1rem + 3vw, 4.5rem)`（2026-11-28 改：原本 `0.7fr 0.3fr` 在寬螢幕讓 68ch 正文與目錄之間空出一大塊，現在正文欄固定在易讀寬度、目錄緊跟在旁）
 - sidebar：`position: sticky; top: 6rem; align-self: start`
 - `<1024px`：sidebar `display: none`
 

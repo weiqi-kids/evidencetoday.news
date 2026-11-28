@@ -22,46 +22,22 @@ const classes = `cat-tag cat-tag--${category}${className ? ` ${className}` : ''}
 <span class={classes}>{label}</span>
 
 <style>
+  /* 2026-11-28：從底色膠囊改成分類色純文字。卡片與文章頁頂的類別只是識別，不是可點的控制項，
+     做成膠囊會和真正的按鈕、判定標章搶視覺；全站卡片統一用這一種寫法（見 docs/brand-guidelines.md）。 */
   .cat-tag {
     display: inline-flex;
     align-items: center;
-    padding: 0.32rem 0.72rem;
-    border-radius: var(--radius-pill);
     font-family: var(--font-ui);
-    font-size: var(--text-lead);
+    font-size: var(--text-meta);
     font-weight: 700;
-    letter-spacing:.02em;
     line-height: 1.4;
     white-space: nowrap;
   }
 
-  .cat-tag--article {
-    background-color: color-mix(in oklch, var(--color-cat-article) 14%, var(--color-paper));
-    color: var(--color-cat-article);
-  }
-
-  .cat-tag--myth {
-    background-color: color-mix(in oklch, var(--color-cat-myth) 14%, var(--color-paper));
-    color: var(--color-cat-myth);
-  }
-
-  .cat-tag--ingredient {
-    background-color: color-mix(in oklch, var(--color-cat-ingredient) 14%, var(--color-paper));
-    color: var(--color-cat-ingredient);
-  }
-
-  .cat-tag--podcast {
-    background-color: color-mix(in oklch, var(--color-cat-podcast) 14%, var(--color-paper));
-    color: var(--color-cat-podcast);
-  }
-
-  .cat-tag--video {
-    background-color: color-mix(in oklch, var(--color-cat-video) 14%, var(--color-paper));
-    color: var(--color-cat-video);
-  }
-
-  .cat-tag--news {
-    background-color: color-mix(in oklch, var(--color-cat-news) 14%, var(--color-paper));
-    color: var(--color-cat-news);
-  }
+  .cat-tag--article { color: var(--color-cat-article); }
+  .cat-tag--myth { color: var(--color-cat-myth); }
+  .cat-tag--ingredient { color: var(--color-cat-ingredient); }
+  .cat-tag--podcast { color: var(--color-cat-podcast); }
+  .cat-tag--video { color: var(--color-cat-video); }
+  .cat-tag--news { color: var(--color-cat-news); }
 </style>

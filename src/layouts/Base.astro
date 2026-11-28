@@ -11,14 +11,15 @@ import { buildSiteGraph } from '@/utils/schema-org';
    原本載入完整版（noto-sans-tc/400.css 等）會帶進 ~350 條 unicode-range @font-face，
    render-blocking CSS 肥大；改子集後 @font-face 大幅縮減。
    build 後 scripts/subset-fonts.mjs 會再把繁中整包 woff2 依實際用字切塊（見 postbuild）。 */
-import '@fontsource/inter/latin-400.css';
-import '@fontsource/inter/latin-500.css';
-import '@fontsource/inter/latin-700.css';
+/* 2026-11-28：全站收斂成兩套字體（思源黑體＝正文與介面、思源宋體＝標題與品牌字），
+   Latin／數字改用同一套字體的 latin 子集，不再另載 Inter 與 Source Serif 4。 */
+import '@fontsource/noto-sans-tc/latin-400.css';
+import '@fontsource/noto-sans-tc/latin-500.css';
+import '@fontsource/noto-sans-tc/latin-700.css';
 import '@fontsource/noto-sans-tc/chinese-traditional-400.css';
 import '@fontsource/noto-sans-tc/chinese-traditional-700.css';
+import '@fontsource/noto-serif-tc/latin-700.css';
 import '@fontsource/noto-serif-tc/chinese-traditional-700.css';
-import '@fontsource/source-serif-4/latin-600.css';
-import '@fontsource/source-serif-4/latin-700.css';
 
 interface Props {
   title: string;

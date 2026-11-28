@@ -23,9 +23,9 @@ const { title, summary, href, image, category, date } = Astro.props;
 <a href={href} class="news-card">
   <div class="news-card__img-wrap">
     <img src={image} alt="" loading="lazy" class="news-card__img" />
-    <span class="news-card__badge">{category}</span>
   </div>
   <div class="news-card__body">
+    <span class="news-card__badge">{category}</span>
     <h3 class="news-card__title">{title}</h3>
     <p class="news-card__summary">{summary}</p>
     <time class="news-card__date">{date}</time>
@@ -89,22 +89,13 @@ const { title, summary, href, image, category, date } = Astro.props;
     transform: scale(1.035);
   }
 
+  /* 2026-11-28：分類從疊在圖上的膠囊，改成標題上方的分類色文字，與其他卡片同一種寫法 */
   .news-card__badge {
-    position: absolute;
-    top: 0.75rem;
-    left: 0.75rem;
-    display: inline-flex;
-    align-items: center;
-    padding: 0.3rem 0.7rem;
-    border-radius: var(--radius-pill);
     font-family: var(--font-ui);
     font-size: var(--text-meta);
     font-weight: 700;
-    letter-spacing: 0.02em;
-    color: white;
-    background: color-mix(in oklch, var(--color-cat-news) 90%, black);
-    box-shadow: var(--shadow-news-card);
-    z-index: 1;
+    line-height: 1.4;
+    color: var(--color-cat-news);
   }
 
   /* Body */
