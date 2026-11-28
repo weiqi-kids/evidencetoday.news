@@ -108,7 +108,7 @@ const breadcrumbSchema = {
       <h2 id="grid-h">一、原料的跨國法規落差</h2>
       {substances.length === 0 && <p class="empty">對照資料整理中。</p>}
 
-      {substances.map((s) => (
+      {substances.map((s, si) => (
         <article class="sub">
           <header class="sub__hd">
             <h3>{s.name}<span class="sub__en">{s.nameEn}</span></h3>
@@ -123,6 +123,10 @@ const breadcrumbSchema = {
             </p>
           </header>
 
+          {/* 2026-11-28：四國對照預設收合（第一個成分展開當示範），每個成分先看名稱與結論。
+              原本全部展開，桌機 17,000px、手機 38,000px。資料仍全在 HTML 裡。 */}
+          <details class="sub__detail" open={si === 0}>
+          <summary class="sub__toggle">看{s.columns.map((c) => c.label).join('、')}對照</summary>
           <div class="grid" role="table" aria-label={`${s.name}的跨國法規對照`}>
             <div class="grid__head" role="row" style={`--cols:${s.columns.length}`}>
               <span role="columnheader">項目</span>
@@ -153,6 +157,7 @@ const breadcrumbSchema = {
               </div>
             ))}
           </div>
+          </details>
         </article>
       ))}
     </section>
@@ -335,5 +340,19 @@ const breadcrumbSchema = {
       border-bottom: 2px solid var(--color-fog);
     }
     .carry__label { display: none; }
+  }
+
+  .sub__toggle {
+    cursor: pointer;
+    width: fit-content;
+    margin-top: 0.75rem;
+    font-family: var(--font-ui);
+    font-size: var(--text-meta);
+    font-weight: 700;
+    color: var(--color-teal);
+  }
+
+  .sub__detail[open] .sub__toggle {
+    margin-bottom: 0.75rem;
   }
 </style>

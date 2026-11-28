@@ -1,4 +1,5 @@
 ---
+import EvidenceLadder from '@/components/charts/EvidenceLadder.astro';
 import { getCollection, getEntry } from 'astro:content';
 import Article from '@/layouts/Article.astro';
 import EditButton from '@/components/editor/EditButton.svelte';
@@ -47,6 +48,11 @@ const data = entry.data;
    ② dropIfInBody：這一項內文散文已經講過就不重印。這正是本檔原本「刻意不接 uses」
       的理由，但實測重疊率中位數只有 16.2%、只有 13 篇超過 30%，整個欄位都不接
       對其餘 38 篇是過度反應。改成逐項判斷。 */
+/* 2026-11-28：內文已有「安全性…」段落時（舊範本頁大多有），下方 safety 區塊不再重印一般說明、
+   標題改成「交互作用與特定族群」，只補內文沒有的條列，避免同一頁出現兩個「安全性」段落。 */
+const bodyHasSafety = headings.some((h) => h.depth === 2 && h.text.startsWith('安全性'));
+const safetyHasLists = Boolean(data.safety?.interactions?.length || data.safety?.populations?.length);
+const showSafety = Boolean(data.safety) && (!bodyHasSafety || safetyHasLists);
 const usesAll = await filterBoilerplateItems('ingredients', 'uses', data.uses);
 const visibleUses = dropIfInBody(usesAll, entry.body ?? '', (u) => u.summary ?? '');
 
@@ -198,6 +204,7 @@ const ingredientBreadcrumbSchema = {
     <section class="ingredient-uses" aria-labelledby="ingredient-uses-title">
       <h2 id="ingredient-uses-title">研究中討論的用途</h2>
       <p class="ingredient-uses__note">以下是研究文獻中討論過的用途與證據強度，不是療效宣稱，也不代表適合每個人。</p>
+      <EvidenceLadder uses={visibleUses} />
       <ul class="ingredient-uses__list">
         {visibleUses.map((u) => (
           <li class="ingredient-uses__item">
@@ -212,10 +219,10 @@ const ingredientBreadcrumbSchema = {
     </section>
   )}
 
-  {data.safety && (
+  {showSafety && data.safety && (
     <section class="ingredient-safety" aria-labelledby="ingredient-safety-title">
-      <h2 id="ingredient-safety-title">安全性與交互作用</h2>
-      <p>{data.safety.general}</p>
+      <h2 id="ingredient-safety-title">{bodyHasSafety ? '交互作用與特定族群' : '安全性與交互作用'}</h2>
+      {!bodyHasSafety && <p>{data.safety.general}</p>}
 
       {data.safety.interactions && data.safety.interactions.length > 0 && (
         <>

@@ -10,6 +10,7 @@ import NewsCard from '@/components/blocks/NewsCard.astro';
 import JsonLd from '@/components/seo/JsonLd.astro';
 import { buildCollectionPage, buildBreadcrumbList } from '@/utils/schema-org';
 import { isPublicEntry } from '@/utils/visibility';
+import LoadMore from '@/components/ui/LoadMore.astro';
 
 function stripExt(id: string) { return id.replace(/\.[^.]+$/, ''); }
 
@@ -46,7 +47,7 @@ const crumbSchema = buildBreadcrumbList([{ label: '首頁', href: '/' }, { label
       </section>
     )}
 
-    <section class="news-grid">
+    <section id="news-grid" class="news-grid">
       {all.map((n) => {
         const d = n.data;
         const title = getDisplayTitle(d.titleDisplay, d.title);
@@ -70,6 +71,7 @@ const crumbSchema = buildBreadcrumbList([{ label: '首頁', href: '/' }, { label
         );
       })}
     </section>
+    <LoadMore target="news-grid" />
   </main>
 </Base>
 

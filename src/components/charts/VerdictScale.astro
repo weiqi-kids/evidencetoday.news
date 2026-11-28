@@ -1,0 +1,120 @@
+---
+/**
+ * 闢謠判定刻度＋證據強度（2026-11-28）。
+ *
+ * 把「這個說法和證據一致到什麼程度」畫成一條五格刻度，再加一條四格證據強度計。
+ * 資料全部來自該篇已有的 verdict／evidenceLevel 欄位，位置對照 VERDICT_RATING
+ * （ClaimReview 的 ratingValue 同一套，1＝與證據不符、5＝與證據一致），不另外判斷。
+ * 純 HTML＋CSS，不需要 JS，關掉 JS 也看得到。
+ */
+import { VERDICT_META, VERDICT_RATING, displayVerdict, type MythVerdict } from '@/utils/myths/schema';
+
+interface Props {
+  verdict: MythVerdict;
+  evidenceLevel: string;
+}
+
+const { verdict, evidenceLevel } = Astro.props;
+const rating = VERDICT_RATING[verdict];
+const tone = VERDICT_META[verdict].tone;
+
+// 證據強度四格：資料不足＝1、低＝2、中＝3、高＝4
+const EVIDENCE_STEPS = ['資料不足', '低', '中', '高'];
+const evidenceIndex = Math.max(0, EVIDENCE_STEPS.indexOf(evidenceLevel));
+const label = `判讀刻度：${displayVerdict(verdict)}，在「與證據不符」到「與證據一致」五格中的第 ${rating} 格；證據強度：${evidenceLevel}。`;
+---
+
+<div class={`vscale vscale--${tone}`} role="img" aria-label={label}>
+  <div class="vscale__row">
+    <span class="vscale__end">與證據不符</span>
+    <ol class="vscale__track" aria-hidden="true">
+      {[1, 2, 3, 4, 5].map((n) => (
+        <li class:list={['vscale__cell', { 'is-on': n === rating }]} />
+      ))}
+    </ol>
+    <span class="vscale__end">與證據一致</span>
+  </div>
+  <div class="vscale__row vscale__row--evidence">
+    <span class="vscale__label">證據強度</span>
+    <ol class="vscale__meter" aria-hidden="true">
+      {EVIDENCE_STEPS.map((_, i) => (
+        <li class:list={['vscale__seg', { 'is-on': i <= evidenceIndex }]} />
+      ))}
+    </ol>
+    <span class="vscale__value">{evidenceLevel}</span>
+  </div>
+</div>
+
+<style>
+  .vscale {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    font-family: var(--font-ui);
+    font-size: var(--text-meta);
+    color: var(--color-ink-muted);
+  }
+
+  .vscale--positive { --vs-color: var(--color-verdict-true); }
+  .vscale--negative { --vs-color: var(--color-verdict-false); }
+  .vscale--neutral { --vs-color: var(--color-verdict-insufficient); }
+  .vscale--context { --vs-color: var(--color-verdict-contextual); }
+  .vscale--caution { --vs-color: var(--color-cat-myth); }
+  .vscale--warning { --vs-color: var(--color-coral); }
+
+  .vscale__row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .vscale__track,
+  .vscale__meter {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 4px;
+  }
+
+  .vscale__track {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .vscale__meter {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .vscale__cell {
+    height: 0.75rem;
+    border-radius: 999px;
+    background-color: var(--color-fog);
+  }
+
+  .vscale__cell.is-on {
+    height: 1.25rem;
+    background-color: var(--vs-color);
+  }
+
+  .vscale__seg {
+    height: 0.5rem;
+    border-radius: 999px;
+    background-color: var(--color-fog);
+  }
+
+  .vscale__seg.is-on {
+    background-color: var(--color-teal);
+  }
+
+  .vscale__value {
+    font-weight: 700;
+    color: var(--color-teal);
+    min-width: 4em;
+  }
+
+  .vscale__label,
+  .vscale__end {
+    white-space: nowrap;
+  }
+</style>

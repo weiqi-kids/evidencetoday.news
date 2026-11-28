@@ -6,6 +6,7 @@ import { listSocial } from '@/utils/social-meta.mjs';
 import JsonLd from '@/components/seo/JsonLd.astro';
 import { buildCollectionPage, buildBreadcrumbList } from '@/utils/schema-org';
 import { isPublicEntry } from '@/utils/visibility';
+import LoadMore from '@/components/ui/LoadMore.astro';
 
 function stripExt(id: string): string {
   return id.replace(/\.[^.]+$/, '');
@@ -43,7 +44,7 @@ const crumbSchema = buildBreadcrumbList([{ label: '首頁', href: '/' }, { label
   {/* 2026-11-28：分類頁說明只留一句（原本三行） */}
   <p class="ingredients-intro">每個成分的證據強度、劑量與台灣法規。</p>
 
-  <div class="ingredients-grid">
+  <div id="ingredients-grid" class="ingredients-grid">
     {ingredients.map((i) => (
       <IngredientCard
         title={i.data.title}
@@ -57,6 +58,7 @@ const crumbSchema = buildBreadcrumbList([{ label: '首頁', href: '/' }, { label
       />
     ))}
   </div>
+  <LoadMore target="ingredients-grid" unit="個" />
 </List>
 
 <style>

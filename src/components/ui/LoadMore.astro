@@ -1,0 +1,78 @@
+---
+/**
+ * 列表「載入更多」（2026-11-28）。
+ *
+ * 用在沒有篩選器的長列表（趨勢、成分解析）：先顯示前 `page` 個子項目，其餘先隱藏，
+ * 按鈕每按一次多顯示 `page` 個。全部項目一開始就在 HTML 裡，搜尋引擎與關掉 JS 的讀者
+ * 都看得到完整清單（沒有 JS 時不會隱藏任何東西）。
+ *
+ * 有篩選器的列表（/myths、/articles）自己管顯示狀態，不要再套這個元件，兩套邏輯會打架。
+ */
+interface Props {
+  /** 列表容器的 id；容器的直接子元素就是一個項目 */
+  target: string;
+  page?: number;
+  /** 按鈕上的量詞，例如「篇」「個」 */
+  unit?: string;
+}
+
+const { target, page = 24, unit = '篇' } = Astro.props;
+---
+
+<div class="load-more-wrap">
+  <button type="button" class="load-more" data-load-more data-target={target} data-page={page} data-unit={unit} hidden>
+    載入更多
+  </button>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-load-more]').forEach((btn) => {
+    const list = document.getElementById(btn.dataset.target ?? '');
+    if (!list) return;
+    const items = [...list.children] as HTMLElement[];
+    const page = Number(btn.dataset.page) || 24;
+    const unit = btn.dataset.unit ?? '篇';
+    let limit = page;
+
+    const render = () => {
+      // 用 style.display 而不是 hidden 屬性：卡片元件根節點自己設了 display:flex／block，會蓋掉 [hidden]
+      items.forEach((item, i) => {
+        item.style.display = i >= limit ? "none" : "";
+      });
+      const rest = items.length - limit;
+      btn.hidden = rest <= 0;
+      btn.textContent = `載入更多（還有 ${rest} ${unit}）`;
+    };
+
+    btn.addEventListener('click', () => {
+      limit += page;
+      render();
+    });
+    render();
+  });
+</script>
+
+<style>
+  .load-more-wrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+
+  .load-more {
+    padding: 0.75rem 1.5rem;
+    border: 1px solid var(--color-teal);
+    border-radius: var(--radius-pill);
+    background-color: var(--color-white);
+    color: var(--color-teal);
+    font-family: var(--font-ui);
+    font-size: var(--text-meta);
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 180ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .load-more:hover {
+    background-color: var(--color-teal-subtle);
+  }
+</style>

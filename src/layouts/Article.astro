@@ -79,6 +79,7 @@ const {
 // 分享列：用 canonical 絕對網址。myths 單篇刻意極簡（見 CLAUDE.md 與 myths playbook），不加分享列。
 const shareUrl = new URL(Astro.url.pathname, Astro.site).href;
 const showShare = category !== 'myth';
+const hasSidebar = Astro.slots.has('sidebar');
 
 // 封面圖安全守衛：外連 http(s) 直接採用；本地 `/…` 路徑須確認 public 下真的存在，
 // 避免填錯路徑在詳情頁露破圖（與 ArticleCard 同一套判斷）。用 process.cwd() 而非
@@ -126,6 +127,16 @@ const safeCover =
     )}
 
     <div class:list={['article-grid', `article-grid--${variant}`]}>
+      {/* 2026-11-28：目錄改放在正文前的 DOM 位置。手機收成一條可展開的「本文目錄」（原本手機完全看不到目錄），
+          桌機仍是右欄 sticky（用 grid-column 放回右邊，腳本把 details 設成展開）。 */}
+      {hasSidebar && (
+        <aside class="article-sidebar">
+          <details class="article-toc" data-article-toc>
+            <summary class="article-toc__summary">本文目錄</summary>
+            <slot name="sidebar" />
+          </details>
+        </aside>
+      )}
       <div class="article-content">
         {citationAnswer && <TldrBox summary={citationAnswer} lead={aiAnswer} />}
         <div class="prose">
@@ -156,12 +167,21 @@ const safeCover =
         {showShare && <ShareButtons url={shareUrl} title={title} />}
         <slot name="after-content" />
       </div>
-      <aside class="article-sidebar">
-        <slot name="sidebar" />
-      </aside>
     </div>
   </div>
 </Base>
+
+<script>
+  // 桌機（≥1024）目錄常駐展開；手機維持收合。跨斷點時同步。
+  const mq = window.matchMedia('(min-width: 1024px)');
+  const sync = () => {
+    document.querySelectorAll<HTMLDetailsElement>('[data-article-toc]').forEach((d) => {
+      d.open = mq.matches;
+    });
+  };
+  sync();
+  mq.addEventListener('change', sync);
+</script>
 
 <style>
   .article-layout {
@@ -293,8 +313,31 @@ const safeCover =
   }
 
   .article-sidebar {
-    display: none;
     min-width: 0;
+  }
+
+  .article-toc {
+    border: 1px solid var(--color-fog);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-white);
+    padding: 0.75rem 1rem;
+  }
+
+  .article-toc__summary {
+    cursor: pointer;
+    font-family: var(--font-ui);
+    font-size: var(--text-meta);
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+
+  .article-toc[open] .article-toc__summary {
+    margin-bottom: 0.5rem;
+  }
+
+  /* 手機的 summary 已寫「本文目錄」，元件自己的「目錄」小標重複，手機隱藏 */
+  .article-toc :global(.toc__title) {
+    display: none;
   }
 
   /* 桌機：正文欄固定在易讀寬度，目錄緊跟在旁（原本 0.7fr／0.3fr 讓兩欄之間空出一大塊） */
@@ -304,11 +347,31 @@ const safeCover =
       column-gap: clamp(2.5rem, 1rem + 3vw, 4.5rem);
     }
 
+    .article-content {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
     .article-sidebar {
-      display: block;
+      grid-column: 2;
+      grid-row: 1;
       position: sticky;
       top: 6rem;
       align-self: start;
+    }
+
+    .article-toc {
+      border: 0;
+      background: transparent;
+      padding: 0;
+    }
+
+    .article-toc__summary {
+      display: none;
+    }
+
+    .article-toc :global(.toc__title) {
+      display: inline;
     }
   }
 </style>

@@ -40,8 +40,8 @@ const safeCoverImage =
   <div class="article-card__body">
     <div class="article-card__top">
       <CategoryTag category={category} />
-      {topicLabel && <span class="article-card__topic">{topicLabel}</span>}
-      {aeoLabel && <span class="article-card__topic article-card__topic--aeo">{aeoLabel}</span>}
+      {/* 2026-11-28：卡片最多一個補充標示（題型優先，沒有才用主題分類），純文字，不做膠囊 */}
+      {(aeoLabel || topicLabel) && <span class="article-card__topic">{aeoLabel || topicLabel}</span>}
     </div>
     <h3 class="article-card__title">{title}</h3>
     <p class="article-card__desc">{description}</p>
@@ -96,19 +96,15 @@ const safeCoverImage =
   }
 
   .article-card__topic {
-    display: inline-flex;
-    align-items: center;
-    border-radius: 999px;
-    padding: 0.15rem 0.55rem;
+    font-family: var(--font-ui);
     font-size: var(--text-meta);
-    color: color-mix(in oklch, var(--color-ink) 86%, transparent);
-    background: color-mix(in oklch, var(--color-fog) 92%, white);
+    color: var(--color-ink-muted);
   }
 
-  .article-card__topic--aeo {
-    color: color-mix(in oklch, var(--color-teal) 65%, var(--color-ink));
-    background: color-mix(in oklch, var(--color-teal) 14%, white);
-    border: 1px solid color-mix(in oklch, var(--color-teal) 22%, white);
+  .article-card__topic::before {
+    content: '·';
+    margin-inline-end: 0.5rem;
+    color: var(--color-ink-subtle);
   }
 
   .article-card__title {

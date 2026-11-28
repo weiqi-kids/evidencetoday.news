@@ -137,7 +137,7 @@
 
 - `src/pages/ingredients/[slug].astro` 的單篇頁首不再傳入 `disclosure`，避免在標題區重複顯示「一般健康教育／診斷」類提醒；正式醫療聲明仍由 `Article.astro` 底部的 `MedicalDisclaimer` 統一呈現。
 - Ingredients 內文應直接從 MDX 的 `## 30 秒認識` 開始，不再在 page template 注入「閱讀這頁前，先說清楚」提醒卡，也不在正文前插入機制圖、證據圖或安全性卡片。
-- 所有 `src/content/ingredients/*.mdx` 的二級標題維持一致順序：`30 秒認識`、`基本介紹`、`這是什麼？`、`在身體裡做什麼？／主要作用機制`、`食物來源／常見來源`、`建議攝取量／常見攝取建議／研究中常見使用方式`、`缺乏風險或攝取不足問題`、`補充品常見形式`、`安全性與注意事項`、`常見迷思`、`參考資料`。不要新增會干擾 TOC 的開頭提醒區塊。
+- 所有 `src/content/ingredients/*.mdx` 的二級標題維持一致順序：`30 秒認識`、`基本介紹`、`這是什麼？`、`在身體裡做什麼？`、`食物來源`、`建議攝取量`、`缺乏風險或攝取不足問題`、`補充品常見形式`、`安全性與注意事項`、`常見迷思`、`參考資料`。不要新增會干擾 TOC 的開頭提醒區塊。
 - Ingredients RWD 防護：列表卡片 grid 使用 `minmax(0, 1fr)`，單篇 `Article.astro` 的 content/sidebar grid item 需要 `min-width: 0`；TOC 與卡片文字需允許 `overflow-wrap`，避免 360–430px 手機寬度出現整頁水平捲軸。
 
 ## Myth 單篇頁面內容卡片規則（2026-06-01 更新）
@@ -218,3 +218,9 @@
   node -e "const fs=require('fs');const ds=require('child_process').execSync('ls dist/articles').toString().trim().split('\n').filter(d=>fs.existsSync('dist/articles/'+d+'/index.html'));let person=0,org=0,none=0,mismatch=0;for(const d of ds){const arr=[...fs.readFileSync('dist/articles/'+d+'/index.html','utf8').matchAll(/<script type=\"application\/ld\+json\">(.*?)<\/script>/gs)].map(x=>JSON.parse(x[1])).flat();const a=arr.find(o=>Array.isArray(o['@type'])&&o['@type'].includes('MedicalWebPage'));if(!a){console.log('NO node:',d);continue;}const hasRev='reviewedBy' in a, hasLR='lastReviewed' in a;if(hasRev!==hasLR){mismatch++;console.log('MISMATCH:',d,'reviewedBy',hasRev,'lastReviewed',hasLR);}if(!hasRev){none++;continue;}if(a.reviewedBy['@type']==='Person')person++;else org++;}console.log('Person reviewer:',person,'| Org reviewer:',org,'| no reviewer:',none,'| pairing mismatches:',mismatch)"
   ```
   預期：`pairing mismatches: 0`，大多數文章為機構審閱、少數為 Person。
+
+## 2026-11-28 長文節奏與手機目錄
+
+- **成分頁標題**：舊範本的「在身體裡做什麼？／主要作用機制」「食物來源／常見來源」「建議攝取量／常見攝取建議／研究中常見使用方式」等「／」並列標題，已在 106 頁改成單一標題（見上方順序）。新稿照單一標題寫。內容有自己的副題時可以用「／」，例如「在身體裡做什麼？／吸收路徑與爭議」。
+- **段落節奏**：`.prose h2` 加上方留白＋一條 fog 細線（第一個 h2 不加），長文每個大段有明確分隔。`.prose blockquote` 不再用斜體（中文沒有真斜體）。
+- **手機目錄**：`Article.astro` 的 sidebar slot 包進 `<details class="article-toc">`，DOM 放在正文前。<1024 顯示一條可展開的「本文目錄」；≥1024 用 `grid-column: 2` 放回右欄 sticky，inline script 把 details 設成展開、隱藏 summary。沒有 sidebar slot 的頁（闢謠 cards variant）不輸出。

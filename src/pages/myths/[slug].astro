@@ -1,6 +1,7 @@
 ---
 import { getCollection, getEntry } from 'astro:content';
 import Article from '@/layouts/Article.astro';
+import VerdictScale from '@/components/charts/VerdictScale.astro';
 import JsonLd from '@/components/seo/JsonLd.astro';
 import { buildClaimReview, buildPerson, buildCitations, PUBLISHER_REF, WEBSITE_REF } from '@/utils/schema-org';
 import { isPublicEntry } from '@/utils/visibility';
@@ -224,7 +225,7 @@ const mythFaqSchema = mythFaq && mythFaq.length > 0
       <div class={`quick-verdict quick-verdict--${VERDICT_META[d.verdict].tone}`}>
         <p class="quick-verdict__value"><span aria-hidden="true">{VERDICT_META[d.verdict].icon}</span> {displayVerdict(d.verdict)}</p>
       </div>
-      <p class="quick-evidence">證據強度：<strong>{d.evidenceLevel}</strong></p>
+      <VerdictScale verdict={d.verdict} evidenceLevel={d.evidenceLevel} />
     </div>
     <div>
       <ul>{quickItems.map((item) => <li>{item}</li>)}</ul>
@@ -241,17 +242,23 @@ const mythFaqSchema = mythFaq && mythFaq.length > 0
   <section class="block science">
     <h2>科學證據怎麼看？</h2>
     {evidenceItems.length > 0 && (
-      <div class="evidence-list">
+      {/* 2026-11-28 改版：原本每個來源是「大標題＋研究類型：＋主要發現：＋整段斜體原文」，原文與白話整理幾乎重複，
+          十幾個來源連成一面字牆。現在：標題縮成粗體正文、類型與年份一行灰字、白話發現直接接、原文預設收合。 */}
+      <ol class="evidence-list">
         {evidenceItems.map((item, index) => (
-          <article class="evidence-item">
-            {index > 0 && <hr />}
-            <h3>來源 {index + 1}：{item.title}</h3>
-            <p><strong>研究類型：</strong>{sourceTypeLabels[item.sourceType] || item.sourceType}</p>
-            <p><strong>主要發現：</strong>{item.mainFinding}</p>
-            {item.quotedExcerpt && <blockquote class="evidence-item__quote">{item.quotedExcerpt}</blockquote>}
-          </article>
+          <li class="evidence-item">
+            <p class="evidence-item__meta">來源 {index + 1}<span aria-hidden="true"> · </span>{sourceTypeLabels[item.sourceType] || item.sourceType}{item.year && <><span aria-hidden="true"> · </span>{item.year}</>}</p>
+            <h3 class="evidence-item__title"><a href={item.url} rel="noopener" target="_blank">{item.title}</a></h3>
+            <p class="evidence-item__finding">{item.mainFinding}</p>
+            {item.quotedExcerpt && (
+              <details class="evidence-item__quote">
+                <summary>看原文</summary>
+                <blockquote>{item.quotedExcerpt}</blockquote>
+              </details>
+            )}
+          </li>
         ))}
-      </div>
+      </ol>
     )}
   </section>
 
@@ -470,41 +477,75 @@ document.getElementById('copy-btn')?.addEventListener('click', async () => { awa
     color: color-mix(in oklch, var(--verdict-color) 80%, var(--color-ink));
   }
 
-  .quick-evidence {
-    margin: 0;
-    font-family: var(--font-ui);
-    font-size: var(--text-meta);
-    color: var(--color-ink-muted);
-  }
-
-  .quick-evidence strong {
-    color: var(--color-teal);
-  }
-
   .flow {
     background: color-mix(in oklch, var(--color-paper) 78%, white);
   }
 
   .evidence-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: clamp(1.75rem, 1.25rem + 1.5vw, 2.5rem);
   }
 
-  .evidence-item hr {
-    border: 0;
-    border-top: 1px solid color-mix(in oklch, var(--color-fog) 82%, var(--color-ink));
-    margin: 0 0 1.25rem;
+  .evidence-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
   }
 
-  /* 原文逐字引句：跟「主要發現」（白話轉譯）視覺區隔，證明兩者不是同一句改寫。
-     低干擾靠左側細線與降彩度達成，字級維持 var(--text-meta) 不縮小（規範⑥）。 */
-  .evidence-item__quote {
+  .evidence-item + .evidence-item {
+    padding-top: clamp(1.75rem, 1.25rem + 1.5vw, 2.5rem);
+    border-top: 1px solid var(--color-fog);
+  }
+
+  .evidence-item__meta {
+    margin: 0;
+    font-family: var(--font-ui);
+    font-size: var(--text-meta);
+    color: var(--color-ink-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .evidence-item__title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    font-weight: 700;
+    line-height: 1.55;
+  }
+
+  .evidence-item__title a {
+    color: var(--color-ink);
+    text-decoration-color: var(--color-fog);
+    text-underline-offset: 0.2em;
+  }
+
+  .evidence-item__title a:hover {
+    color: var(--color-teal);
+  }
+
+  .evidence-item__finding {
+    margin: 0;
+  }
+
+  /* 原文逐字引句：預設收合，想核對的人再展開。中文不用斜體（中文字沒有真斜體，瀏覽器只會硬壓斜）。 */
+  .evidence-item__quote summary {
+    cursor: pointer;
+    width: fit-content;
+    font-family: var(--font-ui);
+    font-size: var(--text-meta);
+    font-weight: 700;
+    color: var(--color-teal);
+  }
+
+  .evidence-item__quote blockquote {
     margin: 0.5rem 0 0;
     padding-left: 0.85rem;
-    border-left: 2px solid color-mix(in oklch, var(--color-ink) 25%, transparent);
-    color: color-mix(in oklch, var(--color-ink) 70%, transparent);
-    font-style: italic;
+    border-left: 2px solid var(--color-fog);
+    color: var(--color-ink-muted);
   }
 
   .myth-reasoning-grid {

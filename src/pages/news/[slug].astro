@@ -357,16 +357,14 @@ const breadcrumbSchema = {
     gap: 0.5rem;
   }
 
+  /* 2026-11-28：與全站類別標示統一成分類色純文字（見 docs/brand-guidelines.md「卡片與元件語言」） */
   .news-article__cat {
     display: inline-flex;
     align-self: flex-start;
-    padding: 0.25rem 0.7rem;
-    border-radius: var(--radius-pill);
     font-family: var(--font-ui);
     font-size: var(--text-meta);
-    font-weight: 600;
-    color: white;
-    background: color-mix(in oklch, var(--color-cat-news) 90%, black);
+    font-weight: 700;
+    color: var(--color-cat-news);
   }
 
   .news-article__title {

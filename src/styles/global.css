@@ -180,8 +180,21 @@ img {
   margin-top: 2em;
 }
 
+/* 2026-11-28：長文每個大段之間加明確分隔（留白＋細線），讓一萬像素的長文有段落節奏，不再是一整面字牆 */
 .prose h2 {
-  margin-top: 1.5em;
+  margin-top: 2em;
+  padding-top: 1.25em;
+  border-top: 1px solid var(--color-fog);
+}
+
+.prose > h2:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.prose h2 + * {
+  margin-top: 0.75em;
 }
 
 .prose h3 {
@@ -207,11 +220,11 @@ img {
   margin-top: 0.25em;
 }
 
+/* 中文沒有真斜體（瀏覽器只會硬壓斜），引文改用一般字體，靠左線與降彩度區隔（2026-11-28） */
 .prose blockquote {
   padding-left: 1.25em;
   border-left: 3px solid var(--color-teal);
   color: color-mix(in oklch, var(--color-ink) 70%, transparent);
-  font-style: italic;
 }
 
 .prose pre {

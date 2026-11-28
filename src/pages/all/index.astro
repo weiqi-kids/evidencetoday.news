@@ -107,14 +107,29 @@ const collectionSchema = {
           <h2>{section.title} <span class="all-count">{section.items.length}</span></h2>
           <a class="all-section__more" href={section.href}>前往{section.title} →</a>
         </div>
+        {/* 2026-11-28：每類先列最新 10 篇，其餘收在「看全部」裡（連結仍在 HTML，搜尋引擎照樣抓得到）。
+            原本 1,400 多行一次列完，桌機將近 19,000px。 */}
         <ul class="all-list">
-          {section.items.map((item) => (
+          {section.items.slice(0, 10).map((item) => (
             <li>
               <a href={item.href}>{item.title}</a>
               {item.date && <time class="all-date">{item.date}</time>}
             </li>
           ))}
         </ul>
+        {section.items.length > 10 && (
+          <details class="all-more">
+            <summary>看全部 {section.items.length} 篇{section.title}</summary>
+            <ul class="all-list">
+              {section.items.slice(10).map((item) => (
+                <li>
+                  <a href={item.href}>{item.title}</a>
+                  {item.date && <time class="all-date">{item.date}</time>}
+                </li>
+              ))}
+            </ul>
+          </details>
+        )}
       </section>
     ))}
   </main>
@@ -218,5 +233,18 @@ const collectionSchema = {
       grid-template-columns: repeat(2, 1fr);
       gap: 0.5rem 2rem;
     }
+  }
+
+  .all-more summary {
+    cursor: pointer;
+    width: fit-content;
+    font-family: var(--font-ui);
+    font-size: var(--text-meta);
+    font-weight: 700;
+    color: var(--color-teal);
+  }
+
+  .all-more[open] summary {
+    margin-bottom: 0.75rem;
   }
 </style>

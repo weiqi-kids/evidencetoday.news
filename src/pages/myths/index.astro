@@ -1,7 +1,8 @@
 ---
 import List from '@/layouts/List.astro';
 import { getCollection } from 'astro:content';
-import MythSquareCardVisual from '@/components/myths/MythSquareCardVisual.astro';
+import MythCard from '@/components/blocks/MythCard.astro';
+import { fmtDate } from '@/utils/date';
 import { listSocial } from '@/utils/social-meta.mjs';
 import JsonLd from '@/components/seo/JsonLd.astro';
 import { buildCollectionPage, buildBreadcrumbList } from '@/utils/schema-org';
@@ -9,7 +10,6 @@ import { isPublicEntry } from '@/utils/visibility';
 
 const myths = (await getCollection('myths', (e) => isPublicEntry(e.data))).sort((a, b) => b.data.updatedDate.getTime() - a.data.updatedDate.getTime());
 const topicOptions = [...new Set(myths.flatMap((m) => m.data.topicTags))].sort();
-const themeFor = (slug:string)=> slug.includes('lemon') ? 'lemon' : slug.includes('vitamin') ? 'vitamin' : 'default';
 const social = listSocial('myths');
 const listSchema = buildCollectionPage({
   path: '/myths/',
@@ -26,11 +26,21 @@ const crumbSchema = buildBreadcrumbList([{ label: '首頁', href: '/' }, { label
   </Fragment>
 
   <div class="filters"><input id="q" placeholder="搜尋標題、迷思原句、摘要、主題" /><select id="verdict"><option value="all">全部判讀</option><option value="大致正確">大致正確</option><option value="大致錯誤">大致錯誤</option><option value="證據不足">證據不足</option><option value="情境成立">情境成立</option><option value="過度簡化">過度簡化</option><option value="需謹慎">須謹慎</option></select><select id="topic"><option value="all">全部主題</option>{topicOptions.map((t) => <option value={t}>{t}</option>)}</select><select id="evidence"><option value="all">全部證據強度</option><option value="高">高</option><option value="中">中</option><option value="低">低</option><option value="資料不足">資料不足</option></select><select id="sort"><option value="new">最新更新</option><option value="old">最早更新</option></select></div>
-  <div id="list" class="myths-grid">{myths.map((m) => <a href={`/myths/${m.id.replace(/\.[^.]+$/, '')}/`} class="myth-card" data-title={m.data.title} data-claim={m.data.mythClaim} data-summary={m.data.cardConclusion || m.data.verdictSummary} data-tldr={(m.data.thirtySecondConclusion || m.data.tldr).join(' ')} data-tags={m.data.topicTags.join(' ')} data-verdict={m.data.verdict} data-evidence={m.data.evidenceLevel} data-topic={m.data.topicTags.join('|')} data-updated={m.data.updatedDate.toISOString()}><MythSquareCardVisual title={m.data.title} verdict={m.data.verdict === '需謹慎' ? '須謹慎' : m.data.verdict} evidenceLevel={m.data.evidenceLevel} summary={m.data.cardConclusion || m.data.verdictSummary} theme={themeFor(m.id)} /></a>)}</div>
+  {/* 2026-11-28：列表卡從分享用的方形社群卡（標題 34px、一排兩張）改成全站共用的 MythCard；
+      一次先顯示 24 篇，底部「載入更多」。其餘卡片仍在 HTML 裡（只是先隱藏），搜尋引擎抓得到全部連結。 */}
+  <div id="list" class="myths-grid">{myths.map((m) => (
+    <div class="myth-item" data-title={m.data.title} data-claim={m.data.mythClaim} data-summary={m.data.cardConclusion || m.data.verdictSummary} data-tldr={(m.data.thirtySecondConclusion || m.data.tldr).join(' ')} data-tags={m.data.topicTags.join(' ')} data-verdict={m.data.verdict} data-evidence={m.data.evidenceLevel} data-topic={m.data.topicTags.join('|')} data-updated={m.data.updatedDate.toISOString()}>
+      <MythCard title={m.data.title} verdictSummary={m.data.cardConclusion || m.data.verdictSummary} href={`/myths/${m.id.replace(/.[^.]+$/, '')}/`} verdict={m.data.verdict} date={fmtDate(m.data.updatedDate)} coverImage={m.data.coverImage} coverAlt={m.data.coverAlt} />
+    </div>
+  ))}</div>
+  <div class="load-more-wrap"><button type="button" id="load-more" class="load-more">載入更多</button></div>
   <p id="empty" class="empty" hidden>目前沒有符合條件的闢謠文章，請調整搜尋或篩選條件。</p>
 </List>
 <script>
-  const cards = [...document.querySelectorAll('.myth-card')];
+  const cards = [...document.querySelectorAll('.myth-item')];
+  const loadMore = document.getElementById('load-more');
+  const PAGE = 24;
+  let limit = PAGE;
   const [qInput, verdictSelect, topicSelect, evidenceSelect, sortSelect] = ['q', 'verdict', 'topic', 'evidence', 'sort'].map((id) => document.getElementById(id));
   const empty = document.getElementById('empty');
   const list = document.getElementById('list');
@@ -81,21 +91,99 @@ const crumbSchema = buildBreadcrumbList([{ label: '首頁', href: '/' }, { label
       card.style.display = 'none';
     });
 
-    filteredCards.forEach((card) => {
-      card.style.display = '';
+    filteredCards.forEach((card, i) => {
+      card.style.display = i < limit ? '' : 'none';
       list.appendChild(card);
     });
+    loadMore.hidden = filteredCards.length <= limit;
+    loadMore.textContent = `載入更多（還有 ${filteredCards.length - limit} 篇）`;
 
     const hasResults = filteredCards.length > 0;
     list.style.display = hasResults ? 'grid' : 'none';
     empty.style.display = hasResults ? 'none' : 'block';
   };
 
+  const resetAndRender = () => {
+    limit = PAGE;
+    render();
+  };
+
   [qInput, verdictSelect, topicSelect, evidenceSelect, sortSelect].forEach((control) => {
-    control.addEventListener('input', render);
-    control.addEventListener('change', render);
+    control.addEventListener('input', resetAndRender);
+    control.addEventListener('change', resetAndRender);
+  });
+
+  loadMore.addEventListener('click', () => {
+    limit += PAGE;
+    render();
   });
 
   render();
 </script>
-<style>.filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.75rem;margin:1rem 0}.filters input,.filters select{padding:.68rem;border:1px solid var(--color-fog);border-radius:10px}.myths-grid{display:grid;grid-template-columns:repeat(2,minmax(0,420px));justify-content:start;gap:1rem}.myth-card{display:block;border-radius:18px;overflow:clip;transition:.2s;min-width:0;text-decoration:none}.myth-card,.myth-card *{text-decoration:none}.myth-card:hover,.myth-card:focus-visible{transform:translateY(-2px);box-shadow:var(--shadow-card-hover);outline:2px solid color-mix(in oklch,var(--color-cat-myth) 35%,white)}@media(max-width:900px){.myths-grid{grid-template-columns:1fr}}@media(max-width:640px){.filters{grid-template-columns:1fr}}</style>
+<style>
+  .filters {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    margin: 1rem 0 1.5rem;
+  }
+
+  .filters input,
+  .filters select {
+    padding: 0.68rem;
+    border: 1px solid var(--color-fog);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-white);
+    font-size: var(--text-meta);
+  }
+
+  .myths-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-card-gap);
+  }
+
+  .myth-item {
+    display: grid;
+    min-width: 0;
+  }
+
+  .load-more-wrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+
+  .load-more {
+    padding: 0.75rem 1.5rem;
+    border: 1px solid var(--color-teal);
+    border-radius: var(--radius-pill);
+    background-color: var(--color-white);
+    color: var(--color-teal);
+    font-family: var(--font-ui);
+    font-size: var(--text-meta);
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 180ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .load-more:hover {
+    background-color: var(--color-teal-subtle);
+  }
+
+  @media (min-width: 640px) {
+    .filters {
+      grid-template-columns: 2fr repeat(4, minmax(0, 1fr));
+    }
+
+    .myths-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .myths-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

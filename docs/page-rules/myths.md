@@ -75,6 +75,9 @@ myths 是週更且供給面比題庫式窄，門檻獨立設得比每日型的 n
 
 - 沿用 CI tokens（`--color-paper/ink/fog/teal/navy/coral/cat-myth`）與 `color-mix`，**禁止新增 pastel hex**。
 - `VerdictBadge` 只能用 CI token + `color-mix`。
+- **判定刻度（2026-11-28）**：判定文字下方是 `VerdictScale.astro`：五格「與證據不符 → 與證據一致」刻度（位置＝`VERDICT_RATING`，與 ClaimReview ratingValue 同一套）＋四格證據強度計（資料不足／低／中／高）。純 HTML＋CSS，role="img" 附完整文字說明。
+- **來源清單（2026-11-28）**：`.evidence-list` 改成 `<ol>`，每項是「來源 N · 類型 · 年份」一行灰字 → 粗體正文大小的標題（連到 url）→ 白話發現 → 原文收在預設收合的 `<details>「看原文」`。拿掉中文斜體、「研究類型：」「主要發現：」標籤與每項之間的 `<hr>`，改用留白＋細線分隔。
+- **列表頁（2026-11-28）**：/myths 卡片從分享用的 `MythSquareCardVisual`（標題 34px、一排兩張）改成全站共用的 `MythCard`（1／2／3 欄）；一次顯示 24 篇，「載入更多」與篩選連動（換條件時重設）。`MythSquareCardVisual` 仍給分享卡用，不要刪。
 - **單篇「30 秒快速結論」的判定（2026-11-28）**：判定是整篇的答案，不再用一顆 `VerdictBadge` 小膠囊，改成 `.quick-verdict`：左側 6px 判定色直條＋宋體 `--text-h2` 的判定文字（含 `VERDICT_META` 圖示），不再加判定說明句（會重複判定本身）；「證據強度」降為下方一行說明文字 `.quick-evidence`。判定色對照 `VERDICT_META[verdict].tone` → `--color-verdict-*`（caution 用 `--color-cat-myth`、warning 用 `--color-coral`）。列表卡（`MythCard`）仍用 `VerdictBadge`，前面加「闢謠」分類字。
 - `MythCard` 的 `verdict` 型別必須引用 `@/utils/myths/schema` 的 `MythVerdict`，不可自行定義字面量聯集。
 

@@ -1,0 +1,109 @@
+---
+/**
+ * 成分「證據強度階梯」（2026-11-28）。
+ *
+ * 把這個成分在研究中討論過的用途，依證據等級放到五層階梯上（統合分析在最上、體外實驗在最下）。
+ * 讀者一眼看出：哪些用途有人體試驗撐腰、哪些只停在動物或細胞階段。
+ * 資料只來自該頁已有的 uses[].purpose／evidenceLevel，不另外判斷。
+ */
+interface Props {
+  uses: Array<{ purpose: string; evidenceLevel: string }>;
+}
+
+const { uses } = Astro.props;
+
+const TIERS: Array<{ key: string; label: string }> = [
+  { key: 'meta-analysis', label: '系統性回顧／統合分析' },
+  { key: 'rct', label: '隨機對照試驗' },
+  { key: 'observational', label: '觀察性研究' },
+  { key: 'animal', label: '動物實驗' },
+  { key: 'in-vitro', label: '體外實驗' },
+];
+
+const byTier = TIERS.map((tier) => ({
+  ...tier,
+  purposes: uses.filter((u) => u.evidenceLevel === tier.key).map((u) => u.purpose),
+}));
+const summary = byTier
+  .filter((t) => t.purposes.length > 0)
+  .map((t) => `${t.label}：${t.purposes.join('、')}`)
+  .join('；');
+---
+
+{uses.length > 0 && (
+  <figure class="ladder" aria-label={`證據強度階梯。${summary}`}>
+    <figcaption class="ladder__caption">證據強度階梯：越上層，越接近「對人有效」的直接證據</figcaption>
+    <ol class="ladder__tiers">
+      {byTier.map((tier, i) => (
+        <li class:list={['ladder__tier', { 'is-empty': tier.purposes.length === 0 }]} style={`--tier: ${i}`}>
+          <span class="ladder__label">{tier.label}</span>
+          <span class="ladder__items">
+            {tier.purposes.length > 0 ? tier.purposes.join('、') : '—'}
+          </span>
+        </li>
+      ))}
+    </ol>
+  </figure>
+)}
+
+<style>
+  .ladder {
+    margin: 0 0 1.5rem;
+  }
+
+  .ladder__caption {
+    margin-bottom: 0.75rem;
+    font-family: var(--font-ui);
+    font-size: var(--text-meta);
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+
+  .ladder__tiers {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  /* 越上層顏色越深：用 teal 與 paper 的混合比例表現強度，不新增顏色 */
+  .ladder__tier {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+    padding: 0.6rem 0.9rem;
+    border-radius: var(--radius-sm);
+    background-color: color-mix(in oklch, var(--color-teal) calc(26% - var(--tier) * 5%), var(--color-white));
+  }
+
+  .ladder__tier.is-empty {
+    background-color: color-mix(in oklch, var(--color-fog) 45%, var(--color-white));
+  }
+
+  .ladder__label {
+    font-family: var(--font-ui);
+    font-size: var(--text-meta);
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+
+  .ladder__items {
+    font-size: var(--text-meta);
+    color: var(--color-ink);
+  }
+
+  .ladder__tier.is-empty .ladder__label,
+  .ladder__tier.is-empty .ladder__items {
+    color: var(--color-ink-subtle);
+  }
+
+  @media (min-width: 640px) {
+    .ladder__tier {
+      grid-template-columns: 13rem 1fr;
+      align-items: baseline;
+      gap: 1rem;
+    }
+  }
+</style>
