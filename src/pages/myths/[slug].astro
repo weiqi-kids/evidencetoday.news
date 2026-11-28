@@ -241,9 +241,9 @@ const mythFaqSchema = mythFaq && mythFaq.length > 0
 
   <section class="block science">
     <h2>科學證據怎麼看？</h2>
+    {/* 2026-11-28 改版：原本每個來源是「大標題＋研究類型：＋主要發現：＋整段斜體原文」，原文與白話整理幾乎重複，
+        十幾個來源連成一面字牆。現在：標題縮成粗體正文、類型與年份一行灰字、白話發現直接接、原文預設收合。 */}
     {evidenceItems.length > 0 && (
-      {/* 2026-11-28 改版：原本每個來源是「大標題＋研究類型：＋主要發現：＋整段斜體原文」，原文與白話整理幾乎重複，
-          十幾個來源連成一面字牆。現在：標題縮成粗體正文、類型與年份一行灰字、白話發現直接接、原文預設收合。 */}
       <ol class="evidence-list">
         {evidenceItems.map((item, index) => (
           <li class="evidence-item">
